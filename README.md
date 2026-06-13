@@ -10,3 +10,4 @@ Next.js homepage implementation for the Seba Safari `home-astra` Figma canvas.
 - `npm run test` runs Vitest.
 - `npm run test:e2e` runs Playwright.
 - `npm run build` creates a production build.
+-
