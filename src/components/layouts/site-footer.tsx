@@ -1,23 +1,47 @@
-import Link from "next/link";
+import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
+import Image from "next/image";
 
-import { Button } from "@/components/ui/button";
 import type { HomeDictionary } from "@/i18n/types";
+
+const socialIcons = [Instagram, Twitter, Linkedin, Facebook];
 
 export function SiteFooter({ dictionary }: { dictionary: HomeDictionary }) {
   return (
-    <footer className="bg-safari-ink text-safari-cream">
-      <div className="container grid gap-8 py-12 md:grid-cols-[1fr_auto] md:items-center">
-        <div className="max-w-2xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-safari-gold">{dictionary.brand.name}</p>
-          <h2 className="mt-3 text-3xl font-semibold md:text-4xl">{dictionary.footer.cta}</h2>
-          <p className="mt-3 text-safari-cream/72">{dictionary.footer.note}</p>
+    <footer className="bg-astra-cocoa text-white">
+      <div className="container flex max-w-[1280px] flex-col items-center gap-[29px] py-16 md:py-[72px]">
+        <div className="relative h-[104px] w-[246px]">
+          <Image src="/assets/figma/logo-footer.png" alt={dictionary.brand.logoAlt} fill sizes="246px" className="object-contain" />
         </div>
-        <Button asChild variant="gold" size="lg">
-          <Link href="#planner">{dictionary.header.plannerCta}</Link>
-        </Button>
-      </div>
-      <div className="border-t border-white/10 py-5">
-        <div className="container text-sm text-safari-cream/60">© {new Date().getFullYear()} {dictionary.footer.copyright}</div>
+        <div className="flex items-center justify-center gap-2" aria-label="Social links">
+          {socialIcons.map((Icon, index) => (
+            <a
+              key={index}
+              href="#"
+              aria-label={`Social link ${index + 1}`}
+              className="grid size-10 place-items-center rounded-lg bg-astra-gold/15 text-astra-gold transition hover:bg-astra-gold/25"
+            >
+              <Icon className="size-5" aria-hidden="true" />
+            </a>
+          ))}
+        </div>
+        <nav className="flex flex-wrap justify-center gap-8 text-base font-medium leading-[1.5] tracking-[-0.18px] text-white/70 md:gap-16" aria-label="Footer">
+          {dictionary.footer.links.map((item, index) => (
+            <a key={`${item.label}-${index}`} href={item.href} className="transition hover:text-white">
+              {item.label}
+            </a>
+          ))}
+        </nav>
+        <div className="h-px w-full bg-white/15" />
+        <div className="flex w-full flex-col gap-4 text-xs leading-4 text-white md:flex-row md:items-center md:justify-between">
+          <p>{dictionary.footer.copyright}</p>
+          <nav className="flex flex-wrap gap-4 md:justify-end" aria-label="Legal">
+            {dictionary.footer.legalLinks.map((item) => (
+              <a key={item.label} href={item.href} className="transition hover:text-astra-gold">
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        </div>
       </div>
     </footer>
   );

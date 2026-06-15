@@ -1,227 +1,333 @@
 import type { HomeDictionary } from "@/i18n/types";
 
-const safariImages = {
-  migration: "https://images.unsplash.com/photo-1549366021-9f761d040a94?auto=format&fit=crop&w=900&q=80",
-  kilimanjaro: "https://images.unsplash.com/photo-1609198092458-38a293c7ac4b?auto=format&fit=crop&w=900&q=80",
-  camp: "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=900&q=80",
-  beach: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80",
-  lodge: "https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=900&q=80",
-  culture: "https://images.unsplash.com/photo-1484318571209-661cf29a69c3?auto=format&fit=crop&w=900&q=80"
-};
+const asset = (name: string) => `/assets/figma/${name}`;
+
+const plannerFields: HomeDictionary["planner"]["fields"] = [
+  {
+    name: "name",
+    label: "Your name",
+    placeholder: "Your name",
+    type: "text"
+  },
+  {
+    name: "whatsapp",
+    label: "Whatsapp number",
+    placeholder: "Whatsapp number",
+    type: "tel"
+  },
+  {
+    name: "email",
+    label: "Email",
+    placeholder: "Email",
+    type: "email"
+  },
+  {
+    name: "people",
+    label: "How many people",
+    placeholder: "How many people",
+    type: "select",
+    options: ["2 people", "3-4 people", "5-8 people", "Family group"]
+  }
+];
+
+const itineraryImages = [
+  "itinerary-1.jpg",
+  "itinerary-2.jpg",
+  "itinerary-3.jpg",
+  "itinerary-4.jpg",
+  "itinerary-5.jpg",
+  "itinerary-6.jpg"
+];
 
 const en: HomeDictionary = {
   brand: {
-    name: "Seba Safari",
-    tagline: "Tailor-made Tanzania"
+    name: "Astra Tanzania Safaris",
+    tagline: "Safari operator for USA travelers",
+    logoAlt: "Astra Tanzania Safaris"
+  },
+  topBar: {
+    label: "Safari Operator for USA Travelers",
+    phone: "+255 62 674 7949",
+    email: "info@astratanzaniasafaris.com"
   },
   nav: [
-    { label: "Destinations", href: "#experiences" },
-    { label: "Safari", href: "#expertise" },
-    { label: "Why Seba", href: "#benefits" },
-    { label: "Contact", href: "#planner" }
+    { label: "Itineraries", href: "#itineraries" },
+    { label: "Safaris", href: "#experiences" },
+    { label: "Kilimanjaro", href: "#experiences" },
+    { label: "Discover Tanzania", href: "#planning" }
   ],
   header: {
-    plannerCta: "Talk to a local planner",
+    plannerCta: "Talk to Safari Planner",
     menuLabel: "Open menu",
     closeLabel: "Close menu"
   },
   hero: {
-    eyebrow: "Private Tanzania safaris",
-    title: "A lot of people visit Africa. A few witness it.",
+    eyebrow: "Tanzania's #1 Rated Safari Operator for USA Travelers",
+    titleBeforeBreak: "A lot of People visit",
+    titleAfterBreakLead: "Africa.",
+    titleHighlight: "A Few Witness It.",
     description:
-      "Design a private safari through Tanzania with local planners who know the migration, hidden lodges, quiet routes, and the small timing details that make a journey feel effortless.",
-    primaryCta: "Start safari planning",
-    secondaryCta: "Explore experiences"
+      "Private guided Tanzania safaris - planned for you, priced in USD, backed by 15 years of getting Americans to Africa.",
+    primaryCta: "Talk to Safari Planner",
+    secondaryCta: "Check Available Tours",
+    image: {
+      src: asset("hero.jpg"),
+      alt: "A safari vehicle crossing the Serengeti plains in Tanzania"
+    }
   },
   planner: {
-    title: "Talk to a local planner",
-    description: "Share a few trip details and we will shape the first route around your timing, pace, and budget.",
-    emailLabel: "Email",
-    emailPlaceholder: "traveler@example.com",
-    submit: "Plan my safari",
-    note: "Response within one business day.",
-    fields: [
-      {
-        label: "Travel month",
-        placeholder: "Choose month",
-        options: ["June to October", "November to March", "April to May", "Flexible"]
-      },
-      {
-        label: "Travelers",
-        placeholder: "Group size",
-        options: ["2 travelers", "3-4 travelers", "5-8 travelers", "Family group"]
-      },
-      {
-        label: "Safari style",
-        placeholder: "Choose style",
-        options: ["Classic safari", "Migration focused", "Luxury lodges", "Safari + coast"]
-      }
-    ]
+    eyebrow: "Free, no commitment",
+    title: "Talk to a safari planner",
+    description: "We reply within 4 hours - by email or WhatsApp, your choice.",
+    submit: "Talk to Safari Planner",
+    success: "Thanks. A safari planner will reply within 4 hours.",
+    note: "Free, no commitment. Your details stay with Astra Tanzania Safaris.",
+    fields: plannerFields
   },
-  benefits: {
-    eyebrow: "Built for serious travelers",
-    title: "Most travelers from the USA make these costly safari mistakes when traveling to Tanzania",
+  experienceCategories: {
+    eyebrow: "Our experiences",
+    title: "Choose your Tanzania Experience Category",
+    description: "Every trip is private, guided by experts, and built around what matters to you.",
     items: [
       {
-        value: "01",
-        label: "Choosing the wrong park sequence",
-        description: "Avoid wasted transfer days by matching the route to wildlife movement and arrival airports."
+        icon: "🏝️",
+        eyebrow: "Zanzibar",
+        title: "Zanzibar Island Retreat",
+        meta: [],
+        description:
+          "Private guided Tanzania safaris - planned for you, priced in USD, backed by 15 years of getting Americans to Africa.",
+        cta: "Explore Zanzibar",
+        image: {
+          src: asset("category-zanzibar.jpg"),
+          alt: "Turquoise water and tropical coastline in Zanzibar"
+        }
       },
       {
-        value: "02",
-        label: "Booking lodges without context",
-        description: "Know when a famous lodge is too far from the action, too busy, or simply not worth the premium."
+        icon: "🦁",
+        eyebrow: "Wildlife Safari",
+        title: "Classic Tanzania Safari",
+        meta: ["For all ages", "For all ages"],
+        description:
+          "Turquoise waters, spice markets, and powder-white beaches. The perfect extension after your safari.",
+        cta: "Explore African Wildlife",
+        image: {
+          src: asset("category-wildlife.jpg"),
+          alt: "Wildlife safari vehicle on a Tanzania plains road"
+        }
       },
       {
-        value: "03",
-        label: "Missing seasonal details",
-        description: "Migration crossings, calving, green season value, and road conditions all change the right plan."
+        icon: "🏔️",
+        eyebrow: "Kilimanjaro climb",
+        title: "Climbing Kilimanjaro",
+        meta: ["For all ages", "For all ages"],
+        description:
+          "World-class lodges, private game drives, and fine dining in the wild - for travelers who want the best of everything.",
+        cta: "Explore Arusha",
+        image: {
+          src: asset("category-kilimanjaro.jpg"),
+          alt: "Tented camp below Mount Kilimanjaro"
+        }
       }
     ]
   },
-  expertise: {
-    eyebrow: "Local guidance",
-    title: "Built for travelers who expect more",
+  trust: {
+    items: [
+      { label: "Vetted camps only", icon: asset("trust-camp.svg") },
+      { label: "Private expert guides", icon: asset("trust-guide.svg") },
+      { label: "Priced in USD", icon: asset("trust-priced.svg") },
+      { label: "24/7 live support", icon: asset("trust-support.svg") }
+    ],
+    note: "Not sure what is right for you? Talk to a safari planner - it's free."
+  },
+  why: {
+    eyebrow: "Why Astra Tanzania",
+    titleLead: "Built for travelers",
+    titleHighlight: "who expect more",
+    plannerLabel: "Talk to a safari planner",
+    phone: "+255 62 674 7949",
+    email: "info@astratanzaniasafaris.com",
+    cta: "Talk to Safari Planner",
+    items: [
+      {
+        icon: "🧭",
+        title: "Private, expert guides",
+        description:
+          "Your guide has 10+ years in the bush - not a resort employee running a route. They know where the leopards sleep."
+      },
+      {
+        icon: "💳",
+        title: "Private, expert guides",
+        description:
+          'Quote in USD, pay in USD. No conversion risk. Full breakdown before any deposit. No hidden park fees, visa run-arounds, or "local surcharges."'
+      },
+      {
+        icon: "📡",
+        title: "24/7 US time-zone support",
+        description:
+          "Your US-based trip coordinator is reachable before and during your trip. Real person. Real phone. Not a chatbot at 3am Tanzania time."
+      },
+      {
+        icon: "🗓️",
+        title: "Migration-timed itineraries",
+        description:
+          "We map your dates to peak wildlife movements - Serengeti crossings, calving season, dry-season concentrations."
+      },
+      {
+        icon: "🏕️",
+        title: "Vetted camps only",
+        description:
+          "We've slept in every camp we recommend. Mobile tented camps, private conservancy lodges - zero compromise on safety or comfort."
+      },
+      {
+        icon: "🔄",
+        title: "Free rebooking guarantee",
+        description:
+          "Life changes. Rebook your safari up to 30 days before departure at no extra cost. No questions asked."
+      }
+    ]
+  },
+  itineraries: {
+    eyebrow: "Experiences we offer",
+    titleLead: "Choose your",
+    titleHighlight: "Tanzania",
+    titleTrail: "experience",
     description:
-      "Every itinerary is shaped by people who understand how the parks, seasons, camps, and transfers work together in real life.",
-    cta: "Meet your planning team",
-    items: [
-      { title: "Private expert guides", description: "Guides selected for wildlife knowledge, calm pacing, and deep local context." },
-      { title: "Flexible camp plans", description: "Routes adapt around migration timing, special interests, and comfort level." },
-      { title: "24/7 in-trip support", description: "Local backup is available throughout the journey, not only before departure." },
-      { title: "Migration timing", description: "Plans account for real seasonal movement instead of generic park lists." },
-      { title: "Vetted stays", description: "Every lodge or camp is selected for location, service, and value." },
-      { title: "Clear budgeting", description: "Transparent tradeoffs help decide where to splurge and where to save." }
+      "Private guided Tanzania safaris - planned for you, priced in USD, backed by 15 years of getting Americans to Africa.",
+    cta: "View More Experiences",
+    items: itineraryImages.map((image, index) => ({
+      title: "The Great Migration Classic",
+      duration: "7 nights",
+      route: "Serengeti + Ngorongoro",
+      season: "July-October",
+      price: "from $1459 USD per person",
+      image: {
+        src: asset(image),
+        alt: `Tanzania safari itinerary preview ${index + 1}`
+      }
+    }))
+  },
+  planning: {
+    eyebrow: "Experiences we offer",
+    titleLead: "Stop overthinking.",
+    titleHighlight: "Start planning.",
+    paragraphs: [
+      "Stop overthinking. Start planning.",
+      "Tanzania is one of those trips people talk about for the rest of their lives - but only if you do it right. The Serengeti, Zanzibar, Kilimanjaro. It's all here, and it's all within reach. The hard part isn't getting to Tanzania. It's knowing who to trust to get you there.",
+      "That's where we come in. We're Astra Tanzania - a small team based in Arusha with one job: building Tanzania trips that actually deliver what the photos promise. Not a call center. Not a booking engine. Real people who live here, know the parks, and answer your WhatsApp.",
+      "Tell us your dates, how many people, and what matters most to you. We'll handle everything else - from which park to visit in your month, to what's included in every dollar you spend. No hidden fees. No vague itineraries. No surprises when you land.",
+      "Immerse yourself in local culture, meet the Maasai, and experience Tanzania's breathtaking landscapes.",
+      "With a focus on sustainable travel, we create unforgettable adventures while supporting local communities."
+    ],
+    cta: "Talk to Safari Planner",
+    aside: "Your journey begins here!",
+    images: [
+      { src: asset("planning-top.jpg"), alt: "Astra travelers gathered in safari gear" },
+      { src: asset("planning-upper.jpg"), alt: "Travelers with Astra safari vehicles" },
+      { src: asset("planning-center.jpg"), alt: "Astra safari group posing beside a vehicle" },
+      { src: asset("planning-lower.jpg"), alt: "Astra travelers celebrating on safari" },
+      { src: asset("planning-bottom.jpg"), alt: "Astra travelers holding safari signs" }
     ]
   },
-  experiences: {
-    eyebrow: "Choose your Tanzania experience",
-    title: "Safari routes shaped around what you came to see",
-    description: "Start with the style of journey, then let the route, lodges, and timing follow.",
-    cta: "View all experiences",
+  reviews: {
+    eyebrow: "Experiences we offer",
+    title: "Customer reviews",
+    description: "A short and simple subheading can be added here",
     items: [
-      { title: "Great Migration", category: "Serengeti", image: safariImages.migration },
-      { title: "Kilimanjaro foothills", category: "Northern circuit", image: safariImages.kilimanjaro },
-      { title: "Private mobile camps", category: "Wildlife first", image: safariImages.camp },
-      { title: "Safari and Zanzibar", category: "Bush to beach", image: safariImages.beach },
-      { title: "Family lodge safari", category: "Easy pacing", image: safariImages.lodge },
-      { title: "Culture and conservation", category: "Deeper travel", image: safariImages.culture }
+      {
+        quote: '"(Testimonial) lorem ipsum dolor sit amet, consec adipiscing sed do eiusmod."',
+        author: "Full name",
+        details: "Company name / details.",
+        image: {
+          src: asset("review-family.jpg"),
+          alt: "Family on safari in Tanzania"
+        }
+      },
+      {
+        quote: '"(Testimonial) lorem ipsum dolor sit amet, consec adipiscing sed do eiusmod."',
+        author: "Full name",
+        details: "Company name / details.",
+        image: {
+          src: asset("review-family.jpg"),
+          alt: "Family on safari in Tanzania"
+        }
+      },
+      {
+        quote: '"(Testimonial) lorem ipsum dolor sit amet, consec adipiscing sed do eiusmod."',
+        author: "Full name",
+        details: "Company name / details.",
+        image: {
+          src: asset("review-jeep.jpg"),
+          alt: "Travelers in an Astra safari vehicle"
+        }
+      },
+      {
+        quote: '"(Testimonial) lorem ipsum dolor sit amet, consec adipiscing sed do eiusmod."',
+        author: "Full name",
+        details: "Company name / details.",
+        image: {
+          src: asset("review-jeep.jpg"),
+          alt: "Travelers in an Astra safari vehicle"
+        }
+      }
     ]
+  },
+  faq: {
+    eyebrow: "Overline text",
+    title: "Frequently asked questions",
+    description: "A short and simple subheading can be added here",
+    items: [
+      {
+        question: "Question can be added here",
+        answer:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      },
+      {
+        question: "Question can be added here",
+        answer:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      },
+      {
+        question: "Question can be added here",
+        answer:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      },
+      {
+        question: "Question can be added here",
+        answer:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      }
+    ]
+  },
+  finalCta: {
+    eyebrow: "Experiences we offer",
+    titleLead: "Still thinking about it?",
+    titleHighlight: "Talk to a planner first - it's free.",
+    description:
+      "Just a 10-minute conversation with someone who knows Tanzania inside out. Tell us your dates, your budget, and what matters most - we'll tell you honestly whether we're the right fit.",
+    aside: "July and August departures are filling up. If those months work for you, now is the time.",
+    whatsappCta: "Ask us on Whatsapp",
+    background: {
+      src: asset("final-cta-bg.jpg"),
+      alt: "Safari guide standing beside a vehicle in Tanzania"
+    }
   },
   footer: {
-    cta: "Ready to build the route around your dates?",
-    note: "Seba Safari plans private Tanzania travel for couples, families, and small groups.",
-    copyright: "Seba Safari. All rights reserved."
+    links: [
+      { label: "Link menu", href: "#experiences" },
+      { label: "Link menu", href: "#why" },
+      { label: "Link menu", href: "#itineraries" },
+      { label: "Link menu", href: "#faq" }
+    ],
+    legalLinks: [
+      { label: "Terms of Service", href: "#" },
+      { label: "Cookies Settings", href: "#" },
+      { label: "Privacy Policy", href: "#" }
+    ],
+    copyright: "©2025 Chalk UI - All Rights Reserved."
   }
 };
 
-const ar: HomeDictionary = {
-  brand: {
-    name: "سيبا سفاري",
-    tagline: "رحلات تنزانيا المصممة لك"
-  },
-  nav: [
-    { label: "الوجهات", href: "#experiences" },
-    { label: "السفاري", href: "#expertise" },
-    { label: "لماذا سيبا", href: "#benefits" },
-    { label: "تواصل معنا", href: "#planner" }
-  ],
-  header: {
-    plannerCta: "تحدث مع مخطط محلي",
-    menuLabel: "افتح القائمة",
-    closeLabel: "أغلق القائمة"
-  },
-  hero: {
-    eyebrow: "رحلات سفاري خاصة في تنزانيا",
-    title: "كثيرون يزورون أفريقيا. القليلون يعيشونها حقا.",
-    description:
-      "صمم رحلة سفاري خاصة في تنزانيا مع مخططين محليين يعرفون الهجرة الكبرى، والمخيمات الهادئة، والطرق الأقل ازدحاما، والتفاصيل التي تجعل الرحلة سلسة.",
-    primaryCta: "ابدأ تخطيط السفاري",
-    secondaryCta: "استكشف التجارب"
-  },
-  planner: {
-    title: "تحدث مع مخطط محلي",
-    description: "شاركنا بعض تفاصيل الرحلة وسنقترح مسارا أوليا يناسب توقيتك ووتيرتك وميزانيتك.",
-    emailLabel: "البريد الإلكتروني",
-    emailPlaceholder: "traveler@example.com",
-    submit: "خطط رحلتي",
-    note: "نرد خلال يوم عمل واحد.",
-    fields: [
-      {
-        label: "شهر السفر",
-        placeholder: "اختر الشهر",
-        options: ["يونيو إلى أكتوبر", "نوفمبر إلى مارس", "أبريل إلى مايو", "مرن"]
-      },
-      {
-        label: "عدد المسافرين",
-        placeholder: "حجم المجموعة",
-        options: ["مسافران", "3-4 مسافرين", "5-8 مسافرين", "عائلة"]
-      },
-      {
-        label: "نمط السفاري",
-        placeholder: "اختر النمط",
-        options: ["سفاري كلاسيكي", "تركيز على الهجرة", "نزل فاخرة", "سفاري وساحل"]
-      }
-    ]
-  },
-  benefits: {
-    eyebrow: "مصممة للمسافرين الجادين",
-    title: "أخطاء مكلفة يقع فيها كثير من المسافرين عند التخطيط لسفاري في تنزانيا",
-    items: [
-      {
-        value: "01",
-        label: "اختيار ترتيب خاطئ للمحميات",
-        description: "نقلل أيام التنقل غير الضرورية عبر مواءمة الطريق مع حركة الحياة البرية ومطارات الوصول."
-      },
-      {
-        value: "02",
-        label: "حجز نزل بلا سياق",
-        description: "نوضح متى يكون النزل الشهير بعيدا عن المشهد أو مزدحما أو لا يستحق فرق السعر."
-      },
-      {
-        value: "03",
-        label: "تجاهل التفاصيل الموسمية",
-        description: "عبور الهجرة وموسم الولادات والطرق والقيمة الموسمية كلها تغير الخطة الأفضل."
-      }
-    ]
-  },
-  expertise: {
-    eyebrow: "إرشاد محلي",
-    title: "مصممة لمن يتوقعون أكثر",
-    description:
-      "كل مسار يصممه أشخاص يعرفون كيف تعمل المحميات والمواسم والمخيمات والتنقلات معا على أرض الواقع.",
-    cta: "تعرف على فريق التخطيط",
-    items: [
-      { title: "مرشدون خبراء خاصون", description: "مرشدون مختارون للمعرفة بالحياة البرية والهدوء وفهم السياق المحلي." },
-      { title: "خطط مخيمات مرنة", description: "مسارات تتكيف مع توقيت الهجرة والاهتمامات الخاصة ومستوى الراحة." },
-      { title: "دعم أثناء الرحلة", description: "فريق محلي متاح طوال الرحلة وليس قبل المغادرة فقط." },
-      { title: "توقيت الهجرة", description: "تأخذ الخطط الحركة الموسمية الفعلية في الحسبان بدلا من قوائم عامة." },
-      { title: "إقامات مختارة", description: "كل نزل أو مخيم يختار حسب الموقع والخدمة والقيمة." },
-      { title: "ميزانية واضحة", description: "تساعدك المقارنات الشفافة على معرفة أين تنفق وأين توفر." }
-    ]
-  },
-  experiences: {
-    eyebrow: "اختر تجربة تنزانيا",
-    title: "مسارات سفاري مصممة حول ما تريد رؤيته",
-    description: "ابدأ بنمط الرحلة، ثم نجعل المسار والإقامات والتوقيت يتبعونه.",
-    cta: "عرض كل التجارب",
-    items: [
-      { title: "الهجرة الكبرى", category: "سيرينغيتي", image: safariImages.migration },
-      { title: "سفوح كليمنجارو", category: "الدائرة الشمالية", image: safariImages.kilimanjaro },
-      { title: "مخيمات متنقلة خاصة", category: "الحياة البرية أولا", image: safariImages.camp },
-      { title: "سفاري وزنجبار", category: "من البر إلى البحر", image: safariImages.beach },
-      { title: "سفاري عائلية مريحة", category: "وتيرة سهلة", image: safariImages.lodge },
-      { title: "ثقافة وحماية الطبيعة", category: "سفر أعمق", image: safariImages.culture }
-    ]
-  },
-  footer: {
-    cta: "هل أنت مستعد لبناء المسار حول تواريخك؟",
-    note: "تخطط سيبا سفاري رحلات تنزانيا الخاصة للأزواج والعائلات والمجموعات الصغيرة.",
-    copyright: "سيبا سفاري. جميع الحقوق محفوظة."
-  }
-};
-
-export const dictionaries = { en, ar } satisfies Record<string, HomeDictionary>;
+export const dictionaries = { en } satisfies Record<string, HomeDictionary>;
 
 export function getDictionary(locale: keyof typeof dictionaries) {
   return dictionaries[locale];

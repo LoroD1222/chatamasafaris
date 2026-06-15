@@ -6,12 +6,14 @@ import { HomePage } from "@/features/home/home-page";
 import { isLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 
-export default function Page({ params }: { params: { locale: string } }) {
-  if (!isLocale(params.locale)) {
+export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale: localeParam } = await params;
+
+  if (!isLocale(localeParam)) {
     notFound();
   }
 
-  const locale = params.locale as Locale;
+  const locale = localeParam as Locale;
   const dictionary = getDictionary(locale);
 
   return (

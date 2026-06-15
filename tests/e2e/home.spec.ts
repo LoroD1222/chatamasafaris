@@ -1,45 +1,67 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
+
+async function gotoApp(page: Page, path: string, options?: { waitForPlanner?: boolean }) {
+  await page.goto(path, { waitUntil: "domcontentloaded" });
+
+  if (options?.waitForPlanner) {
+    await page.locator("#planner[data-hydrated='true']").waitFor();
+  }
+}
 
 test("redirects the root route to the default locale", async ({ page }) => {
-  await page.goto("/");
+  await gotoApp(page, "/", { waitForPlanner: true });
+
   await expect(page).toHaveURL(/\/en$/);
-  await expect(page.getByRole("heading", { name: "A lot of people visit Africa. A few witness it." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /A lot of People visit/ })).toBeVisible();
 });
 
 test("renders the English homepage on desktop", async ({ page }) => {
-  await page.goto("/en");
+  await gotoApp(page, "/en", { waitForPlanner: true });
 
   await expect(page.locator("html")).toHaveAttribute("dir", "ltr");
-  await expect(page.getByRole("banner")).toContainText("Seba Safari");
-  await expect(page.getByRole("heading", { name: "Talk to a local planner" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Travel month" })).toBeVisible();
+  await expect(page.getByRole("banner")).toContainText("Astra Tanzania Safaris");
+  await expect(page.getByRole("heading", { name: "Talk to a safari planner" }).first()).toBeVisible();
+  await expect(page.getByPlaceholder("Your name").first()).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Choose your Tanzania Experience Category" })).toBeVisible();
 });
 
-test("renders the Arabic homepage with RTL direction", async ({ page }) => {
-  await page.goto("/ar");
+test("Arabic is deferred for the English-only v1", async ({ page }) => {
+  await gotoApp(page, "/ar");
 
-  await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
-  await expect(page.getByRole("banner")).toContainText("سيبا سفاري");
-  await expect(page.getByRole("heading", { name: "تحدث مع مخطط محلي" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "شهر السفر" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "This route is off the map." })).toBeVisible();
 });
 
-test("planner select can be opened and completed", async ({ page }) => {
-  await page.goto("/en");
+test("planner form can be completed", async ({ page }) => {
+  await gotoApp(page, "/en", { waitForPlanner: true });
 
-  await page.getByRole("button", { name: "Travel month" }).click();
-  await page.getByRole("option", { name: "June to October" }).click();
-  await page.getByLabel("Email").fill("traveler@example.com");
+  const planner = page.locator("#planner");
+  await planner.getByPlaceholder("Your name").fill("Alex Traveler");
+  await planner.getByPlaceholder("Whatsapp number").fill("+15551234567");
+  await planner.getByPlaceholder("Email").fill("traveler@example.com");
+  await planner.getByRole("combobox", { name: "How many people" }).click();
+  await page.getByRole("option", { name: "2 people" }).click();
+  await planner.getByRole("button", { name: /Talk to Safari Planner/ }).click();
 
-  await expect(page.getByText("June to October")).toBeVisible();
+  await expect(page.getByText("Thanks. A safari planner will reply within 4 hours.")).toBeVisible();
 });
 
 test("mobile menu opens and links to planner", async ({ page, isMobile }) => {
   test.skip(!isMobile, "mobile-only interaction");
 
-  await page.goto("/en");
+  await gotoApp(page, "/en", { waitForPlanner: true });
   await page.getByLabel("Open menu").click();
-  await expect(page.getByRole("dialog")).toContainText("Destinations");
-  await page.getByRole("link", { name: "Talk to a local planner" }).click();
+  await expect(page.getByRole("dialog")).toContainText("Itineraries");
+  await page.getByRole("link", { name: "Talk to Safari Planner" }).click();
   await expect(page.locator("#planner")).toBeInViewport();
+});
+
+test("FAQ rows expand and the page has no horizontal overflow", async ({ page }) => {
+  await gotoApp(page, "/en", { waitForPlanner: true });
+
+  await expect(page.getByText("Lorem ipsum dolor sit amet").first()).toBeVisible();
+  await page.getByRole("button", { name: "Expand answer" }).first().click();
+  await expect(page.getByRole("button", { name: "Collapse answer" }).first()).toBeVisible();
+
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(overflow).toBeLessThanOrEqual(1);
 });

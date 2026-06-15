@@ -48,6 +48,13 @@ const config: Config = {
           cream: "#fff9ed",
           gold: "#b88938",
           sky: "#9abfc2"
+        },
+        astra: {
+          cream: "#fdfaf3",
+          gold: "#e2b87f",
+          cocoa: "#4a351c",
+          brown: "#3c2b1c",
+          dark: "#403229"
         }
       },
       borderRadius: {
@@ -56,7 +63,8 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)"
       },
       fontFamily: {
-        sans: ["var(--font-geist-sans)", "Arial", "sans-serif"],
+        sans: ["var(--font-poppins)", "Arial", "sans-serif"],
+        inter: ["var(--font-inter)", "Arial", "sans-serif"],
         serif: ["Georgia", "serif"]
       },
       boxShadow: {

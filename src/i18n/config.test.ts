@@ -5,18 +5,17 @@ import { defaultLocale, getTextDirection, isLocale, locales, rtlLocales } from "
 describe("i18n config", () => {
   it("defines the expected default and supported locales", () => {
     expect(defaultLocale).toBe("en");
-    expect(locales).toEqual(["en", "ar"]);
+    expect(locales).toEqual(["en"]);
   });
 
   it("detects supported locales", () => {
     expect(isLocale("en")).toBe(true);
-    expect(isLocale("ar")).toBe(true);
+    expect(isLocale("ar")).toBe(false);
     expect(isLocale("fr")).toBe(false);
   });
 
-  it("returns ltr and rtl directions", () => {
-    expect(rtlLocales).toEqual(["ar"]);
+  it("keeps v1 English-only and direction helpers ready for future rtl locales", () => {
+    expect(rtlLocales).toEqual([]);
     expect(getTextDirection("en")).toBe("ltr");
-    expect(getTextDirection("ar")).toBe("rtl");
   });
 });

@@ -13,7 +13,7 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
         ghost: "hover:bg-accent hover:text-accent-foreground",
-        gold: "bg-safari-gold text-white hover:bg-safari-gold/90"
+        gold: "bg-astra-gold text-astra-cocoa hover:bg-astra-gold/90"
       },
       size: {
         default: "h-11 px-5 py-2",

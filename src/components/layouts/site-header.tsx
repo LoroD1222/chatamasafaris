@@ -1,6 +1,7 @@
 "use client";
 
-import { Menu, Mountain } from "lucide-react";
+import { Mail, Menu, Phone, Star } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -9,66 +10,74 @@ import type { Locale } from "@/i18n/config";
 import type { HomeDictionary } from "@/i18n/types";
 
 export function SiteHeader({ locale, dictionary }: { locale: Locale; dictionary: HomeDictionary }) {
-  const alternateLocale = locale === "en" ? "ar" : "en";
-
   return (
-    <header className="sticky top-0 z-40 border-b border-safari-bark/10 bg-safari-cream/92 backdrop-blur">
-      <div className="container flex h-16 items-center justify-between gap-4">
-        <Link href={`/${locale}`} className="flex items-center gap-3" aria-label={dictionary.brand.name}>
-          <span className="grid h-10 w-10 place-items-center rounded-full bg-safari-ink text-safari-cream">
-            <Mountain className="h-5 w-5" />
-          </span>
-          <span>
-            <span className="block text-sm font-bold leading-none text-safari-ink">{dictionary.brand.name}</span>
-            <span className="text-xs text-safari-bark/65">{dictionary.brand.tagline}</span>
-          </span>
-        </Link>
-
-        <nav className="hidden items-center gap-7 text-sm font-medium text-safari-bark/78 md:flex" aria-label="Primary">
-          {dictionary.nav.map((item) => (
-            <a key={item.href} href={item.href} className="transition hover:text-safari-ink">
-              {item.label}
+    <header className="bg-astra-cream text-astra-brown">
+      <div className="bg-astra-gold">
+        <div className="container flex h-[37px] max-w-[1225px] items-center justify-between gap-4 text-[13px] font-bold leading-[1.6]">
+          <p className="hidden items-center gap-2 uppercase tracking-[0.05em] text-astra-cocoa/40 sm:flex">
+            <Star className="size-[18px] fill-current" aria-hidden="true" />
+            {dictionary.topBar.label}
+          </p>
+          <div className="ms-auto flex min-w-0 items-center gap-5 text-astra-cocoa/65">
+            <a href={`tel:${dictionary.topBar.phone.replace(/\s/g, "")}`} className="hidden items-center gap-1 underline underline-offset-2 sm:inline-flex">
+              <Phone className="size-3.5" aria-hidden="true" />
+              {dictionary.topBar.phone}
             </a>
-          ))}
-        </nav>
+            <a href={`mailto:${dictionary.topBar.email}`} className="inline-flex min-w-0 items-center gap-1 underline underline-offset-2">
+              <Mail className="size-3.5 shrink-0" aria-hidden="true" />
+              <span className="truncate">{dictionary.topBar.email}</span>
+            </a>
+          </div>
+        </div>
+      </div>
 
-        <div className="hidden items-center gap-2 md:flex">
-          <Button asChild variant="ghost" size="sm">
-            <Link href={`/${alternateLocale}`}>{alternateLocale.toUpperCase()}</Link>
-          </Button>
-          <Button asChild variant="gold" size="sm">
+      <div className="bg-astra-cream">
+        <div className="container flex h-[100px] max-w-[1160px] items-center justify-between gap-8">
+          <Link href={`/${locale}`} className="relative block h-[92px] w-[219px] shrink-0" aria-label={dictionary.brand.name}>
+            <span className="sr-only">{dictionary.brand.name}</span>
+            <Image src="/assets/figma/logo-header.png" alt={dictionary.brand.logoAlt} fill priority sizes="219px" className="object-contain" />
+          </Link>
+
+          <nav className="hidden items-center gap-7 text-[15px] font-medium leading-[1.6] text-astra-brown md:flex" aria-label="Primary">
+            {dictionary.nav.map((item) => (
+              <a key={`${item.label}-${item.href}`} href={item.href} className="transition hover:text-astra-gold">
+                {item.label}
+              </a>
+            ))}
+          </nav>
+
+          <Button asChild className="hidden h-[54px] rounded-[9px] bg-astra-gold px-[21px] text-base font-bold text-astra-cocoa hover:bg-astra-gold/90 md:inline-flex">
             <a href="#planner">{dictionary.header.plannerCta}</a>
           </Button>
-        </div>
 
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="outline" size="icon" className="md:hidden" aria-label={dictionary.header.menuLabel}>
-              <Menu className="h-5 w-5" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent>
-            <SheetTitle className="text-lg font-semibold text-safari-ink">{dictionary.brand.name}</SheetTitle>
-            <SheetDescription className="mt-1 text-sm text-safari-bark/70">{dictionary.brand.tagline}</SheetDescription>
-            <nav className="mt-8 grid gap-4 text-base font-medium text-safari-bark" aria-label="Mobile primary">
-              {dictionary.nav.map((item) => (
-                <SheetClose asChild key={item.href}>
-                  <a href={item.href} className="rounded-md py-2 transition hover:text-safari-ink">
-                    {item.label}
-                  </a>
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="icon" className="md:hidden" aria-label={dictionary.header.menuLabel}>
+                <Menu className="size-5" aria-hidden="true" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent>
+              <SheetTitle className="text-lg font-semibold text-astra-cocoa">{dictionary.brand.name}</SheetTitle>
+              <SheetDescription className="mt-1 text-sm text-astra-brown/70">{dictionary.brand.tagline}</SheetDescription>
+              <nav className="mt-8 grid gap-4 text-base font-medium text-astra-brown" aria-label="Mobile primary">
+                {dictionary.nav.map((item) => (
+                  <SheetClose asChild key={`${item.label}-${item.href}`}>
+                    <a href={item.href} className="rounded-md py-2 transition hover:text-astra-gold">
+                      {item.label}
+                    </a>
+                  </SheetClose>
+                ))}
+              </nav>
+              <div className="mt-8">
+                <SheetClose asChild>
+                  <Button asChild className="w-full bg-astra-gold text-astra-cocoa hover:bg-astra-gold/90">
+                    <a href="#planner">{dictionary.header.plannerCta}</a>
+                  </Button>
                 </SheetClose>
-              ))}
-            </nav>
-            <div className="mt-8 grid gap-3">
-              <Button asChild variant="gold">
-                <a href="#planner">{dictionary.header.plannerCta}</a>
-              </Button>
-              <Button asChild variant="outline">
-                <Link href={`/${alternateLocale}`}>{alternateLocale.toUpperCase()}</Link>
-              </Button>
-            </div>
-          </SheetContent>
-        </Sheet>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
     </header>
   );

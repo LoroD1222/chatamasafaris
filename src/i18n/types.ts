@@ -3,33 +3,78 @@ export type NavItem = {
   href: string;
 };
 
-export type PlannerField = {
-  label: string;
-  placeholder: string;
-  options: string[];
+export type PlannerField =
+  | {
+      name: string;
+      label: string;
+      placeholder: string;
+      type: "text" | "email" | "tel";
+    }
+  | {
+      name: string;
+      label: string;
+      placeholder: string;
+      type: "select";
+      options: string[];
+    };
+
+export type AssetImage = {
+  src: string;
+  alt: string;
 };
 
-export type Benefit = {
-  value: string;
-  label: string;
+export type ExperienceCategory = {
+  icon: string;
+  eyebrow: string;
+  title: string;
+  meta: string[];
   description: string;
+  cta: string;
+  image: AssetImage;
 };
 
-export type Feature = {
+export type TrustItem = {
+  label: string;
+  icon: string;
+};
+
+export type WhyItem = {
+  icon: string;
   title: string;
   description: string;
 };
 
-export type Experience = {
+export type Itinerary = {
   title: string;
-  category: string;
-  image: string;
+  duration: string;
+  route: string;
+  season: string;
+  price: string;
+  image: AssetImage;
+};
+
+export type Review = {
+  quote: string;
+  author: string;
+  details: string;
+  image: AssetImage;
+};
+
+export type Faq = {
+  question: string;
+  answer: string;
 };
 
 export type HomeDictionary = {
   brand: {
     name: string;
     tagline: string;
+    logoAlt: string;
+  };
+  topBar: {
+    label: string;
+    phone: string;
+    email: string;
   };
   nav: NavItem[];
   header: {
@@ -39,42 +84,85 @@ export type HomeDictionary = {
   };
   hero: {
     eyebrow: string;
-    title: string;
+    titleBeforeBreak: string;
+    titleAfterBreakLead: string;
+    titleHighlight: string;
     description: string;
     primaryCta: string;
     secondaryCta: string;
+    image: AssetImage;
   };
   planner: {
+    eyebrow: string;
     title: string;
     description: string;
-    emailLabel: string;
-    emailPlaceholder: string;
     submit: string;
+    success: string;
     note: string;
     fields: PlannerField[];
   };
-  benefits: {
-    eyebrow: string;
-    title: string;
-    items: Benefit[];
-  };
-  expertise: {
+  experienceCategories: {
     eyebrow: string;
     title: string;
     description: string;
-    cta: string;
-    items: Feature[];
+    items: ExperienceCategory[];
   };
-  experiences: {
+  trust: {
+    items: TrustItem[];
+    note: string;
+  };
+  why: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    plannerLabel: string;
+    phone: string;
+    email: string;
+    cta: string;
+    items: WhyItem[];
+  };
+  itineraries: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    titleTrail: string;
+    description: string;
+    cta: string;
+    items: Itinerary[];
+  };
+  planning: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    paragraphs: string[];
+    cta: string;
+    aside: string;
+    images: AssetImage[];
+  };
+  reviews: {
     eyebrow: string;
     title: string;
     description: string;
-    cta: string;
-    items: Experience[];
+    items: Review[];
+  };
+  faq: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    items: Faq[];
+  };
+  finalCta: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    description: string;
+    aside: string;
+    whatsappCta: string;
+    background: AssetImage;
   };
   footer: {
-    cta: string;
-    note: string;
+    links: NavItem[];
+    legalLinks: NavItem[];
     copyright: string;
   };
 };
