@@ -19,8 +19,8 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   return (
     <>
       <SiteHeader locale={locale} dictionary={dictionary} />
-      <HomePage dictionary={dictionary} />
-      <SiteFooter dictionary={dictionary} />
+      <HomePage locale={locale} dictionary={dictionary} />
+      <SiteFooter locale={locale} dictionary={dictionary} />
     </>
   );
 }

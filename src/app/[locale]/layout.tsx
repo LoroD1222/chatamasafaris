@@ -1,21 +1,9 @@
 import type { Metadata } from "next";
-import { Inter, Poppins } from "next/font/google";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { getTextDirection, isLocale, locales, type Locale } from "@/i18n/config";
 import "@/styles/globals.css";
-
-const poppins = Poppins({
-  variable: "--font-poppins",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"]
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"]
-});
 
 export const metadata: Metadata = {
   title: "Astra Tanzania Safaris | Private Tanzania Safaris for USA Travelers",
@@ -43,9 +31,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} dir={getTextDirection(locale)} suppressHydrationWarning>
-      <body className={`${poppins.variable} ${inter.variable} bg-background text-foreground antialiased`}>
-        {children}
-      </body>
+      <body className="bg-background text-foreground antialiased">{children}</body>
     </html>
   );
 }

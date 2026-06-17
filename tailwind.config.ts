@@ -52,7 +52,7 @@ const config: Config = {
         astra: {
           cream: "#fdfaf3",
           gold: "#e2b87f",
-          cocoa: "#4a351c",
+          cocoa: "#403229",
           brown: "#3c2b1c",
           dark: "#403229"
         }
@@ -63,8 +63,8 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)"
       },
       fontFamily: {
-        sans: ["var(--font-poppins)", "Arial", "sans-serif"],
-        inter: ["var(--font-inter)", "Arial", "sans-serif"],
+        sans: ["Satoshi", "Arial", "sans-serif"],
+        inter: ["Satoshi", "Arial", "sans-serif"],
         serif: ["Georgia", "serif"]
       },
       boxShadow: {

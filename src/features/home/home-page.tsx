@@ -1,20 +1,30 @@
-import { ArrowRight, Check, Mail, Phone, Star } from "lucide-react";
+import { ArrowRight, BadgeCheck, Check, CircleDollarSign, Headphones, Mail, MapPinned, Phone, Star } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
 import { FaqList } from "@/features/home/faq-list";
 import { LeadPlanner } from "@/features/home/lead-planner";
+import type { Locale } from "@/i18n/config";
 import type { HomeDictionary, Itinerary } from "@/i18n/types";
 import { cn } from "@/utils/cn";
+import { localizedHref } from "@/utils/routes";
 
-export function HomePage({ dictionary }: { dictionary: HomeDictionary }) {
+const trustIcons = {
+  camp: BadgeCheck,
+  guide: MapPinned,
+  priced: CircleDollarSign,
+  support: Headphones
+};
+
+export function HomePage({ locale, dictionary }: { locale: Locale; dictionary: HomeDictionary }) {
   return (
     <main className="overflow-hidden bg-astra-cream text-astra-brown">
       <HeroSection dictionary={dictionary} />
-      <ExperienceCategories dictionary={dictionary} />
+      <ExperienceCategories locale={locale} dictionary={dictionary} />
       <WhySection dictionary={dictionary} />
-      <ItinerariesSection dictionary={dictionary} />
+      <ItinerariesSection locale={locale} dictionary={dictionary} />
       <ImageStrip />
       <PlanningSection dictionary={dictionary} />
       <ReviewsSection dictionary={dictionary} />
@@ -59,7 +69,7 @@ function HeroSection({ dictionary }: { dictionary: HomeDictionary }) {
   );
 }
 
-function ExperienceCategories({ dictionary }: { dictionary: HomeDictionary }) {
+function ExperienceCategories({ locale, dictionary }: { locale: Locale; dictionary: HomeDictionary }) {
   return (
     <section id="experiences" className="bg-astra-cream py-16 md:py-[64px]">
       <div className="container max-w-[1113px]">
@@ -77,14 +87,20 @@ function ExperienceCategories({ dictionary }: { dictionary: HomeDictionary }) {
                 index === 1 ? "md:min-h-[472px]" : "md:min-h-[475px]"
               )}
             >
-              <div className="relative h-[219px] overflow-hidden rounded-t-lg rounded-b">
-                <Image src={item.image.src} alt={item.image.alt} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover" />
+              <div className={cn("relative h-[219px] overflow-hidden rounded-t-lg rounded-b", index === 1 && "h-[250px] md:h-[244px]")}>
+                <Image
+                  src={item.image.src}
+                  alt={item.image.alt}
+                  fill
+                  sizes="(min-width: 768px) 33vw, 100vw"
+                  className={cn("object-cover", index === 1 && "object-[center_44%]")}
+                />
                 <div className="absolute left-3 top-3 inline-flex h-[42px] items-center gap-2 rounded-md border border-astra-cocoa/15 bg-white/75 px-2 text-[15px] font-bold text-astra-cocoa backdrop-blur-sm">
                   <span aria-hidden="true">{item.icon}</span>
                   <span>{item.eyebrow}</span>
                 </div>
               </div>
-              <div className="flex min-h-[226px] flex-col p-3 pt-5">
+              <div className="flex min-h-[226px] flex-col px-4 pb-6 pt-5">
                 <h3 className="text-[19px] font-bold leading-[1.29] text-astra-cocoa">{item.title}</h3>
                 {item.meta.length > 0 ? (
                   <div className="mt-2 flex flex-wrap gap-4 text-xs font-bold leading-[1.6] text-astra-brown/85">
@@ -97,15 +113,15 @@ function ExperienceCategories({ dictionary }: { dictionary: HomeDictionary }) {
                   </div>
                 ) : null}
                 <p className="mt-4 flex-1 text-[15px] leading-[1.6] text-astra-brown/85">{item.description}</p>
-                <a
-                  href="#itineraries"
-                  className="mt-4 inline-flex h-[42px] items-center justify-between rounded-[5px] border border-astra-gold/40 bg-astra-gold/15 px-[15px] text-sm font-semibold leading-[1.6] text-astra-cocoa transition hover:bg-astra-gold/25"
+                <Link
+                  href={localizedHref(locale, item.href)}
+                  className="mt-5 inline-flex h-[42px] items-center justify-between rounded-[5px] border border-astra-gold/40 bg-astra-gold/15 px-[15px] text-sm font-semibold leading-[1.6] text-astra-cocoa transition hover:bg-astra-gold/25"
                 >
                   {item.cta}
                   <span className="grid h-6 w-[59px] place-items-center rounded bg-astra-gold" aria-hidden="true">
                     <ArrowRight className="size-4" />
                   </span>
-                </a>
+                </Link>
               </div>
             </article>
           ))}
@@ -123,7 +139,7 @@ function TrustRow({ dictionary }: { dictionary: HomeDictionary }) {
         {dictionary.trust.items.map((item) => (
           <div key={item.label} className="grid h-[123px] place-items-center rounded-[10px] border border-astra-cocoa/10 bg-white px-3 text-center">
             <div className="flex flex-col items-center gap-4">
-              <Image src={item.icon} alt="" width={38} height={38} className="h-[38px] w-auto" />
+              <TrustIcon icon={item.icon} />
               <p className="text-sm leading-[1.6] text-astra-brown">{item.label}</p>
             </div>
           </div>
@@ -134,6 +150,12 @@ function TrustRow({ dictionary }: { dictionary: HomeDictionary }) {
       </p>
     </div>
   );
+}
+
+function TrustIcon({ icon }: { icon: keyof typeof trustIcons }) {
+  const Icon = trustIcons[icon];
+
+  return <Icon className="size-[38px] text-astra-gold" aria-hidden="true" />;
 }
 
 function WhySection({ dictionary }: { dictionary: HomeDictionary }) {
@@ -175,7 +197,7 @@ function WhySection({ dictionary }: { dictionary: HomeDictionary }) {
   );
 }
 
-function ItinerariesSection({ dictionary }: { dictionary: HomeDictionary }) {
+function ItinerariesSection({ locale, dictionary }: { locale: Locale; dictionary: HomeDictionary }) {
   return (
     <section id="itineraries" className="bg-astra-cream py-16 md:py-[72px]">
       <div className="container max-w-[1195px]">
@@ -192,12 +214,12 @@ function ItinerariesSection({ dictionary }: { dictionary: HomeDictionary }) {
         />
         <div className="mt-10 grid gap-[18px] md:grid-cols-2 lg:grid-cols-3">
           {dictionary.itineraries.items.map((item, index) => (
-            <ItineraryCard key={`${item.title}-${index}`} item={item} />
+            <ItineraryCard key={`${item.title}-${index}`} locale={locale} item={item} />
           ))}
         </div>
         <div className="mt-8 text-center">
           <Button asChild className="h-[54px] rounded-[9px] bg-astra-gold px-6 text-base font-bold text-astra-cocoa hover:bg-astra-gold/90">
-            <a href="#planner">{dictionary.itineraries.cta}</a>
+            <Link href={localizedHref(locale, "/itineraries")}>{dictionary.itineraries.cta}</Link>
           </Button>
         </div>
       </div>
@@ -205,7 +227,7 @@ function ItinerariesSection({ dictionary }: { dictionary: HomeDictionary }) {
   );
 }
 
-function ItineraryCard({ item }: { item: Itinerary }) {
+function ItineraryCard({ locale, item }: { locale: Locale; item: Itinerary }) {
   return (
     <article className="group relative h-[401px] overflow-hidden rounded-lg bg-astra-cocoa shadow-[0_18px_55px_rgba(64,50,41,0.15)]">
       <Image src={item.image.src} alt={item.image.alt} fill sizes="(min-width: 1024px) 356px, (min-width: 768px) 50vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
@@ -220,12 +242,12 @@ function ItineraryCard({ item }: { item: Itinerary }) {
         <p className="mt-1 text-sm leading-[1.51]">
           {item.route} - {item.season}
         </p>
-        <a
-          href="#planner"
+        <Link
+          href={localizedHref(locale, `/trips/${item.slug}`)}
           className="mt-3 inline-flex h-[27px] items-center rounded-full bg-astra-gold px-3 text-sm font-medium leading-[1.6] text-astra-cocoa transition hover:bg-astra-gold/90"
         >
           See Itinerary -&gt;
-        </a>
+        </Link>
       </div>
     </article>
   );
@@ -233,17 +255,9 @@ function ItineraryCard({ item }: { item: Itinerary }) {
 
 function ImageStrip() {
   return (
-    <section aria-label="Tanzania landscape gallery" className="relative h-[430px] overflow-hidden bg-astra-cream">
-      <div className="absolute inset-x-1/2 top-0 hidden h-[430px] w-[1933px] -translate-x-1/2 md:block">
-        <Image src="/assets/figma/image-strip-left.jpg" alt="" width={740} height={383} className="absolute left-0 top-11 h-[383px] w-[740px] rounded-xl object-cover opacity-90" />
-        <Image src="/assets/figma/image-strip-mid.jpg" alt="" width={524} height={327} className="absolute left-[669px] top-[50px] h-[327px] w-[524px] rounded-[10px] object-cover" />
-        <Image src="/assets/figma/image-strip-tall.jpg" alt="" width={544} height={658} className="absolute left-[1179px] top-0 h-[658px] w-[544px] rounded-[10px] object-cover" />
-        <Image src="/assets/figma/image-strip-right.jpg" alt="" width={778} height={483} className="absolute right-0 top-0 h-[483px] w-[778px] object-cover" />
-      </div>
-      <div className="grid h-full grid-cols-3 md:hidden">
-        <Image src="/assets/figma/image-strip-left.jpg" alt="" width={740} height={383} className="h-full w-full object-cover" />
-        <Image src="/assets/figma/image-strip-mid.jpg" alt="" width={524} height={327} className="h-full w-full object-cover" />
-        <Image src="/assets/figma/image-strip-tall.jpg" alt="" width={544} height={658} className="h-full w-full object-cover" />
+    <section aria-label="Tanzania landscape gallery" className="bg-astra-cream">
+      <div className="relative h-[230px] w-full overflow-hidden md:h-[322px] lg:h-[404px]">
+        <Image src="/assets/figma/experience-strip.png" alt="" fill sizes="100vw" className="object-cover" />
       </div>
     </section>
   );
@@ -253,7 +267,7 @@ function PlanningSection({ dictionary }: { dictionary: HomeDictionary }) {
   return (
     <section id="planning" className="bg-astra-cocoa py-16 text-white md:py-[98px]">
       <div className="container grid max-w-[1210px] gap-12 lg:grid-cols-[604px_542px] lg:gap-16">
-        <PlanningCollage images={dictionary.planning.images} />
+        <PlanningImage image={dictionary.planning.image} />
         <div>
           <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">{dictionary.planning.eyebrow}</p>
           <h2 className="mt-5 text-[44px] font-normal leading-[1.3] md:text-[49px]">
@@ -280,14 +294,10 @@ function PlanningSection({ dictionary }: { dictionary: HomeDictionary }) {
   );
 }
 
-function PlanningCollage({ images }: { images: HomeDictionary["planning"]["images"] }) {
+function PlanningImage({ image }: { image: HomeDictionary["planning"]["image"] }) {
   return (
-    <div className="relative mx-auto h-[620px] w-full max-w-[604px] lg:h-[770px]">
-      <Image src={images[0].src} alt={images[0].alt} width={344} height={100} className="absolute left-1/2 top-0 h-[100px] w-[344px] -translate-x-1/2 rounded-t-[18px] border border-white/70 object-cover opacity-40" />
-      <Image src={images[1].src} alt={images[1].alt} width={500} height={312} className="absolute left-1/2 top-[82px] h-[252px] w-[82%] -translate-x-1/2 rounded-[18px] border border-white/70 object-cover opacity-70 lg:top-[100px] lg:h-[312px] lg:w-[500px]" />
-      <Image src={images[2].src} alt={images[2].alt} width={604} height={306} className="absolute left-0 top-[210px] h-[250px] w-full rounded-[21px] border border-white/35 object-cover lg:top-[232px] lg:h-[306px]" />
-      <Image src={images[3].src} alt={images[3].alt} width={500} height={312} className="absolute left-1/2 top-[402px] h-[190px] w-[82%] -translate-x-1/2 rounded-[18px] border border-white/70 object-cover opacity-70 lg:top-[352px] lg:h-[312px] lg:w-[500px]" />
-      <Image src={images[4].src} alt={images[4].alt} width={344} height={106} className="absolute bottom-0 left-1/2 h-[106px] w-[344px] -translate-x-1/2 rounded-b-[18px] border border-white/70 object-cover opacity-40" />
+    <div className="relative mx-auto aspect-[1074/710] w-full max-w-[604px] overflow-hidden rounded-[21px] border border-white/35 shadow-[0_24px_80px_rgba(0,0,0,0.24)]">
+      <Image src={image.src} alt={image.alt} fill sizes="(min-width: 1024px) 604px, 100vw" className="object-cover" />
     </div>
   );
 }
@@ -346,7 +356,7 @@ function FaqSection({ dictionary }: { dictionary: HomeDictionary }) {
 function FinalCtaSection({ dictionary }: { dictionary: HomeDictionary }) {
   return (
     <section className="relative bg-astra-cocoa px-4 pb-16 pt-8 text-white">
-      <div className="mx-auto mb-[-34px] flex max-w-[628px] flex-col gap-4 rounded-[10px] bg-astra-gold p-3 text-[#2e3138] shadow-[0_15px_35px_rgba(64,50,41,0.2)] md:flex-row md:items-center md:justify-between">
+      <div className="relative z-[100] mx-auto mb-[-34px] flex max-w-[628px] flex-col gap-4 rounded-[10px] bg-astra-gold p-3 text-[#2e3138] shadow-[0_15px_35px_rgba(64,50,41,0.2)] md:flex-row md:items-center md:justify-between">
         <div>
           <p className="text-sm font-semibold leading-[1.5] tracking-[-0.08px]">Couldn&apos;t find the answer you&apos;re looking for?</p>
           <p className="text-xs leading-[1.5]">Description can be added here. <a href="#planner" className="font-medium">Link button</a></p>
@@ -358,7 +368,7 @@ function FinalCtaSection({ dictionary }: { dictionary: HomeDictionary }) {
       <div className="container max-w-[1230px]">
         <div className="relative overflow-hidden rounded-2xl border border-white/30">
           <Image src={dictionary.finalCta.background.src} alt={dictionary.finalCta.background.alt} fill sizes="100vw" className="object-cover" />
-          <div className="absolute inset-0 bg-[linear-gradient(86deg,#4a351c_3%,rgba(74,53,28,0.21)_99%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(86deg,#403229_3%,rgba(64,50,41,0.21)_99%)]" />
           <div className="relative grid min-h-[560px] gap-10 px-6 py-16 md:px-16 lg:grid-cols-[611px_365px] lg:items-center lg:gap-[72px] lg:px-[97px]">
             <div>
               <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">{dictionary.finalCta.eyebrow}</p>

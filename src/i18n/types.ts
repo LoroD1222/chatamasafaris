@@ -30,12 +30,13 @@ export type ExperienceCategory = {
   meta: string[];
   description: string;
   cta: string;
+  href: string;
   image: AssetImage;
 };
 
 export type TrustItem = {
   label: string;
-  icon: string;
+  icon: "camp" | "guide" | "priced" | "support";
 };
 
 export type WhyItem = {
@@ -45,6 +46,7 @@ export type WhyItem = {
 };
 
 export type Itinerary = {
+  slug: string;
   title: string;
   duration: string;
   route: string;
@@ -137,7 +139,7 @@ export type HomeDictionary = {
     paragraphs: string[];
     cta: string;
     aside: string;
-    images: AssetImage[];
+    image: AssetImage;
   };
   reviews: {
     eyebrow: string;

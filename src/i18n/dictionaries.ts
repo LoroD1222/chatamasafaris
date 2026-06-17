@@ -1,6 +1,13 @@
-import type { HomeDictionary } from "@/i18n/types";
+import type { HomeDictionary, NavItem } from "@/i18n/types";
 
 const asset = (name: string) => `/assets/figma/${name}`;
+
+const primaryNav: NavItem[] = [
+  { label: "Itineraries", href: "/itineraries" },
+  { label: "Safaris", href: "/safaris" },
+  { label: "Kilimanjaro", href: "/kilimanjaro" },
+  { label: "Discover Tanzania", href: "/discover-tanzania" }
+];
 
 const plannerFields: HomeDictionary["planner"]["fields"] = [
   {
@@ -39,6 +46,15 @@ const itineraryImages = [
   "itinerary-6.jpg"
 ];
 
+const itinerarySlugs = [
+  "great-migration-classic",
+  "ngorongoro-serengeti-private-safari",
+  "tarangire-ngorongoro-family-safari",
+  "northern-circuit-luxury-safari",
+  "zanzibar-safari-extension",
+  "kilimanjaro-and-safari-adventure"
+];
+
 const en: HomeDictionary = {
   brand: {
     name: "Astra Tanzania Safaris",
@@ -50,12 +66,7 @@ const en: HomeDictionary = {
     phone: "+255 62 674 7949",
     email: "info@astratanzaniasafaris.com"
   },
-  nav: [
-    { label: "Itineraries", href: "#itineraries" },
-    { label: "Safaris", href: "#experiences" },
-    { label: "Kilimanjaro", href: "#experiences" },
-    { label: "Discover Tanzania", href: "#planning" }
-  ],
+  nav: primaryNav,
   header: {
     plannerCta: "Talk to Safari Planner",
     menuLabel: "Open menu",
@@ -97,6 +108,7 @@ const en: HomeDictionary = {
         description:
           "Private guided Tanzania safaris - planned for you, priced in USD, backed by 15 years of getting Americans to Africa.",
         cta: "Explore Zanzibar",
+        href: "/safaris",
         image: {
           src: asset("category-zanzibar.jpg"),
           alt: "Turquoise water and tropical coastline in Zanzibar"
@@ -110,6 +122,7 @@ const en: HomeDictionary = {
         description:
           "Turquoise waters, spice markets, and powder-white beaches. The perfect extension after your safari.",
         cta: "Explore African Wildlife",
+        href: "/safaris",
         image: {
           src: asset("category-wildlife.jpg"),
           alt: "Wildlife safari vehicle on a Tanzania plains road"
@@ -123,6 +136,7 @@ const en: HomeDictionary = {
         description:
           "World-class lodges, private game drives, and fine dining in the wild - for travelers who want the best of everything.",
         cta: "Explore Arusha",
+        href: "/kilimanjaro",
         image: {
           src: asset("category-kilimanjaro.jpg"),
           alt: "Tented camp below Mount Kilimanjaro"
@@ -132,10 +146,10 @@ const en: HomeDictionary = {
   },
   trust: {
     items: [
-      { label: "Vetted camps only", icon: asset("trust-camp.svg") },
-      { label: "Private expert guides", icon: asset("trust-guide.svg") },
-      { label: "Priced in USD", icon: asset("trust-priced.svg") },
-      { label: "24/7 live support", icon: asset("trust-support.svg") }
+      { label: "Vetted camps only", icon: "camp" },
+      { label: "Private expert guides", icon: "guide" },
+      { label: "Priced in USD", icon: "priced" },
+      { label: "24/7 live support", icon: "support" }
     ],
     note: "Not sure what is right for you? Talk to a safari planner - it's free."
   },
@@ -195,6 +209,7 @@ const en: HomeDictionary = {
       "Private guided Tanzania safaris - planned for you, priced in USD, backed by 15 years of getting Americans to Africa.",
     cta: "View More Experiences",
     items: itineraryImages.map((image, index) => ({
+      slug: itinerarySlugs[index],
       title: "The Great Migration Classic",
       duration: "7 nights",
       route: "Serengeti + Ngorongoro",
@@ -220,13 +235,10 @@ const en: HomeDictionary = {
     ],
     cta: "Talk to Safari Planner",
     aside: "Your journey begins here!",
-    images: [
-      { src: asset("planning-top.jpg"), alt: "Astra travelers gathered in safari gear" },
-      { src: asset("planning-upper.jpg"), alt: "Travelers with Astra safari vehicles" },
-      { src: asset("planning-center.jpg"), alt: "Astra safari group posing beside a vehicle" },
-      { src: asset("planning-lower.jpg"), alt: "Astra travelers celebrating on safari" },
-      { src: asset("planning-bottom.jpg"), alt: "Astra travelers holding safari signs" }
-    ]
+    image: {
+      src: asset("planning-landscape.png"),
+      alt: "Zebras resting beside a safari road in the Ngorongoro landscape"
+    }
   },
   reviews: {
     eyebrow: "Experiences we offer",
@@ -312,12 +324,7 @@ const en: HomeDictionary = {
     }
   },
   footer: {
-    links: [
-      { label: "Link menu", href: "#experiences" },
-      { label: "Link menu", href: "#why" },
-      { label: "Link menu", href: "#itineraries" },
-      { label: "Link menu", href: "#faq" }
-    ],
+    links: primaryNav,
     legalLinks: [
       { label: "Terms of Service", href: "#" },
       { label: "Cookies Settings", href: "#" },

@@ -1,16 +1,19 @@
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
+import type { Locale } from "@/i18n/config";
 import type { HomeDictionary } from "@/i18n/types";
+import { localizedHref } from "@/utils/routes";
 
 const socialIcons = [Instagram, Twitter, Linkedin, Facebook];
 
-export function SiteFooter({ dictionary }: { dictionary: HomeDictionary }) {
+export function SiteFooter({ locale, dictionary }: { locale: Locale; dictionary: HomeDictionary }) {
   return (
     <footer className="bg-astra-cocoa text-white">
       <div className="container flex max-w-[1280px] flex-col items-center gap-[29px] py-16 md:py-[72px]">
         <div className="relative h-[104px] w-[246px]">
-          <Image src="/assets/figma/logo-footer.png" alt={dictionary.brand.logoAlt} fill sizes="246px" className="object-contain" />
+          <Image src="/assets/figma/footer-logo-design.png" alt={dictionary.brand.logoAlt} fill sizes="246px" className="object-contain" />
         </div>
         <div className="flex items-center justify-center gap-2" aria-label="Social links">
           {socialIcons.map((Icon, index) => (
@@ -26,9 +29,9 @@ export function SiteFooter({ dictionary }: { dictionary: HomeDictionary }) {
         </div>
         <nav className="flex flex-wrap justify-center gap-8 text-base font-medium leading-[1.5] tracking-[-0.18px] text-white/70 md:gap-16" aria-label="Footer">
           {dictionary.footer.links.map((item, index) => (
-            <a key={`${item.label}-${index}`} href={item.href} className="transition hover:text-white">
+            <Link key={`${item.label}-${index}`} href={localizedHref(locale, item.href)} className="transition hover:text-white">
               {item.label}
-            </a>
+            </Link>
           ))}
         </nav>
         <div className="h-px w-full bg-white/15" />

@@ -8,12 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import type { Locale } from "@/i18n/config";
 import type { HomeDictionary } from "@/i18n/types";
+import { localizedHref, localizedHomeAnchor } from "@/utils/routes";
 
 export function SiteHeader({ locale, dictionary }: { locale: Locale; dictionary: HomeDictionary }) {
   return (
     <header className="bg-astra-cream text-astra-brown">
       <div className="bg-astra-gold">
-        <div className="container flex h-[37px] max-w-[1225px] items-center justify-between gap-4 text-[13px] font-bold leading-[1.6]">
+        <div className="container flex h-[37px] max-w-[1160px] items-center justify-between gap-4 text-[13px] font-bold leading-[1.6]">
           <p className="hidden items-center gap-2 uppercase tracking-[0.05em] text-astra-cocoa/40 sm:flex">
             <Star className="size-[18px] fill-current" aria-hidden="true" />
             {dictionary.topBar.label}
@@ -40,14 +41,14 @@ export function SiteHeader({ locale, dictionary }: { locale: Locale; dictionary:
 
           <nav className="hidden items-center gap-7 text-[15px] font-medium leading-[1.6] text-astra-brown md:flex" aria-label="Primary">
             {dictionary.nav.map((item) => (
-              <a key={`${item.label}-${item.href}`} href={item.href} className="transition hover:text-astra-gold">
+              <Link key={`${item.label}-${item.href}`} href={localizedHref(locale, item.href)} className="transition hover:text-astra-gold">
                 {item.label}
-              </a>
+              </Link>
             ))}
           </nav>
 
           <Button asChild className="hidden h-[54px] rounded-[9px] bg-astra-gold px-[21px] text-base font-bold text-astra-cocoa hover:bg-astra-gold/90 md:inline-flex">
-            <a href="#planner">{dictionary.header.plannerCta}</a>
+            <Link href={localizedHomeAnchor(locale, "planner")}>{dictionary.header.plannerCta}</Link>
           </Button>
 
           <Sheet>
@@ -62,16 +63,16 @@ export function SiteHeader({ locale, dictionary }: { locale: Locale; dictionary:
               <nav className="mt-8 grid gap-4 text-base font-medium text-astra-brown" aria-label="Mobile primary">
                 {dictionary.nav.map((item) => (
                   <SheetClose asChild key={`${item.label}-${item.href}`}>
-                    <a href={item.href} className="rounded-md py-2 transition hover:text-astra-gold">
+                    <Link href={localizedHref(locale, item.href)} className="rounded-md py-2 transition hover:text-astra-gold">
                       {item.label}
-                    </a>
+                    </Link>
                   </SheetClose>
                 ))}
               </nav>
               <div className="mt-8">
                 <SheetClose asChild>
                   <Button asChild className="w-full bg-astra-gold text-astra-cocoa hover:bg-astra-gold/90">
-                    <a href="#planner">{dictionary.header.plannerCta}</a>
+                    <Link href={localizedHomeAnchor(locale, "planner")}>{dictionary.header.plannerCta}</Link>
                   </Button>
                 </SheetClose>
               </div>
