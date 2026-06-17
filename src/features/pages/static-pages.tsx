@@ -3,12 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { PageShell } from "@/components/layouts/page-shell";
+import { PlannerDialogButton } from "@/components/planner/planner-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { Locale } from "@/i18n/config";
 import type { HomeDictionary, Itinerary } from "@/i18n/types";
-import { localizedHomeAnchor, localizedHref } from "@/utils/routes";
+import { localizedHref, localizedSharedTripHref } from "@/utils/routes";
 
 export const servicePageSlugs = ["itineraries", "safaris", "kilimanjaro", "discover-tanzania"] as const;
 
@@ -29,7 +30,7 @@ const servicePages: Record<ServicePageSlug, ServicePageContent> = {
     title: "Safari trips built around your dates, budget, and pace.",
     description:
       "Start with one of Astra's proven routes, then adjust the parks, lodge level, and beach extensions with a planner who knows the ground.",
-    image: "/assets/figma/experience-strip.png",
+    image: "/assets/figma/choose-tanzania-experience.png",
     imageAlt: "Tanzania safari landscapes and Kilimanjaro",
     highlights: ["Serengeti and Ngorongoro routes", "Private vehicles and guides", "USD pricing before deposit"]
   },
@@ -38,8 +39,8 @@ const servicePages: Record<ServicePageSlug, ServicePageContent> = {
     title: "Classic Tanzania wildlife without vague package promises.",
     description:
       "Game drives, vetted camps, and route timing are planned around the wildlife movement for your travel month.",
-    image: "/assets/figma/category-wildlife.jpg",
-    imageAlt: "Wildlife safari vehicle on a Tanzania plains road",
+    image: "/assets/figma/tanzanian-widernes.png",
+    imageAlt: "Tanzania wilderness with zebras on a safari road",
     highlights: ["Migration-timed planning", "Vetted lodges and mobile camps", "Private expert guides"]
   },
   kilimanjaro: {
@@ -56,8 +57,8 @@ const servicePages: Record<ServicePageSlug, ServicePageContent> = {
     title: "Know where to go, when to travel, and what to skip.",
     description:
       "Tanzania is not one trip. We help you combine the right parks, coast, culture, and timing for the experience you actually want.",
-    image: "/assets/figma/planning-landscape.png",
-    imageAlt: "Zebras resting beside a safari road in Tanzania",
+    image: "/assets/figma/start-planningimage.png",
+    imageAlt: "Tanzania safari landscape and trip planning inspiration",
     highlights: ["Month-by-month travel advice", "Park and coast combinations", "Local planning from Arusha"]
   }
 };
@@ -87,9 +88,12 @@ export function ServicePage({
               <h1 className="mt-5 max-w-[700px] text-[42px] font-medium leading-[1.12] md:text-[56px]">{page.title}</h1>
               <p className="mt-5 max-w-[610px] text-base leading-[1.7] text-white/75">{page.description}</p>
               <div className="mt-7 flex flex-col gap-4 sm:flex-row">
-                <Button asChild className="h-[54px] rounded-[9px] bg-astra-gold px-6 text-base font-bold text-astra-cocoa hover:bg-astra-gold/90">
-                  <Link href={localizedHomeAnchor(locale, "planner")}>{dictionary.header.plannerCta}</Link>
-                </Button>
+                <PlannerDialogButton
+                  planner={dictionary.planner}
+                  className="h-[54px] rounded-[9px] bg-astra-gold px-6 text-base font-bold text-astra-cocoa hover:bg-astra-gold/90"
+                >
+                  {dictionary.header.plannerCta}
+                </PlannerDialogButton>
                 <Button
                   asChild
                   className="h-[54px] rounded-[9px] border border-white/25 bg-white/10 px-6 text-base font-bold text-white hover:bg-white/15"
@@ -128,24 +132,31 @@ function TripGrid({ locale, itineraries }: { locale: Locale; itineraries: Itiner
       <h2 className="text-[32px] font-semibold leading-[1.2] text-astra-cocoa">Featured trips</h2>
       <div className="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {itineraries.map((item) => (
-          <article key={item.slug} className="overflow-hidden rounded-[10px] border border-astra-cocoa/10 bg-white shadow-[0_14px_35px_rgba(64,50,41,0.08)]">
+          <Link
+            key={item.slug}
+            href={localizedSharedTripHref(locale)}
+            className="group overflow-hidden rounded-[10px] border border-astra-cocoa/10 bg-white shadow-[0_14px_35px_rgba(64,50,41,0.08)] outline-none transition hover:-translate-y-0.5 hover:shadow-[0_18px_45px_rgba(64,50,41,0.12)] focus-visible:ring-2 focus-visible:ring-astra-gold focus-visible:ring-offset-2"
+          >
             <div className="relative h-[210px]">
-              <Image src={item.image.src} alt={item.image.alt} fill sizes="(min-width: 1024px) 33vw, 100vw" className="object-cover" />
+              <Image
+                src={item.image.src}
+                alt={item.image.alt}
+                fill
+                sizes="(min-width: 1024px) 33vw, 100vw"
+                className="object-cover transition duration-500 group-hover:scale-105"
+              />
             </div>
-            <div className="flex min-h-[196px] flex-col p-5">
+            <div className="flex min-h-[196px] flex-col px-5 pb-[25px] pt-5">
               <p className="text-xs font-bold uppercase tracking-[0.05em] text-astra-gold">{item.price}</p>
               <h3 className="mt-3 text-xl font-bold leading-[1.3] text-astra-cocoa">{item.title}</h3>
               <p className="mt-2 text-sm leading-[1.6] text-astra-brown/75">
                 {item.duration} - {item.route} - {item.season}
               </p>
-              <Link
-                href={localizedHref(locale, `/trips/${item.slug}`)}
-                className="mt-auto inline-flex h-10 items-center justify-center rounded-[7px] bg-astra-gold px-4 text-sm font-bold text-astra-cocoa transition hover:bg-astra-gold/90"
-              >
+              <span className="mt-auto inline-flex h-10 items-center justify-center rounded-[7px] bg-astra-gold px-4 text-sm font-bold text-astra-cocoa transition group-hover:bg-astra-gold/90">
                 See itinerary
-              </Link>
+              </span>
             </div>
-          </article>
+          </Link>
         ))}
       </div>
     </div>
@@ -262,44 +273,108 @@ function ContactMethod({
 
 export function TripPage({
   locale,
-  dictionary,
-  itinerary
+  dictionary
 }: {
   locale: Locale;
   dictionary: HomeDictionary;
-  itinerary: Itinerary;
 }) {
+  const itinerary = dictionary.itineraries.items[0];
+  const facts = [
+    { label: "Duration", value: itinerary.duration },
+    { label: "Route", value: itinerary.route },
+    { label: "Best season", value: itinerary.season },
+    { label: "Guide style", value: "Private guide and vehicle" }
+  ];
+  const plan = [
+    "Arrive in Arusha, meet your planner and guide, and confirm the final safari rhythm.",
+    "Drive into Tarangire or Lake Manyara for your first private game drives and lodge stay.",
+    "Continue toward the Serengeti, with the route adjusted around wildlife movement and season.",
+    "Explore Serengeti plains with flexible game drives, picnic lunches, and sunset camp returns.",
+    "Descend into Ngorongoro Crater before closing the safari with a clean transfer plan."
+  ];
+  const included = ["Private 4x4 safari vehicle", "Expert Tanzania guide", "Vetted camps and lodges", "Park fees planned upfront", "USD quote before deposit", "Live planner support"];
+
   return (
     <PageShell locale={locale} dictionary={dictionary}>
       <main className="bg-astra-cream text-astra-brown">
         <section className="bg-astra-cocoa py-12 text-white md:py-16">
-          <div className="container grid max-w-[1160px] items-center gap-10 lg:grid-cols-[1fr_480px]">
+          <div className="container grid max-w-[1160px] items-center gap-10 lg:grid-cols-[1fr_500px]">
             <div>
               <Link href={localizedHref(locale, "/itineraries")} className="text-sm font-bold text-astra-gold transition hover:text-astra-gold/80">
                 Back to itineraries
               </Link>
-              <h1 className="mt-5 max-w-[680px] text-[42px] font-medium leading-[1.12] md:text-[56px]">{itinerary.title}</h1>
-              <p className="mt-5 text-lg leading-[1.6] text-white/75">
+              <h1 className="mt-5 max-w-[680px] text-[42px] font-semibold leading-[1.12] md:text-[56px]">{itinerary.title}</h1>
+              <p className="mt-5 max-w-[620px] text-lg leading-[1.6] text-white/75">
+                A private northern Tanzania safari page ready for CMS content. The route, lodges, and final cost can be adjusted once the traveler brief is known.
+              </p>
+              <p className="mt-5 text-lg font-semibold leading-[1.6] text-white/75">
                 {itinerary.duration} - {itinerary.route} - {itinerary.season}
               </p>
               <p className="mt-4 text-xl font-bold text-astra-gold">{itinerary.price}</p>
-              <Button asChild className="mt-7 h-[54px] rounded-[9px] bg-astra-gold px-6 text-base font-bold text-astra-cocoa hover:bg-astra-gold/90">
-                <Link href={localizedHomeAnchor(locale, "planner")}>Plan this trip</Link>
-              </Button>
+              <PlannerDialogButton
+                planner={dictionary.planner}
+                className="mt-7 h-[54px] rounded-[9px] bg-astra-gold px-6 text-base font-bold text-astra-cocoa hover:bg-astra-gold/90"
+              >
+                Plan this trip
+              </PlannerDialogButton>
             </div>
             <div className="relative aspect-[4/3] overflow-hidden rounded-[10px] border border-white/20">
-              <Image src={itinerary.image.src} alt={itinerary.image.alt} fill sizes="(min-width: 1024px) 480px, 100vw" className="object-cover" priority />
+              <Image
+                src="/assets/figma/tanzanian-widernes.png"
+                alt="Tanzania wilderness safari road with zebras"
+                fill
+                sizes="(min-width: 1024px) 500px, 100vw"
+                className="object-cover"
+                priority
+              />
             </div>
           </div>
         </section>
 
         <section className="py-16 md:py-20">
-          <div className="container grid max-w-[1160px] gap-8 md:grid-cols-3">
-            {["Private guide and vehicle", "Vetted camps only", "Planner support before and during travel"].map((item) => (
-              <article key={item} className="rounded-[10px] border border-astra-cocoa/10 bg-white p-6 shadow-[0_14px_35px_rgba(64,50,41,0.06)]">
-                <p className="text-lg font-bold leading-[1.35] text-astra-cocoa">{item}</p>
-              </article>
-            ))}
+          <div className="container max-w-[1160px]">
+            <div className="grid gap-5 md:grid-cols-4">
+              {facts.map((fact) => (
+                <article key={fact.label} className="rounded-[10px] border border-astra-cocoa/10 bg-white p-6 shadow-[0_14px_35px_rgba(64,50,41,0.06)]">
+                  <p className="text-xs font-bold uppercase tracking-[0.05em] text-astra-gold">{fact.label}</p>
+                  <p className="mt-3 text-lg font-bold leading-[1.35] text-astra-cocoa">{fact.value}</p>
+                </article>
+              ))}
+            </div>
+
+            <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_390px]">
+              <section className="rounded-[10px] border border-astra-cocoa/10 bg-white p-6 shadow-[0_14px_35px_rgba(64,50,41,0.06)] md:p-8">
+                <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">Sample flow</p>
+                <h2 className="mt-3 text-[32px] font-semibold leading-[1.2] text-astra-cocoa">A clear safari plan before CMS content is attached.</h2>
+                <div className="mt-8 flex flex-col gap-5">
+                  {plan.map((item, index) => (
+                    <article key={item} className="grid gap-4 sm:grid-cols-[46px_1fr]">
+                      <div className="grid size-[46px] place-items-center rounded-full bg-astra-gold text-sm font-bold text-astra-cocoa">{index + 1}</div>
+                      <p className="text-base leading-[1.7] text-astra-brown/75">{item}</p>
+                    </article>
+                  ))}
+                </div>
+              </section>
+
+              <aside className="rounded-[10px] border border-astra-cocoa/10 bg-white p-6 shadow-[0_14px_35px_rgba(64,50,41,0.06)]">
+                <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">Included planning</p>
+                <h2 className="mt-3 text-2xl font-semibold leading-[1.25] text-astra-cocoa">What Astra confirms before deposit</h2>
+                <ul className="mt-6 flex flex-col gap-4">
+                  {included.map((item) => (
+                    <li key={item} className="flex items-start gap-3 text-base leading-[1.5] text-astra-brown/75">
+                      <span className="mt-1 size-2 rounded-full bg-astra-gold" aria-hidden="true" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <PlannerDialogButton
+                  planner={dictionary.planner}
+                  className="mt-8 h-[54px] w-full rounded-[9px] bg-astra-gold px-6 text-base font-bold text-astra-cocoa hover:bg-astra-gold/90"
+                >
+                  Talk to Safari Planner
+                </PlannerDialogButton>
+              </aside>
+            </div>
           </div>
         </section>
       </main>

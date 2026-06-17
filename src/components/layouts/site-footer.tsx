@@ -13,7 +13,7 @@ export function SiteFooter({ locale, dictionary }: { locale: Locale; dictionary:
     <footer className="bg-astra-cocoa text-white">
       <div className="container flex max-w-[1280px] flex-col items-center gap-[29px] py-16 md:py-[72px]">
         <div className="relative h-[104px] w-[246px]">
-          <Image src="/assets/figma/footer-logo-design.png" alt={dictionary.brand.logoAlt} fill sizes="246px" className="object-contain" />
+          <Image src="/assets/figma/footer-logo-upload.png" alt={dictionary.brand.logoAlt} fill sizes="246px" className="object-contain" />
         </div>
         <div className="flex items-center justify-center gap-2" aria-label="Social links">
           {socialIcons.map((Icon, index) => (

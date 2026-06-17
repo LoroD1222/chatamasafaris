@@ -17,24 +17,27 @@ export function FaqList({ items }: { items: Faq[] }) {
         return (
           <article
             key={`${item.question}-${index}`}
-            className="rounded-[10px] border border-[#c9d2d9] bg-white p-6 transition-colors data-[open=true]:border-[#c9d2d9]"
+            className="rounded-[10px] border border-[#c9d2d9] bg-white transition-colors data-[open=true]:border-[#c9d2d9]"
             data-open={isOpen}
           >
-            <div className="flex items-center gap-2">
+            <button
+              type="button"
+              className="group flex w-full items-center gap-2 p-6 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-astra-gold"
+              aria-label={isOpen ? "Collapse answer" : "Expand answer"}
+              aria-expanded={isOpen}
+              aria-controls={panelId}
+              onClick={() => setOpenIndex(isOpen ? -1 : index)}
+            >
               <h3 className="min-w-0 flex-1 text-base font-medium leading-normal text-[#2e3138]">{item.question}</h3>
-              <button
-                type="button"
-                className="grid size-8 shrink-0 place-items-center rounded bg-astra-gold/25 text-astra-cocoa transition hover:bg-astra-gold/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-astra-gold"
-                aria-expanded={isOpen}
-                aria-controls={panelId}
-                onClick={() => setOpenIndex(isOpen ? -1 : index)}
+              <span
+                className="grid size-8 shrink-0 place-items-center rounded bg-astra-gold/25 text-astra-cocoa transition group-hover:bg-astra-gold/35"
+                aria-hidden="true"
               >
-                <span className="sr-only">{isOpen ? "Collapse answer" : "Expand answer"}</span>
                 {isOpen ? <ChevronUp className="size-4" aria-hidden="true" /> : <ChevronDown className="size-4" aria-hidden="true" />}
-              </button>
-            </div>
+              </span>
+            </button>
             {isOpen ? (
-              <p id={panelId} className="mt-2 text-base leading-normal tracking-[-0.18px] text-[#5e6573]">
+              <p id={panelId} className="px-6 pb-6 text-base leading-normal tracking-[-0.18px] text-[#5e6573]">
                 {item.answer}
               </p>
             ) : null}

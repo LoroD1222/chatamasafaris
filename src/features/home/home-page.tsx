@@ -3,13 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { PlannerDialogButton } from "@/components/planner/planner-dialog";
 import { Button } from "@/components/ui/button";
 import { FaqList } from "@/features/home/faq-list";
 import { LeadPlanner } from "@/features/home/lead-planner";
 import type { Locale } from "@/i18n/config";
 import type { HomeDictionary, Itinerary } from "@/i18n/types";
 import { cn } from "@/utils/cn";
-import { localizedHref } from "@/utils/routes";
+import { localizedHref, localizedSharedTripHref } from "@/utils/routes";
 
 const trustIcons = {
   camp: BadgeCheck,
@@ -52,9 +53,12 @@ function HeroSection({ dictionary }: { dictionary: HomeDictionary }) {
           </h1>
           <p className="mt-5 max-w-[525px] text-base leading-[1.6]">{dictionary.hero.description}</p>
           <div className="mt-5 flex flex-col gap-[22px] sm:flex-row">
-            <Button asChild className="h-[54px] rounded-[9px] bg-astra-gold px-[21px] text-base font-bold text-astra-cocoa hover:bg-astra-gold/90">
-              <a href="#planner">{dictionary.hero.primaryCta}</a>
-            </Button>
+            <PlannerDialogButton
+              planner={dictionary.planner}
+              className="h-[54px] rounded-[9px] bg-astra-gold px-[21px] text-base font-bold text-astra-cocoa hover:bg-astra-gold/90"
+            >
+              {dictionary.hero.primaryCta}
+            </PlannerDialogButton>
             <Button
               asChild
               className="h-[54px] rounded-[9px] bg-astra-gold/45 px-[18px] text-base font-bold text-white hover:bg-astra-gold/55"
@@ -100,7 +104,7 @@ function ExperienceCategories({ locale, dictionary }: { locale: Locale; dictiona
                   <span>{item.eyebrow}</span>
                 </div>
               </div>
-              <div className="flex min-h-[226px] flex-col px-4 pb-6 pt-5">
+              <div className="flex min-h-[226px] flex-col px-4 pb-[25px] pt-5">
                 <h3 className="text-[19px] font-bold leading-[1.29] text-astra-cocoa">{item.title}</h3>
                 {item.meta.length > 0 ? (
                   <div className="mt-2 flex flex-wrap gap-4 text-xs font-bold leading-[1.6] text-astra-brown/85">
@@ -145,7 +149,7 @@ function TrustRow({ dictionary }: { dictionary: HomeDictionary }) {
           </div>
         ))}
       </div>
-      <p className="text-center text-xs leading-[1.6] text-astra-brown/55">
+      <p className="text-center text-sm font-semibold leading-[1.6] text-astra-brown/70 md:text-base">
         Not sure what is right for you? <a href="#planner" className="font-bold text-astra-gold">{dictionary.trust.note.split("? ")[1]}</a>
       </p>
     </div>
@@ -155,7 +159,7 @@ function TrustRow({ dictionary }: { dictionary: HomeDictionary }) {
 function TrustIcon({ icon }: { icon: keyof typeof trustIcons }) {
   const Icon = trustIcons[icon];
 
-  return <Icon className="size-[38px] text-astra-gold" aria-hidden="true" />;
+  return <Icon className="size-[38px] shrink-0 text-astra-gold" strokeWidth={1.8} aria-hidden="true" />;
 }
 
 function WhySection({ dictionary }: { dictionary: HomeDictionary }) {
@@ -176,9 +180,12 @@ function WhySection({ dictionary }: { dictionary: HomeDictionary }) {
               {dictionary.why.email}
             </ContactLink>
           </div>
-          <Button asChild className="mt-7 h-[54px] rounded-[9px] bg-astra-gold px-[21px] text-base font-bold text-astra-cocoa hover:bg-astra-gold/90">
-            <a href="#planner">{dictionary.why.cta}</a>
-          </Button>
+          <PlannerDialogButton
+            planner={dictionary.planner}
+            className="mt-7 h-[54px] rounded-[9px] bg-astra-gold px-[21px] text-base font-bold text-astra-cocoa hover:bg-astra-gold/90"
+          >
+            {dictionary.why.cta}
+          </PlannerDialogButton>
         </div>
         <div className="grid gap-x-[33px] gap-y-[38px] md:grid-cols-2 lg:gap-y-[51px]">
           {dictionary.why.items.map((item) => (
@@ -229,35 +236,36 @@ function ItinerariesSection({ locale, dictionary }: { locale: Locale; dictionary
 
 function ItineraryCard({ locale, item }: { locale: Locale; item: Itinerary }) {
   return (
-    <article className="group relative h-[401px] overflow-hidden rounded-lg bg-astra-cocoa shadow-[0_18px_55px_rgba(64,50,41,0.15)]">
+    <Link
+      href={localizedSharedTripHref(locale)}
+      className="group relative block h-[401px] overflow-hidden rounded-lg bg-astra-cocoa shadow-[0_18px_55px_rgba(64,50,41,0.15)] outline-none transition focus-visible:ring-2 focus-visible:ring-astra-gold focus-visible:ring-offset-2"
+      aria-label={`See itinerary for ${item.title}`}
+    >
       <Image src={item.image.src} alt={item.image.alt} fill sizes="(min-width: 1024px) 356px, (min-width: 768px) 50vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
       <div className="absolute right-4 top-4 rounded-[5px] border border-white/45 bg-astra-gold/60 px-3 py-1 text-[11px] font-bold leading-[1.51] text-astra-cocoa backdrop-blur-md">
         {item.price}
       </div>
-      <div className="absolute inset-x-0 bottom-0 h-[115px] rounded-b-lg bg-[#654d38]/40 p-5 text-white backdrop-blur-sm">
+      <div className="absolute inset-x-0 bottom-0 min-h-[128px] rounded-b-lg bg-[#654d38]/40 px-5 pb-[25px] pt-5 text-white backdrop-blur-sm">
         <div className="absolute inset-x-0 top-0 h-[3px] bg-white/15" />
         <h3 className="text-sm font-bold leading-[1.6]">
-          {item.title} - <span className="font-normal">{item.duration}</span>
+          {item.title} - <span className="font-semibold">{item.duration}</span>
         </h3>
         <p className="mt-1 text-sm leading-[1.51]">
           {item.route} - {item.season}
         </p>
-        <Link
-          href={localizedHref(locale, `/trips/${item.slug}`)}
-          className="mt-3 inline-flex h-[27px] items-center rounded-full bg-astra-gold px-3 text-sm font-medium leading-[1.6] text-astra-cocoa transition hover:bg-astra-gold/90"
-        >
+        <span className="mt-3 inline-flex h-[27px] items-center rounded-full bg-astra-gold px-3 text-sm font-semibold leading-[1.6] text-astra-cocoa transition group-hover:bg-astra-gold/90">
           See Itinerary -&gt;
-        </Link>
+        </span>
       </div>
-    </article>
+    </Link>
   );
 }
 
 function ImageStrip() {
   return (
-    <section aria-label="Tanzania landscape gallery" className="bg-astra-cream">
+    <section aria-label="Tanzania landscape gallery" className="relative -mt-[100px] bg-astra-cream">
       <div className="relative h-[230px] w-full overflow-hidden md:h-[322px] lg:h-[404px]">
-        <Image src="/assets/figma/experience-strip.png" alt="" fill sizes="100vw" className="object-cover" />
+        <Image src="/assets/figma/choose-tanzania-experience.png" alt="" fill sizes="100vw" className="object-cover" />
       </div>
     </section>
   );
@@ -283,9 +291,12 @@ function PlanningSection({ dictionary }: { dictionary: HomeDictionary }) {
             ))}
           </div>
           <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center">
-            <Button asChild className="h-[54px] rounded-[9px] bg-astra-gold px-[21px] text-base font-bold text-astra-cocoa hover:bg-astra-gold/90">
-              <a href="#planner">{dictionary.planning.cta}</a>
-            </Button>
+            <PlannerDialogButton
+              planner={dictionary.planner}
+              className="h-[54px] rounded-[9px] bg-astra-gold px-[21px] text-base font-bold text-astra-cocoa hover:bg-astra-gold/90"
+            >
+              {dictionary.planning.cta}
+            </PlannerDialogButton>
             <p className="text-lg font-bold leading-[1.6]">{dictionary.planning.aside}</p>
           </div>
         </div>
@@ -296,8 +307,8 @@ function PlanningSection({ dictionary }: { dictionary: HomeDictionary }) {
 
 function PlanningImage({ image }: { image: HomeDictionary["planning"]["image"] }) {
   return (
-    <div className="relative mx-auto aspect-[1074/710] w-full max-w-[604px] overflow-hidden rounded-[21px] border border-white/35 shadow-[0_24px_80px_rgba(0,0,0,0.24)]">
-      <Image src={image.src} alt={image.alt} fill sizes="(min-width: 1024px) 604px, 100vw" className="object-cover" />
+    <div className="relative mx-auto aspect-[1520/1937] w-full max-w-[520px] overflow-hidden rounded-[21px] border border-white/35 shadow-[0_24px_80px_rgba(0,0,0,0.24)]">
+      <Image src={image.src} alt={image.alt} fill sizes="(min-width: 1024px) 520px, 100vw" className="object-cover" />
     </div>
   );
 }
@@ -355,7 +366,7 @@ function FaqSection({ dictionary }: { dictionary: HomeDictionary }) {
 
 function FinalCtaSection({ dictionary }: { dictionary: HomeDictionary }) {
   return (
-    <section className="relative bg-astra-cocoa px-4 pb-16 pt-8 text-white">
+    <section className="relative bg-[linear-gradient(to_bottom,#fdfaf3_0%,#fdfaf3_32%,#403229_32%,#403229_100%)] px-4 pb-16 pt-8 text-white">
       <div className="relative z-[100] mx-auto mb-[-34px] flex max-w-[628px] flex-col gap-4 rounded-[10px] bg-astra-gold p-3 text-[#2e3138] shadow-[0_15px_35px_rgba(64,50,41,0.2)] md:flex-row md:items-center md:justify-between">
         <div>
           <p className="text-sm font-semibold leading-[1.5] tracking-[-0.08px]">Couldn&apos;t find the answer you&apos;re looking for?</p>
@@ -369,7 +380,7 @@ function FinalCtaSection({ dictionary }: { dictionary: HomeDictionary }) {
         <div className="relative overflow-hidden rounded-2xl border border-white/30">
           <Image src={dictionary.finalCta.background.src} alt={dictionary.finalCta.background.alt} fill sizes="100vw" className="object-cover" />
           <div className="absolute inset-0 bg-[linear-gradient(86deg,#403229_3%,rgba(64,50,41,0.21)_99%)]" />
-          <div className="relative grid min-h-[560px] gap-10 px-6 py-16 md:px-16 lg:grid-cols-[611px_365px] lg:items-center lg:gap-[72px] lg:px-[97px]">
+          <div className="relative grid min-h-[560px] gap-10 px-6 py-16 md:px-16 lg:grid-cols-[minmax(0,640px)] lg:items-center lg:px-[97px]">
             <div>
               <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">{dictionary.finalCta.eyebrow}</p>
               <h2 className="mt-6 max-w-[572px] text-[40px] font-normal leading-[1.3] md:text-[49px]">
@@ -378,12 +389,14 @@ function FinalCtaSection({ dictionary }: { dictionary: HomeDictionary }) {
                 <span className="text-[34px] font-bold text-astra-gold">{dictionary.finalCta.titleHighlight}</span>
               </h2>
               <p className="mt-6 max-w-[504px] text-[15px] leading-[1.6] text-white/70">{dictionary.finalCta.description}</p>
-              <Button asChild className="mt-6 h-[54px] rounded-[9px] bg-astra-gold px-6 text-base font-bold text-astra-cocoa hover:bg-astra-gold/90">
-                <a href="#planner">{dictionary.header.plannerCta}</a>
-              </Button>
+              <PlannerDialogButton
+                planner={dictionary.planner}
+                className="mt-6 h-[54px] rounded-[9px] bg-astra-gold px-6 text-base font-bold text-astra-cocoa hover:bg-astra-gold/90"
+              >
+                {dictionary.header.plannerCta}
+              </PlannerDialogButton>
               <p className="mt-7 max-w-[611px] text-xs font-bold italic leading-[1.6]">{dictionary.finalCta.aside}</p>
             </div>
-            <LeadPlanner planner={dictionary.planner} sectionId="final-planner" className="w-full" />
           </div>
         </div>
       </div>

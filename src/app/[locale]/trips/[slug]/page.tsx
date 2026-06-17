@@ -3,11 +3,10 @@ import { notFound } from "next/navigation";
 import { TripPage } from "@/features/pages/static-pages";
 import { isLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
+import { sharedTripSlug } from "@/utils/routes";
 
 export function generateStaticParams() {
-  const dictionary = getDictionary("en");
-
-  return dictionary.itineraries.items.map((item) => ({ locale: "en", slug: item.slug }));
+  return [{ locale: "en", slug: sharedTripSlug }];
 }
 
 export default async function Page({ params }: { params: Promise<{ locale: string; slug: string }> }) {
@@ -19,11 +18,10 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
 
   const locale = localeParam as Locale;
   const dictionary = getDictionary(locale);
-  const itinerary = dictionary.itineraries.items.find((item) => item.slug === slug);
 
-  if (!itinerary) {
+  if (slug !== sharedTripSlug) {
     notFound();
   }
 
-  return <TripPage locale={locale} dictionary={dictionary} itinerary={itinerary} />;
+  return <TripPage locale={locale} dictionary={dictionary} />;
 }

@@ -1,9 +1,10 @@
 "use client";
 
-import { Mail, Menu, Phone, Star } from "lucide-react";
+import { Mail, Menu, Phone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { PlannerDialogButton } from "@/components/planner/planner-dialog";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import type { Locale } from "@/i18n/config";
@@ -16,7 +17,7 @@ export function SiteHeader({ locale, dictionary }: { locale: Locale; dictionary:
       <div className="bg-astra-gold">
         <div className="container flex h-[37px] max-w-[1160px] items-center justify-between gap-4 text-[13px] font-bold leading-[1.6]">
           <p className="hidden items-center gap-2 uppercase tracking-[0.05em] text-astra-cocoa/40 sm:flex">
-            <Star className="size-[18px] fill-current" aria-hidden="true" />
+            <Image src="/assets/figma/nav-bar-star.png" alt="" width={18} height={18} className="size-[18px] object-contain" aria-hidden="true" />
             {dictionary.topBar.label}
           </p>
           <div className="ms-auto flex min-w-0 items-center gap-5 text-astra-cocoa/65">
@@ -47,9 +48,12 @@ export function SiteHeader({ locale, dictionary }: { locale: Locale; dictionary:
             ))}
           </nav>
 
-          <Button asChild className="hidden h-[54px] rounded-[9px] bg-astra-gold px-[21px] text-base font-bold text-astra-cocoa hover:bg-astra-gold/90 md:inline-flex">
-            <Link href={localizedHomeAnchor(locale, "planner")}>{dictionary.header.plannerCta}</Link>
-          </Button>
+          <PlannerDialogButton
+            planner={dictionary.planner}
+            className="hidden h-[54px] rounded-[9px] bg-astra-gold px-[21px] text-base font-bold text-astra-cocoa hover:bg-astra-gold/90 md:inline-flex"
+          >
+            {dictionary.header.plannerCta}
+          </PlannerDialogButton>
 
           <Sheet>
             <SheetTrigger asChild>

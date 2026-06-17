@@ -124,8 +124,8 @@ const en: HomeDictionary = {
         cta: "Explore African Wildlife",
         href: "/safaris",
         image: {
-          src: asset("category-wildlife.jpg"),
-          alt: "Wildlife safari vehicle on a Tanzania plains road"
+          src: asset("tanzanian-widernes.png"),
+          alt: "Tanzania wilderness with zebras on a safari road"
         }
       },
       {
@@ -236,8 +236,8 @@ const en: HomeDictionary = {
     cta: "Talk to Safari Planner",
     aside: "Your journey begins here!",
     image: {
-      src: asset("planning-landscape.png"),
-      alt: "Zebras resting beside a safari road in the Ngorongoro landscape"
+      src: asset("start-planningimage.png"),
+      alt: "Tanzania safari landscape chosen for the planning section"
     }
   },
   reviews: {
@@ -319,8 +319,8 @@ const en: HomeDictionary = {
     aside: "July and August departures are filling up. If those months work for you, now is the time.",
     whatsappCta: "Ask us on Whatsapp",
     background: {
-      src: asset("final-cta-bg.jpg"),
-      alt: "Safari guide standing beside a vehicle in Tanzania"
+      src: asset("final-cta-backgroundimage.png"),
+      alt: "Safari travelers in a Tanzania final planning scene"
     }
   },
   footer: {
