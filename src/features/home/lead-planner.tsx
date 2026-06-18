@@ -134,9 +134,9 @@ function PlannerFieldControl({
           >
             <SelectValue placeholder={field.placeholder} />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-white text-astra-brown">
             {field.options.map((option) => (
-              <SelectItem key={option} value={option}>
+              <SelectItem key={option} value={option} className="focus:bg-astra-cream">
                 {option}
               </SelectItem>
             ))}

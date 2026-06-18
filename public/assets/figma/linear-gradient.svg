@@ -1,0 +1,10 @@
+<svg width="1440" height="240" viewBox="0 0 1440 240" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+  <rect width="1440" height="240" fill="url(#experience-fade)" />
+  <defs>
+    <linearGradient id="experience-fade" x1="720" y1="0" x2="720" y2="240" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FDFAF3" stop-opacity="0" />
+      <stop offset="0.55" stop-color="#FDFAF3" stop-opacity="0.82" />
+      <stop offset="1" stop-color="#FDFAF3" />
+    </linearGradient>
+  </defs>
+</svg>

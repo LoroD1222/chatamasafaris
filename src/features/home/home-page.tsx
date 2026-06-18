@@ -37,37 +37,43 @@ export function HomePage({ locale, dictionary }: { locale: Locale; dictionary: H
 
 function HeroSection({ dictionary }: { dictionary: HomeDictionary }) {
   return (
-    <section className="relative min-h-[543px] overflow-hidden bg-astra-cocoa text-white">
-      <Image src={dictionary.hero.image.src} alt={dictionary.hero.image.alt} fill priority sizes="100vw" className="object-cover" />
-      <div className="absolute inset-0 bg-[linear-gradient(69deg,#403229_27%,rgba(64,50,41,0)_69%)]" />
-      <div className="container relative grid min-h-[543px] max-w-[1112px] items-center gap-8 py-14 lg:grid-cols-[627px_365px] lg:gap-[75px]">
-        <div className="max-w-[640px]">
-          <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">
-            {dictionary.hero.eyebrow}
-          </p>
-          <h1 className="mt-5 text-[42px] font-normal leading-[1.14] md:text-[51px]">
-            {dictionary.hero.titleBeforeBreak}
-            {" "}
-            <br />
-            {dictionary.hero.titleAfterBreakLead} <span className="font-bold text-astra-gold">{dictionary.hero.titleHighlight}</span>
-          </h1>
-          <p className="mt-5 max-w-[525px] text-base leading-[1.6]">{dictionary.hero.description}</p>
-          <div className="mt-5 flex flex-col gap-[22px] sm:flex-row">
-            <PlannerDialogButton
-              planner={dictionary.planner}
-              className="h-[54px] rounded-[9px] bg-astra-gold px-[21px] text-base font-bold text-astra-cocoa hover:bg-astra-gold/90"
-            >
-              {dictionary.hero.primaryCta}
-            </PlannerDialogButton>
-            <Button
-              asChild
-              className="h-[54px] rounded-[9px] bg-astra-gold/45 px-[18px] text-base font-bold text-white hover:bg-astra-gold/55"
-            >
-              <a href="#itineraries">{dictionary.hero.secondaryCta}</a>
-            </Button>
+    <section className="relative overflow-hidden bg-astra-cocoa text-white md:min-h-[543px]">
+      <div className="absolute inset-0 hidden md:block">
+        <Image src={dictionary.hero.image.src} alt={dictionary.hero.image.alt} fill priority sizes="100vw" className="object-cover" />
+        <div className="absolute inset-0 bg-[linear-gradient(69deg,#403229_27%,rgba(64,50,41,0)_69%)]" />
+      </div>
+      <div className="container relative grid max-w-[1112px] gap-8 md:min-h-[543px] md:items-center md:py-14 lg:grid-cols-[627px_365px] lg:gap-[75px]">
+        <div className="relative -mx-4 overflow-hidden px-4 py-14 md:mx-0 md:max-w-[640px] md:overflow-visible md:px-0 md:py-0">
+          <Image src={dictionary.hero.image.src} alt={dictionary.hero.image.alt} fill priority sizes="100vw" className="object-cover md:hidden" />
+          <div className="absolute inset-0 bg-[linear-gradient(69deg,#403229_24%,rgba(64,50,41,0.3)_100%)] md:hidden" />
+          <div className="relative">
+            <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">
+              {dictionary.hero.eyebrow}
+            </p>
+            <h1 className="mt-5 text-[42px] font-normal leading-[1.14] md:text-[51px]">
+              {dictionary.hero.titleBeforeBreak}
+              {" "}
+              <br />
+              {dictionary.hero.titleAfterBreakLead} <span className="font-bold text-astra-gold">{dictionary.hero.titleHighlight}</span>
+            </h1>
+            <p className="mt-5 max-w-[525px] text-base leading-[1.6]">{dictionary.hero.description}</p>
+            <div className="mt-5 flex flex-col gap-[22px] sm:flex-row">
+              <PlannerDialogButton
+                planner={dictionary.planner}
+                className="h-[54px] rounded-[9px] bg-astra-gold px-[21px] text-base font-bold text-astra-cocoa hover:bg-astra-gold/90"
+              >
+                {dictionary.hero.primaryCta}
+              </PlannerDialogButton>
+              <Button
+                asChild
+                className="h-[54px] rounded-[9px] bg-astra-gold/45 px-[18px] text-base font-bold text-white hover:bg-astra-gold/55"
+              >
+                <a href="#itineraries">{dictionary.hero.secondaryCta}</a>
+              </Button>
+            </div>
           </div>
         </div>
-        <LeadPlanner planner={dictionary.planner} sectionId="planner" className="w-full" />
+        <LeadPlanner planner={dictionary.planner} sectionId="planner" className="mb-12 mt-2 w-full md:mb-0 md:mt-0" />
       </div>
     </section>
   );
@@ -76,35 +82,36 @@ function HeroSection({ dictionary }: { dictionary: HomeDictionary }) {
 function ExperienceCategories({ locale, dictionary }: { locale: Locale; dictionary: HomeDictionary }) {
   return (
     <section id="experiences" className="bg-astra-cream py-16 md:py-[64px]">
-      <div className="container max-w-[1113px]">
+      <div className="mx-auto w-full max-w-[1280px] px-4">
         <SectionHeading
           eyebrow={dictionary.experienceCategories.eyebrow}
           title={dictionary.experienceCategories.title}
           description={dictionary.experienceCategories.description}
         />
-        <div className="mt-10 grid gap-4 md:grid-cols-3 md:items-end lg:gap-[9px]">
+        <div className="mt-10 grid gap-5 md:grid-cols-3 md:items-stretch lg:gap-6">
           {dictionary.experienceCategories.items.map((item, index) => (
-            <article
+            <Link
               key={item.title}
+              href={localizedHref(locale, item.href)}
               className={cn(
-                "rounded-[10px] border border-[#795b35]/20 bg-white p-2 shadow-[0_14px_40px_rgba(64,50,41,0.06)]",
-                index === 1 ? "md:min-h-[472px]" : "md:min-h-[475px]"
+                "group flex h-full min-h-[520px] flex-col rounded-[10px] border border-[#795b35]/20 bg-white p-2 shadow-[0_14px_40px_rgba(64,50,41,0.06)] outline-none transition hover:-translate-y-0.5 hover:shadow-[0_18px_50px_rgba(64,50,41,0.1)] focus-visible:ring-2 focus-visible:ring-astra-gold focus-visible:ring-offset-2",
+                index === 1 && "md:min-h-[520px]"
               )}
             >
-              <div className={cn("relative h-[219px] overflow-hidden rounded-t-lg rounded-b", index === 1 && "h-[250px] md:h-[244px]")}>
+              <div className="relative h-[250px] overflow-hidden rounded-b rounded-t-lg md:h-[260px]">
                 <Image
                   src={item.image.src}
                   alt={item.image.alt}
                   fill
-                  sizes="(min-width: 768px) 33vw, 100vw"
-                  className={cn("object-cover", index === 1 && "object-[center_44%]")}
+                  sizes="(min-width: 1280px) 400px, (min-width: 768px) 33vw, 100vw"
+                  className={cn("object-cover transition duration-500 group-hover:scale-105", index === 1 && "object-[center_44%]")}
                 />
                 <div className="absolute left-3 top-3 inline-flex h-[42px] items-center gap-2 rounded-md border border-astra-cocoa/15 bg-white/75 px-2 text-[15px] font-bold text-astra-cocoa backdrop-blur-sm">
                   <span aria-hidden="true">{item.icon}</span>
                   <span>{item.eyebrow}</span>
                 </div>
               </div>
-              <div className="flex min-h-[226px] flex-col px-4 pb-[25px] pt-5">
+              <div className="flex flex-1 flex-col px-4 pb-[25px] pt-5">
                 <h3 className="text-[19px] font-bold leading-[1.29] text-astra-cocoa">{item.title}</h3>
                 {item.meta.length > 0 ? (
                   <div className="mt-2 flex flex-wrap gap-4 text-xs font-bold leading-[1.6] text-astra-brown/85">
@@ -117,17 +124,14 @@ function ExperienceCategories({ locale, dictionary }: { locale: Locale; dictiona
                   </div>
                 ) : null}
                 <p className="mt-4 flex-1 text-[15px] leading-[1.6] text-astra-brown/85">{item.description}</p>
-                <Link
-                  href={localizedHref(locale, item.href)}
-                  className="mt-5 inline-flex h-[42px] items-center justify-between rounded-[5px] border border-astra-gold/40 bg-astra-gold/15 px-[15px] text-sm font-semibold leading-[1.6] text-astra-cocoa transition hover:bg-astra-gold/25"
-                >
+                <span className="mt-5 inline-flex h-[42px] items-center justify-between rounded-[5px] border border-astra-gold/40 bg-astra-gold/15 px-[15px] text-sm font-semibold leading-[1.6] text-astra-cocoa transition group-hover:bg-astra-gold/25">
                   {item.cta}
                   <span className="grid h-6 w-[59px] place-items-center rounded bg-astra-gold" aria-hidden="true">
                     <ArrowRight className="size-4" />
                   </span>
-                </Link>
+                </span>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
         <TrustRow dictionary={dictionary} />
@@ -206,7 +210,7 @@ function WhySection({ dictionary }: { dictionary: HomeDictionary }) {
 
 function ItinerariesSection({ locale, dictionary }: { locale: Locale; dictionary: HomeDictionary }) {
   return (
-    <section id="itineraries" className="bg-astra-cream py-16 md:py-[72px]">
+    <section id="itineraries" className="relative bg-astra-cream py-16 md:py-[72px]">
       <div className="container max-w-[1195px]">
         <SectionHeading
           eyebrow={dictionary.itineraries.eyebrow}
@@ -219,12 +223,18 @@ function ItinerariesSection({ locale, dictionary }: { locale: Locale; dictionary
           description={dictionary.itineraries.description}
           titleClassName="md:text-[46px]"
         />
-        <div className="mt-10 grid gap-[18px] md:grid-cols-2 lg:grid-cols-3">
-          {dictionary.itineraries.items.map((item, index) => (
-            <ItineraryCard key={`${item.title}-${index}`} locale={locale} item={item} />
-          ))}
+        <div className="relative mt-10">
+          <div className="grid gap-[18px] md:grid-cols-2 lg:grid-cols-3">
+            {dictionary.itineraries.items.map((item, index) => (
+              <ItineraryCard key={`${item.title}-${index}`} locale={locale} item={item} />
+            ))}
+          </div>
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-[-16px] bottom-[-1px] z-20 h-[190px] bg-[url('/assets/figma/linear-gradient.svg')] bg-cover bg-bottom bg-no-repeat"
+          />
         </div>
-        <div className="mt-8 text-center">
+        <div className="relative z-[100] mt-8 text-center">
           <Button asChild className="h-[54px] rounded-[9px] bg-astra-gold px-6 text-base font-bold text-astra-cocoa hover:bg-astra-gold/90">
             <Link href={localizedHref(locale, "/itineraries")}>{dictionary.itineraries.cta}</Link>
           </Button>
@@ -307,7 +317,7 @@ function PlanningSection({ dictionary }: { dictionary: HomeDictionary }) {
 
 function PlanningImage({ image }: { image: HomeDictionary["planning"]["image"] }) {
   return (
-    <div className="relative mx-auto aspect-[1520/1937] w-full max-w-[520px] overflow-hidden rounded-[21px] border border-white/35 shadow-[0_24px_80px_rgba(0,0,0,0.24)]">
+    <div className="relative mx-auto aspect-[1520/1937] w-full max-w-[520px] overflow-hidden rounded-[21px] shadow-[0_24px_80px_rgba(0,0,0,0.24)]">
       <Image src={image.src} alt={image.alt} fill sizes="(min-width: 1024px) 520px, 100vw" className="object-cover" />
     </div>
   );
