@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { getTextDirection, isLocale, locales, type Locale } from "@/i18n/config";
-import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   title: "Astra Tanzania Safaris | Private Tanzania Safaris for USA Travelers",
@@ -29,9 +28,5 @@ export default async function LocaleLayout({
 
   const locale = localeParam as Locale;
 
-  return (
-    <html lang={locale} dir={getTextDirection(locale)} suppressHydrationWarning>
-      <body className="bg-background text-foreground antialiased">{children}</body>
-    </html>
-  );
+  return <div lang={locale} dir={getTextDirection(locale)}>{children}</div>;
 }

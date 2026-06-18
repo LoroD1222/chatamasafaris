@@ -51,6 +51,7 @@ const config: Config = {
         },
         astra: {
           cream: "#fdfaf3",
+          amber: "var(--astra-primary-amber)",
           gold: "#e2b87f",
           cocoa: "#403229",
           brown: "#3c2b1c",
