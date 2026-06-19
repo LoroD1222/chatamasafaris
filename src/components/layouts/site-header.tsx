@@ -16,7 +16,7 @@ export function SiteHeader({ locale, dictionary }: { locale: Locale; dictionary:
     <header className="bg-astra-cream text-astra-brown">
       <div className="bg-astra-gold">
         <div className="container flex h-[37px] max-w-[1160px] items-center justify-between gap-4 text-[13px] font-bold leading-[1.6]">
-          <p className="hidden items-center gap-2 uppercase tracking-[0.05em] text-astra-cocoa/40 sm:flex">
+          <p className="hidden items-center gap-2 pl-4 uppercase tracking-[0.05em] text-astra-cocoa/40 sm:flex">
             <Image src="/assets/figma/nav-bar-star.png" alt="" width={18} height={18} className="size-[18px] object-contain" aria-hidden="true" />
             {dictionary.topBar.label}
           </p>

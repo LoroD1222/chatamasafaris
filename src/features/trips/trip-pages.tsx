@@ -2,14 +2,12 @@
 
 import {
   ArrowRight,
-  Award,
-  Bed,
   Binoculars,
   Check,
   ChevronDown,
-  Facebook,
+  ChevronLeft,
+  ChevronRight,
   Heart,
-  Instagram,
   Mail,
   Phone,
   Star,
@@ -17,13 +15,17 @@ import {
   Trophy,
   UsersRound,
   Waves,
-  Youtube
+  X,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import { SiteFinalCta } from "@/components/layouts/site-final-cta";
+import { SiteFooter } from "@/components/layouts/site-footer";
 import { PlannerDialogButton } from "@/components/planner/planner-dialog";
+import { LeadPlanner } from "@/features/home/lead-planner";
+import { defaultLocale } from "@/i18n/config";
 import type { HomeDictionary } from "@/i18n/types";
 import { faqs, galleryImages, includedItems, itineraryDays, sharedTripSlug, tripCards } from "@/features/trips/trip-data";
 
@@ -41,6 +43,40 @@ const navLinks = [
 const pageContainer = "mx-auto max-w-[1200px] px-6";
 const amberButton =
   "rounded-[10px] bg-astra-amber text-white shadow-none transition hover:bg-[color:var(--astra-primary-amber-hover)]";
+
+const itinerarySafariSlides = galleryImages;
+const itineraryAccommodationSlides = [
+  {
+    src: "/assets/trips/itinerary-ahadi-lodge-design.png",
+    alt: "Ahadi Lodge swimming pool and stone lodge exterior"
+  },
+  {
+    src: "/assets/figma/review-jeep.jpg",
+    alt: "Guests enjoying a private Tanzania safari vehicle"
+  },
+  {
+    src: "/assets/figma/itinerary-2.jpg",
+    alt: "Tanzania wilderness road and plains"
+  }
+];
+const includedImageSlides = [
+  {
+    src: "/assets/trips/trip-included.png",
+    alt: "Safari landscape included in trip"
+  },
+  {
+    src: "/assets/figma/itinerary-2.jpg",
+    alt: "Zebras resting beside a Tanzania wilderness road"
+  },
+  {
+    src: "/assets/trips/trip-hero-zebras.png",
+    alt: "Zebras grazing in Serengeti grassland"
+  },
+  {
+    src: "/assets/figma/review-jeep.jpg",
+    alt: "Guests riding in a private Tanzania safari vehicle"
+  }
+];
 
 export function TripsListPage({ dictionary }: TripPageProps) {
   return (
@@ -100,40 +136,43 @@ export function TripDetailPage({ dictionary }: TripPageProps) {
           <BuiltForSection dictionary={dictionary} />
         </section>
 
-        <TripTabs />
+        <div className="relative">
+          <TripTabs />
 
-        <section id="overview" className="mx-auto grid max-w-[1200px] gap-10 px-6 py-[84px] lg:grid-cols-[680px_448px]">
-          <OverviewText />
-          <PlannerQuoteCard dictionary={dictionary} />
-        </section>
+          <section id="overview" className="mx-auto grid max-w-[1200px] scroll-mt-[82px] gap-10 px-6 py-[84px] lg:grid-cols-[680px_448px]">
+            <OverviewText />
+            <PlannerQuoteCard dictionary={dictionary} />
+          </section>
 
-        <section className="mx-auto grid max-w-[1200px] gap-8 px-6 pb-[84px] lg:grid-cols-[minmax(0,879px)_1fr]">
-          <div className="relative overflow-hidden rounded-[3px]">
-            <Image src="/assets/trips/trip-map.png" alt="Three day mid-range Tanzania safari map" width={879} height={705} className="h-auto w-full" />
-          </div>
-          <aside className="self-center rounded-[2px] border border-[rgba(200,134,10,0.25)] bg-white p-8 shadow-[0_20px_45px_rgba(64,50,41,0.08)]">
-            <h2 className="text-[24px] font-semibold leading-[1.18]">Is this tour for me?</h2>
-            <div className="mt-5 h-px bg-[#403229]/13" />
-            <p className="mt-5 text-[14px] font-bold leading-[1.6]">Age Requirements: 3+</p>
-            <p className="mt-2 text-[14px] font-bold leading-[1.6]">Trip Type: Private Group</p>
-            <p className="mt-4 text-[13px] font-semibold leading-[1.65] text-[#403229]/70">
-              Travel on your own schedule with full flexibility in dates, pace, and itinerary. Pricing is tailored to your private group size, and you can enjoy a fully customized experience.
-            </p>
-            <PlannerDialogButton planner={dictionary.planner} className={`mt-6 h-[46px] w-full px-4 text-[14px] font-bold ${amberButton}`}>
-              Talk to a Planner
-            </PlannerDialogButton>
-          </aside>
-        </section>
+          <section id="tour-details" className="mx-auto grid max-w-[1200px] scroll-mt-[82px] gap-8 px-6 pb-[84px] lg:grid-cols-[minmax(0,879px)_1fr]">
+            <div className="relative overflow-hidden rounded-[10px]">
+              <Image src="/assets/trips/trip-map.png" alt="Three day mid-range Tanzania safari map" width={879} height={705} className="h-auto w-full" />
+            </div>
+            <aside className="relative z-[100] self-center rounded-[10px] border border-[rgba(200,134,10,0.25)] bg-white p-8 shadow-[0_20px_45px_rgba(64,50,41,0.12)] lg:-ml-[200px] lg:w-[calc(100%+200px)]">
+              <h2 className="border-b border-[#403229]/18 pb-5 text-[24px] font-semibold leading-[1.18]">Is this tour for me?</h2>
+              <div className="border-b border-[#403229]/13 py-5">
+                <p className="text-[14px] font-bold leading-[1.6]">Age Requirements: 3+</p>
+                <p className="mt-2 text-[14px] font-bold leading-[1.6]">Trip Type: Private Group</p>
+              </div>
+              <p className="border-b border-[#403229]/13 py-5 text-[13px] font-semibold leading-[1.65] text-[#403229]/70">
+                Travel on your own schedule with full flexibility in dates, pace, and itinerary. Pricing is tailored to your private group size, and you can enjoy a fully customized experience.
+              </p>
+              <PlannerDialogButton planner={dictionary.planner} className={`mt-6 h-[46px] w-full px-4 text-[14px] font-bold ${amberButton}`}>
+                Talk to a Planner
+              </PlannerDialogButton>
+            </aside>
+          </section>
 
-        <ItinerarySection />
-        <IncludedSection dictionary={dictionary} />
-        <BestTimeSection />
+          <ItinerarySection />
+          <IncludedSection dictionary={dictionary} />
+        </div>
+        <BestTimeSection dictionary={dictionary} />
         <WidePlannerBand dictionary={dictionary} />
         <ReviewsSection />
         <StopPlanningSection dictionary={dictionary} />
         <SimilarTripsSection />
         <FaqSection dictionary={dictionary} />
-        <FinalCtaFooter dictionary={dictionary} compact />
+        <FinalCtaFooter dictionary={dictionary} />
       </main>
     </div>
   );
@@ -144,7 +183,7 @@ function TripHeader({ dictionary, showBreadcrumb = false }: TripPageProps & { sh
     <header className="bg-[#fdfaf3] text-[#403229]">
       <div className="bg-[var(--astra-primary-amber)]">
         <div className="mx-auto flex h-[37px] max-w-[1150px] items-center justify-between px-5 text-[13px] font-bold leading-[1.6] text-white/90">
-          <p className="hidden items-center gap-2 uppercase tracking-[0.08em] sm:flex">
+          <p className="hidden items-center gap-2 pl-4 uppercase tracking-[0.08em] sm:flex">
             <Image src="/assets/figma/nav-bar-star.png" alt="" width={18} height={18} className="size-[18px] object-contain" aria-hidden="true" />
             Safari Operator for USA Travelers
           </p>
@@ -272,21 +311,159 @@ function TripCardGrid({ className = "", limit }: { className?: string; limit?: n
 }
 
 function HeroGallery() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const currentImage = galleryImages[currentIndex];
+
+  const showPreviousImage = () => {
+    setCurrentIndex((index) => (index === 0 ? galleryImages.length - 1 : index - 1));
+  };
+
+  const showNextImage = () => {
+    setCurrentIndex((index) => (index === galleryImages.length - 1 ? 0 : index + 1));
+  };
+
+  useEffect(() => {
+    if (!isLightboxOpen) {
+      return;
+    }
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsLightboxOpen(false);
+      }
+      if (event.key === "ArrowLeft") {
+        setCurrentIndex((index) => (index === 0 ? galleryImages.length - 1 : index - 1));
+      }
+      if (event.key === "ArrowRight") {
+        setCurrentIndex((index) => (index === galleryImages.length - 1 ? 0 : index + 1));
+      }
+    };
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [isLightboxOpen]);
+
   return (
     <div>
       <div className="relative h-[360px] overflow-hidden rounded-[2px] bg-[#403229]">
-        <Image src={galleryImages[0].src} alt={galleryImages[0].alt} fill priority sizes="707px" className="object-cover" />
+        <button
+          type="button"
+          onClick={() => setIsLightboxOpen(true)}
+          className="absolute inset-0 cursor-zoom-in outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--astra-primary-amber)]"
+          aria-label={`Open image gallery: ${currentImage.alt}`}
+        >
+          <Image src={currentImage.src} alt={currentImage.alt} fill priority sizes="707px" className="object-cover transition duration-300" />
+        </button>
         <div className="absolute left-[17px] top-[17px] rounded-full bg-[var(--astra-primary-amber)] px-[15px] py-[9px] text-[14px] font-bold leading-none text-white shadow-[0_10px_24px_rgba(0,0,0,0.18)]">
           Featured
         </div>
+        <button
+          type="button"
+          onClick={showPreviousImage}
+          className="absolute left-4 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-full bg-white/92 text-[#403229] shadow-[0_10px_24px_rgba(0,0,0,0.2)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]"
+          aria-label="Show previous safari image"
+        >
+          <ChevronLeft className="size-5" aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          onClick={showNextImage}
+          className="absolute right-4 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-full bg-white/92 text-[#403229] shadow-[0_10px_24px_rgba(0,0,0,0.2)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]"
+          aria-label="Show next safari image"
+        >
+          <ChevronRight className="size-5" aria-hidden="true" />
+        </button>
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/45 px-3 py-1 text-[12px] font-bold text-white backdrop-blur-sm">
+          {currentIndex + 1} / {galleryImages.length}
+        </div>
       </div>
       <div className="mt-[17px] grid grid-cols-4 gap-[10px]">
-        {galleryImages.map((image) => (
-          <div key={image.src} className="relative h-[110px] overflow-hidden rounded-[2px]">
+        {galleryImages.map((image, index) => (
+          <button
+            key={image.src}
+            type="button"
+            onClick={() => setCurrentIndex(index)}
+            className={`relative h-[110px] overflow-hidden rounded-[2px] outline-none transition focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)] ${
+              index === currentIndex ? "ring-2 ring-[var(--astra-primary-amber)] ring-offset-2 ring-offset-[#fdfaf3]" : "opacity-80 hover:opacity-100"
+            }`}
+            aria-label={`Show gallery image ${index + 1}: ${image.alt}`}
+            aria-current={index === currentIndex ? "true" : undefined}
+          >
             <Image src={image.src} alt={image.alt} fill sizes="169px" className="object-cover" />
-          </div>
+          </button>
         ))}
       </div>
+      {isLightboxOpen ? (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Safari image gallery"
+          className="fixed inset-0 z-[200] bg-black/92 px-5 py-6 text-white"
+          onClick={() => setIsLightboxOpen(false)}
+        >
+          <button
+            type="button"
+            onClick={() => setIsLightboxOpen(false)}
+            className="absolute right-5 top-5 z-10 grid size-11 place-items-center rounded-full bg-white/12 text-white transition hover:bg-white/22 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            aria-label="Close image gallery"
+          >
+            <X className="size-5" aria-hidden="true" />
+          </button>
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              showPreviousImage();
+            }}
+            className="absolute left-5 top-1/2 z-10 grid size-12 -translate-y-1/2 place-items-center rounded-full bg-white/12 text-white transition hover:bg-white/22 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            aria-label="Show previous image in lightbox"
+          >
+            <ChevronLeft className="size-6" aria-hidden="true" />
+          </button>
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              showNextImage();
+            }}
+            className="absolute right-5 top-1/2 z-10 grid size-12 -translate-y-1/2 place-items-center rounded-full bg-white/12 text-white transition hover:bg-white/22 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            aria-label="Show next image in lightbox"
+          >
+            <ChevronRight className="size-6" aria-hidden="true" />
+          </button>
+          <div className="mx-auto flex h-full max-w-[1180px] flex-col gap-5" onClick={(event) => event.stopPropagation()}>
+            <div className="relative min-h-0 flex-1">
+              <Image src={currentImage.src} alt={currentImage.alt} fill sizes="100vw" className="object-contain" priority />
+            </div>
+            <div className="text-center text-[13px] font-semibold text-white/72">
+              {currentIndex + 1} / {galleryImages.length}
+            </div>
+            <div className="mx-auto grid w-full max-w-[620px] grid-cols-4 gap-3">
+              {galleryImages.map((image, index) => (
+                <button
+                  key={`${image.src}-lightbox`}
+                  type="button"
+                  onClick={() => setCurrentIndex(index)}
+                  className={`relative h-[76px] overflow-hidden rounded-[4px] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white ${
+                    index === currentIndex ? "ring-2 ring-[var(--astra-primary-amber)]" : "opacity-65 hover:opacity-100"
+                  }`}
+                  aria-label={`Show gallery image ${index + 1}: ${image.alt}`}
+                  aria-current={index === currentIndex ? "true" : undefined}
+                >
+                  <Image src={image.src} alt={image.alt} fill sizes="155px" className="object-cover" />
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -303,8 +480,8 @@ function RatingStars({ className = "size-5" }: { className?: string }) {
 
 function TripSummaryCard({ dictionary }: TripPageProps) {
   return (
-    <aside className="rounded-[2px] border border-[#403229]/12 bg-white shadow-[0_22px_44px_rgba(64,50,41,0.08)]">
-      <div className="px-6 py-6">
+    <aside className="flex rounded-[10px] border border-[#403229]/12 bg-white shadow-[0_22px_44px_rgba(64,50,41,0.08)]">
+      <div className="flex min-h-full w-full flex-col px-6 py-6">
         <div className="border-b border-[#403229]/13 pb-5">
           <RatingStars className="size-6" />
           <div className="mt-3 flex items-end gap-3">
@@ -345,9 +522,11 @@ function TripSummaryCard({ dictionary }: TripPageProps) {
         <p className="mt-5 min-h-[206px] text-[15px] font-semibold leading-[1.65] text-[#403229]/66">
           This morning is yours to enjoy at a relaxed pace. Have a peaceful breakfast at the lodge and take some time to soak in the surroundings before your departure. Most flights usually depart around 10-11 AM, so you will leave the lodge at a comfortable time.
         </p>
-        <PlannerDialogButton planner={dictionary.planner} className={`mt-4 h-[54px] w-full px-4 text-[15px] font-bold ${amberButton}`}>
-          Book a Safari
-        </PlannerDialogButton>
+        <div className="mt-auto border-t border-[#403229]/13 pt-5">
+          <PlannerDialogButton planner={dictionary.planner} className={`h-[54px] w-full px-4 text-[15px] font-bold ${amberButton}`}>
+            Book a Safari
+          </PlannerDialogButton>
+        </div>
       </div>
     </aside>
   );
@@ -362,7 +541,7 @@ function BuiltForSection({ dictionary }: TripPageProps) {
   ];
 
   return (
-    <section className="mt-[28px] grid gap-8 lg:grid-cols-[688px_448px]">
+    <section className="mt-[28px] grid gap-7 lg:grid-cols-[708px_448px]">
       <div>
         <h2 className="text-[31px] font-semibold leading-[1.13]">Who this safari is built for?</h2>
         <p className="mt-[29px] max-w-[663px] text-[16px] font-semibold leading-[1.65] text-[#403229]/70">
@@ -377,20 +556,39 @@ function BuiltForSection({ dictionary }: TripPageProps) {
           ))}
         </div>
       </div>
-      <aside className="rounded-[2px] border border-[#403229]/12 bg-white p-7">
-        <p className="text-[26px] font-bold leading-none text-[var(--astra-primary-amber)]">
-          4.9
-          <span className="ml-3 text-[18px]">*****</span>
-        </p>
-        <p className="mt-3 text-[15px] font-semibold leading-[1.6] text-[#403229]/75">
+      <aside className="self-start rounded-[10px] border border-[#403229]/12 bg-white p-7 shadow-[0_16px_36px_rgba(64,50,41,0.06)]">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#403229]/13 pb-5">
+          <div>
+            <p className="flex items-center gap-3 text-[26px] font-bold leading-none text-[var(--astra-primary-amber)]">
+              4.9
+              <RatingStars className="size-3.5" />
+            </p>
+          </div>
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#1f8f5a]/25 bg-[#effaf4] px-3 py-1.5 text-[12px] font-bold leading-none text-[#1f8f5a]">
+            <span className="flex items-center gap-0.5" aria-hidden="true">
+              <span className="size-2 rounded-full bg-[#1f8f5a]" />
+              <span className="size-2 rounded-full bg-[#1f8f5a]" />
+              <span className="size-2 rounded-full bg-[#1f8f5a]" />
+            </span>
+            TripAdvisor
+          </div>
+        </div>
+        <p className="border-b border-[#403229]/13 py-5 text-[15px] font-semibold leading-[1.6] text-[#403229]/75">
           Review from TripAdvisor &quot;The river crossing was unlike anything I&apos;ve ever seen in my life.&quot;
         </p>
-        <div className="my-5 h-px bg-[#403229]/13" />
-        <p className="text-[15px] font-semibold leading-[1.6]">For extra information please contact us</p>
-        <p className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-[13px] font-bold leading-[1.6] text-[#403229]/65">
-          <a href={`tel:${dictionary.topBar.phone.replace(/\s/g, "")}`}>{dictionary.topBar.phone}</a>
-          <a href={`mailto:${dictionary.topBar.email}`}>{dictionary.topBar.email}</a>
-        </p>
+        <div className="pt-5">
+          <p className="text-[15px] font-semibold leading-[1.6]">For extra information please contact us</p>
+          <p className="mt-3 flex flex-wrap gap-x-5 gap-y-3 text-[13px] font-bold leading-[1.6] text-[#403229]/65">
+            <a href={`tel:${dictionary.topBar.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-2 hover:text-[var(--astra-primary-amber)]">
+              <Phone className="size-4 text-[var(--astra-primary-amber)]" aria-hidden="true" />
+              {dictionary.topBar.phone}
+            </a>
+            <a href={`mailto:${dictionary.topBar.email}`} className="inline-flex items-center gap-2 hover:text-[var(--astra-primary-amber)]">
+              <Mail className="size-4 text-[var(--astra-primary-amber)]" aria-hidden="true" />
+              {dictionary.topBar.email}
+            </a>
+          </p>
+        </div>
       </aside>
     </section>
   );
@@ -399,27 +597,31 @@ function BuiltForSection({ dictionary }: TripPageProps) {
 function TripTabs() {
   const tabs = [
     { label: "Overview", href: "#overview" },
+    { label: "Tour Details", href: "#tour-details" },
     { label: "Itinerary", href: "#itinerary" },
     { label: "Inclusions", href: "#inclusions" },
-    { label: "Dates & Prices", href: "#pricing" },
-    { label: "Reviews", href: "#reviews" }
+    { label: "Price", href: "#pricing" }
   ];
 
   return (
-    <nav className="border-y border-[#403229]/8 bg-[#fff4dc]" aria-label="Trip sections">
-      <div className={`${pageContainer} flex h-[58px] items-center gap-[30px] overflow-x-auto text-[15px] font-bold leading-[1.6] text-[#403229]/70`}>
-        {tabs.map((tab, index) => (
-          <a
-            key={tab.label}
-            href={tab.href}
-            className={index === 0 ? "relative flex h-full items-center text-[#403229]" : "flex h-full items-center transition hover:text-[#403229]"}
-          >
-            {tab.label}
-            {index === 0 ? <span className="absolute bottom-0 left-0 h-[4px] w-full rounded-t-full bg-[var(--astra-primary-amber)]" /> : null}
-          </a>
-        ))}
+    <div className="sticky top-0 z-[90] bg-[#fdfaf3]">
+      <div className={pageContainer}>
+        <nav className="flex h-[58px] items-center overflow-x-auto rounded-[10px] border border-[#403229]/10 bg-[#F8EEDD] px-8 text-[15px] font-bold leading-[1.6] text-[#403229]/70 shadow-[0_8px_20px_rgba(64,50,41,0.04)]" aria-label="Trip sections">
+          <div className="flex h-full min-w-max items-center gap-[34px]">
+            {tabs.map((tab, index) => (
+              <a
+                key={tab.label}
+                href={tab.href}
+                className={index === 0 ? "relative flex h-full items-center text-[#403229]" : "flex h-full items-center transition hover:text-[#403229]"}
+              >
+                {tab.label}
+                {index === 0 ? <span className="absolute bottom-0 left-0 h-[4px] w-full rounded-t-full bg-[var(--astra-primary-amber)]" /> : null}
+              </a>
+            ))}
+          </div>
+        </nav>
       </div>
-    </nav>
+    </div>
   );
 }
 
@@ -444,92 +646,135 @@ Immerse yourself in local culture, meet the Maasai, and experience Tanzania's br
 
 function PlannerQuoteCard({ dictionary }: TripPageProps) {
   return (
-    <aside className="rounded-[2px] border border-[#403229]/12 bg-[var(--astra-cream-panel)] p-6 shadow-[0_18px_45px_rgba(64,50,41,0.08)]">
-      <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-[var(--astra-primary-amber)]">Free, no commitment</p>
-      <h2 className="mt-2 text-[25px] font-semibold leading-[1.14]">Talk to a safari planner</h2>
-      <p className="mt-3 text-[12px] font-semibold leading-[1.4] text-[#403229]/75">This morning is yours to enjoy at a relaxed pace. Have a peaceful breakfast at the lodge and</p>
-      <PlannerFields className="mt-5" />
-      <PlannerDialogButton planner={dictionary.planner} className={`mt-4 h-[46px] w-full text-[15px] font-bold ${amberButton}`}>
-        Request a quote
-      </PlannerDialogButton>
-    </aside>
-  );
-}
-
-function PlannerFields({ className = "" }: { className?: string }) {
-  return (
-    <div className={`grid gap-[16px] ${className}`}>
-      <input aria-label="First Name" placeholder="First Name" className="h-[47px] w-full border border-[#654a29]/15 bg-white px-4 text-[13px] font-bold text-[#403229] placeholder:text-[#403229]/55" />
-      <div className="grid gap-[16px] sm:grid-cols-2">
-        <input aria-label="Email" placeholder="Email" className="h-[47px] w-full border border-[#654a29]/15 bg-white px-4 text-[12px] font-bold text-[#403229] placeholder:text-[#403229]/55" />
-        <input aria-label="Phone Number" placeholder="Phone Number" className="h-[47px] w-full border border-[#654a29]/15 bg-white px-4 text-[12px] font-bold text-[#403229] placeholder:text-[#403229]/55" />
-      </div>
-      <input aria-label="How many people" placeholder="How many people" className="h-[47px] w-full border border-[#654a29]/15 bg-white px-4 text-[13px] font-bold text-[#403229] placeholder:text-[#403229]/55" />
-    </div>
+    <LeadPlanner
+      planner={dictionary.planner}
+      className="w-full self-start rounded-[10px] border-[#403229]/12 bg-white p-7 text-[#403229] shadow-[0_18px_45px_rgba(64,50,41,0.08)] backdrop-blur-none"
+    />
   );
 }
 
 function ItinerarySection() {
+  const day = itineraryDays[0];
+
   return (
-    <section id="itinerary" className={`${pageContainer} py-[72px]`}>
-      <h2 className="text-[28px] font-semibold leading-[1.2]">Trip Itinirary</h2>
-      <div className="mt-[39px] grid gap-[30px]">
-        {itineraryDays.map((day, index) => (
-          <article
-            key={day.day}
-            className="grid gap-6 overflow-hidden rounded-[4px] border border-[#403229]/10 bg-white p-5 shadow-[0_14px_35px_rgba(64,50,41,0.06)] md:grid-cols-[220px_1fr]"
-          >
-            <div className="relative h-[140px] overflow-hidden rounded-[3px] md:w-[220px]">
-              <Image src="/assets/trips/trip-hero-zebras.png" alt="Zebras in Serengeti" fill sizes="220px" className="object-cover" />
-            </div>
-            <div>
-              <div className="flex items-start gap-4">
-                <span className="grid size-10 shrink-0 place-items-center rounded-full bg-[var(--astra-primary-amber)] text-[16px] font-bold leading-none text-white">
-                  {day.day.replace(/\D/g, "")}
-                </span>
-                <div>
-                  <p className="text-[12px] font-bold uppercase tracking-[0.06em] text-[var(--astra-primary-amber)]">{day.day}</p>
-                  <h3 className="mt-1 max-w-[540px] text-[24px] font-semibold leading-[1.16]">{day.title}</h3>
-                </div>
-              </div>
-              <p className="mt-5 text-[13px] font-semibold leading-[1.7] text-[#403229]/68">{day.description}</p>
-              <div className="mt-7 border-t border-[#403229]/10 pt-5">
-                <div className="flex gap-4 rounded-[6px] bg-[var(--astra-cream-panel)] p-4">
-                  <span className="grid size-9 shrink-0 place-items-center rounded-full bg-white text-[var(--astra-primary-amber)] shadow-[0_8px_18px_rgba(64,50,41,0.08)]" aria-hidden="true">
-                    <Bed className="size-5" strokeWidth={2} />
-                  </span>
-                  <div>
-                    <h4 className="text-[13px] font-bold uppercase tracking-[0.05em] text-[#403229]/58">Accommodations</h4>
-                    <p className="mt-3 text-[13px] font-semibold leading-[1.7] text-[#403229]/68">
-                      Tanzania is one of those trips people talk about for the rest of their lives. {day.accommodation} keeps the stay relaxed and comfortable.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              {index < itineraryDays.length - 1 ? <div className="mt-7 h-px bg-[#403229]/10" /> : null}
-            </div>
-          </article>
-        ))}
+    <section id="itinerary" className="mx-auto max-w-[1484px] scroll-mt-[82px] px-6 py-[72px]">
+      <div className="flex items-center gap-8">
+        <h2 className="shrink-0 text-[34px] font-semibold leading-[1.15] text-[#403229] md:text-[38px]">Trip Itinirary</h2>
+        <div className="h-[2px] flex-1 bg-[#ddd7cc]" />
       </div>
+
+      <article className="mt-[56px] grid overflow-hidden rounded-[8px] border border-[#403229]/10 bg-white shadow-[0_18px_45px_rgba(64,50,41,0.08)] lg:grid-cols-[605px_64px_minmax(0,1fr)]">
+        <div className="grid gap-4 p-5">
+          <ItineraryImageSlider images={itinerarySafariSlides} sizes="565px" />
+          <ItineraryImageSlider images={itineraryAccommodationSlides} sizes="565px" />
+        </div>
+
+        <div className="relative hidden lg:block" aria-hidden="true">
+          <Image src="/assets/trips/itinerary-timeline-line.svg" alt="" width={1} height={754} className="absolute left-1/2 top-5 h-[calc(100%-40px)] w-px -translate-x-1/2 object-fill" />
+          <Image src="/assets/trips/itinerary-map-pin.svg" alt="" width={49} height={49} className="absolute left-1/2 top-[92px] z-10 size-[49px] -translate-x-1/2" />
+          <Image src="/assets/trips/itinerary-bed.svg" alt="" width={49} height={49} className="absolute left-1/2 top-[calc(50%-24px)] z-10 size-[49px] -translate-x-1/2" />
+        </div>
+
+        <div className="px-6 pb-10 pt-8 lg:px-0 lg:pb-0 lg:pr-10 lg:pt-[46px]">
+          <div className="lg:min-h-[284px]">
+            <p className="text-[13px] font-bold uppercase leading-none tracking-[0.12em] text-[#e2bd7d]">{day.day}</p>
+            <h3 className="mt-5 max-w-[540px] text-[31px] font-semibold leading-[1.16] text-[#403229] md:text-[34px]">
+              {day.title}
+            </h3>
+            <p className="mt-7 max-w-[690px] text-[16px] font-semibold leading-[1.68] text-[#403229]">
+              {day.description}
+            </p>
+          </div>
+
+          <div className="mt-8 lg:mt-[36px]">
+            <h4 className="text-[30px] font-semibold leading-[1.16] text-[#403229]">Accommodations:</h4>
+            <p className="mt-5 max-w-[650px] text-[16px] font-semibold leading-[1.65] text-[#403229]">
+              Tanzania is one of those trips people talk about for the rest of their lives. {day.accommodation} keeps the stay relaxed and comfortable.
+            </p>
+          </div>
+        </div>
+      </article>
     </section>
   );
 }
 
-function IncludedSection({ dictionary }: TripPageProps) {
-  const priceTiers = [
-    { label: "Solo", people: "1 pax", price: "$2,890" },
-    { label: "Couple", people: "2 pax", price: "$2,240" },
-    { label: "Small group", people: "3 pax", price: "$1,980" },
-    { label: "Family", people: "4 pax", price: "$1,760" },
-    { label: "Group", people: "5+ pax", price: "$1,590" }
-  ];
+function ItineraryImageSlider({
+  images,
+  sizes,
+  label
+}: {
+  images: { src: string; alt: string }[];
+  sizes: string;
+  label?: string;
+}) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const hasMultipleImages = images.length > 1;
+
+  const showPrevious = () => {
+    setActiveIndex((index) => (index === 0 ? images.length - 1 : index - 1));
+  };
+
+  const showNext = () => {
+    setActiveIndex((index) => (index === images.length - 1 ? 0 : index + 1));
+  };
 
   return (
-    <section id="inclusions" className={`${pageContainer} grid gap-10 py-[72px] lg:grid-cols-[minmax(0,1fr)_340px]`}>
+    <div className="relative aspect-[589/300] overflow-hidden rounded-[10px] bg-[#403229]">
+      {images.map((image, index) => (
+        <Image
+          key={image.src}
+          src={image.src}
+          alt={index === activeIndex ? image.alt : ""}
+          fill
+          sizes={sizes}
+          loading="eager"
+          unoptimized
+          aria-hidden={index === activeIndex ? undefined : true}
+          className={`object-cover transition-opacity duration-300 ${index === activeIndex ? "opacity-100" : "opacity-0"}`}
+        />
+      ))}
+      {label ? (
+        <span className="absolute left-5 top-5 rounded-[8px] bg-white/92 px-5 py-3 text-[15px] font-bold leading-none text-[#403229] shadow-[0_12px_24px_rgba(64,50,41,0.12)]">
+          {label}
+        </span>
+      ) : null}
+      {hasMultipleImages ? (
+        <>
+          <button
+            type="button"
+            onClick={showPrevious}
+            className="absolute left-0 top-1/2 z-20 grid h-11 w-[70px] -translate-y-1/2 place-items-center rounded-r-[8px] bg-[#f8f2e9] text-[#403229] shadow-[0_10px_22px_rgba(64,50,41,0.12)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]"
+            aria-label="Previous itinerary image"
+          >
+            <ChevronLeft className="size-7" aria-hidden="true" />
+          </button>
+          <button
+            type="button"
+            onClick={showNext}
+            className="absolute right-0 top-1/2 z-20 grid h-11 w-[70px] -translate-y-1/2 place-items-center rounded-l-[8px] bg-[#f8f2e9] text-[#403229] shadow-[0_10px_22px_rgba(64,50,41,0.12)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]"
+            aria-label="Next itinerary image"
+          >
+            <ChevronRight className="size-7" aria-hidden="true" />
+          </button>
+        </>
+      ) : null}
+    </div>
+  );
+}
+
+function IncludedSection({ dictionary }: TripPageProps) {
+  const priceTiers = Array.from({ length: 6 }, (_, index) => ({
+    id: `rate-${index}`,
+    people: "1 pax",
+    price: "$2,890"
+  }));
+
+  return (
+    <section id="inclusions" className={`${pageContainer} grid scroll-mt-[82px] gap-10 py-[72px] lg:grid-cols-[minmax(0,1fr)_340px]`}>
       <div>
         <div className="flex items-center gap-4">
           <h2 className="shrink-0 text-[30px] font-semibold leading-[1.2]">What is included?</h2>
-          <div className="h-[3px] flex-1 bg-[var(--astra-primary-amber)]" />
+          <div className="h-[2px] flex-1 bg-[#e2b87f]" />
         </div>
         <ul className="mt-10 grid gap-x-9 gap-y-5 sm:grid-cols-2">
           {includedItems.map((item, index) => (
@@ -542,75 +787,132 @@ function IncludedSection({ dictionary }: TripPageProps) {
           ))}
         </ul>
       </div>
-      <div className="relative min-h-[357px] overflow-hidden rounded-[2px]">
-        <Image src="/assets/trips/trip-included.png" alt="Safari landscape included in trip" fill sizes="317px" className="object-cover" />
-      </div>
-      <div id="pricing" className="lg:col-span-2">
-        <p className="text-center text-[12px] font-bold uppercase tracking-[0.12em] text-[#403229]/55">All-inclusive rates in USD</p>
-        <h3 className="mt-2 text-center text-[27px] font-semibold leading-[1.3]">Choose the group size that fits you</h3>
-        <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <IncludedImageSlider images={includedImageSlides} />
+      <div id="pricing" className="scroll-mt-[82px] pt-8 lg:col-span-2">
+        <div className="mx-auto flex max-w-[1110px] items-center gap-7">
+          <div className="h-[2px] flex-1 bg-[#e7ded1]" />
+          <h3 className="shrink-0 text-center text-[27px] font-medium leading-[1.3] text-[#403229]">All-inclusive rates in USD</h3>
+          <div className="h-[2px] flex-1 bg-[#e7ded1]" />
+        </div>
+        <div className="mx-auto mt-3 grid max-w-[930px] overflow-hidden bg-white shadow-[0_16px_35px_rgba(64,50,41,0.06)] sm:grid-cols-2 sm:divide-x sm:divide-[#f0e8dc] md:grid-cols-3 lg:grid-cols-6">
           {priceTiers.map((tier) => (
-            <div key={tier.label} className="rounded-[8px] border border-[#403229]/10 bg-white px-5 py-6 text-center shadow-[0_10px_30px_rgba(64,50,41,0.06)]">
-              <p className="text-[13px] font-bold uppercase tracking-[0.05em] text-[#403229]/58">{tier.label}</p>
-              <p className="mt-2 text-[12px] font-semibold text-[#403229]/58">{tier.people}</p>
-              <p className="mt-4 text-[28px] font-bold leading-none text-[var(--astra-primary-amber)]">{tier.price}</p>
-              <p className="mt-2 text-[11px] font-semibold text-[#403229]/50">per person</p>
-              <PlannerDialogButton planner={dictionary.planner} className={`mt-5 h-10 w-full text-[13px] font-bold ${amberButton}`}>
-                Book now
-              </PlannerDialogButton>
+            <div key={tier.id} className="min-h-[92px] px-4 py-5 text-center">
+              <p className="text-[11px] font-semibold leading-none text-[#403229]/78">{tier.people}</p>
+              <p className="mt-3 text-[20px] font-bold leading-none text-[#e2b87f]">{tier.price}</p>
+              <p className="mt-2 text-[11px] font-semibold leading-none text-[#403229]/68">per person</p>
             </div>
           ))}
         </div>
-        <p className="mt-6 text-center text-[12px] font-semibold text-[#403229]/58">
-          Prices are per person in USD and include taxes, park fees, private guide, vehicle, and accommodation shown in the itinerary.
-        </p>
+        <PlannerDialogButton
+          planner={dictionary.planner}
+          variant="ghost"
+          size="sm"
+          className="mx-auto mt-9 flex h-auto w-fit bg-transparent p-0 text-[15px] font-bold leading-[1.5] text-[#403229] underline decoration-[#403229]/70 underline-offset-2 shadow-none hover:bg-transparent hover:text-[#403229]/75"
+        >
+          Not sure on group size? Ask a planner - we&apos;ll figure it out together.
+        </PlannerDialogButton>
       </div>
     </section>
   );
 }
 
-function BestTimeSection() {
-  const months = [
-    ["Jan", "best"],
-    ["Feb", "best"],
-    ["Mar", "good"],
-    ["Apr", "off"],
-    ["May", "off"],
-    ["Jun", "good"],
-    ["Jul", "best"],
-    ["Aug", "best"],
-    ["Sep", "best"],
-    ["Oct", "best"],
-    ["Nov", "good"],
-    ["Dec", "good"]
-  ];
-  const styles: Record<string, string> = {
-    best: "bg-[#2d8f60] text-white",
-    good: "bg-[var(--astra-primary-amber)] text-white",
-    off: "bg-[#d8d2c7] text-[#403229]/68"
+function IncludedImageSlider({ images }: { images: { src: string; alt: string }[] }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const hasMultipleImages = images.length > 1;
+
+  const showPrevious = () => {
+    setActiveIndex((index) => (index === 0 ? images.length - 1 : index - 1));
+  };
+
+  const showNext = () => {
+    setActiveIndex((index) => (index === images.length - 1 ? 0 : index + 1));
   };
 
   return (
-    <section className="bg-[#fff4dc] py-[72px]">
+    <div className="relative min-h-[357px] overflow-hidden rounded-[8px] bg-[#403229]">
+      {images.map((image, index) => (
+        <Image
+          key={image.src}
+          src={image.src}
+          alt={index === activeIndex ? image.alt : ""}
+          fill
+          sizes="340px"
+          loading="eager"
+          unoptimized
+          aria-hidden={index === activeIndex ? undefined : true}
+          className={`object-cover transition-opacity duration-300 ${index === activeIndex ? "opacity-100" : "opacity-0"}`}
+        />
+      ))}
+      {hasMultipleImages ? (
+        <>
+          <button
+            type="button"
+            onClick={showPrevious}
+            className="absolute left-0 top-1/2 z-20 grid h-10 w-14 -translate-y-1/2 place-items-center rounded-r-[8px] bg-[#f8f2e9] text-[#403229] shadow-[0_10px_22px_rgba(64,50,41,0.12)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e2b87f]"
+            aria-label="Previous included image"
+          >
+            <ChevronLeft className="size-6" aria-hidden="true" />
+          </button>
+          <button
+            type="button"
+            onClick={showNext}
+            className="absolute right-0 top-1/2 z-20 grid h-10 w-14 -translate-y-1/2 place-items-center rounded-l-[8px] bg-[#f8f2e9] text-[#403229] shadow-[0_10px_22px_rgba(64,50,41,0.12)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e2b87f]"
+            aria-label="Next included image"
+          >
+            <ChevronRight className="size-6" aria-hidden="true" />
+          </button>
+        </>
+      ) : null}
+    </div>
+  );
+}
+
+function BestTimeSection({ dictionary }: TripPageProps) {
+  const seasons = [
+    {
+      title: "Jul - Oct",
+      dot: "#f2e8dc",
+      description: "Peak migration. River crossings most frequent. Best overall wildlife."
+    },
+    {
+      title: "Jan - Mar",
+      dot: "#ead9c3",
+      description: "Calving season in southern Serengeti. Predator action is incredible."
+    },
+    {
+      title: "Nov - Dec",
+      dot: "#e2b87f",
+      description: "Green season. Lush scenery, fewer crowds, lower prices."
+    }
+  ];
+
+  return (
+    <section className="bg-[#F8EEDD] pb-[72px] pt-[76px]">
       <div className={pageContainer}>
-        <h2 className="text-center text-[25px] font-semibold leading-[1.3]">Best time for this safari</h2>
-        <p className="mx-auto mt-3 max-w-[600px] text-center text-[14px] font-semibold leading-[1.6] text-[#403229]/62">
-          River crossing season is strongest from July to October, with excellent wildlife windows in January, February, November, and December.
-        </p>
-        <div className="mt-8 overflow-x-auto rounded-[10px] border border-[#403229]/10 bg-white p-3 shadow-[0_12px_30px_rgba(64,50,41,0.05)]">
-          <div className="grid min-w-[760px] grid-cols-12 gap-1">
-            {months.map(([month, status]) => (
-              <div key={month} className={`grid h-[68px] place-items-center rounded-[6px] text-[13px] font-bold ${styles[status]}`}>
-                {month}
-              </div>
-            ))}
-          </div>
+        <div className="mx-auto flex max-w-[1100px] items-center gap-8">
+          <div className="h-[2px] flex-1 bg-[#e7ded1]" />
+          <h2 className="shrink-0 text-center text-[27px] font-medium leading-[1.3] text-[#403229]">Best time for this safari</h2>
+          <div className="h-[2px] flex-1 bg-[#e7ded1]" />
         </div>
-        <div className="mt-5 flex flex-wrap justify-center gap-5 text-[12px] font-bold text-[#403229]/62">
-          <span className="inline-flex items-center gap-2"><span className="size-3 rounded-full bg-[#2d8f60]" />Best</span>
-          <span className="inline-flex items-center gap-2"><span className="size-3 rounded-full bg-[var(--astra-primary-amber)]" />Good</span>
-          <span className="inline-flex items-center gap-2"><span className="size-3 rounded-full bg-[#d8d2c7]" />Off-season</span>
+        <div className="mx-auto mt-5 grid max-w-[930px] overflow-hidden bg-white shadow-[0_16px_35px_rgba(64,50,41,0.05)] md:grid-cols-3 md:divide-x md:divide-[#f0e8dc]">
+          {seasons.map((season) => (
+            <article key={season.title} className="min-h-[100px] px-6 pb-7 pt-6">
+              <h3 className="flex items-center gap-3 text-[16px] font-medium leading-none text-[#e2b87f]">
+                <span className="size-3 rounded-full opacity-70" style={{ backgroundColor: season.dot }} aria-hidden="true" />
+                {season.title}
+              </h3>
+              <p className="mt-5 text-[13px] font-semibold leading-[1.6] text-[#403229]/76">{season.description}</p>
+            </article>
+          ))}
         </div>
+        <PlannerDialogButton
+          planner={dictionary.planner}
+          variant="ghost"
+          size="sm"
+          className="mx-auto mt-9 flex h-auto w-fit bg-transparent p-0 text-[15px] font-bold leading-[1.5] text-[#403229] underline decoration-[#403229]/70 underline-offset-2 shadow-none hover:bg-transparent hover:text-[#403229]/75"
+        >
+          Not sure on group size? Ask a planner - we&apos;ll figure it out together.
+        </PlannerDialogButton>
       </div>
     </section>
   );
@@ -618,48 +920,56 @@ function BestTimeSection() {
 
 function WidePlannerBand({ dictionary }: TripPageProps) {
   return (
-    <section className="relative bg-[var(--astra-dark-espresso)] py-[76px] text-white">
-      <Image src="/assets/figma/final-cta-backgroundimage.png" alt="" fill sizes="100vw" className="object-cover opacity-45" aria-hidden="true" />
-      <div className="absolute inset-0 bg-[rgba(44,26,14,0.82)]" />
-      <div className="relative mx-auto grid max-w-[1200px] gap-10 px-6 md:grid-cols-[1fr_430px] md:items-center">
+    <section className="relative overflow-hidden bg-[var(--astra-dark-espresso)] py-[58px] text-white">
+      <Image src="/assets/trips/safari-planner-image-5.png" alt="" fill sizes="100vw" className="object-cover object-[56%_center] opacity-75" aria-hidden="true" />
+      <div className="absolute inset-0 bg-[rgba(64,50,41,0.72)]" />
+      <div className="absolute inset-y-0 left-0 w-[58%] bg-gradient-to-r from-[#403229] via-[#403229] to-transparent" />
+      <div className="relative mx-auto grid max-w-[1100px] gap-8 px-6 md:grid-cols-[360px_390px_minmax(0,1fr)] md:items-center">
         <div>
           <p className="text-[13px] font-bold uppercase tracking-[0.05em] text-[var(--astra-primary-amber)]">Free, no commitment</p>
-          <h2 className="mt-3 text-[34px] font-semibold leading-[1.14]">Talk to a safari planner</h2>
+          <h2 className="mt-3 text-[31px] font-semibold leading-[1.14]">Talk to a safari planner</h2>
           <p className="mt-4 max-w-[430px] text-[15px] font-semibold leading-[1.6] text-white/72">
             This morning is yours to enjoy at a relaxed pace. Have a peaceful breakfast at the lodge and
           </p>
         </div>
-        <div className="rounded-[2px] bg-white/95 p-5 text-[#403229]">
-          <PlannerFields />
-          <PlannerDialogButton planner={dictionary.planner} className={`mt-4 h-[46px] w-full text-[15px] font-bold ${amberButton}`}>
-            Request a quote
-          </PlannerDialogButton>
-        </div>
+        <LeadPlanner
+          planner={dictionary.planner}
+          className="w-full max-w-[390px] justify-self-center rounded-[10px] border-[#403229]/12 bg-white p-6 text-[#403229] shadow-[0_18px_45px_rgba(24,18,13,0.28)] backdrop-blur-none md:-translate-x-[60px]"
+        />
       </div>
     </section>
   );
 }
 
 function ReviewsSection() {
+  const reviews = [
+    { image: "/assets/figma/review-family.jpg", alt: "Safari guests posing beside vehicles" },
+    { image: "/assets/figma/review-family.jpg", alt: "Safari guests posing beside vehicles" },
+    { image: "/assets/figma/review-jeep.jpg", alt: "Guests riding in a safari vehicle" },
+    { image: "/assets/figma/review-jeep.jpg", alt: "Guests riding in a safari vehicle" }
+  ];
+
   return (
-    <section id="reviews" className="bg-[#403229] px-6 py-[76px] text-white">
-      <div className="mx-auto max-w-[1200px]">
-        <p className="text-center text-[13px] font-bold uppercase tracking-[0.08em] text-[var(--astra-primary-amber)]">Verified Reviews</p>
-        <h2 className="mt-4 text-center text-[34px] font-semibold leading-[1.15]">Hear what our travellers say about this safari</h2>
-        <p className="mx-auto mt-3 max-w-[560px] text-center text-[15px] font-semibold leading-[1.6] text-white/58">
-          Real feedback from guests who travelled with Astra guides across northern Tanzania.
+    <section id="reviews" className="bg-[#403229] px-6 py-[86px] text-white">
+      <div className="mx-auto max-w-[1320px]">
+        <p className="text-center text-[13px] font-bold uppercase leading-none tracking-[0.28em] text-[#e2b87f]">Experiences we offer</p>
+        <h2 className="mt-7 text-center text-[48px] font-medium leading-[1.08] text-white">Customer reviews</h2>
+        <p className="mx-auto mt-7 max-w-[560px] text-center text-[21px] font-medium leading-[1.45] text-white/58">
+          A short and simple subheading can be added here
         </p>
-        <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-          {[0, 1, 2, 3].map((item) => (
-            <article key={item} className="rounded-[2px] bg-white/9 p-4">
-              <div className="relative h-[124px] overflow-hidden rounded-[2px]">
-                <Image src={item % 2 ? "/assets/figma/review-jeep.jpg" : "/assets/figma/review-family.jpg"} alt="Customer safari review" fill sizes="120px" className="object-cover" />
+        <div className="mt-[58px] grid gap-x-6 gap-y-7 lg:grid-cols-2">
+          {reviews.map((review, index) => (
+            <article key={`${review.image}-${index}`} className="grid gap-6 rounded-[10px] border border-white/16 bg-white/[0.075] p-6 shadow-[0_18px_44px_rgba(0,0,0,0.12)] sm:grid-cols-[220px_minmax(0,1fr)]">
+              <div className="relative h-[158px] overflow-hidden rounded-[8px] bg-[#2c1f18] sm:h-[178px]">
+                <Image src={review.image} alt={review.alt} fill sizes="220px" className="object-cover" />
               </div>
-              <div className="mt-4">
-                <RatingStars className="size-4" />
-                <p className="mt-3 text-[14px] font-semibold leading-[1.6] text-white/84">&quot;(Testimonial) lorem ipsum dolor sit amet, consec adipiscing sed do eiusmod.&quot;</p>
-                <p className="mt-3 text-[13px] font-bold">Full name</p>
-                <p className="text-[12px] font-semibold text-white/55">Company name / details.</p>
+              <div className="flex flex-col justify-center">
+                <RatingStars className="size-5" />
+                <p className="mt-7 text-[20px] font-medium leading-[1.42] text-white">
+                  &quot;(Testimonial) lorem ipsum dolor sit amet, consec adipiscing sed do eiusmod.&quot;
+                </p>
+                <p className="mt-2 text-[20px] font-bold leading-[1.2] text-white">Full name</p>
+                <p className="mt-2 text-[18px] font-medium leading-[1.25] text-white/72">Company name / details.</p>
               </div>
             </article>
           ))}
@@ -764,81 +1074,11 @@ function FaqSection({ dictionary }: TripPageProps) {
   );
 }
 
-function FinalCtaFooter({ dictionary, compact = false }: TripPageProps & { compact?: boolean }) {
+function FinalCtaFooter({ dictionary }: TripPageProps) {
   return (
-    <section className={`relative bg-[#403229] text-white ${compact ? "pt-[20px]" : "pt-[72px]"}`}>
-      <div className="relative z-10 mx-auto max-w-[1200px] px-6">
-        <div className="relative translate-y-[58px] rounded-[18px] bg-[var(--astra-cream-panel)] p-7 text-[#403229] shadow-[0_24px_55px_rgba(20,12,6,0.22)] md:p-10 lg:p-12">
-          <div className="grid gap-8 lg:grid-cols-[1fr_410px] lg:items-center">
-            <div>
-              <p className="inline-flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.08em] text-[var(--astra-primary-amber)]">
-                <Award className="size-4" aria-hidden="true" />
-                Experiences we offer
-              </p>
-              <h2 className="mt-4 text-[42px] font-semibold leading-[1.1] md:text-[49px]">Still thinking about it?</h2>
-              <p className="mt-3 text-[29px] font-semibold leading-[1.18] text-[var(--astra-primary-amber)]">Talk to a planner first - it&apos;s free.</p>
-              <p className="mt-5 max-w-[560px] text-[15px] font-semibold leading-[1.65] text-[#403229]/72">
-                Just a 10-minute conversation with someone who knows Tanzania inside out. Tell us your dates, your budget, and what matters most - we&apos;ll tell you honestly whether we&apos;re the right fit.
-              </p>
-              <p className="mt-6 flex flex-wrap gap-x-8 gap-y-2 text-[15px] font-bold text-[#403229]/62">
-                <span>{dictionary.topBar.phone}</span>
-                <span>{dictionary.topBar.email}</span>
-              </p>
-            </div>
-            <div className="rounded-[15px] bg-white p-6 text-[#2c1a0e] shadow-[0_18px_45px_rgba(64,50,41,0.12)]">
-              <p className="text-[13px] font-bold uppercase tracking-[0.05em] text-[var(--astra-primary-amber)]">Free, no commitment</p>
-              <h3 className="mt-2 text-[25px] font-semibold leading-[1.14]">Talk to a safari planner</h3>
-              <p className="mt-4 text-[12px] font-semibold leading-[1.4] text-[#403229]/68">We reply within 4 hours - by email or WhatsApp, your choice.</p>
-              <PlannerFields className="mt-6" />
-              <PlannerDialogButton planner={dictionary.planner} className={`mt-4 h-[46px] w-full text-[15px] font-bold ${amberButton}`}>
-                Request a quote
-              </PlannerDialogButton>
-            </div>
-          </div>
-        </div>
-      </div>
-      <TripFooter />
-    </section>
-  );
-}
-
-function TripFooter() {
-  return (
-    <footer className="px-6 pb-8 pt-[126px]">
-      <div className="mx-auto flex max-w-[1280px] flex-col items-center gap-[29px]">
-        <div className="relative h-[104px] w-[246px]">
-          <Image src="/assets/figma/footer-logo-upload.png" alt="Astra Tanzania Safaris" fill sizes="246px" className="object-contain" />
-        </div>
-        <nav className="flex flex-wrap justify-center gap-12 text-[16px] font-semibold leading-[1.5] text-white/70" aria-label="Footer">
-          {navLinks.map((link) => (
-            <Link href={link.href} key={link.label} className="hover:text-white">
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-        <div className="flex gap-3">
-          {[
-            { label: "Facebook", Icon: Facebook },
-            { label: "Instagram", Icon: Instagram },
-            { label: "YouTube", Icon: Youtube }
-          ].map(({ label, Icon }) => (
-            <a key={label} href="#" aria-label={label} className="grid size-10 place-items-center rounded-full bg-[rgba(200,134,10,0.16)] text-[var(--astra-primary-amber)] transition hover:bg-astra-amber hover:text-white">
-              <Icon className="size-4" aria-hidden="true" />
-            </a>
-          ))}
-        </div>
-        <div className="h-px w-full bg-white/15" />
-        <div className="flex w-full flex-col gap-4 text-[12px] font-semibold leading-4 text-white md:flex-row md:items-center md:justify-between">
-          <p>(c)2025 Chalk UI - All Rights Reserved.</p>
-          <nav className="flex flex-wrap gap-4">
-            <a href="#">Terms of Service</a>
-            <span className="text-white/30">|</span>
-            <a href="#">Cookies Settings</a>
-            <span className="text-white/30">|</span>
-            <a href="#">Privacy Policy</a>
-          </nav>
-        </div>
-      </div>
-    </footer>
+    <>
+      <SiteFinalCta dictionary={dictionary} />
+      <SiteFooter locale={defaultLocale} dictionary={dictionary} />
+    </>
   );
 }
