@@ -237,7 +237,7 @@ function ItinerariesSection({ locale, dictionary }: { locale: Locale; dictionary
         </div>
         <div className="relative z-[100] mt-8 text-center">
           <Button asChild className="h-[54px] rounded-[9px] bg-astra-gold px-6 text-base font-bold text-astra-cocoa hover:bg-astra-gold/90">
-            <Link href={localizedHref(locale, "/itineraries")}>{dictionary.itineraries.cta}</Link>
+            <Link href={localizedHref(locale, "/trips")}>{dictionary.itineraries.cta}</Link>
           </Button>
         </div>
       </div>

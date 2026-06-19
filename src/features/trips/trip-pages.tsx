@@ -19,15 +19,15 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
 
 import { SiteFinalCta } from "@/components/layouts/site-final-cta";
 import { SiteFooter } from "@/components/layouts/site-footer";
 import { PlannerDialogButton } from "@/components/planner/planner-dialog";
 import { LeadPlanner } from "@/features/home/lead-planner";
 import { defaultLocale } from "@/i18n/config";
-import type { HomeDictionary } from "@/i18n/types";
-import { faqs, galleryImages, includedItems, itineraryDays, sharedTripSlug, tripCards } from "@/features/trips/trip-data";
+import type { HomeDictionary, PlannerField } from "@/i18n/types";
+import { faqs, galleryImages, includedItems, itineraryDays, sharedTripSlug, type TripCard, tripCards } from "@/features/trips/trip-data";
 
 type TripPageProps = {
   dictionary: HomeDictionary;
@@ -35,14 +35,14 @@ type TripPageProps = {
 
 const navLinks = [
   { label: "Itineraries", href: "/trips" },
-  { label: "Safaris", href: "/safaris" },
-  { label: "Kilimanjaro", href: "/kilimanjaro" },
-  { label: "Discover Tanzania", href: "/discover-tanzania" }
+  { label: "Safaris", href: "/trips" },
+  { label: "Kilimanjaro", href: "/trips" },
+  { label: "Discover Tanzania", href: "/trips" }
 ];
 
 const pageContainer = "mx-auto max-w-[1200px] px-6";
 const amberButton =
-  "rounded-[10px] bg-astra-amber text-white shadow-none transition hover:bg-[color:var(--astra-primary-amber-hover)]";
+  "rounded-[10px] bg-[#E2B87F] text-[#403229] shadow-none transition hover:bg-[#d8aa6c]";
 
 const itinerarySafariSlides = galleryImages;
 const itineraryAccommodationSlides = [
@@ -79,6 +79,27 @@ const includedImageSlides = [
 ];
 
 export function TripsListPage({ dictionary }: TripPageProps) {
+  const tripTypes = Array.from(new Set(tripCards.map((trip) => trip.tripType)));
+  const minPrice = Math.min(...tripCards.map((trip) => trip.priceValue));
+  const maxTripPrice = Math.max(...tripCards.map((trip) => trip.priceValue));
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [maxPrice, setMaxPrice] = useState(maxTripPrice);
+  const filteredCards = tripCards.filter((trip) => {
+    const matchesType = selectedTypes.length === 0 || selectedTypes.includes(trip.tripType);
+    const matchesPrice = trip.priceValue <= maxPrice;
+
+    return matchesType && matchesPrice;
+  });
+
+  function toggleTripType(type: string) {
+    setSelectedTypes((current) => (current.includes(type) ? current.filter((item) => item !== type) : [...current, type]));
+  }
+
+  function resetFilters() {
+    setSelectedTypes([]);
+    setMaxPrice(maxTripPrice);
+  }
+
   return (
     <div className="min-h-screen bg-[#fdfaf3] text-[#403229]">
       <TripHeader dictionary={dictionary} />
@@ -97,7 +118,17 @@ export function TripsListPage({ dictionary }: TripPageProps) {
             </h1>
           </div>
 
-          <TripFilterBar />
+          <TripFilterBar
+            tripTypes={tripTypes}
+            selectedTypes={selectedTypes}
+            minPrice={minPrice}
+            maxTripPrice={maxTripPrice}
+            maxPrice={maxPrice}
+            resultCount={filteredCards.length}
+            onToggleType={toggleTripType}
+            onPriceChange={setMaxPrice}
+            onResetFilters={resetFilters}
+          />
 
           <div className="mt-[34px] text-center">
             <p className="inline-flex rounded-full border border-[color:var(--astra-primary-amber)] bg-[#fff8e8] px-5 py-2 text-[12px] font-bold leading-none text-[var(--astra-primary-amber)]">
@@ -105,7 +136,16 @@ export function TripsListPage({ dictionary }: TripPageProps) {
             </p>
           </div>
 
-          <TripCardGrid className="mt-[57px]" />
+          {filteredCards.length > 0 ? (
+            <TripCardGrid cards={filteredCards} className="mt-[57px]" />
+          ) : (
+            <div className="mx-auto mt-[57px] max-w-[680px] rounded-[8px] border border-[#403229]/12 bg-white p-8 text-center shadow-[0_14px_34px_rgba(64,50,41,0.08)]">
+              <p className="text-[18px] font-bold leading-[1.35]">No trips match those filters.</p>
+              <button type="button" onClick={resetFilters} className="mt-4 text-[14px] font-bold text-[var(--astra-primary-amber)] underline underline-offset-4">
+                Reset filters
+              </button>
+            </div>
+          )}
 
           <p className="mx-auto mt-[88px] max-w-[960px] text-center text-[15px] font-semibold leading-[1.6] text-[#403229]/70">
             Private guided Tanzania safaris - planned for you, priced in USD, backed by 15 years of getting Americans to Africa.
@@ -121,14 +161,15 @@ export function TripsListPage({ dictionary }: TripPageProps) {
 export function TripDetailPage({ dictionary }: TripPageProps) {
   return (
     <div className="min-h-screen bg-[#fdfaf3] text-[#403229]">
-      <TripHeader dictionary={dictionary} showBreadcrumb />
+      <TripHeader dictionary={dictionary} />
       <main>
         <section className="mx-auto max-w-[1200px] px-6 pb-[76px] pt-[65px]">
+          <TripBreadcrumb />
           <h1 className="text-[31px] font-semibold leading-[1.14] tracking-[-0.01em] text-[#403229] md:text-[37px]">
             Great Migration & River Crossing in Serengeti
           </h1>
 
-          <div className="mt-[26px] grid gap-7 lg:grid-cols-[708px_448px]">
+          <div className="mt-[26px] grid items-start gap-7 lg:grid-cols-[708px_448px]">
             <HeroGallery />
             <TripSummaryCard dictionary={dictionary} />
           </div>
@@ -178,7 +219,7 @@ export function TripDetailPage({ dictionary }: TripPageProps) {
   );
 }
 
-function TripHeader({ dictionary, showBreadcrumb = false }: TripPageProps & { showBreadcrumb?: boolean }) {
+function TripHeader({ dictionary }: TripPageProps) {
   return (
     <header className="bg-[#fdfaf3] text-[#403229]">
       <div className="bg-[var(--astra-primary-amber)]">
@@ -225,43 +266,110 @@ function TripHeader({ dictionary, showBreadcrumb = false }: TripPageProps & { sh
           </PlannerDialogButton>
         </div>
       </div>
-      {showBreadcrumb ? (
-        <div className="border-b border-[#403229]/8 bg-[#fdfaf3]">
-          <div className={`${pageContainer} py-3 text-[13px] font-semibold leading-none text-[#403229]/55`}>
-            Tanzania <span className="mx-2 text-[#403229]/35">&gt;</span> Safari <span className="mx-2 text-[#403229]/35">&gt;</span>{" "}
-            <span className="text-[#403229]/80">Great Migration</span>
-          </div>
-        </div>
-      ) : null}
     </header>
   );
 }
 
-function TripFilterBar() {
+function TripBreadcrumb() {
+  return (
+    <nav className="mb-[47px] text-[13px] font-semibold leading-none text-[#403229]/55" aria-label="Breadcrumb">
+      <Link href="/trips" className="transition hover:text-[#403229]">
+        Tanzania
+      </Link>
+      <span className="mx-2 text-[#403229]/35">&gt;</span>
+      <Link href="/trips" className="transition hover:text-[#403229]">
+        Safari
+      </Link>
+      <span className="mx-2 text-[#403229]/35">&gt;</span>
+      <span className="text-[#403229]/80">Great Migration</span>
+    </nav>
+  );
+}
+
+function TripFilterBar({
+  tripTypes,
+  selectedTypes,
+  minPrice,
+  maxTripPrice,
+  maxPrice,
+  resultCount,
+  onToggleType,
+  onPriceChange,
+  onResetFilters
+}: {
+  tripTypes: string[];
+  selectedTypes: string[];
+  minPrice: number;
+  maxTripPrice: number;
+  maxPrice: number;
+  resultCount: number;
+  onToggleType: (type: string) => void;
+  onPriceChange: (price: number) => void;
+  onResetFilters: () => void;
+}) {
   return (
     <div className="mx-auto mt-[72px] grid max-w-[766px] overflow-hidden rounded-[2px] border border-[#403229]/12 bg-white md:grid-cols-[1fr_1.15fr]">
       <div className="border-b border-[#403229]/12 px-5 py-4 md:border-b-0 md:border-r">
-        <p className="text-[12px] font-bold leading-[1.4]">Duration:</p>
-        <div className="mt-4 flex flex-wrap gap-5">
-          {[1, 2, 3].map((item) => (
-            <label key={item} className="inline-flex items-center gap-2 text-[12px] font-semibold text-[#403229]/60">
-              <span className="size-[18px] border border-[#403229]/12 bg-[#fdfaf3]" aria-hidden="true" />
-              2 to 5 days
-            </label>
-          ))}
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-[12px] font-bold leading-[1.4]">Trip type:</p>
+          {selectedTypes.length > 0 ? (
+            <button type="button" onClick={onResetFilters} className="text-[11px] font-bold leading-none text-[var(--astra-primary-amber)] underline underline-offset-2">
+              Clear
+            </button>
+          ) : null}
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2.5">
+          {tripTypes.map((type) => {
+            const selected = selectedTypes.includes(type);
+
+            return (
+              <button
+                key={type}
+                type="button"
+                onClick={() => onToggleType(type)}
+                className={`inline-flex h-[28px] items-center gap-2 rounded-full border px-3 text-[11px] font-bold leading-none transition ${
+                  selected
+                    ? "border-[var(--astra-primary-amber)] bg-[#fff4dc] text-[#403229]"
+                    : "border-[#403229]/12 bg-[#fdfaf3] text-[#403229]/62 hover:border-[var(--astra-primary-amber)]"
+                }`}
+                aria-pressed={selected}
+              >
+                <span className={`grid size-[14px] place-items-center rounded-full border ${selected ? "border-[var(--astra-primary-amber)] bg-[var(--astra-primary-amber)] text-white" : "border-[#403229]/20"}`}>
+                  {selected ? <Check className="size-2.5" aria-hidden="true" /> : null}
+                </span>
+                {type}
+              </button>
+            );
+          })}
         </div>
       </div>
       <div className="px-5 py-4">
-        <p className="text-[12px] font-bold leading-[1.4]">Filter by price:</p>
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-[12px] font-bold leading-[1.4]">Filter by price:</p>
+          <p className="text-[11px] font-bold leading-none text-[#403229]/58">{resultCount} trips</p>
+        </div>
         <div className="mt-4">
           <div className="relative h-[14px]">
             <div className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 bg-[rgba(200,134,10,0.45)]" />
             <div className="absolute left-0 top-1/2 size-[14px] -translate-y-1/2 rounded-full bg-[var(--astra-primary-amber)]" />
-            <div className="absolute left-[74%] top-1/2 size-[14px] -translate-y-1/2 rounded-full bg-[var(--astra-primary-amber)]" />
+            <input
+              type="range"
+              min={minPrice}
+              max={maxTripPrice}
+              step={100}
+              value={maxPrice}
+              onChange={(event) => onPriceChange(Number(event.currentTarget.value))}
+              className="absolute inset-x-0 top-1/2 h-[18px] -translate-y-1/2 cursor-pointer opacity-0"
+              aria-label="Maximum trip price"
+            />
+            <div
+              className="absolute top-1/2 size-[14px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--astra-primary-amber)]"
+              style={{ left: `${((maxPrice - minPrice) / (maxTripPrice - minPrice)) * 100}%` }}
+            />
           </div>
           <div className="mt-2 flex justify-between text-[12px] font-semibold text-[var(--astra-primary-amber)]">
-            <span>500$</span>
-            <span>5043$</span>
+            <span>${minPrice.toLocaleString("en-US")}</span>
+            <span>${maxPrice.toLocaleString("en-US")}</span>
           </div>
         </div>
       </div>
@@ -269,12 +377,12 @@ function TripFilterBar() {
   );
 }
 
-function TripCardGrid({ className = "", limit }: { className?: string; limit?: number }) {
-  const cards = typeof limit === "number" ? tripCards.slice(0, limit) : tripCards;
+function TripCardGrid({ className = "", limit, cards = tripCards }: { className?: string; limit?: number; cards?: TripCard[] }) {
+  const visibleCards = typeof limit === "number" ? cards.slice(0, limit) : cards;
 
   return (
     <div className={`mx-auto grid max-w-[1111px] gap-x-[18px] gap-y-[14px] md:grid-cols-2 lg:grid-cols-3 ${className}`}>
-      {cards.map((trip, index) => (
+      {visibleCards.map((trip, index) => (
         <Link
           key={`${trip.slug}-${index}`}
           href={`/trip/${sharedTripSlug}`}
@@ -352,7 +460,7 @@ function HeroGallery() {
 
   return (
     <div>
-      <div className="relative h-[360px] overflow-hidden rounded-[2px] bg-[#403229]">
+      <div className="relative h-[420px] overflow-hidden rounded-[2px] bg-[#403229] lg:h-[574px]">
         <button
           type="button"
           onClick={() => setIsLightboxOpen(true)}
@@ -390,7 +498,7 @@ function HeroGallery() {
             key={image.src}
             type="button"
             onClick={() => setCurrentIndex(index)}
-            className={`relative h-[110px] overflow-hidden rounded-[2px] outline-none transition focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)] ${
+            className={`relative h-[118px] overflow-hidden rounded-[2px] outline-none transition focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)] ${
               index === currentIndex ? "ring-2 ring-[var(--astra-primary-amber)] ring-offset-2 ring-offset-[#fdfaf3]" : "opacity-80 hover:opacity-100"
             }`}
             aria-label={`Show gallery image ${index + 1}: ${image.alt}`}
@@ -519,10 +627,10 @@ function TripSummaryCard({ dictionary }: TripPageProps) {
             <dd className="font-bold">3 days</dd>
           </div>
         </dl>
-        <p className="mt-5 min-h-[206px] text-[15px] font-semibold leading-[1.65] text-[#403229]/66">
+        <p className="mt-5 text-[15px] font-semibold leading-[1.65] text-[#403229]/66">
           This morning is yours to enjoy at a relaxed pace. Have a peaceful breakfast at the lodge and take some time to soak in the surroundings before your departure. Most flights usually depart around 10-11 AM, so you will leave the lodge at a comfortable time.
         </p>
-        <div className="mt-auto border-t border-[#403229]/13 pt-5">
+        <div className="mt-8 border-t border-[#403229]/13 pt-5">
           <PlannerDialogButton planner={dictionary.planner} className={`h-[54px] w-full px-4 text-[15px] font-bold ${amberButton}`}>
             Book a Safari
           </PlannerDialogButton>
@@ -921,9 +1029,9 @@ function BestTimeSection({ dictionary }: TripPageProps) {
 function WidePlannerBand({ dictionary }: TripPageProps) {
   return (
     <section className="relative overflow-hidden bg-[var(--astra-dark-espresso)] py-[58px] text-white">
-      <Image src="/assets/trips/safari-planner-image-5.png" alt="" fill sizes="100vw" className="object-cover object-[56%_center] opacity-75" aria-hidden="true" />
-      <div className="absolute inset-0 bg-[rgba(64,50,41,0.72)]" />
-      <div className="absolute inset-y-0 left-0 w-[58%] bg-gradient-to-r from-[#403229] via-[#403229] to-transparent" />
+      <Image src="/assets/trips/safari-planner-image-5-clean.png" alt="" fill sizes="100vw" className="object-cover object-[56%_center]" aria-hidden="true" />
+      <div className="absolute inset-0 bg-[rgba(64,50,41,0.46)]" />
+      <div className="absolute inset-y-0 left-0 w-[58%] bg-[linear-gradient(90deg,rgba(64,50,41,0.9)_0%,rgba(64,50,41,0.78)_54%,rgba(64,50,41,0)_100%)]" />
       <div className="relative mx-auto grid max-w-[1100px] gap-8 px-6 md:grid-cols-[360px_390px_minmax(0,1fr)] md:items-center">
         <div>
           <p className="text-[13px] font-bold uppercase tracking-[0.05em] text-[var(--astra-primary-amber)]">Free, no commitment</p>
@@ -932,12 +1040,97 @@ function WidePlannerBand({ dictionary }: TripPageProps) {
             This morning is yours to enjoy at a relaxed pace. Have a peaceful breakfast at the lodge and
           </p>
         </div>
-        <LeadPlanner
-          planner={dictionary.planner}
-          className="w-full max-w-[390px] justify-self-center rounded-[10px] border-[#403229]/12 bg-white p-6 text-[#403229] shadow-[0_18px_45px_rgba(24,18,13,0.28)] backdrop-blur-none md:-translate-x-[60px]"
-        />
+        <InlinePlannerForm planner={dictionary.planner} className="md:-translate-x-[60px]" />
       </div>
     </section>
+  );
+}
+
+function InlinePlannerForm({ planner, className = "" }: { planner: HomeDictionary["planner"]; className?: string }) {
+  const [values, setValues] = useState<Record<string, string>>(() => Object.fromEntries(planner.fields.map((field) => [field.name, ""])));
+  const [invalidFields, setInvalidFields] = useState<string[]>([]);
+  const [submitted, setSubmitted] = useState(false);
+
+  function updateValue(name: string, value: string) {
+    setValues((current) => ({ ...current, [name]: value }));
+    setInvalidFields((current) => current.filter((fieldName) => fieldName !== name));
+  }
+
+  function submitForm(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const missing = planner.fields.filter((field) => !values[field.name]?.trim()).map((field) => field.name);
+
+    if (missing.length > 0) {
+      setInvalidFields(missing);
+      setSubmitted(false);
+      return;
+    }
+
+    setSubmitted(true);
+  }
+
+  return (
+    <form className={`grid w-full max-w-[390px] gap-[15px] justify-self-center ${className}`} aria-label={planner.title} onSubmit={submitForm} noValidate>
+      <InlinePlannerField field={planner.fields[0]} value={values[planner.fields[0].name] ?? ""} invalid={invalidFields.includes(planner.fields[0].name)} onChange={updateValue} />
+      <div className="grid gap-[15px] sm:grid-cols-2 sm:gap-[18px]">
+        {planner.fields.slice(1, 3).map((field) => (
+          <InlinePlannerField key={field.name} field={field} value={values[field.name] ?? ""} invalid={invalidFields.includes(field.name)} onChange={updateValue} />
+        ))}
+      </div>
+      <InlinePlannerField field={planner.fields[3]} value={values[planner.fields[3].name] ?? ""} invalid={invalidFields.includes(planner.fields[3].name)} onChange={updateValue} />
+      <button
+        type="submit"
+        className="flex h-[42px] items-center rounded-[6px] bg-[#E2B87F] px-[18px] text-left text-[15px] font-bold leading-none text-[#403229] transition hover:bg-[#d8aa6c] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+      >
+        <span className="me-auto">Request a quote</span>
+        <ArrowRight className="size-5" aria-hidden="true" />
+      </button>
+      {submitted ? <p className="text-center text-[12px] font-bold leading-[1.5] text-white">{planner.success}</p> : null}
+    </form>
+  );
+}
+
+function InlinePlannerField({
+  field,
+  value,
+  invalid,
+  onChange
+}: {
+  field: PlannerField;
+  value: string;
+  invalid: boolean;
+  onChange: (name: string, value: string) => void;
+}) {
+  const fieldClassName =
+    "h-[46px] w-full rounded-[4px] border border-[#ead9c4] bg-[#fdfaf3] px-[18px] text-[13px] font-bold leading-none text-[#403229] shadow-none outline-none placeholder:text-[#403229]/58 focus:border-[#E2B87F] focus:ring-2 focus:ring-[#E2B87F]/45";
+
+  return field.type === "select" ? (
+    <select
+      aria-label={field.label}
+      aria-invalid={invalid}
+      value={value}
+      onChange={(event) => onChange(field.name, event.currentTarget.value)}
+      className={`${fieldClassName} appearance-auto`}
+    >
+      <option value="">{field.placeholder}</option>
+      {field.options.map((option) => (
+        <option key={option} value={option}>
+          {option}
+        </option>
+      ))}
+    </select>
+  ) : (
+    <input
+      name={field.name}
+      type={field.type}
+      value={value}
+      placeholder={field.placeholder}
+      autoComplete={field.type === "email" ? "email" : field.type === "tel" ? "tel" : "name"}
+      aria-label={field.label}
+      aria-invalid={invalid}
+      onChange={(event) => onChange(field.name, event.currentTarget.value)}
+      className={fieldClassName}
+    />
   );
 }
 
@@ -959,7 +1152,7 @@ function ReviewsSection() {
         </p>
         <div className="mt-[58px] grid gap-x-6 gap-y-7 lg:grid-cols-2">
           {reviews.map((review, index) => (
-            <article key={`${review.image}-${index}`} className="grid gap-6 rounded-[10px] border border-white/16 bg-white/[0.075] p-6 shadow-[0_18px_44px_rgba(0,0,0,0.12)] sm:grid-cols-[220px_minmax(0,1fr)]">
+            <article key={`${review.image}-${index}`} className="grid gap-6 rounded-[10px] border border-white/30 bg-white/[0.075] p-6 shadow-[0_18px_44px_rgba(0,0,0,0.12)] sm:grid-cols-[220px_minmax(0,1fr)]">
               <div className="relative h-[158px] overflow-hidden rounded-[8px] bg-[#2c1f18] sm:h-[178px]">
                 <Image src={review.image} alt={review.alt} fill sizes="220px" className="object-cover" />
               </div>

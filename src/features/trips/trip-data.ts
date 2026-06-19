@@ -6,28 +6,41 @@ export type TripCard = {
   duration: string;
   route: string;
   season: string;
+  tripType: string;
+  priceValue: number;
   price: string;
   image: string;
   imageAlt: string;
 };
 
-const cardImages = [
-  "/assets/figma/itinerary-1.jpg",
-  "/assets/figma/itinerary-2.jpg",
-  "/assets/figma/itinerary-3.jpg",
-  "/assets/figma/itinerary-4.jpg",
-  "/assets/figma/itinerary-5.jpg",
-  "/assets/figma/itinerary-6.jpg"
-];
+const tripCardSeed = [
+  ["The Great Migration Classic", "7 nights", "Serengeti + Ngorongoro", "July-October", "Wildlife Safari", 1459, "/assets/figma/itinerary-1.jpg"],
+  ["Northern Circuit Safari", "5 nights", "Tarangire + Ngorongoro", "June-October", "Wildlife Safari", 1890, "/assets/figma/itinerary-2.jpg"],
+  ["Serengeti Fly-in Safari", "4 nights", "Serengeti + Arusha", "All seasons", "Luxury Safari", 2890, "/assets/figma/itinerary-3.jpg"],
+  ["Zanzibar After Safari", "6 nights", "Serengeti + Zanzibar", "July-October", "Zanzibar Extension", 2140, "/assets/figma/itinerary-5.jpg"],
+  ["Kilimanjaro & Safari", "8 nights", "Kilimanjaro + Tarangire", "January-March", "Kilimanjaro", 3340, "/assets/figma/itinerary-4.jpg"],
+  ["Family Safari Classic", "5 nights", "Lake Manyara + Ngorongoro", "All seasons", "Family Safari", 1690, "/assets/figma/itinerary-6.jpg"],
+  ["Private Migration Safari", "7 nights", "Serengeti + Mara River", "July-October", "Wildlife Safari", 2450, "/assets/figma/itinerary-1.jpg"],
+  ["Luxury Crater Safari", "4 nights", "Ngorongoro + Tarangire", "June-October", "Luxury Safari", 3120, "/assets/figma/itinerary-2.jpg"],
+  ["Zanzibar Wildlife Combo", "9 nights", "Serengeti + Stone Town", "All seasons", "Zanzibar Extension", 2760, "/assets/figma/itinerary-5.jpg"],
+  ["Short Family Safari", "3 nights", "Tarangire + Arusha", "All seasons", "Family Safari", 1290, "/assets/figma/itinerary-6.jpg"],
+  ["Kilimanjaro Private Add-on", "6 nights", "Kilimanjaro + Arusha", "January-March", "Kilimanjaro", 1990, "/assets/figma/itinerary-4.jpg"],
+  ["Classic Big Five Safari", "6 nights", "Serengeti + Ngorongoro", "June-October", "Wildlife Safari", 2190, "/assets/figma/itinerary-3.jpg"],
+  ["Honeymoon Safari", "7 nights", "Serengeti + Zanzibar", "All seasons", "Luxury Safari", 3590, "/assets/figma/itinerary-5.jpg"],
+  ["Family Migration Safari", "7 nights", "Serengeti + Ngorongoro", "July-October", "Family Safari", 2380, "/assets/figma/itinerary-1.jpg"],
+  ["Kilimanjaro Wildlife Escape", "9 nights", "Kilimanjaro + Serengeti", "June-October", "Kilimanjaro", 3860, "/assets/figma/itinerary-4.jpg"]
+] as const;
 
-export const tripCards: TripCard[] = Array.from({ length: 15 }, (_, index) => ({
+export const tripCards: TripCard[] = tripCardSeed.map(([title, duration, route, season, tripType, priceValue, image], index) => ({
   slug: sharedTripSlug,
-  title: "The Great Migration Classic",
-  duration: "7 nights",
-  route: "Serengeti + Ngorongoro",
-  season: "July-October",
-  price: "from $1459 USD per person",
-  image: cardImages[index % cardImages.length],
+  title,
+  duration,
+  route,
+  season,
+  tripType,
+  priceValue,
+  price: `from $${priceValue.toLocaleString("en-US")} USD per person`,
+  image,
   imageAlt: `Tanzania safari itinerary preview ${index + 1}`
 }));
 

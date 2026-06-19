@@ -3,10 +3,10 @@ import type { HomeDictionary, NavItem } from "@/i18n/types";
 const asset = (name: string) => `/assets/figma/${name}`;
 
 const primaryNav: NavItem[] = [
-  { label: "Itineraries", href: "/itineraries" },
-  { label: "Safaris", href: "/safaris" },
-  { label: "Kilimanjaro", href: "/kilimanjaro" },
-  { label: "Discover Tanzania", href: "/discover-tanzania" }
+  { label: "Itineraries", href: "/trips" },
+  { label: "Safaris", href: "/trips" },
+  { label: "Kilimanjaro", href: "/trips" },
+  { label: "Discover Tanzania", href: "/trips" }
 ];
 
 const plannerFields: HomeDictionary["planner"]["fields"] = [
@@ -108,7 +108,7 @@ const en: HomeDictionary = {
         description:
           "Private guided Tanzania safaris - planned for you, priced in USD, backed by 15 years of getting Americans to Africa.",
         cta: "Explore Zanzibar",
-        href: "/safaris",
+        href: "/trips",
         image: {
           src: asset("category-zanzibar.jpg"),
           alt: "Turquoise water and tropical coastline in Zanzibar"
@@ -122,7 +122,7 @@ const en: HomeDictionary = {
         description:
           "Turquoise waters, spice markets, and powder-white beaches. The perfect extension after your safari.",
         cta: "Explore African Wildlife",
-        href: "/safaris",
+        href: "/trips",
         image: {
           src: asset("tanzanian-widernes.png"),
           alt: "Tanzania wilderness with zebras on a safari road"
@@ -136,7 +136,7 @@ const en: HomeDictionary = {
         description:
           "World-class lodges, private game drives, and fine dining in the wild - for travelers who want the best of everything.",
         cta: "Explore Arusha",
-        href: "/kilimanjaro",
+        href: "/trips",
         image: {
           src: asset("category-kilimanjaro.jpg"),
           alt: "Tented camp below Mount Kilimanjaro"
