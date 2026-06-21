@@ -765,7 +765,7 @@ function ItinerarySection() {
   const day = itineraryDays[0];
 
   return (
-    <section id="itinerary" className="mx-auto max-w-[1484px] scroll-mt-[82px] px-6 py-[72px]">
+    <section id="itinerary" className={`${pageContainer} scroll-mt-[82px] py-[72px]`}>
       <div className="flex items-center gap-8">
         <h2 className="shrink-0 text-[34px] font-semibold leading-[1.15] text-[#403229] md:text-[38px]">Trip Itinirary</h2>
         <div className="h-[2px] flex-1 bg-[#ddd7cc]" />
@@ -778,9 +778,9 @@ function ItinerarySection() {
         </div>
 
         <div className="relative hidden lg:block" aria-hidden="true">
-          <Image src="/assets/trips/itinerary-timeline-line.svg" alt="" width={1} height={754} className="absolute left-1/2 top-5 h-[calc(100%-40px)] w-px -translate-x-1/2 object-fill" />
+          <div className="absolute left-1/2 top-5 h-[calc(100%-40px)] w-px -translate-x-1/2 border-l border-dashed border-[#403229]/25" />
           <Image src="/assets/trips/itinerary-map-pin.svg" alt="" width={49} height={49} className="absolute left-1/2 top-[92px] z-10 size-[49px] -translate-x-1/2" />
-          <Image src="/assets/trips/itinerary-bed.svg" alt="" width={49} height={49} className="absolute left-1/2 top-[calc(50%-24px)] z-10 size-[49px] -translate-x-1/2" />
+          <Image src="/assets/trips/itinerary-bed.svg" alt="" width={49} height={49} className="absolute left-1/2 top-[358px] z-10 size-[49px] -translate-x-1/2" />
         </div>
 
         <div className="px-6 pb-10 pt-8 lg:px-0 lg:pb-0 lg:pr-10 lg:pt-[46px]">
@@ -882,7 +882,7 @@ function IncludedSection({ dictionary }: TripPageProps) {
       <div>
         <div className="flex items-center gap-4">
           <h2 className="shrink-0 text-[30px] font-semibold leading-[1.2]">What is included?</h2>
-          <div className="h-[2px] flex-1 bg-[#e2b87f]" />
+          <div className="h-[2px] flex-1 bg-[#ddd7cc]" />
         </div>
         <ul className="mt-10 grid gap-x-9 gap-y-5 sm:grid-cols-2">
           {includedItems.map((item, index) => (
@@ -897,12 +897,12 @@ function IncludedSection({ dictionary }: TripPageProps) {
       </div>
       <IncludedImageSlider images={includedImageSlides} />
       <div id="pricing" className="scroll-mt-[82px] pt-8 lg:col-span-2">
-        <div className="mx-auto flex max-w-[1110px] items-center gap-7">
+        <div className="-mx-6 flex items-center gap-7">
           <div className="h-[2px] flex-1 bg-[#e7ded1]" />
           <h3 className="shrink-0 text-center text-[27px] font-medium leading-[1.3] text-[#403229]">All-inclusive rates in USD</h3>
           <div className="h-[2px] flex-1 bg-[#e7ded1]" />
         </div>
-        <div className="mx-auto mt-3 grid max-w-[930px] overflow-hidden bg-white shadow-[0_16px_35px_rgba(64,50,41,0.06)] sm:grid-cols-2 sm:divide-x sm:divide-[#f0e8dc] md:grid-cols-3 lg:grid-cols-6">
+        <div className="-mx-6 mt-3 grid w-[calc(100%+48px)] overflow-hidden bg-white shadow-[0_16px_35px_rgba(64,50,41,0.06)] sm:grid-cols-2 sm:divide-x sm:divide-[#f0e8dc] md:grid-cols-3 lg:grid-cols-6">
           {priceTiers.map((tier) => (
             <div key={tier.id} className="min-h-[92px] px-4 py-5 text-center">
               <p className="text-[11px] font-semibold leading-none text-[#403229]/78">{tier.people}</p>
@@ -997,12 +997,12 @@ function BestTimeSection({ dictionary }: TripPageProps) {
   return (
     <section className="bg-[#F8EEDD] pb-[72px] pt-[76px]">
       <div className={pageContainer}>
-        <div className="mx-auto flex max-w-[1100px] items-center gap-8">
+        <div className="-mx-6 flex items-center gap-8">
           <div className="h-[2px] flex-1 bg-[#e7ded1]" />
           <h2 className="shrink-0 text-center text-[27px] font-medium leading-[1.3] text-[#403229]">Best time for this safari</h2>
           <div className="h-[2px] flex-1 bg-[#e7ded1]" />
         </div>
-        <div className="mx-auto mt-5 grid max-w-[930px] overflow-hidden bg-white shadow-[0_16px_35px_rgba(64,50,41,0.05)] md:grid-cols-3 md:divide-x md:divide-[#f0e8dc]">
+        <div className="-mx-6 mt-5 grid w-[calc(100%+48px)] overflow-hidden bg-white shadow-[0_16px_35px_rgba(64,50,41,0.05)] md:grid-cols-3 md:divide-x md:divide-[#f0e8dc]">
           {seasons.map((season) => (
             <article key={season.title} className="min-h-[100px] px-6 pb-7 pt-6">
               <h3 className="flex items-center gap-3 text-[16px] font-medium leading-none text-[#e2b87f]">
@@ -1028,19 +1028,18 @@ function BestTimeSection({ dictionary }: TripPageProps) {
 
 function WidePlannerBand({ dictionary }: TripPageProps) {
   return (
-    <section className="relative overflow-hidden bg-[var(--astra-dark-espresso)] py-[58px] text-white">
-      <Image src="/assets/trips/safari-planner-image-5-clean.png" alt="" fill sizes="100vw" className="object-cover object-[56%_center]" aria-hidden="true" />
-      <div className="absolute inset-0 bg-[rgba(64,50,41,0.46)]" />
-      <div className="absolute inset-y-0 left-0 w-[58%] bg-[linear-gradient(90deg,rgba(64,50,41,0.9)_0%,rgba(64,50,41,0.78)_54%,rgba(64,50,41,0)_100%)]" />
-      <div className="relative mx-auto grid max-w-[1100px] gap-8 px-6 md:grid-cols-[360px_390px_minmax(0,1fr)] md:items-center">
-        <div>
-          <p className="text-[13px] font-bold uppercase tracking-[0.05em] text-[var(--astra-primary-amber)]">Free, no commitment</p>
-          <h2 className="mt-3 text-[31px] font-semibold leading-[1.14]">Talk to a safari planner</h2>
-          <p className="mt-4 max-w-[430px] text-[15px] font-semibold leading-[1.6] text-white/72">
+    <section className="relative min-h-[441px] overflow-hidden border border-white/30 bg-[#4a351c] text-white shadow-[0_4px_11px_rgba(0,0,0,0.05)]">
+      <Image src="/assets/trips/safari-planner-image-5-clean.png" alt="" fill sizes="100vw" className="object-cover object-[55%_center]" aria-hidden="true" />
+      <div className="absolute inset-0 bg-[linear-gradient(86deg,#4a351c_1%,rgba(74,53,28,0.4)_89%)]" />
+      <div className="relative mx-auto flex min-h-[441px] max-w-[1206px] flex-col gap-8 px-6 py-[78px] md:flex-row md:items-start md:gap-[18px] md:py-0">
+        <div className="md:mt-[148px] md:w-[419px]">
+          <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-[#E2B87F]">Free, no commitment</p>
+          <h2 className="mt-[11px] text-[34px] font-semibold leading-[1.14]">Talk to a safari planner</h2>
+          <p className="mt-[11px] max-w-[394px] text-[15px] font-medium leading-[1.5] text-white/80">
             This morning is yours to enjoy at a relaxed pace. Have a peaceful breakfast at the lodge and
           </p>
         </div>
-        <InlinePlannerForm planner={dictionary.planner} className="md:-translate-x-[60px]" />
+        <InlinePlannerForm planner={dictionary.planner} className="md:mt-[106px]" />
       </div>
     </section>
   );
@@ -1070,9 +1069,9 @@ function InlinePlannerForm({ planner, className = "" }: { planner: HomeDictionar
   }
 
   return (
-    <form className={`grid w-full max-w-[390px] gap-[15px] justify-self-center ${className}`} aria-label={planner.title} onSubmit={submitForm} noValidate>
+    <form className={`grid w-full max-w-[392px] gap-4 ${className}`} aria-label={planner.title} onSubmit={submitForm} noValidate>
       <InlinePlannerField field={planner.fields[0]} value={values[planner.fields[0].name] ?? ""} invalid={invalidFields.includes(planner.fields[0].name)} onChange={updateValue} />
-      <div className="grid gap-[15px] sm:grid-cols-2 sm:gap-[18px]">
+      <div className="grid gap-4 sm:grid-cols-[187px_187px] sm:gap-[18px]">
         {planner.fields.slice(1, 3).map((field) => (
           <InlinePlannerField key={field.name} field={field} value={values[field.name] ?? ""} invalid={invalidFields.includes(field.name)} onChange={updateValue} />
         ))}
@@ -1080,7 +1079,7 @@ function InlinePlannerForm({ planner, className = "" }: { planner: HomeDictionar
       <InlinePlannerField field={planner.fields[3]} value={values[planner.fields[3].name] ?? ""} invalid={invalidFields.includes(planner.fields[3].name)} onChange={updateValue} />
       <button
         type="submit"
-        className="flex h-[42px] items-center rounded-[6px] bg-[#E2B87F] px-[18px] text-left text-[15px] font-bold leading-none text-[#403229] transition hover:bg-[#d8aa6c] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+        className="flex h-[42px] items-center rounded-[6px] bg-[#E2B87F] px-4 text-left text-[15px] font-semibold leading-[1.6] text-[#4a351c] transition hover:bg-[#d8aa6c] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
       >
         <span className="me-auto">Request a quote</span>
         <ArrowRight className="size-5" aria-hidden="true" />
@@ -1102,7 +1101,7 @@ function InlinePlannerField({
   onChange: (name: string, value: string) => void;
 }) {
   const fieldClassName =
-    "h-[46px] w-full rounded-[4px] border border-[#ead9c4] bg-[#fdfaf3] px-[18px] text-[13px] font-bold leading-none text-[#403229] shadow-none outline-none placeholder:text-[#403229]/58 focus:border-[#E2B87F] focus:ring-2 focus:ring-[#E2B87F]/45";
+    "h-[47px] w-full rounded-[4px] border border-[#654a29]/15 bg-[#fdfaf3]/98 px-4 text-[13px] font-bold leading-[1.4] text-[#403229] shadow-none outline-none backdrop-blur-[12px] placeholder:text-[#2c1a0e]/60 focus:border-[#E2B87F] focus:ring-2 focus:ring-[#E2B87F]/45";
 
   return field.type === "select" ? (
     <select
@@ -1152,7 +1151,7 @@ function ReviewsSection() {
         </p>
         <div className="mt-[58px] grid gap-x-6 gap-y-7 lg:grid-cols-2">
           {reviews.map((review, index) => (
-            <article key={`${review.image}-${index}`} className="grid gap-6 rounded-[10px] border border-white/30 bg-white/[0.075] p-6 shadow-[0_18px_44px_rgba(0,0,0,0.12)] sm:grid-cols-[220px_minmax(0,1fr)]">
+            <article key={`${review.image}-${index}`} className="grid gap-6 rounded-[10px] border border-white/20 bg-white/[0.075] p-6 shadow-[0_18px_44px_rgba(0,0,0,0.12)] sm:grid-cols-[220px_minmax(0,1fr)]">
               <div className="relative h-[158px] overflow-hidden rounded-[8px] bg-[#2c1f18] sm:h-[178px]">
                 <Image src={review.image} alt={review.alt} fill sizes="220px" className="object-cover" />
               </div>

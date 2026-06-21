@@ -331,7 +331,7 @@ function ReviewsSection({ dictionary }: { dictionary: HomeDictionary }) {
         <SectionHeading eyebrow={dictionary.reviews.eyebrow} title={dictionary.reviews.title} description={dictionary.reviews.description} />
         <div className="mt-10 grid gap-6 lg:grid-cols-2">
           {dictionary.reviews.items.map((review, index) => (
-            <article key={`${review.author}-${index}`} className="grid gap-6 rounded-[10px] border border-astra-gold/50 bg-white p-6 sm:grid-cols-[200px_1fr]">
+            <article key={`${review.author}-${index}`} className="grid gap-6 rounded-[10px] border border-astra-gold/20 bg-white p-6 sm:grid-cols-[200px_1fr]">
               <div className="relative h-[182px] overflow-hidden rounded-[10px] bg-[#f5f7f8]">
                 <Image src={review.image.src} alt={review.image.alt} fill sizes="200px" className="object-cover" />
               </div>
