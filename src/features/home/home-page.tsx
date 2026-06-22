@@ -337,9 +337,9 @@ function ReviewsSection({ dictionary }: { dictionary: HomeDictionary }) {
               </div>
               <div className="flex flex-col justify-between gap-6">
                 <div>
-                  <div className="flex gap-2 text-astra-gold" aria-label="5 star rating">
+                  <div className="flex gap-2 text-[#E2B87F]" aria-label="5 star rating">
                     {Array.from({ length: 5 }).map((_, starIndex) => (
-                      <Star key={starIndex} className="size-4 fill-current" aria-hidden="true" />
+                      <Star key={starIndex} className="size-4 fill-[#E2B87F] text-[#E2B87F]" aria-hidden="true" />
                     ))}
                   </div>
                   <p className="mt-6 text-lg font-medium leading-[1.5] tracking-[-0.26px] text-[#2e3138]">{review.quote}</p>

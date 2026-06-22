@@ -131,7 +131,7 @@ export function TripsListPage({ dictionary }: TripPageProps) {
           />
 
           <div className="mt-[34px] text-center">
-            <p className="inline-flex rounded-full border border-[color:var(--astra-primary-amber)] bg-[#fff8e8] px-5 py-2 text-[12px] font-bold leading-none text-[var(--astra-primary-amber)]">
+            <p className="inline-flex rounded-full border border-[#E2B87F] bg-[#fff8e8] px-5 py-2 text-[12px] font-bold leading-none text-[#E2B87F]">
               ? The itineraries shown are examples - your journey will be personally tailored to you.
             </p>
           </div>
@@ -141,7 +141,7 @@ export function TripsListPage({ dictionary }: TripPageProps) {
           ) : (
             <div className="mx-auto mt-[57px] max-w-[680px] rounded-[8px] border border-[#403229]/12 bg-white p-8 text-center shadow-[0_14px_34px_rgba(64,50,41,0.08)]">
               <p className="text-[18px] font-bold leading-[1.35]">No trips match those filters.</p>
-              <button type="button" onClick={resetFilters} className="mt-4 text-[14px] font-bold text-[var(--astra-primary-amber)] underline underline-offset-4">
+              <button type="button" onClick={resetFilters} className="mt-4 text-[14px] font-bold text-[#E2B87F] underline underline-offset-4">
                 Reset filters
               </button>
             </div>
@@ -222,7 +222,7 @@ export function TripDetailPage({ dictionary }: TripPageProps) {
 function TripHeader({ dictionary }: TripPageProps) {
   return (
     <header className="bg-[#fdfaf3] text-[#403229]">
-      <div className="bg-[var(--astra-primary-amber)]">
+      <div className="bg-[#E2B87F]">
         <div className="mx-auto flex h-[37px] max-w-[1150px] items-center justify-between px-5 text-[13px] font-bold leading-[1.6] text-white/90">
           <p className="hidden items-center gap-2 pl-4 uppercase tracking-[0.08em] sm:flex">
             <Image src="/assets/figma/nav-bar-star.png" alt="" width={18} height={18} className="size-[18px] object-contain" aria-hidden="true" />
@@ -242,12 +242,12 @@ function TripHeader({ dictionary }: TripPageProps) {
       </div>
       <div className="border-b border-[#403229]/10 bg-[#fdfaf3]">
         <div className="mx-auto flex h-[100px] max-w-[1150px] items-center justify-between gap-8 px-5">
-          <Link href="/trips" className="relative h-[92px] w-[219px] shrink-0" aria-label="Astra Tanzania Safaris">
+          <Link href="/en" className="relative h-[92px] w-[219px] shrink-0" aria-label="Astra Tanzania Safaris">
             <Image src="/assets/figma/logo-header.png" alt="Astra Tanzania Safaris" fill priority sizes="219px" className="object-contain" />
           </Link>
           <nav className="hidden items-center gap-8 text-[15px] font-semibold leading-[1.6] md:flex" aria-label="Primary">
             {navLinks.map((link) => (
-              <Link key={link.label} href={link.href} className="transition hover:text-[var(--astra-primary-amber)]">
+              <Link key={link.label} href={link.href} className="transition hover:text-[#E2B87F]">
                 {link.label}
               </Link>
             ))}
@@ -313,7 +313,7 @@ function TripFilterBar({
         <div className="flex items-center justify-between gap-3">
           <p className="text-[12px] font-bold leading-[1.4]">Trip type:</p>
           {selectedTypes.length > 0 ? (
-            <button type="button" onClick={onResetFilters} className="text-[11px] font-bold leading-none text-[var(--astra-primary-amber)] underline underline-offset-2">
+            <button type="button" onClick={onResetFilters} className="text-[11px] font-bold leading-none text-[#E2B87F] underline underline-offset-2">
               Clear
             </button>
           ) : null}
@@ -329,12 +329,12 @@ function TripFilterBar({
                 onClick={() => onToggleType(type)}
                 className={`inline-flex h-[28px] items-center gap-2 rounded-full border px-3 text-[11px] font-bold leading-none transition ${
                   selected
-                    ? "border-[var(--astra-primary-amber)] bg-[#fff4dc] text-[#403229]"
-                    : "border-[#403229]/12 bg-[#fdfaf3] text-[#403229]/62 hover:border-[var(--astra-primary-amber)]"
+                    ? "border-[#E2B87F] bg-[#fff4dc] text-[#403229]"
+                    : "border-[#403229]/12 bg-[#fdfaf3] text-[#403229]/62 hover:border-[#E2B87F]"
                 }`}
                 aria-pressed={selected}
               >
-                <span className={`grid size-[14px] place-items-center rounded-full border ${selected ? "border-[var(--astra-primary-amber)] bg-[var(--astra-primary-amber)] text-white" : "border-[#403229]/20"}`}>
+                <span className={`grid size-[14px] place-items-center rounded-full border ${selected ? "border-[#E2B87F] bg-[#E2B87F] text-white" : "border-[#403229]/20"}`}>
                   {selected ? <Check className="size-2.5" aria-hidden="true" /> : null}
                 </span>
                 {type}
@@ -350,8 +350,8 @@ function TripFilterBar({
         </div>
         <div className="mt-4">
           <div className="relative h-[14px]">
-            <div className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 bg-[rgba(200,134,10,0.45)]" />
-            <div className="absolute left-0 top-1/2 size-[14px] -translate-y-1/2 rounded-full bg-[var(--astra-primary-amber)]" />
+            <div className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 bg-[#E2B87F]/55" />
+            <div className="absolute left-0 top-1/2 size-[14px] -translate-y-1/2 rounded-full bg-[#E2B87F]" />
             <input
               type="range"
               min={minPrice}
@@ -363,11 +363,11 @@ function TripFilterBar({
               aria-label="Maximum trip price"
             />
             <div
-              className="absolute top-1/2 size-[14px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--astra-primary-amber)]"
+              className="absolute top-1/2 size-[14px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#E2B87F]"
               style={{ left: `${((maxPrice - minPrice) / (maxTripPrice - minPrice)) * 100}%` }}
             />
           </div>
-          <div className="mt-2 flex justify-between text-[12px] font-semibold text-[var(--astra-primary-amber)]">
+          <div className="mt-2 flex justify-between text-[12px] font-semibold text-[#E2B87F]">
             <span>${minPrice.toLocaleString("en-US")}</span>
             <span>${maxPrice.toLocaleString("en-US")}</span>
           </div>
@@ -386,7 +386,7 @@ function TripCardGrid({ className = "", limit, cards = tripCards }: { className?
         <Link
           key={`${trip.slug}-${index}`}
           href={`/trip/${sharedTripSlug}`}
-          className="group relative h-[401px] overflow-hidden rounded-[8px] bg-[#403229] text-white outline-none transition focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fdfaf3]"
+          className="group relative h-[401px] overflow-hidden rounded-[8px] bg-[#403229] text-white outline-none transition focus-visible:ring-2 focus-visible:ring-[#E2B87F] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fdfaf3]"
         >
           <Image
             src={trip.image}
@@ -397,7 +397,7 @@ function TripCardGrid({ className = "", limit, cards = tripCards }: { className?
           />
           <div className="absolute inset-x-0 bottom-0 h-[115px] rounded-b-[8px] bg-[#654d38]/60 backdrop-blur-[2.5px]" />
           <div className="absolute inset-x-0 bottom-[113px] h-[3px] bg-white/15" />
-          <div className="absolute right-[18px] top-[18px] rounded-[5px] border border-white/45 bg-astra-amber px-3 py-1 text-[11px] font-bold leading-[1.5] text-white backdrop-blur">
+          <div className="absolute right-[18px] top-[18px] rounded-[5px] border border-white/45 bg-[#E2B87F] px-3 py-1 text-[11px] font-bold leading-[1.5] text-white backdrop-blur">
             {trip.price}
           </div>
           <div className="absolute bottom-[25px] left-[19px] right-[19px]">
@@ -407,7 +407,7 @@ function TripCardGrid({ className = "", limit, cards = tripCards }: { className?
             <p className="text-[14px] font-semibold leading-[1.51] text-white/85">
               {trip.route} - {trip.season}
             </p>
-            <span className="mt-3 inline-flex h-[27px] items-center gap-1 rounded-full bg-[var(--astra-primary-amber)] px-3 text-[14px] font-semibold leading-none text-white">
+            <span className="mt-3 inline-flex h-[27px] items-center gap-1 rounded-full bg-[#E2B87F] px-3 text-[14px] font-semibold leading-none text-white">
               See Itinerary
               <ArrowRight className="size-3.5" aria-hidden="true" />
             </span>
@@ -580,7 +580,7 @@ function RatingStars({ className = "size-5" }: { className?: string }) {
   return (
     <span className="flex items-center gap-1" aria-label="5 star rating">
       {Array.from({ length: 5 }).map((_, index) => (
-        <Star key={index} className={`${className} fill-[var(--astra-primary-amber)] text-[var(--astra-primary-amber)]`} aria-hidden="true" />
+        <Star key={index} className={`${className} fill-[#E2B87F] text-[#E2B87F]`} aria-hidden="true" />
       ))}
     </span>
   );
@@ -658,7 +658,7 @@ function BuiltForSection({ dictionary }: TripPageProps) {
         <div className="mt-[25px] grid gap-6 sm:grid-cols-2">
           {items.map(({ label, Icon }) => (
             <p key={label} className="flex items-center gap-4 text-[18px] font-bold leading-[1.5]">
-              <Icon className="size-9 shrink-0 text-[var(--astra-primary-amber)]" strokeWidth={1.8} aria-hidden="true" />
+              <Icon className="size-9 shrink-0 text-[#E2B87F]" strokeWidth={1.8} aria-hidden="true" />
               {label}
             </p>
           ))}
@@ -667,7 +667,7 @@ function BuiltForSection({ dictionary }: TripPageProps) {
       <aside className="self-start rounded-[10px] border border-[#403229]/12 bg-white p-7 shadow-[0_16px_36px_rgba(64,50,41,0.06)]">
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#403229]/13 pb-5">
           <div>
-            <p className="flex items-center gap-3 text-[26px] font-bold leading-none text-[var(--astra-primary-amber)]">
+            <p className="flex items-center gap-3 text-[26px] font-bold leading-none text-[#E2B87F]">
               4.9
               <RatingStars className="size-3.5" />
             </p>
@@ -687,12 +687,12 @@ function BuiltForSection({ dictionary }: TripPageProps) {
         <div className="pt-5">
           <p className="text-[15px] font-semibold leading-[1.6]">For extra information please contact us</p>
           <p className="mt-3 flex flex-wrap gap-x-5 gap-y-3 text-[13px] font-bold leading-[1.6] text-[#403229]/65">
-            <a href={`tel:${dictionary.topBar.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-2 hover:text-[var(--astra-primary-amber)]">
-              <Phone className="size-4 text-[var(--astra-primary-amber)]" aria-hidden="true" />
+            <a href={`tel:${dictionary.topBar.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-2 hover:text-[#E2B87F]">
+              <Phone className="size-4 text-[#E2B87F]" aria-hidden="true" />
               {dictionary.topBar.phone}
             </a>
-            <a href={`mailto:${dictionary.topBar.email}`} className="inline-flex items-center gap-2 hover:text-[var(--astra-primary-amber)]">
-              <Mail className="size-4 text-[var(--astra-primary-amber)]" aria-hidden="true" />
+            <a href={`mailto:${dictionary.topBar.email}`} className="inline-flex items-center gap-2 hover:text-[#E2B87F]">
+              <Mail className="size-4 text-[#E2B87F]" aria-hidden="true" />
               {dictionary.topBar.email}
             </a>
           </p>
@@ -723,7 +723,7 @@ function TripTabs() {
                 className={index === 0 ? "relative flex h-full items-center text-[#403229]" : "flex h-full items-center transition hover:text-[#403229]"}
               >
                 {tab.label}
-                {index === 0 ? <span className="absolute bottom-0 left-0 h-[4px] w-full rounded-t-full bg-[var(--astra-primary-amber)]" /> : null}
+                {index === 0 ? <span className="absolute bottom-0 left-0 h-[4px] w-full rounded-t-full bg-[#E2B87F]" /> : null}
               </a>
             ))}
           </div>
@@ -887,7 +887,7 @@ function IncludedSection({ dictionary }: TripPageProps) {
         <ul className="mt-10 grid gap-x-9 gap-y-5 sm:grid-cols-2">
           {includedItems.map((item, index) => (
             <li key={`${item}-${index}`} className="flex items-center gap-3 text-[13px] font-semibold leading-[1.5] text-[#403229]/75">
-              <span className="grid size-[25px] shrink-0 place-items-center rounded-full bg-[var(--astra-primary-amber)] text-white">
+              <span className="grid size-[25px] shrink-0 place-items-center rounded-full bg-[#E2B87F] text-white">
                 <Check className="size-4" strokeWidth={3} aria-hidden="true" />
               </span>
               {item}
@@ -1029,7 +1029,7 @@ function BestTimeSection({ dictionary }: TripPageProps) {
 function WidePlannerBand({ dictionary }: TripPageProps) {
   return (
     <section className="relative min-h-[441px] overflow-hidden border border-white/30 bg-[#4a351c] text-white shadow-[0_4px_11px_rgba(0,0,0,0.05)]">
-      <Image src="/assets/trips/safari-planner-image-5-clean.png" alt="" fill sizes="100vw" className="object-cover object-[55%_center]" aria-hidden="true" />
+      <Image src="/assets/figma/final-cta-bg.jpg" alt="" fill sizes="100vw" className="object-cover object-[62%_center]" aria-hidden="true" />
       <div className="absolute inset-0 bg-[linear-gradient(86deg,#4a351c_1%,rgba(74,53,28,0.4)_89%)]" />
       <div className="relative mx-auto flex min-h-[441px] max-w-[1206px] flex-col gap-8 px-6 py-[78px] md:flex-row md:items-start md:gap-[18px] md:py-0">
         <div className="md:mt-[148px] md:w-[419px]">
@@ -1176,11 +1176,11 @@ function StopPlanningSection({ dictionary }: TripPageProps) {
     <section className="bg-[#403229] py-[76px] text-white">
       <div className={`${pageContainer} grid gap-10 md:grid-cols-[1fr_520px] md:items-center`}>
         <div>
-          <p className="text-[13px] font-bold uppercase tracking-[0.05em] text-[var(--astra-primary-amber)]">Experiences we offer</p>
+          <p className="text-[13px] font-bold uppercase tracking-[0.05em] text-[#E2B87F]">Experiences we offer</p>
           <h2 className="mt-4 text-[42px] font-semibold leading-[1.08]">
             Stop overthinking.
             <br />
-            <span className="text-[var(--astra-primary-amber)]">Start planning.</span>
+            <span className="text-[#E2B87F]">Start planning.</span>
           </h2>
           <p className="mt-5 max-w-[520px] text-[15px] font-semibold leading-[1.65] text-white/72">
             Tanzania is one of those trips people talk about for the rest of their lives - but only if you do it right. Tell us your dates, how many people, and what matters most to you.
@@ -1202,7 +1202,7 @@ function StopPlanningSection({ dictionary }: TripPageProps) {
 function SimilarTripsSection() {
   return (
     <section className={`${pageContainer} py-[76px]`}>
-      <p className="text-center text-[13px] font-bold uppercase tracking-[0.05em] text-[var(--astra-primary-amber)]">Experiences we offer</p>
+      <p className="text-center text-[13px] font-bold uppercase tracking-[0.05em] text-[#E2B87F]">Experiences we offer</p>
       <h2 className="mt-4 text-center text-[34px] font-semibold leading-[1.15]">Other Simmilar Trips</h2>
       <div className="mt-10 grid gap-5 lg:grid-cols-3">
         {tripCards.slice(0, 3).map((trip, index) => (
@@ -1213,14 +1213,14 @@ function SimilarTripsSection() {
           >
             <div className="relative h-[200px]">
               <Image src={trip.image} alt={trip.imageAlt} fill sizes="(min-width: 1024px) 380px, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
-              <span className="absolute right-4 top-4 rounded-full bg-[var(--astra-primary-amber)] px-3 py-1 text-[11px] font-bold text-white">{trip.price}</span>
+              <span className="absolute right-4 top-4 rounded-full bg-[#E2B87F] px-3 py-1 text-[11px] font-bold text-white">{trip.price}</span>
             </div>
             <div className="p-5">
               <h3 className="text-[17px] font-bold leading-[1.35]">{trip.title}</h3>
               <p className="mt-2 text-[13px] font-semibold leading-[1.55] text-[#403229]/65">
                 {trip.duration} - {trip.route}
               </p>
-              <span className="mt-4 inline-flex items-center gap-2 text-[13px] font-bold text-[var(--astra-primary-amber)]">
+              <span className="mt-4 inline-flex items-center gap-2 text-[13px] font-bold text-[#E2B87F]">
                 See Itinerary <ArrowRight className="size-4" aria-hidden="true" />
               </span>
             </div>
@@ -1236,7 +1236,7 @@ function FaqSection({ dictionary }: TripPageProps) {
 
   return (
     <section className="mx-auto max-w-[900px] px-6 py-[76px]">
-      <p className="text-center text-[13px] font-bold uppercase tracking-[0.05em] text-[var(--astra-primary-amber)]">Overline text</p>
+      <p className="text-center text-[13px] font-bold uppercase tracking-[0.05em] text-[#E2B87F]">Overline text</p>
       <h2 className="mt-4 text-center text-[42px] font-semibold leading-[1.2]">Frequently asked questions</h2>
       <p className="mt-3 text-center text-[15px] font-semibold leading-[1.6] text-[#403229]/55">Everything you need to know about this safari before you book.</p>
       <div className="mt-8 border-y border-[#403229]/12">
@@ -1249,7 +1249,7 @@ function FaqSection({ dictionary }: TripPageProps) {
           >
             <span className="flex items-center justify-between gap-4">
               <span className="text-[16px] font-medium leading-[1.5]">{faq.question}</span>
-              <span className="grid size-8 shrink-0 place-items-center rounded-full border border-[#403229]/12 text-[var(--astra-primary-amber)]">
+              <span className="grid size-8 shrink-0 place-items-center rounded-full border border-[#403229]/12 text-[#E2B87F]">
                 <ChevronDown className={`size-4 transition ${open === index ? "rotate-180" : ""}`} aria-hidden="true" />
               </span>
             </span>
