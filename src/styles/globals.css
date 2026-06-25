@@ -54,6 +54,24 @@ img {
   max-width: 100%;
 }
 
+@keyframes astra-page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .astra-page-enter {
+    animation: astra-page-enter 420ms ease-out both;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

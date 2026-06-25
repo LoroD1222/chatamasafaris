@@ -7,7 +7,6 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  Heart,
   Mail,
   Phone,
   Star,
@@ -19,6 +18,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { type FormEvent, useEffect, useState } from "react";
 
 import { SiteFinalCta } from "@/components/layouts/site-final-cta";
@@ -44,10 +44,10 @@ type TripsListPageProps = {
 };
 
 const navLinks = [
-  { label: "Itineraries", href: "/trips" },
-  { label: "Safaris", href: "/trips" },
-  { label: "Kilimanjaro", href: "/trips" },
-  { label: "Discover Tanzania", href: "/trips" }
+  { label: "Kilimanjaro", href: "/trips?category=Kilimanjaro" },
+  { label: "Zanzibar", href: "/trips?category=Zanzibar" },
+  { label: "Safari", href: "/trips?category=Wildlife%20Safari" },
+  { label: "About us", href: "/en#about-us" }
 ];
 
 const pageContainer = "mx-auto max-w-[1200px] px-6";
@@ -67,17 +67,33 @@ const includedImageSlides = [
 ];
 
 export function TripsListPage({ dictionary, initialTrips }: TripsListPageProps) {
-  const cards = initialTrips && initialTrips.length > 0 ? initialTrips : tripCards;
+  const sourceCards = initialTrips && initialTrips.length > 0 ? initialTrips : tripCards;
+  const cards = [
+    ...sourceCards,
+    ...tripCards.filter((fallbackTrip) => !sourceCards.some((trip) => trip.tripType === fallbackTrip.tripType))
+  ];
   const tripTypes = Array.from(new Set(cards.map((trip) => trip.tripType)));
   const minPrice = Math.min(...cards.map((trip) => trip.priceValue));
   const maxTripPrice = Math.max(...cards.map((trip) => trip.priceValue));
-  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const searchParams = useSearchParams();
+  const categoryFromUrl = searchParams.get("category")?.trim() ?? "";
+  const selectedCategory = categoryFromUrl
+    ? tripTypes.find((type) => type.toLowerCase() === categoryFromUrl.toLowerCase()) ??
+      tripTypes.find((type) => type.toLowerCase().includes(categoryFromUrl.toLowerCase())) ??
+      categoryFromUrl
+    : "";
+  const [selectedTypes, setSelectedTypes] = useState<string[]>(() => (selectedCategory ? [selectedCategory] : []));
   const [maxPrice, setMaxPrice] = useState(maxTripPrice);
   const filteredCards = cards.filter((trip) => {
     const matchesType = selectedTypes.length === 0 || selectedTypes.includes(trip.tripType);
     const matchesPrice = trip.priceValue <= maxPrice;
     return matchesType && matchesPrice;
   });
+
+  useEffect(() => {
+    setSelectedTypes(selectedCategory ? [selectedCategory] : []);
+    setMaxPrice(maxTripPrice);
+  }, [selectedCategory, maxTripPrice]);
 
   function toggleTripType(type: string) {
     setSelectedTypes((current) => (current.includes(type) ? current.filter((item) => item !== type) : [...current, type]));
@@ -89,7 +105,7 @@ export function TripsListPage({ dictionary, initialTrips }: TripsListPageProps) 
   }
 
   return (
-    <div className="min-h-screen bg-[#fdfaf3] text-[#403229]">
+    <div className="astra-page-enter min-h-screen overflow-x-hidden bg-[#fdfaf3] text-[#403229]">
       <TripHeader dictionary={dictionary} />
       <main>
         <section className={`${pageContainer} pb-[116px] pt-[64px] md:pt-[62px]`}>
@@ -163,7 +179,7 @@ export function TripDetailPage({ dictionary, trip }: TripDetailPageProps) {
     : Array.from({ length: 6 }, (_, i) => ({ id: `rate-${i}`, people: "1 pax", price: "$2,890" }));
 
   return (
-    <div className="min-h-screen bg-[#fdfaf3] text-[#403229]">
+    <div className="astra-page-enter min-h-screen overflow-x-hidden bg-[#fdfaf3] text-[#403229]">
       <TripHeader dictionary={dictionary} />
       <main>
         <section className="mx-auto max-w-[1200px] px-6 pb-[76px] pt-[65px]">
@@ -223,17 +239,17 @@ function TripHeader({ dictionary }: TripPageProps) {
   return (
     <header className="bg-[#fdfaf3] text-[#403229]">
       <div className="bg-[#E2B87F]">
-        <div className="mx-auto flex h-[37px] max-w-[1150px] items-center justify-between px-5 text-[13px] font-bold leading-[1.6] text-white/90">
-          <p className="hidden items-center gap-2 pl-4 uppercase tracking-[0.08em] sm:flex">
-            <Image src="/assets/figma/nav-bar-star.png" alt="" width={18} height={18} className="size-[18px] object-contain" aria-hidden="true" />
-            Safari Operator for USA Travelers
+        <div className="mx-auto flex h-[37px] max-w-[1150px] items-center justify-between gap-3 px-5 text-[12px] font-bold leading-[1.6] sm:text-[13px]">
+          <p className="flex min-w-0 items-center gap-2 uppercase tracking-[0.08em] text-[#403229]/40 sm:pl-4">
+            <Image src="/assets/figma/nav-bar-star.png" alt="" width={18} height={18} className="size-[15px] shrink-0 object-contain sm:size-[18px]" aria-hidden="true" />
+            <span className="truncate">Safari Operator for USA Travelers</span>
           </p>
-          <div className="ms-auto flex items-center gap-7">
-            <a href={`tel:${dictionary.topBar.phone.replace(/\s/g, "")}`} className="hidden items-center gap-1 underline underline-offset-2 md:inline-flex">
+          <div className="ms-auto flex min-w-0 shrink-0 items-center gap-7 text-[#403229]/65">
+            <a href={`tel:${dictionary.topBar.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-1 underline underline-offset-2">
               <Phone className="size-3.5" aria-hidden="true" />
               {dictionary.topBar.phone}
             </a>
-            <a href={`mailto:${dictionary.topBar.email}`} className="inline-flex items-center gap-1 underline underline-offset-2">
+            <a href={`mailto:${dictionary.topBar.email}`} className="hidden items-center gap-1 underline underline-offset-2 md:inline-flex">
               <Mail className="size-3.5" aria-hidden="true" />
               {dictionary.topBar.email}
             </a>
@@ -325,7 +341,7 @@ function TripCardGrid({ className = "", limit, cards = tripCards }: { className?
   return (
     <div className={`mx-auto grid max-w-[1111px] gap-x-[18px] gap-y-[14px] md:grid-cols-2 lg:grid-cols-3 ${className}`}>
       {visibleCards.map((trip, index) => (
-        <Link key={`${trip.slug}-${index}`} href={`/trip/${trip.slug}`} className="group relative h-[401px] overflow-hidden rounded-[8px] bg-[#403229] text-white outline-none transition focus-visible:ring-2 focus-visible:ring-[#E2B87F] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fdfaf3]">
+        <Link key={`${trip.slug}-${index}`} href={`/trip/${sharedTripSlug}`} className="group relative h-[401px] overflow-hidden rounded-[8px] bg-[#403229] text-white outline-none transition focus-visible:ring-2 focus-visible:ring-[#E2B87F] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fdfaf3]">
           <Image src={trip.image} alt={trip.imageAlt} fill sizes="(min-width: 1024px) 356px, (min-width: 768px) 50vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
           <div className="absolute inset-x-0 bottom-0 h-[115px] rounded-b-[8px] bg-[#654d38]/60 backdrop-blur-[2.5px]" />
           <div className="absolute inset-x-0 bottom-[113px] h-[3px] bg-white/15" />
@@ -381,7 +397,7 @@ function HeroGallery({ images }: { images: { src: string; alt: string }[] }) {
         ))}
       </div>
       {isLightboxOpen ? (
-        <div role="dialog" aria-modal="true" aria-label="Safari image gallery" className="fixed inset-0 z-[200] bg-black/92 px-5 py-6 text-white" onClick={() => setIsLightboxOpen(false)}>
+        <div role="dialog" aria-modal="true" aria-label="Safari image gallery" className="fixed inset-0 z-[200] bg-black/70 px-5 py-6 text-white" onClick={() => setIsLightboxOpen(false)}>
           <button type="button" onClick={() => setIsLightboxOpen(false)} className="absolute right-5 top-5 z-10 grid size-11 place-items-center rounded-full bg-white/12 text-white transition hover:bg-white/22 focus:outline-none focus-visible:ring-2 focus-visible:ring-white" aria-label="Close image gallery"><X className="size-5" aria-hidden="true" /></button>
           <button type="button" onClick={(e) => { e.stopPropagation(); showPreviousImage(); }} className="absolute left-5 top-1/2 z-10 grid size-12 -translate-y-1/2 place-items-center rounded-full bg-white/12 text-white transition hover:bg-white/22 focus:outline-none focus-visible:ring-2 focus-visible:ring-white" aria-label="Show previous image in lightbox"><ChevronLeft className="size-6" aria-hidden="true" /></button>
           <button type="button" onClick={(e) => { e.stopPropagation(); showNextImage(); }} className="absolute right-5 top-1/2 z-10 grid size-12 -translate-y-1/2 place-items-center rounded-full bg-white/12 text-white transition hover:bg-white/22 focus:outline-none focus-visible:ring-2 focus-visible:ring-white" aria-label="Show next image in lightbox"><ChevronRight className="size-6" aria-hidden="true" /></button>
@@ -464,12 +480,12 @@ function TripSummaryCard({ dictionary, trip }: { dictionary: HomeDictionary; tri
 
 function BuiltForSection({ dictionary, trip }: { dictionary: HomeDictionary; trip: TripDetail }) {
   const defaultItems = [
-    { label: "Couples & honeymooners", Icon: Heart },
+    { label: "Couples & honeymooners", Icon: Check },
     { label: "First-time safari travelers", Icon: Binoculars },
     { label: "Families with limited time", Icon: UsersRound },
     { label: "Zanzibar visitors adding wildlife", Icon: Waves }
   ];
-  const icons = [Heart, Binoculars, UsersRound, Waves];
+  const icons = [Check, Binoculars, UsersRound, Waves];
   const items = trip.targetAudience && trip.targetAudience.length > 0
     ? trip.targetAudience.map((label, i) => ({ label, Icon: icons[i % icons.length] }))
     : defaultItems;
@@ -518,23 +534,50 @@ function BuiltForSection({ dictionary, trip }: { dictionary: HomeDictionary; tri
   );
 }
 
+const tripTabs = [
+  { label: "Overview", href: "#overview" },
+  { label: "Tour Details", href: "#tour-details" },
+  { label: "Itinerary", href: "#itinerary" },
+  { label: "Inclusions", href: "#inclusions" },
+  { label: "Price", href: "#pricing" }
+];
+
 function TripTabs() {
-  const tabs = [
-    { label: "Overview", href: "#overview" },
-    { label: "Tour Details", href: "#tour-details" },
-    { label: "Itinerary", href: "#itinerary" },
-    { label: "Inclusions", href: "#inclusions" },
-    { label: "Price", href: "#pricing" }
-  ];
+  const [activeTab, setActiveTab] = useState(tripTabs[0].href);
+
+  useEffect(() => {
+    const sections = tripTabs
+      .map((tab) => document.querySelector<HTMLElement>(tab.href))
+      .filter((section): section is HTMLElement => Boolean(section));
+
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntry = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (visibleEntry?.target.id) {
+          setActiveTab(`#${visibleEntry.target.id}`);
+        }
+      },
+      { rootMargin: "-18% 0px -68% 0px", threshold: [0.05, 0.2, 0.45] }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="sticky top-0 z-[90] bg-[#fdfaf3]">
       <div className={pageContainer}>
-        <nav className="flex h-[58px] items-center overflow-x-auto rounded-[10px] border border-[#403229]/10 bg-[#F8EEDD] px-8 text-[15px] font-bold leading-[1.6] text-[#403229]/70 shadow-[0_8px_20px_rgba(64,50,41,0.04)]" aria-label="Trip sections">
-          <div className="flex h-full min-w-max items-center gap-[34px]">
-            {tabs.map((tab, index) => (
-              <a key={tab.label} href={tab.href} className={index === 0 ? "relative flex h-full items-center text-[#403229]" : "flex h-full items-center transition hover:text-[#403229]"}>
+        <nav className="flex h-[58px] items-center rounded-[10px] border border-[#403229]/10 bg-[#F8EEDD] px-2 text-[11px] font-bold leading-[1.2] text-[#403229]/70 shadow-[0_8px_20px_rgba(64,50,41,0.04)] sm:px-4 sm:text-[13px] md:px-8 md:text-[15px]" aria-label="Trip sections">
+          <div className="grid h-full w-full grid-cols-5 items-center">
+            {tripTabs.map((tab) => (
+              <a key={tab.label} href={tab.href} onClick={() => setActiveTab(tab.href)} className={`relative flex h-full items-center justify-center px-1 text-center transition hover:text-[#403229] ${activeTab === tab.href ? "text-[#403229]" : ""}`}>
                 {tab.label}
-                {index === 0 ? <span className="absolute bottom-0 left-0 h-[4px] w-full rounded-t-full bg-[#E2B87F]" /> : null}
+                {activeTab === tab.href ? <span className="absolute bottom-0 left-1/2 h-[4px] w-[min(100%,72px)] -translate-x-1/2 rounded-t-full bg-[#E2B87F]" /> : null}
               </a>
             ))}
           </div>
@@ -635,14 +678,14 @@ function IncludedSection({ dictionary, includedItems, priceTiers }: { dictionary
       </div>
       <IncludedImageSlider images={includedImageSlides} />
       <div id="pricing" className="scroll-mt-[82px] pt-8 lg:col-span-2">
-        <div className="-mx-6 flex items-center gap-7">
+        <div className="mx-auto flex max-w-[1110px] items-center gap-7">
           <div className="h-[2px] flex-1 bg-[#e7ded1]" />
           <h3 className="shrink-0 text-center text-[27px] font-medium leading-[1.3] text-[#403229]">All-inclusive rates in USD</h3>
           <div className="h-[2px] flex-1 bg-[#e7ded1]" />
         </div>
-        <div className="-mx-6 mt-3 grid w-[calc(100%+48px)] overflow-hidden bg-white shadow-[0_16px_35px_rgba(64,50,41,0.06)] sm:grid-cols-2 sm:divide-x sm:divide-[#f0e8dc] md:grid-cols-3 lg:grid-cols-6">
+        <div className="mx-auto mt-3 grid w-full max-w-[1110px] grid-cols-2 gap-px overflow-hidden rounded-[8px] bg-[#f0e8dc] p-px shadow-[0_16px_35px_rgba(64,50,41,0.06)] md:grid-cols-3 lg:grid-cols-6">
           {priceTiers.map((tier) => (
-            <div key={tier.id} className="min-h-[92px] px-4 py-5 text-center">
+            <div key={tier.id} className="min-h-[92px] bg-white px-4 py-5 text-center">
               <p className="text-[11px] font-semibold leading-none text-[#403229]/78">{tier.people}</p>
               <p className="mt-3 text-[20px] font-bold leading-none text-[#e2b87f]">{tier.price}</p>
               <p className="mt-2 text-[11px] font-semibold leading-none text-[#403229]/68">per person</p>
@@ -681,14 +724,14 @@ function BestTimeSection({ dictionary, seasons }: { dictionary: HomeDictionary; 
   return (
     <section className="bg-[#F8EEDD] pb-[72px] pt-[76px]">
       <div className={pageContainer}>
-        <div className="-mx-6 flex items-center gap-8">
+        <div className="mx-auto flex max-w-[1110px] items-center gap-8">
           <div className="h-[2px] flex-1 bg-[#e7ded1]" />
           <h2 className="shrink-0 text-center text-[27px] font-medium leading-[1.3] text-[#403229]">Best time for this safari</h2>
           <div className="h-[2px] flex-1 bg-[#e7ded1]" />
         </div>
-        <div className="-mx-6 mt-5 grid w-[calc(100%+48px)] overflow-hidden bg-white shadow-[0_16px_35px_rgba(64,50,41,0.05)] md:grid-cols-3 md:divide-x md:divide-[#f0e8dc]">
+        <div className="mx-auto mt-5 grid w-full max-w-[1110px] gap-px overflow-hidden rounded-[8px] bg-[#f0e8dc] p-px shadow-[0_16px_35px_rgba(64,50,41,0.05)] md:grid-cols-3">
           {seasons.map((season) => (
-            <article key={season.title} className="min-h-[100px] px-6 pb-7 pt-6">
+            <article key={season.title} className="min-h-[100px] bg-white px-6 pb-7 pt-6">
               <h3 className="flex items-center gap-3 text-[16px] font-medium leading-none text-[#e2b87f]">
                 <span className="size-3 rounded-full opacity-70" style={{ backgroundColor: season.dot }} aria-hidden="true" />
                 {season.title}
@@ -833,7 +876,7 @@ function SimilarTripsSection() {
       <h2 className="mt-4 text-center text-[34px] font-semibold leading-[1.15]">Other Similar Trips</h2>
       <div className="mt-10 grid gap-5 lg:grid-cols-3">
         {tripCards.slice(0, 3).map((trip, index) => (
-          <Link key={`${trip.slug}-similar-${index}`} href={`/trip/${trip.slug}`} className="group overflow-hidden rounded-[8px] border border-[#403229]/10 bg-white shadow-[0_14px_34px_rgba(64,50,41,0.08)] transition hover:-translate-y-0.5 hover:shadow-[0_20px_44px_rgba(64,50,41,0.12)]">
+          <Link key={`${trip.slug}-similar-${index}`} href={`/trip/${sharedTripSlug}`} className="group overflow-hidden rounded-[8px] border border-[#403229]/10 bg-white shadow-[0_14px_34px_rgba(64,50,41,0.08)] transition hover:-translate-y-0.5 hover:shadow-[0_20px_44px_rgba(64,50,41,0.12)]">
             <div className="relative h-[200px]">
               <Image src={trip.image} alt={trip.imageAlt} fill sizes="(min-width: 1024px) 380px, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
               <span className="absolute right-4 top-4 rounded-full bg-[#E2B87F] px-3 py-1 text-[11px] font-bold text-white">{trip.price}</span>

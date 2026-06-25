@@ -7,7 +7,11 @@ export function localizedHref(locale: Locale, href: string) {
     return href;
   }
 
-  if (href === "/trips" || href.startsWith("/trip/")) {
+  if (href.startsWith(`/${locale}`)) {
+    return href;
+  }
+
+  if (href === "/trips" || href.startsWith("/trips?") || href.startsWith("/trip/")) {
     return href;
   }
 

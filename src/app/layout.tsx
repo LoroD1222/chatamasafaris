@@ -5,7 +5,10 @@ import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   title: "Astra Tanzania Safaris | Private Tanzania Safaris for USA Travelers",
-  description: "Plan a private Tanzania safari with Astra: expert guides, USD pricing, vetted camps, migration timing, and planner support."
+  description: "Plan a private Tanzania safari with Astra: expert guides, USD pricing, vetted camps, migration timing, and planner support.",
+  icons: {
+    icon: "/icon.png"
+  }
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

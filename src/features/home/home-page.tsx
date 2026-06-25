@@ -22,7 +22,7 @@ const trustIcons = {
 
 export function HomePage({ locale, dictionary }: { locale: Locale; dictionary: HomeDictionary }) {
   return (
-    <main className="overflow-hidden bg-astra-cream text-astra-brown">
+    <main className="astra-page-enter overflow-hidden bg-astra-cream text-astra-brown">
       <HeroSection dictionary={dictionary} />
       <ExperienceCategories locale={locale} dictionary={dictionary} />
       <WhySection dictionary={dictionary} />
@@ -284,7 +284,7 @@ function ImageStrip() {
 
 function PlanningSection({ dictionary }: { dictionary: HomeDictionary }) {
   return (
-    <section id="planning" className="bg-astra-cocoa py-16 text-white md:py-[98px]">
+    <section id="about-us" className="bg-astra-cocoa py-16 text-white md:py-[98px]">
       <div className="container grid max-w-[1210px] gap-12 lg:grid-cols-[604px_542px] lg:gap-16">
         <PlanningImage image={dictionary.planning.image} />
         <div>
@@ -294,9 +294,9 @@ function PlanningSection({ dictionary }: { dictionary: HomeDictionary }) {
             <br />
             <span className="font-bold text-astra-gold">{dictionary.planning.titleHighlight}</span>
           </h2>
-          <div className="mt-5 flex max-w-[518px] flex-col gap-4 text-[15px] leading-[1.6]">
+          <div className="mt-5 flex max-w-[518px] flex-col gap-4 text-[15px] leading-[1.6] text-white/70">
             {dictionary.planning.paragraphs.map((paragraph, index) => (
-              <p key={`${paragraph.slice(0, 18)}-${index}`} className={index === 4 ? "font-bold" : undefined}>
+              <p key={`${paragraph.slice(0, 18)}-${index}`} className={index === 3 ? "font-bold" : undefined}>
                 {paragraph}
               </p>
             ))}
@@ -318,7 +318,7 @@ function PlanningSection({ dictionary }: { dictionary: HomeDictionary }) {
 
 function PlanningImage({ image }: { image: HomeDictionary["planning"]["image"] }) {
   return (
-    <div className="relative mx-auto aspect-[1520/1937] w-full max-w-[520px]">
+    <div className="relative mx-auto aspect-[1520/1937] w-full max-w-[520px] lg:justify-self-center">
       <Image src={image.src} alt={image.alt} fill sizes="(min-width: 1024px) 520px, 100vw" className="object-contain" />
     </div>
   );

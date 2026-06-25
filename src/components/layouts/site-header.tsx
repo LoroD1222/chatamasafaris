@@ -15,17 +15,17 @@ export function SiteHeader({ locale, dictionary }: { locale: Locale; dictionary:
   return (
     <header className="bg-astra-cream text-astra-brown">
       <div className="bg-astra-gold">
-        <div className="container flex h-[37px] max-w-[1160px] items-center justify-between gap-4 text-[13px] font-bold leading-[1.6]">
-          <p className="hidden items-center gap-2 pl-4 uppercase tracking-[0.05em] text-astra-cocoa/40 sm:flex">
-            <Image src="/assets/figma/nav-bar-star.png" alt="" width={18} height={18} className="size-[18px] object-contain" aria-hidden="true" />
-            {dictionary.topBar.label}
+        <div className="container flex h-[37px] max-w-[1160px] items-center justify-between gap-3 text-[12px] font-bold leading-[1.6] sm:text-[13px]">
+          <p className="flex min-w-0 items-center gap-2 uppercase tracking-[0.05em] text-astra-cocoa/40 sm:pl-4">
+            <Image src="/assets/figma/nav-bar-star.png" alt="" width={18} height={18} className="size-[15px] shrink-0 object-contain sm:size-[18px]" aria-hidden="true" />
+            <span className="truncate">{dictionary.topBar.label}</span>
           </p>
-          <div className="ms-auto flex min-w-0 items-center gap-5 text-astra-cocoa/65">
-            <a href={`tel:${dictionary.topBar.phone.replace(/\s/g, "")}`} className="hidden items-center gap-1 underline underline-offset-2 sm:inline-flex">
+          <div className="ms-auto flex min-w-0 shrink-0 items-center gap-5 text-astra-cocoa/65">
+            <a href={`tel:${dictionary.topBar.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-1 underline underline-offset-2">
               <Phone className="size-3.5" aria-hidden="true" />
               {dictionary.topBar.phone}
             </a>
-            <a href={`mailto:${dictionary.topBar.email}`} className="inline-flex min-w-0 items-center gap-1 underline underline-offset-2">
+            <a href={`mailto:${dictionary.topBar.email}`} className="hidden min-w-0 items-center gap-1 underline underline-offset-2 md:inline-flex">
               <Mail className="size-3.5 shrink-0" aria-hidden="true" />
               <span className="truncate">{dictionary.topBar.email}</span>
             </a>

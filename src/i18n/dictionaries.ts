@@ -3,10 +3,10 @@ import type { HomeDictionary, NavItem } from "@/i18n/types";
 const asset = (name: string) => `/assets/figma/${name}`;
 
 const primaryNav: NavItem[] = [
-  { label: "Itineraries", href: "/trips" },
-  { label: "Safaris", href: "/trips" },
-  { label: "Kilimanjaro", href: "/trips" },
-  { label: "Discover Tanzania", href: "/trips" }
+  { label: "Kilimanjaro", href: "/trips?category=Kilimanjaro" },
+  { label: "Zanzibar", href: "/trips?category=Zanzibar" },
+  { label: "Safari", href: "/trips?category=Wildlife%20Safari" },
+  { label: "About us", href: "/en#about-us" }
 ];
 
 const plannerFields: HomeDictionary["planner"]["fields"] = [
@@ -108,7 +108,7 @@ const en: HomeDictionary = {
         description:
           "Private guided Tanzania safaris - planned for you, priced in USD, backed by 15 years of getting Americans to Africa.",
         cta: "Explore Zanzibar",
-        href: "/trips",
+        href: "/trips?category=Zanzibar",
         image: {
           src: asset("category-zanzibar.jpg"),
           alt: "Turquoise water and tropical coastline in Zanzibar"
@@ -118,11 +118,11 @@ const en: HomeDictionary = {
         icon: "🦁",
         eyebrow: "Wildlife Safari",
         title: "Classic Tanzania Safari",
-        meta: ["For all ages", "For all ages"],
+        meta: [],
         description:
           "Turquoise waters, spice markets, and powder-white beaches. The perfect extension after your safari.",
         cta: "Explore African Wildlife",
-        href: "/trips",
+        href: "/trips?category=Wildlife%20Safari",
         image: {
           src: asset("tanzanian-widernes.png"),
           alt: "Tanzania wilderness with zebras on a safari road"
@@ -132,11 +132,11 @@ const en: HomeDictionary = {
         icon: "🏔️",
         eyebrow: "Kilimanjaro climb",
         title: "Climbing Kilimanjaro",
-        meta: ["For all ages", "For all ages"],
+        meta: [],
         description:
           "World-class lodges, private game drives, and fine dining in the wild - for travelers who want the best of everything.",
         cta: "Explore Arusha",
-        href: "/trips",
+        href: "/trips?category=Kilimanjaro",
         image: {
           src: asset("category-kilimanjaro.jpg"),
           alt: "Tented camp below Mount Kilimanjaro"
@@ -226,7 +226,6 @@ const en: HomeDictionary = {
     titleLead: "Stop overthinking.",
     titleHighlight: "Start planning.",
     paragraphs: [
-      "Stop overthinking. Start planning.",
       "Tanzania is one of those trips people talk about for the rest of their lives - but only if you do it right. The Serengeti, Zanzibar, Kilimanjaro. It's all here, and it's all within reach. The hard part isn't getting to Tanzania. It's knowing who to trust to get you there.",
       "That's where we come in. We're Astra Tanzania - a small team based in Arusha with one job: building Tanzania trips that actually deliver what the photos promise. Not a call center. Not a booking engine. Real people who live here, know the parks, and answer your WhatsApp.",
       "Tell us your dates, how many people, and what matters most to you. We'll handle everything else - from which park to visit in your month, to what's included in every dollar you spend. No hidden fees. No vague itineraries. No surprises when you land.",
