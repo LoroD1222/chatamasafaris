@@ -27,10 +27,20 @@ import { PlannerDialogButton } from "@/components/planner/planner-dialog";
 import { LeadPlanner } from "@/features/home/lead-planner";
 import { defaultLocale } from "@/i18n/config";
 import type { HomeDictionary, PlannerField } from "@/i18n/types";
-import { faqs, galleryImages, includedItems, itineraryDays, sharedTripSlug, type TripCard, tripCards } from "@/features/trips/trip-data";
+import { sharedTripSlug, type TripCard, type TripDetail, tripCards } from "@/features/trips/trip-data";
 
 type TripPageProps = {
   dictionary: HomeDictionary;
+};
+
+type TripDetailPageProps = {
+  dictionary: HomeDictionary;
+  trip: TripDetail;
+};
+
+type TripsListPageProps = {
+  dictionary: HomeDictionary;
+  initialTrips?: TripCard[];
 };
 
 const navLinks = [
@@ -44,50 +54,28 @@ const pageContainer = "mx-auto max-w-[1200px] px-6";
 const amberButton =
   "rounded-[10px] bg-[#E2B87F] text-[#403229] shadow-none transition hover:bg-[#d8aa6c]";
 
-const itinerarySafariSlides = galleryImages;
 const itineraryAccommodationSlides = [
-  {
-    src: "/assets/trips/itinerary-ahadi-lodge-design.png",
-    alt: "Ahadi Lodge swimming pool and stone lodge exterior"
-  },
-  {
-    src: "/assets/figma/review-jeep.jpg",
-    alt: "Guests enjoying a private Tanzania safari vehicle"
-  },
-  {
-    src: "/assets/figma/itinerary-2.jpg",
-    alt: "Tanzania wilderness road and plains"
-  }
+  { src: "/assets/trips/itinerary-ahadi-lodge-design.png", alt: "Ahadi Lodge swimming pool and stone lodge exterior" },
+  { src: "/assets/figma/review-jeep.jpg", alt: "Guests enjoying a private Tanzania safari vehicle" },
+  { src: "/assets/figma/itinerary-2.jpg", alt: "Tanzania wilderness road and plains" }
 ];
 const includedImageSlides = [
-  {
-    src: "/assets/trips/trip-included.png",
-    alt: "Safari landscape included in trip"
-  },
-  {
-    src: "/assets/figma/itinerary-2.jpg",
-    alt: "Zebras resting beside a Tanzania wilderness road"
-  },
-  {
-    src: "/assets/trips/trip-hero-zebras.png",
-    alt: "Zebras grazing in Serengeti grassland"
-  },
-  {
-    src: "/assets/figma/review-jeep.jpg",
-    alt: "Guests riding in a private Tanzania safari vehicle"
-  }
+  { src: "/assets/trips/trip-included.png", alt: "Safari landscape included in trip" },
+  { src: "/assets/figma/itinerary-2.jpg", alt: "Zebras resting beside a Tanzania wilderness road" },
+  { src: "/assets/trips/trip-hero-zebras.png", alt: "Zebras grazing in Serengeti grassland" },
+  { src: "/assets/figma/review-jeep.jpg", alt: "Guests riding in a private Tanzania safari vehicle" }
 ];
 
-export function TripsListPage({ dictionary }: TripPageProps) {
-  const tripTypes = Array.from(new Set(tripCards.map((trip) => trip.tripType)));
-  const minPrice = Math.min(...tripCards.map((trip) => trip.priceValue));
-  const maxTripPrice = Math.max(...tripCards.map((trip) => trip.priceValue));
+export function TripsListPage({ dictionary, initialTrips }: TripsListPageProps) {
+  const cards = initialTrips && initialTrips.length > 0 ? initialTrips : tripCards;
+  const tripTypes = Array.from(new Set(cards.map((trip) => trip.tripType)));
+  const minPrice = Math.min(...cards.map((trip) => trip.priceValue));
+  const maxTripPrice = Math.max(...cards.map((trip) => trip.priceValue));
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [maxPrice, setMaxPrice] = useState(maxTripPrice);
-  const filteredCards = tripCards.filter((trip) => {
+  const filteredCards = cards.filter((trip) => {
     const matchesType = selectedTypes.length === 0 || selectedTypes.includes(trip.tripType);
     const matchesPrice = trip.priceValue <= maxPrice;
-
     return matchesType && matchesPrice;
   });
 
@@ -107,9 +95,7 @@ export function TripsListPage({ dictionary }: TripPageProps) {
         <section className={`${pageContainer} pb-[116px] pt-[64px] md:pt-[62px]`}>
           <div className="text-center">
             <p className="text-[13px] font-semibold leading-[1.6]">
-              <Link href="/trips" className="text-[#6d5b4c]/75">
-                Tanzania
-              </Link>
+              <Link href="/trips" className="text-[#6d5b4c]/75">Tanzania</Link>
               <span className="mx-3 text-[#6d5b4c]/45">&gt;</span>
               <span className="font-bold text-[#403229]">Safari</span>
             </p>
@@ -117,7 +103,6 @@ export function TripsListPage({ dictionary }: TripPageProps) {
               Tanzania safari in 2026 - 2027
             </h1>
           </div>
-
           <TripFilterBar
             tripTypes={tripTypes}
             selectedTypes={selectedTypes}
@@ -129,36 +114,54 @@ export function TripsListPage({ dictionary }: TripPageProps) {
             onPriceChange={setMaxPrice}
             onResetFilters={resetFilters}
           />
-
           <div className="mt-[34px] text-center">
             <p className="inline-flex rounded-full border border-[#E2B87F] bg-[#fff8e8] px-5 py-2 text-[12px] font-bold leading-none text-[#E2B87F]">
               ? The itineraries shown are examples - your journey will be personally tailored to you.
             </p>
           </div>
-
           {filteredCards.length > 0 ? (
             <TripCardGrid cards={filteredCards} className="mt-[57px]" />
           ) : (
             <div className="mx-auto mt-[57px] max-w-[680px] rounded-[8px] border border-[#403229]/12 bg-white p-8 text-center shadow-[0_14px_34px_rgba(64,50,41,0.08)]">
               <p className="text-[18px] font-bold leading-[1.35]">No trips match those filters.</p>
-              <button type="button" onClick={resetFilters} className="mt-4 text-[14px] font-bold text-[#E2B87F] underline underline-offset-4">
-                Reset filters
-              </button>
+              <button type="button" onClick={resetFilters} className="mt-4 text-[14px] font-bold text-[#E2B87F] underline underline-offset-4">Reset filters</button>
             </div>
           )}
-
           <p className="mx-auto mt-[88px] max-w-[960px] text-center text-[15px] font-semibold leading-[1.6] text-[#403229]/70">
             Private guided Tanzania safaris - planned for you, priced in USD, backed by 15 years of getting Americans to Africa.
           </p>
         </section>
-
         <FinalCtaFooter dictionary={dictionary} />
       </main>
     </div>
   );
 }
 
-export function TripDetailPage({ dictionary }: TripPageProps) {
+export function TripDetailPage({ dictionary, trip }: TripDetailPageProps) {
+  const gallerySlides = trip.gallery && trip.gallery.length > 0
+    ? trip.gallery.map((g) => ({ src: g.url, alt: g.alt || trip.title }))
+    : [{ src: trip.heroImage || '/assets/trips/trip-hero-zebras.png', alt: trip.title }];
+
+  const itineraryDays = trip.itinerary && trip.itinerary.length > 0
+    ? trip.itinerary.map((d) => ({ day: `DAY ${d.dayNumber}`, title: d.title, description: d.description, accommodation: d.accommodation }))
+    : [{ day: "DAY 1", title: "Tarangire National Park, Return To Arusha", description: "After breakfast, continue toward Tarangire National Park, one of Tanzania's most scenic and elephant-rich parks.", accommodation: "Ahadi Lodge" }];
+
+  const includedItems = trip.included && trip.included.length > 0
+    ? trip.included
+    : ["Professional English-speaking guide", "Private luxury 4x4 safari vehicle", "All park entry fees", "2 nights camp accommodation"];
+
+  const faqs = trip.faqs && trip.faqs.length > 0
+    ? trip.faqs
+    : [{ question: "Question can be added here", answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." }];
+
+  const seasons = trip.bestTimeSeasons && trip.bestTimeSeasons.length > 0
+    ? trip.bestTimeSeasons.map((s, i) => ({ title: s.period, dot: ["#f2e8dc","#ead9c3","#e2b87f"][i] || "#e2b87f", description: s.highlight }))
+    : [{ title: "Jul - Oct", dot: "#f2e8dc", description: "Peak migration. River crossings most frequent. Best overall wildlife." }];
+
+  const priceTiers = trip.pricingTiers && trip.pricingTiers.length > 0
+    ? trip.pricingTiers.map((t, i) => ({ id: `rate-${i}`, people: t.label, price: `$${t.pricePerPerson?.toLocaleString('en-US')}` }))
+    : Array.from({ length: 6 }, (_, i) => ({ id: `rate-${i}`, people: "1 pax", price: "$2,890" }));
+
   return (
     <div className="min-h-screen bg-[#fdfaf3] text-[#403229]">
       <TripHeader dictionary={dictionary} />
@@ -166,37 +169,34 @@ export function TripDetailPage({ dictionary }: TripPageProps) {
         <section className="mx-auto max-w-[1200px] px-6 pb-[76px] pt-[65px]">
           <TripBreadcrumb />
           <h1 className="text-[31px] font-semibold leading-[1.14] tracking-[-0.01em] text-[#403229] md:text-[37px]">
-            Great Migration & River Crossing in Serengeti
+            {trip.title}
           </h1>
-
           <div className="mt-[26px] grid items-start gap-7 lg:grid-cols-[708px_448px]">
-            <HeroGallery />
-            <TripSummaryCard dictionary={dictionary} />
+            <HeroGallery images={gallerySlides} />
+            <TripSummaryCard dictionary={dictionary} trip={trip} />
           </div>
-
-          <BuiltForSection dictionary={dictionary} />
+          <BuiltForSection dictionary={dictionary} trip={trip} />
         </section>
 
         <div className="relative">
           <TripTabs />
-
           <section id="overview" className="mx-auto grid max-w-[1200px] scroll-mt-[82px] gap-10 px-6 py-[84px] lg:grid-cols-[680px_448px]">
-            <OverviewText />
+            <OverviewText trip={trip} />
             <PlannerQuoteCard dictionary={dictionary} />
           </section>
 
           <section id="tour-details" className="mx-auto grid max-w-[1200px] scroll-mt-[82px] gap-8 px-6 pb-[84px] lg:grid-cols-[minmax(0,879px)_1fr]">
             <div className="relative overflow-hidden rounded-[10px]">
-              <Image src="/assets/trips/trip-map.png" alt="Three day mid-range Tanzania safari map" width={879} height={705} className="h-auto w-full" />
+              <Image src="/assets/trips/trip-map.png" alt="Tanzania safari map" width={879} height={705} className="h-auto w-full" />
             </div>
             <aside className="relative z-[100] self-center rounded-[10px] border border-[rgba(200,134,10,0.25)] bg-white p-8 shadow-[0_20px_45px_rgba(64,50,41,0.12)] lg:-ml-[200px] lg:w-[calc(100%+200px)]">
               <h2 className="border-b border-[#403229]/18 pb-5 text-[24px] font-semibold leading-[1.18]">Is this tour for me?</h2>
               <div className="border-b border-[#403229]/13 py-5">
-                <p className="text-[14px] font-bold leading-[1.6]">Age Requirements: 3+</p>
-                <p className="mt-2 text-[14px] font-bold leading-[1.6]">Trip Type: Private Group</p>
+                <p className="text-[14px] font-bold leading-[1.6]">Age Requirements: {trip.minAge ? `${trip.minAge}+` : '3+'}</p>
+                <p className="mt-2 text-[14px] font-bold leading-[1.6]">Trip Type: {trip.tripType || 'Private Group'}</p>
               </div>
               <p className="border-b border-[#403229]/13 py-5 text-[13px] font-semibold leading-[1.65] text-[#403229]/70">
-                Travel on your own schedule with full flexibility in dates, pace, and itinerary. Pricing is tailored to your private group size, and you can enjoy a fully customized experience.
+                Travel on your own schedule with full flexibility in dates, pace, and itinerary.
               </p>
               <PlannerDialogButton planner={dictionary.planner} className={`mt-6 h-[46px] w-full px-4 text-[14px] font-bold ${amberButton}`}>
                 Talk to a Planner
@@ -204,15 +204,15 @@ export function TripDetailPage({ dictionary }: TripPageProps) {
             </aside>
           </section>
 
-          <ItinerarySection />
-          <IncludedSection dictionary={dictionary} />
+          <ItinerarySection itineraryDays={itineraryDays} gallerySlides={gallerySlides} />
+          <IncludedSection dictionary={dictionary} includedItems={includedItems} priceTiers={priceTiers} />
         </div>
-        <BestTimeSection dictionary={dictionary} />
+        <BestTimeSection dictionary={dictionary} seasons={seasons} />
         <WidePlannerBand dictionary={dictionary} />
-        <ReviewsSection />
+        <ReviewsSection reviews={trip.reviews} />
         <StopPlanningSection dictionary={dictionary} />
         <SimilarTripsSection />
-        <FaqSection dictionary={dictionary} />
+        <FaqSection dictionary={dictionary} faqs={faqs} />
         <FinalCtaFooter dictionary={dictionary} />
       </main>
     </div>
@@ -247,21 +247,13 @@ function TripHeader({ dictionary }: TripPageProps) {
           </Link>
           <nav className="hidden items-center gap-8 text-[15px] font-semibold leading-[1.6] md:flex" aria-label="Primary">
             {navLinks.map((link) => (
-              <Link key={link.label} href={link.href} className="transition hover:text-[#E2B87F]">
-                {link.label}
-              </Link>
+              <Link key={link.label} href={link.href} className="transition hover:text-[#E2B87F]">{link.label}</Link>
             ))}
           </nav>
-          <PlannerDialogButton
-            planner={dictionary.planner}
-            className={`hidden h-[54px] px-[21px] text-[16px] font-bold md:inline-flex ${amberButton}`}
-          >
+          <PlannerDialogButton planner={dictionary.planner} className={`hidden h-[54px] px-[21px] text-[16px] font-bold md:inline-flex ${amberButton}`}>
             Get a Safari Planner
           </PlannerDialogButton>
-          <PlannerDialogButton
-            planner={dictionary.planner}
-            className={`h-11 px-4 text-[13px] font-bold md:hidden ${amberButton}`}
-          >
+          <PlannerDialogButton planner={dictionary.planner} className={`h-11 px-4 text-[13px] font-bold md:hidden ${amberButton}`}>
             Planner
           </PlannerDialogButton>
         </div>
@@ -273,67 +265,30 @@ function TripHeader({ dictionary }: TripPageProps) {
 function TripBreadcrumb() {
   return (
     <nav className="mb-[47px] text-[13px] font-semibold leading-none text-[#403229]/55" aria-label="Breadcrumb">
-      <Link href="/trips" className="transition hover:text-[#403229]">
-        Tanzania
-      </Link>
+      <Link href="/trips" className="transition hover:text-[#403229]">Tanzania</Link>
       <span className="mx-2 text-[#403229]/35">&gt;</span>
-      <Link href="/trips" className="transition hover:text-[#403229]">
-        Safari
-      </Link>
+      <Link href="/trips" className="transition hover:text-[#403229]">Safari</Link>
       <span className="mx-2 text-[#403229]/35">&gt;</span>
       <span className="text-[#403229]/80">Great Migration</span>
     </nav>
   );
 }
 
-function TripFilterBar({
-  tripTypes,
-  selectedTypes,
-  minPrice,
-  maxTripPrice,
-  maxPrice,
-  resultCount,
-  onToggleType,
-  onPriceChange,
-  onResetFilters
-}: {
-  tripTypes: string[];
-  selectedTypes: string[];
-  minPrice: number;
-  maxTripPrice: number;
-  maxPrice: number;
-  resultCount: number;
-  onToggleType: (type: string) => void;
-  onPriceChange: (price: number) => void;
-  onResetFilters: () => void;
-}) {
+function TripFilterBar({ tripTypes, selectedTypes, minPrice, maxTripPrice, maxPrice, resultCount, onToggleType, onPriceChange, onResetFilters }: { tripTypes: string[]; selectedTypes: string[]; minPrice: number; maxTripPrice: number; maxPrice: number; resultCount: number; onToggleType: (type: string) => void; onPriceChange: (price: number) => void; onResetFilters: () => void; }) {
   return (
     <div className="mx-auto mt-[72px] grid max-w-[766px] overflow-hidden rounded-[2px] border border-[#403229]/12 bg-white md:grid-cols-[1fr_1.15fr]">
       <div className="border-b border-[#403229]/12 px-5 py-4 md:border-b-0 md:border-r">
         <div className="flex items-center justify-between gap-3">
           <p className="text-[12px] font-bold leading-[1.4]">Trip type:</p>
           {selectedTypes.length > 0 ? (
-            <button type="button" onClick={onResetFilters} className="text-[11px] font-bold leading-none text-[#E2B87F] underline underline-offset-2">
-              Clear
-            </button>
+            <button type="button" onClick={onResetFilters} className="text-[11px] font-bold leading-none text-[#E2B87F] underline underline-offset-2">Clear</button>
           ) : null}
         </div>
         <div className="mt-4 flex flex-wrap gap-2.5">
           {tripTypes.map((type) => {
             const selected = selectedTypes.includes(type);
-
             return (
-              <button
-                key={type}
-                type="button"
-                onClick={() => onToggleType(type)}
-                className={`inline-flex h-[28px] items-center gap-2 rounded-full border px-3 text-[11px] font-bold leading-none transition ${
-                  selected
-                    ? "border-[#E2B87F] bg-[#fff4dc] text-[#403229]"
-                    : "border-[#403229]/12 bg-[#fdfaf3] text-[#403229]/62 hover:border-[#E2B87F]"
-                }`}
-                aria-pressed={selected}
-              >
+              <button key={type} type="button" onClick={() => onToggleType(type)} className={`inline-flex h-[28px] items-center gap-2 rounded-full border px-3 text-[11px] font-bold leading-none transition ${selected ? "border-[#E2B87F] bg-[#fff4dc] text-[#403229]" : "border-[#403229]/12 bg-[#fdfaf3] text-[#403229]/62 hover:border-[#E2B87F]"}`} aria-pressed={selected}>
                 <span className={`grid size-[14px] place-items-center rounded-full border ${selected ? "border-[#E2B87F] bg-[#E2B87F] text-white" : "border-[#403229]/20"}`}>
                   {selected ? <Check className="size-2.5" aria-hidden="true" /> : null}
                 </span>
@@ -352,20 +307,8 @@ function TripFilterBar({
           <div className="relative h-[14px]">
             <div className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 bg-[#E2B87F]/55" />
             <div className="absolute left-0 top-1/2 size-[14px] -translate-y-1/2 rounded-full bg-[#E2B87F]" />
-            <input
-              type="range"
-              min={minPrice}
-              max={maxTripPrice}
-              step={100}
-              value={maxPrice}
-              onChange={(event) => onPriceChange(Number(event.currentTarget.value))}
-              className="absolute inset-x-0 top-1/2 h-[18px] -translate-y-1/2 cursor-pointer opacity-0"
-              aria-label="Maximum trip price"
-            />
-            <div
-              className="absolute top-1/2 size-[14px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#E2B87F]"
-              style={{ left: `${((maxPrice - minPrice) / (maxTripPrice - minPrice)) * 100}%` }}
-            />
+            <input type="range" min={minPrice} max={maxTripPrice} step={100} value={maxPrice} onChange={(event) => onPriceChange(Number(event.currentTarget.value))} className="absolute inset-x-0 top-1/2 h-[18px] -translate-y-1/2 cursor-pointer opacity-0" aria-label="Maximum trip price" />
+            <div className="absolute top-1/2 size-[14px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#E2B87F]" style={{ left: `${((maxPrice - minPrice) / (maxTripPrice - minPrice)) * 100}%` }} />
           </div>
           <div className="mt-2 flex justify-between text-[12px] font-semibold text-[#E2B87F]">
             <span>${minPrice.toLocaleString("en-US")}</span>
@@ -379,38 +322,18 @@ function TripFilterBar({
 
 function TripCardGrid({ className = "", limit, cards = tripCards }: { className?: string; limit?: number; cards?: TripCard[] }) {
   const visibleCards = typeof limit === "number" ? cards.slice(0, limit) : cards;
-
   return (
     <div className={`mx-auto grid max-w-[1111px] gap-x-[18px] gap-y-[14px] md:grid-cols-2 lg:grid-cols-3 ${className}`}>
       {visibleCards.map((trip, index) => (
-        <Link
-          key={`${trip.slug}-${index}`}
-          href={`/trip/${sharedTripSlug}`}
-          className="group relative h-[401px] overflow-hidden rounded-[8px] bg-[#403229] text-white outline-none transition focus-visible:ring-2 focus-visible:ring-[#E2B87F] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fdfaf3]"
-        >
-          <Image
-            src={trip.image}
-            alt={trip.imageAlt}
-            fill
-            sizes="(min-width: 1024px) 356px, (min-width: 768px) 50vw, 100vw"
-            className="object-cover transition duration-500 group-hover:scale-105"
-          />
+        <Link key={`${trip.slug}-${index}`} href={`/trip/${trip.slug}`} className="group relative h-[401px] overflow-hidden rounded-[8px] bg-[#403229] text-white outline-none transition focus-visible:ring-2 focus-visible:ring-[#E2B87F] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fdfaf3]">
+          <Image src={trip.image} alt={trip.imageAlt} fill sizes="(min-width: 1024px) 356px, (min-width: 768px) 50vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
           <div className="absolute inset-x-0 bottom-0 h-[115px] rounded-b-[8px] bg-[#654d38]/60 backdrop-blur-[2.5px]" />
           <div className="absolute inset-x-0 bottom-[113px] h-[3px] bg-white/15" />
-          <div className="absolute right-[18px] top-[18px] rounded-[5px] border border-white/45 bg-[#E2B87F] px-3 py-1 text-[11px] font-bold leading-[1.5] text-white backdrop-blur">
-            {trip.price}
-          </div>
+          <div className="absolute right-[18px] top-[18px] rounded-[5px] border border-white/45 bg-[#E2B87F] px-3 py-1 text-[11px] font-bold leading-[1.5] text-white backdrop-blur">{trip.price}</div>
           <div className="absolute bottom-[25px] left-[19px] right-[19px]">
-            <h2 className="text-[14px] font-bold leading-[1.6]">
-              {trip.title} - <span className="font-semibold">{trip.duration}</span>
-            </h2>
-            <p className="text-[14px] font-semibold leading-[1.51] text-white/85">
-              {trip.route} - {trip.season}
-            </p>
-            <span className="mt-3 inline-flex h-[27px] items-center gap-1 rounded-full bg-[#E2B87F] px-3 text-[14px] font-semibold leading-none text-white">
-              See Itinerary
-              <ArrowRight className="size-3.5" aria-hidden="true" />
-            </span>
+            <h2 className="text-[14px] font-bold leading-[1.6]">{trip.title} - <span className="font-semibold">{trip.duration}</span></h2>
+            <p className="text-[14px] font-semibold leading-[1.51] text-white/85">{trip.route} - {trip.season}</p>
+            <span className="mt-3 inline-flex h-[27px] items-center gap-1 rounded-full bg-[#E2B87F] px-3 text-[14px] font-semibold leading-none text-white">See Itinerary<ArrowRight className="size-3.5" aria-hidden="true" /></span>
           </div>
         </Link>
       ))}
@@ -418,153 +341,58 @@ function TripCardGrid({ className = "", limit, cards = tripCards }: { className?
   );
 }
 
-function HeroGallery() {
+function HeroGallery({ images }: { images: { src: string; alt: string }[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-  const currentImage = galleryImages[currentIndex];
+  const currentImage = images[currentIndex] || images[0];
 
-  const showPreviousImage = () => {
-    setCurrentIndex((index) => (index === 0 ? galleryImages.length - 1 : index - 1));
-  };
-
-  const showNextImage = () => {
-    setCurrentIndex((index) => (index === galleryImages.length - 1 ? 0 : index + 1));
-  };
+  const showPreviousImage = () => setCurrentIndex((index) => (index === 0 ? images.length - 1 : index - 1));
+  const showNextImage = () => setCurrentIndex((index) => (index === images.length - 1 ? 0 : index + 1));
 
   useEffect(() => {
-    if (!isLightboxOpen) {
-      return;
-    }
-
+    if (!isLightboxOpen) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setIsLightboxOpen(false);
-      }
-      if (event.key === "ArrowLeft") {
-        setCurrentIndex((index) => (index === 0 ? galleryImages.length - 1 : index - 1));
-      }
-      if (event.key === "ArrowRight") {
-        setCurrentIndex((index) => (index === galleryImages.length - 1 ? 0 : index + 1));
-      }
+      if (event.key === "Escape") setIsLightboxOpen(false);
+      if (event.key === "ArrowLeft") setCurrentIndex((index) => (index === 0 ? images.length - 1 : index - 1));
+      if (event.key === "ArrowRight") setCurrentIndex((index) => (index === images.length - 1 ? 0 : index + 1));
     };
-
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKeyDown);
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [isLightboxOpen]);
+    return () => { document.body.style.overflow = previousOverflow; window.removeEventListener("keydown", onKeyDown); };
+  }, [isLightboxOpen, images.length]);
 
   return (
     <div>
       <div className="relative h-[420px] overflow-hidden rounded-[2px] bg-[#403229] lg:h-[574px]">
-        <button
-          type="button"
-          onClick={() => setIsLightboxOpen(true)}
-          className="absolute inset-0 cursor-zoom-in outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--astra-primary-amber)]"
-          aria-label={`Open image gallery: ${currentImage.alt}`}
-        >
+        <button type="button" onClick={() => setIsLightboxOpen(true)} className="absolute inset-0 cursor-zoom-in outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--astra-primary-amber)]" aria-label={`Open image gallery: ${currentImage.alt}`}>
           <Image src={currentImage.src} alt={currentImage.alt} fill priority sizes="707px" className="object-cover transition duration-300" />
         </button>
-        <div className="absolute left-[17px] top-[17px] rounded-full bg-[var(--astra-primary-amber)] px-[15px] py-[9px] text-[14px] font-bold leading-none text-white shadow-[0_10px_24px_rgba(0,0,0,0.18)]">
-          Featured
-        </div>
-        <button
-          type="button"
-          onClick={showPreviousImage}
-          className="absolute left-4 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-full bg-white/92 text-[#403229] shadow-[0_10px_24px_rgba(0,0,0,0.2)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]"
-          aria-label="Show previous safari image"
-        >
-          <ChevronLeft className="size-5" aria-hidden="true" />
-        </button>
-        <button
-          type="button"
-          onClick={showNextImage}
-          className="absolute right-4 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-full bg-white/92 text-[#403229] shadow-[0_10px_24px_rgba(0,0,0,0.2)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]"
-          aria-label="Show next safari image"
-        >
-          <ChevronRight className="size-5" aria-hidden="true" />
-        </button>
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/45 px-3 py-1 text-[12px] font-bold text-white backdrop-blur-sm">
-          {currentIndex + 1} / {galleryImages.length}
-        </div>
+        <div className="absolute left-[17px] top-[17px] rounded-full bg-[var(--astra-primary-amber)] px-[15px] py-[9px] text-[14px] font-bold leading-none text-white shadow-[0_10px_24px_rgba(0,0,0,0.18)]">Featured</div>
+        <button type="button" onClick={showPreviousImage} className="absolute left-4 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-full bg-white/92 text-[#403229] shadow-[0_10px_24px_rgba(0,0,0,0.2)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]" aria-label="Show previous safari image"><ChevronLeft className="size-5" aria-hidden="true" /></button>
+        <button type="button" onClick={showNextImage} className="absolute right-4 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-full bg-white/92 text-[#403229] shadow-[0_10px_24px_rgba(0,0,0,0.2)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]" aria-label="Show next safari image"><ChevronRight className="size-5" aria-hidden="true" /></button>
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/45 px-3 py-1 text-[12px] font-bold text-white backdrop-blur-sm">{currentIndex + 1} / {images.length}</div>
       </div>
       <div className="mt-[17px] grid grid-cols-4 gap-[10px]">
-        {galleryImages.map((image, index) => (
-          <button
-            key={image.src}
-            type="button"
-            onClick={() => setCurrentIndex(index)}
-            className={`relative h-[118px] overflow-hidden rounded-[2px] outline-none transition focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)] ${
-              index === currentIndex ? "ring-2 ring-[var(--astra-primary-amber)] ring-offset-2 ring-offset-[#fdfaf3]" : "opacity-80 hover:opacity-100"
-            }`}
-            aria-label={`Show gallery image ${index + 1}: ${image.alt}`}
-            aria-current={index === currentIndex ? "true" : undefined}
-          >
+        {images.map((image, index) => (
+          <button key={image.src} type="button" onClick={() => setCurrentIndex(index)} className={`relative h-[118px] overflow-hidden rounded-[2px] outline-none transition focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)] ${index === currentIndex ? "ring-2 ring-[var(--astra-primary-amber)] ring-offset-2 ring-offset-[#fdfaf3]" : "opacity-80 hover:opacity-100"}`} aria-label={`Show gallery image ${index + 1}: ${image.alt}`} aria-current={index === currentIndex ? "true" : undefined}>
             <Image src={image.src} alt={image.alt} fill sizes="169px" className="object-cover" />
           </button>
         ))}
       </div>
       {isLightboxOpen ? (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label="Safari image gallery"
-          className="fixed inset-0 z-[200] bg-black/92 px-5 py-6 text-white"
-          onClick={() => setIsLightboxOpen(false)}
-        >
-          <button
-            type="button"
-            onClick={() => setIsLightboxOpen(false)}
-            className="absolute right-5 top-5 z-10 grid size-11 place-items-center rounded-full bg-white/12 text-white transition hover:bg-white/22 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
-            aria-label="Close image gallery"
-          >
-            <X className="size-5" aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            onClick={(event) => {
-              event.stopPropagation();
-              showPreviousImage();
-            }}
-            className="absolute left-5 top-1/2 z-10 grid size-12 -translate-y-1/2 place-items-center rounded-full bg-white/12 text-white transition hover:bg-white/22 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
-            aria-label="Show previous image in lightbox"
-          >
-            <ChevronLeft className="size-6" aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            onClick={(event) => {
-              event.stopPropagation();
-              showNextImage();
-            }}
-            className="absolute right-5 top-1/2 z-10 grid size-12 -translate-y-1/2 place-items-center rounded-full bg-white/12 text-white transition hover:bg-white/22 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
-            aria-label="Show next image in lightbox"
-          >
-            <ChevronRight className="size-6" aria-hidden="true" />
-          </button>
-          <div className="mx-auto flex h-full max-w-[1180px] flex-col gap-5" onClick={(event) => event.stopPropagation()}>
+        <div role="dialog" aria-modal="true" aria-label="Safari image gallery" className="fixed inset-0 z-[200] bg-black/92 px-5 py-6 text-white" onClick={() => setIsLightboxOpen(false)}>
+          <button type="button" onClick={() => setIsLightboxOpen(false)} className="absolute right-5 top-5 z-10 grid size-11 place-items-center rounded-full bg-white/12 text-white transition hover:bg-white/22 focus:outline-none focus-visible:ring-2 focus-visible:ring-white" aria-label="Close image gallery"><X className="size-5" aria-hidden="true" /></button>
+          <button type="button" onClick={(e) => { e.stopPropagation(); showPreviousImage(); }} className="absolute left-5 top-1/2 z-10 grid size-12 -translate-y-1/2 place-items-center rounded-full bg-white/12 text-white transition hover:bg-white/22 focus:outline-none focus-visible:ring-2 focus-visible:ring-white" aria-label="Show previous image in lightbox"><ChevronLeft className="size-6" aria-hidden="true" /></button>
+          <button type="button" onClick={(e) => { e.stopPropagation(); showNextImage(); }} className="absolute right-5 top-1/2 z-10 grid size-12 -translate-y-1/2 place-items-center rounded-full bg-white/12 text-white transition hover:bg-white/22 focus:outline-none focus-visible:ring-2 focus-visible:ring-white" aria-label="Show next image in lightbox"><ChevronRight className="size-6" aria-hidden="true" /></button>
+          <div className="mx-auto flex h-full max-w-[1180px] flex-col gap-5" onClick={(e) => e.stopPropagation()}>
             <div className="relative min-h-0 flex-1">
               <Image src={currentImage.src} alt={currentImage.alt} fill sizes="100vw" className="object-contain" priority />
             </div>
-            <div className="text-center text-[13px] font-semibold text-white/72">
-              {currentIndex + 1} / {galleryImages.length}
-            </div>
+            <div className="text-center text-[13px] font-semibold text-white/72">{currentIndex + 1} / {images.length}</div>
             <div className="mx-auto grid w-full max-w-[620px] grid-cols-4 gap-3">
-              {galleryImages.map((image, index) => (
-                <button
-                  key={`${image.src}-lightbox`}
-                  type="button"
-                  onClick={() => setCurrentIndex(index)}
-                  className={`relative h-[76px] overflow-hidden rounded-[4px] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white ${
-                    index === currentIndex ? "ring-2 ring-[var(--astra-primary-amber)]" : "opacity-65 hover:opacity-100"
-                  }`}
-                  aria-label={`Show gallery image ${index + 1}: ${image.alt}`}
-                  aria-current={index === currentIndex ? "true" : undefined}
-                >
+              {images.map((image, index) => (
+                <button key={`${image.src}-lightbox`} type="button" onClick={() => setCurrentIndex(index)} className={`relative h-[76px] overflow-hidden rounded-[4px] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white ${index === currentIndex ? "ring-2 ring-[var(--astra-primary-amber)]" : "opacity-65 hover:opacity-100"}`} aria-label={`Show gallery image ${index + 1}: ${image.alt}`} aria-current={index === currentIndex ? "true" : undefined}>
                   <Image src={image.src} alt={image.alt} fill sizes="155px" className="object-cover" />
                 </button>
               ))}
@@ -586,49 +414,43 @@ function RatingStars({ className = "size-5" }: { className?: string }) {
   );
 }
 
-function TripSummaryCard({ dictionary }: TripPageProps) {
+function TripSummaryCard({ dictionary, trip }: { dictionary: HomeDictionary; trip: TripDetail }) {
   return (
     <aside className="flex rounded-[10px] border border-[#403229]/12 bg-white shadow-[0_22px_44px_rgba(64,50,41,0.08)]">
       <div className="flex min-h-full w-full flex-col px-6 py-6">
         <div className="border-b border-[#403229]/13 pb-5">
           <RatingStars className="size-6" />
           <div className="mt-3 flex items-end gap-3">
-            <p className="text-[42px] font-bold leading-none text-[#403229]">4.9</p>
-            <p className="pb-1 text-[13px] font-semibold leading-[1.4] text-[#403229]/62">from 312 verified reviews</p>
+            <p className="text-[42px] font-bold leading-none text-[#403229]">{trip.reviewScore || 4.9}</p>
+            <p className="pb-1 text-[13px] font-semibold leading-[1.4] text-[#403229]/62">from {trip.reviewCount || 312} verified reviews</p>
           </div>
         </div>
         <div className="grid gap-3 border-b border-[#403229]/13 py-5">
           <div className="flex items-center justify-between rounded-[8px] bg-[var(--astra-cream-panel)] px-4 py-3">
-            <span className="flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.05em] text-[#403229]/62">
-              <TrendingUp className="size-4 text-[var(--astra-primary-amber)]" aria-hidden="true" />
-              In Popularity
-            </span>
-            <span className="flex items-center gap-2 text-[32px] font-bold leading-none text-[var(--astra-primary-amber)]">
-              <Trophy className="size-6" aria-hidden="true" />
-              #4
-            </span>
+            <span className="flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.05em] text-[#403229]/62"><TrendingUp className="size-4 text-[var(--astra-primary-amber)]" aria-hidden="true" />In Popularity</span>
+            <span className="flex items-center gap-2 text-[32px] font-bold leading-none text-[var(--astra-primary-amber)]"><Trophy className="size-6" aria-hidden="true" />#{trip.popularityRank || 4}</span>
           </div>
           <div className="flex items-center gap-3 rounded-[8px] border border-[#403229]/10 px-4 py-3 text-[16px] font-bold">
             <UsersRound className="size-5 text-[var(--astra-primary-amber)]" aria-hidden="true" />
-            2,000+ travellers booked with Astra
+            {trip.totalTravellers || '2,000+'} travellers booked with Astra
           </div>
         </div>
         <dl className="grid gap-4 border-b border-[#403229]/13 py-5 text-[16px] leading-[1.6]">
           <div className="grid grid-cols-[140px_1fr]">
             <dt className="font-semibold text-[#403229]/65">Physical rating</dt>
-            <dd className="font-bold">Easy</dd>
+            <dd className="font-bold">{trip.physicalRating || 'Easy'}</dd>
           </div>
           <div className="grid grid-cols-[140px_1fr]">
             <dt className="font-semibold text-[#403229]/65">Tour Start</dt>
-            <dd className="font-bold">All seasons</dd>
+            <dd className="font-bold">{trip.season || 'All seasons'}</dd>
           </div>
           <div className="grid grid-cols-[140px_1fr]">
             <dt className="font-semibold text-[#403229]/65">Duration</dt>
-            <dd className="font-bold">3 days</dd>
+            <dd className="font-bold">{trip.duration}</dd>
           </div>
         </dl>
         <p className="mt-5 text-[15px] font-semibold leading-[1.65] text-[#403229]/66">
-          This morning is yours to enjoy at a relaxed pace. Have a peaceful breakfast at the lodge and take some time to soak in the surroundings before your departure. Most flights usually depart around 10-11 AM, so you will leave the lodge at a comfortable time.
+          {trip.shortDescription || 'This morning is yours to enjoy at a relaxed pace.'}
         </p>
         <div className="mt-8 border-t border-[#403229]/13 pt-5">
           <PlannerDialogButton planner={dictionary.planner} className={`h-[54px] w-full px-4 text-[15px] font-bold ${amberButton}`}>
@@ -640,13 +462,17 @@ function TripSummaryCard({ dictionary }: TripPageProps) {
   );
 }
 
-function BuiltForSection({ dictionary }: TripPageProps) {
-  const items = [
+function BuiltForSection({ dictionary, trip }: { dictionary: HomeDictionary; trip: TripDetail }) {
+  const defaultItems = [
     { label: "Couples & honeymooners", Icon: Heart },
     { label: "First-time safari travelers", Icon: Binoculars },
     { label: "Families with limited time", Icon: UsersRound },
     { label: "Zanzibar visitors adding wildlife", Icon: Waves }
   ];
+  const icons = [Heart, Binoculars, UsersRound, Waves];
+  const items = trip.targetAudience && trip.targetAudience.length > 0
+    ? trip.targetAudience.map((label, i) => ({ label, Icon: icons[i % icons.length] }))
+    : defaultItems;
 
   return (
     <section className="mt-[28px] grid gap-7 lg:grid-cols-[708px_448px]">
@@ -668,33 +494,23 @@ function BuiltForSection({ dictionary }: TripPageProps) {
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#403229]/13 pb-5">
           <div>
             <p className="flex items-center gap-3 text-[26px] font-bold leading-none text-[#E2B87F]">
-              4.9
+              {trip.reviewScore || 4.9}
               <RatingStars className="size-3.5" />
             </p>
           </div>
           <div className="inline-flex items-center gap-2 rounded-full border border-[#1f8f5a]/25 bg-[#effaf4] px-3 py-1.5 text-[12px] font-bold leading-none text-[#1f8f5a]">
-            <span className="flex items-center gap-0.5" aria-hidden="true">
-              <span className="size-2 rounded-full bg-[#1f8f5a]" />
-              <span className="size-2 rounded-full bg-[#1f8f5a]" />
-              <span className="size-2 rounded-full bg-[#1f8f5a]" />
-            </span>
+            <span className="flex items-center gap-0.5" aria-hidden="true"><span className="size-2 rounded-full bg-[#1f8f5a]" /><span className="size-2 rounded-full bg-[#1f8f5a]" /><span className="size-2 rounded-full bg-[#1f8f5a]" /></span>
             TripAdvisor
           </div>
         </div>
         <p className="border-b border-[#403229]/13 py-5 text-[15px] font-semibold leading-[1.6] text-[#403229]/75">
-          Review from TripAdvisor &quot;The river crossing was unlike anything I&apos;ve ever seen in my life.&quot;
+          {trip.featuredReviewQuote || 'Review from TripAdvisor "The river crossing was unlike anything I\'ve ever seen in my life."'}
         </p>
         <div className="pt-5">
           <p className="text-[15px] font-semibold leading-[1.6]">For extra information please contact us</p>
           <p className="mt-3 flex flex-wrap gap-x-5 gap-y-3 text-[13px] font-bold leading-[1.6] text-[#403229]/65">
-            <a href={`tel:${dictionary.topBar.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-2 hover:text-[#E2B87F]">
-              <Phone className="size-4 text-[#E2B87F]" aria-hidden="true" />
-              {dictionary.topBar.phone}
-            </a>
-            <a href={`mailto:${dictionary.topBar.email}`} className="inline-flex items-center gap-2 hover:text-[#E2B87F]">
-              <Mail className="size-4 text-[#E2B87F]" aria-hidden="true" />
-              {dictionary.topBar.email}
-            </a>
+            <a href={`tel:${dictionary.topBar.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-2 hover:text-[#E2B87F]"><Phone className="size-4 text-[#E2B87F]" aria-hidden="true" />{dictionary.topBar.phone}</a>
+            <a href={`mailto:${dictionary.topBar.email}`} className="inline-flex items-center gap-2 hover:text-[#E2B87F]"><Mail className="size-4 text-[#E2B87F]" aria-hidden="true" />{dictionary.topBar.email}</a>
           </p>
         </div>
       </aside>
@@ -710,18 +526,13 @@ function TripTabs() {
     { label: "Inclusions", href: "#inclusions" },
     { label: "Price", href: "#pricing" }
   ];
-
   return (
     <div className="sticky top-0 z-[90] bg-[#fdfaf3]">
       <div className={pageContainer}>
         <nav className="flex h-[58px] items-center overflow-x-auto rounded-[10px] border border-[#403229]/10 bg-[#F8EEDD] px-8 text-[15px] font-bold leading-[1.6] text-[#403229]/70 shadow-[0_8px_20px_rgba(64,50,41,0.04)]" aria-label="Trip sections">
           <div className="flex h-full min-w-max items-center gap-[34px]">
             {tabs.map((tab, index) => (
-              <a
-                key={tab.label}
-                href={tab.href}
-                className={index === 0 ? "relative flex h-full items-center text-[#403229]" : "flex h-full items-center transition hover:text-[#403229]"}
-              >
+              <a key={tab.label} href={tab.href} className={index === 0 ? "relative flex h-full items-center text-[#403229]" : "flex h-full items-center transition hover:text-[#403229]"}>
                 {tab.label}
                 {index === 0 ? <span className="absolute bottom-0 left-0 h-[4px] w-full rounded-t-full bg-[#E2B87F]" /> : null}
               </a>
@@ -733,20 +544,12 @@ function TripTabs() {
   );
 }
 
-function OverviewText() {
+function OverviewText({ trip }: { trip: TripDetail }) {
   return (
     <div>
       <h2 className="sr-only">Overview</h2>
       <p className="whitespace-pre-line text-[15px] font-semibold leading-[1.68] text-[#403229]/74">
-        {`Overview
-
-Tanzania is one of those trips people talk about for the rest of their lives - but only if you do it right. The Serengeti, Zanzibar, Kilimanjaro. It's all here, and it's all within reach. The hard part isn't getting to Tanzania. It's knowing who to trust to get you there.
-
-That's where we come in. We're Astra Tanzania - a small team based in Arusha with one job: building Tanzania trips that actually deliver what the photos promise. Not a call center. Not a booking engine. Real people who live here, know the parks, and answer your WhatsApp.
-
-Tell us your dates, how many people, and what matters most to you. We'll handle everything else - from which park to visit in your month, to what's included in every dollar you spend. No hidden fees. No vague itineraries. No surprises when you land.
-
-Immerse yourself in local culture, meet the Maasai, and experience Tanzania's breathtaking landscapes. With a focus on sustainable travel, we create unforgettable adventures while supporting local communities.`}
+        {trip.overviewText || `Tanzania is one of those trips people talk about for the rest of their lives - but only if you do it right.`}
       </p>
     </div>
   );
@@ -754,51 +557,37 @@ Immerse yourself in local culture, meet the Maasai, and experience Tanzania's br
 
 function PlannerQuoteCard({ dictionary }: TripPageProps) {
   return (
-    <LeadPlanner
-      planner={dictionary.planner}
-      className="w-full self-start rounded-[10px] border-[#403229]/12 bg-white p-7 text-[#403229] shadow-[0_18px_45px_rgba(64,50,41,0.08)] backdrop-blur-none"
-    />
+    <LeadPlanner planner={dictionary.planner} className="w-full self-start rounded-[10px] border-[#403229]/12 bg-white p-7 text-[#403229] shadow-[0_18px_45px_rgba(64,50,41,0.08)] backdrop-blur-none" />
   );
 }
 
-function ItinerarySection() {
+function ItinerarySection({ itineraryDays, gallerySlides }: { itineraryDays: { day: string; title: string; description: string; accommodation: string }[]; gallerySlides: { src: string; alt: string }[] }) {
   const day = itineraryDays[0];
-
   return (
     <section id="itinerary" className={`${pageContainer} scroll-mt-[82px] py-[72px]`}>
       <div className="flex items-center gap-8">
-        <h2 className="shrink-0 text-[34px] font-semibold leading-[1.15] text-[#403229] md:text-[38px]">Trip Itinirary</h2>
+        <h2 className="shrink-0 text-[34px] font-semibold leading-[1.15] text-[#403229] md:text-[38px]">Trip Itinerary</h2>
         <div className="h-[2px] flex-1 bg-[#ddd7cc]" />
       </div>
-
       <article className="mt-[56px] grid overflow-hidden rounded-[8px] border border-[#403229]/10 bg-white shadow-[0_18px_45px_rgba(64,50,41,0.08)] lg:grid-cols-[605px_64px_minmax(0,1fr)]">
         <div className="grid gap-4 p-5">
-          <ItineraryImageSlider images={itinerarySafariSlides} sizes="565px" />
+          <ItineraryImageSlider images={gallerySlides} sizes="565px" />
           <ItineraryImageSlider images={itineraryAccommodationSlides} sizes="565px" />
         </div>
-
         <div className="relative hidden lg:block" aria-hidden="true">
           <div className="absolute left-1/2 top-5 h-[calc(100%-40px)] w-px -translate-x-1/2 border-l border-dashed border-[#403229]/25" />
           <Image src="/assets/trips/itinerary-map-pin.svg" alt="" width={49} height={49} className="absolute left-1/2 top-[92px] z-10 size-[49px] -translate-x-1/2" />
           <Image src="/assets/trips/itinerary-bed.svg" alt="" width={49} height={49} className="absolute left-1/2 top-[358px] z-10 size-[49px] -translate-x-1/2" />
         </div>
-
         <div className="px-6 pb-10 pt-8 lg:px-0 lg:pb-0 lg:pr-10 lg:pt-[46px]">
           <div className="lg:min-h-[284px]">
             <p className="text-[13px] font-bold uppercase leading-none tracking-[0.12em] text-[#e2bd7d]">{day.day}</p>
-            <h3 className="mt-5 max-w-[540px] text-[31px] font-semibold leading-[1.16] text-[#403229] md:text-[34px]">
-              {day.title}
-            </h3>
-            <p className="mt-7 max-w-[690px] text-[16px] font-semibold leading-[1.68] text-[#403229]">
-              {day.description}
-            </p>
+            <h3 className="mt-5 max-w-[540px] text-[31px] font-semibold leading-[1.16] text-[#403229] md:text-[34px]">{day.title}</h3>
+            <p className="mt-7 max-w-[690px] text-[16px] font-semibold leading-[1.68] text-[#403229]">{day.description}</p>
           </div>
-
           <div className="mt-8 lg:mt-[36px]">
             <h4 className="text-[30px] font-semibold leading-[1.16] text-[#403229]">Accommodations:</h4>
-            <p className="mt-5 max-w-[650px] text-[16px] font-semibold leading-[1.65] text-[#403229]">
-              Tanzania is one of those trips people talk about for the rest of their lives. {day.accommodation} keeps the stay relaxed and comfortable.
-            </p>
+            <p className="mt-5 max-w-[650px] text-[16px] font-semibold leading-[1.65] text-[#403229]">{day.accommodation}</p>
           </div>
         </div>
       </article>
@@ -806,77 +595,28 @@ function ItinerarySection() {
   );
 }
 
-function ItineraryImageSlider({
-  images,
-  sizes,
-  label
-}: {
-  images: { src: string; alt: string }[];
-  sizes: string;
-  label?: string;
-}) {
+function ItineraryImageSlider({ images, sizes, label }: { images: { src: string; alt: string }[]; sizes: string; label?: string }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const hasMultipleImages = images.length > 1;
-
-  const showPrevious = () => {
-    setActiveIndex((index) => (index === 0 ? images.length - 1 : index - 1));
-  };
-
-  const showNext = () => {
-    setActiveIndex((index) => (index === images.length - 1 ? 0 : index + 1));
-  };
-
+  const showPrevious = () => setActiveIndex((index) => (index === 0 ? images.length - 1 : index - 1));
+  const showNext = () => setActiveIndex((index) => (index === images.length - 1 ? 0 : index + 1));
   return (
     <div className="relative aspect-[589/300] overflow-hidden rounded-[10px] bg-[#403229]">
       {images.map((image, index) => (
-        <Image
-          key={image.src}
-          src={image.src}
-          alt={index === activeIndex ? image.alt : ""}
-          fill
-          sizes={sizes}
-          loading="eager"
-          unoptimized
-          aria-hidden={index === activeIndex ? undefined : true}
-          className={`object-cover transition-opacity duration-300 ${index === activeIndex ? "opacity-100" : "opacity-0"}`}
-        />
+        <Image key={image.src} src={image.src} alt={index === activeIndex ? image.alt : ""} fill sizes={sizes} loading="eager" unoptimized aria-hidden={index === activeIndex ? undefined : true} className={`object-cover transition-opacity duration-300 ${index === activeIndex ? "opacity-100" : "opacity-0"}`} />
       ))}
-      {label ? (
-        <span className="absolute left-5 top-5 rounded-[8px] bg-white/92 px-5 py-3 text-[15px] font-bold leading-none text-[#403229] shadow-[0_12px_24px_rgba(64,50,41,0.12)]">
-          {label}
-        </span>
-      ) : null}
+      {label ? <span className="absolute left-5 top-5 rounded-[8px] bg-white/92 px-5 py-3 text-[15px] font-bold leading-none text-[#403229] shadow-[0_12px_24px_rgba(64,50,41,0.12)]">{label}</span> : null}
       {hasMultipleImages ? (
         <>
-          <button
-            type="button"
-            onClick={showPrevious}
-            className="absolute left-0 top-1/2 z-20 grid h-11 w-[70px] -translate-y-1/2 place-items-center rounded-r-[8px] bg-[#f8f2e9] text-[#403229] shadow-[0_10px_22px_rgba(64,50,41,0.12)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]"
-            aria-label="Previous itinerary image"
-          >
-            <ChevronLeft className="size-7" aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            onClick={showNext}
-            className="absolute right-0 top-1/2 z-20 grid h-11 w-[70px] -translate-y-1/2 place-items-center rounded-l-[8px] bg-[#f8f2e9] text-[#403229] shadow-[0_10px_22px_rgba(64,50,41,0.12)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]"
-            aria-label="Next itinerary image"
-          >
-            <ChevronRight className="size-7" aria-hidden="true" />
-          </button>
+          <button type="button" onClick={showPrevious} className="absolute left-0 top-1/2 z-20 grid h-11 w-[70px] -translate-y-1/2 place-items-center rounded-r-[8px] bg-[#f8f2e9] text-[#403229] shadow-[0_10px_22px_rgba(64,50,41,0.12)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]" aria-label="Previous itinerary image"><ChevronLeft className="size-7" aria-hidden="true" /></button>
+          <button type="button" onClick={showNext} className="absolute right-0 top-1/2 z-20 grid h-11 w-[70px] -translate-y-1/2 place-items-center rounded-l-[8px] bg-[#f8f2e9] text-[#403229] shadow-[0_10px_22px_rgba(64,50,41,0.12)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]" aria-label="Next itinerary image"><ChevronRight className="size-7" aria-hidden="true" /></button>
         </>
       ) : null}
     </div>
   );
 }
 
-function IncludedSection({ dictionary }: TripPageProps) {
-  const priceTiers = Array.from({ length: 6 }, (_, index) => ({
-    id: `rate-${index}`,
-    people: "1 pax",
-    price: "$2,890"
-  }));
-
+function IncludedSection({ dictionary, includedItems, priceTiers }: { dictionary: HomeDictionary; includedItems: string[]; priceTiers: { id: string; people: string; price: string }[] }) {
   return (
     <section id="inclusions" className={`${pageContainer} grid scroll-mt-[82px] gap-10 py-[72px] lg:grid-cols-[minmax(0,1fr)_340px]`}>
       <div>
@@ -887,9 +627,7 @@ function IncludedSection({ dictionary }: TripPageProps) {
         <ul className="mt-10 grid gap-x-9 gap-y-5 sm:grid-cols-2">
           {includedItems.map((item, index) => (
             <li key={`${item}-${index}`} className="flex items-center gap-3 text-[13px] font-semibold leading-[1.5] text-[#403229]/75">
-              <span className="grid size-[25px] shrink-0 place-items-center rounded-full bg-[#E2B87F] text-white">
-                <Check className="size-4" strokeWidth={3} aria-hidden="true" />
-              </span>
+              <span className="grid size-[25px] shrink-0 place-items-center rounded-full bg-[#E2B87F] text-white"><Check className="size-4" strokeWidth={3} aria-hidden="true" /></span>
               {item}
             </li>
           ))}
@@ -911,12 +649,7 @@ function IncludedSection({ dictionary }: TripPageProps) {
             </div>
           ))}
         </div>
-        <PlannerDialogButton
-          planner={dictionary.planner}
-          variant="ghost"
-          size="sm"
-          className="mx-auto mt-9 flex h-auto w-fit bg-transparent p-0 text-[15px] font-bold leading-[1.5] text-[#403229] underline decoration-[#403229]/70 underline-offset-2 shadow-none hover:bg-transparent hover:text-[#403229]/75"
-        >
+        <PlannerDialogButton planner={dictionary.planner} variant="ghost" size="sm" className="mx-auto mt-9 flex h-auto w-fit bg-transparent p-0 text-[15px] font-bold leading-[1.5] text-[#403229] underline decoration-[#403229]/70 underline-offset-2 shadow-none hover:bg-transparent hover:text-[#403229]/75">
           Not sure on group size? Ask a planner - we&apos;ll figure it out together.
         </PlannerDialogButton>
       </div>
@@ -927,73 +660,24 @@ function IncludedSection({ dictionary }: TripPageProps) {
 function IncludedImageSlider({ images }: { images: { src: string; alt: string }[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const hasMultipleImages = images.length > 1;
-
-  const showPrevious = () => {
-    setActiveIndex((index) => (index === 0 ? images.length - 1 : index - 1));
-  };
-
-  const showNext = () => {
-    setActiveIndex((index) => (index === images.length - 1 ? 0 : index + 1));
-  };
-
+  const showPrevious = () => setActiveIndex((index) => (index === 0 ? images.length - 1 : index - 1));
+  const showNext = () => setActiveIndex((index) => (index === images.length - 1 ? 0 : index + 1));
   return (
     <div className="relative min-h-[357px] overflow-hidden rounded-[8px] bg-[#403229]">
       {images.map((image, index) => (
-        <Image
-          key={image.src}
-          src={image.src}
-          alt={index === activeIndex ? image.alt : ""}
-          fill
-          sizes="340px"
-          loading="eager"
-          unoptimized
-          aria-hidden={index === activeIndex ? undefined : true}
-          className={`object-cover transition-opacity duration-300 ${index === activeIndex ? "opacity-100" : "opacity-0"}`}
-        />
+        <Image key={image.src} src={image.src} alt={index === activeIndex ? image.alt : ""} fill sizes="340px" loading="eager" unoptimized aria-hidden={index === activeIndex ? undefined : true} className={`object-cover transition-opacity duration-300 ${index === activeIndex ? "opacity-100" : "opacity-0"}`} />
       ))}
       {hasMultipleImages ? (
         <>
-          <button
-            type="button"
-            onClick={showPrevious}
-            className="absolute left-0 top-1/2 z-20 grid h-10 w-14 -translate-y-1/2 place-items-center rounded-r-[8px] bg-[#f8f2e9] text-[#403229] shadow-[0_10px_22px_rgba(64,50,41,0.12)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e2b87f]"
-            aria-label="Previous included image"
-          >
-            <ChevronLeft className="size-6" aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            onClick={showNext}
-            className="absolute right-0 top-1/2 z-20 grid h-10 w-14 -translate-y-1/2 place-items-center rounded-l-[8px] bg-[#f8f2e9] text-[#403229] shadow-[0_10px_22px_rgba(64,50,41,0.12)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e2b87f]"
-            aria-label="Next included image"
-          >
-            <ChevronRight className="size-6" aria-hidden="true" />
-          </button>
+          <button type="button" onClick={showPrevious} className="absolute left-0 top-1/2 z-20 grid h-10 w-14 -translate-y-1/2 place-items-center rounded-r-[8px] bg-[#f8f2e9] text-[#403229] shadow-[0_10px_22px_rgba(64,50,41,0.12)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e2b87f]" aria-label="Previous included image"><ChevronLeft className="size-6" aria-hidden="true" /></button>
+          <button type="button" onClick={showNext} className="absolute right-0 top-1/2 z-20 grid h-10 w-14 -translate-y-1/2 place-items-center rounded-l-[8px] bg-[#f8f2e9] text-[#403229] shadow-[0_10px_22px_rgba(64,50,41,0.12)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e2b87f]" aria-label="Next included image"><ChevronRight className="size-6" aria-hidden="true" /></button>
         </>
       ) : null}
     </div>
   );
 }
 
-function BestTimeSection({ dictionary }: TripPageProps) {
-  const seasons = [
-    {
-      title: "Jul - Oct",
-      dot: "#f2e8dc",
-      description: "Peak migration. River crossings most frequent. Best overall wildlife."
-    },
-    {
-      title: "Jan - Mar",
-      dot: "#ead9c3",
-      description: "Calving season in southern Serengeti. Predator action is incredible."
-    },
-    {
-      title: "Nov - Dec",
-      dot: "#e2b87f",
-      description: "Green season. Lush scenery, fewer crowds, lower prices."
-    }
-  ];
-
+function BestTimeSection({ dictionary, seasons }: { dictionary: HomeDictionary; seasons: { title: string; dot: string; description: string }[] }) {
   return (
     <section className="bg-[#F8EEDD] pb-[72px] pt-[76px]">
       <div className={pageContainer}>
@@ -1013,12 +697,7 @@ function BestTimeSection({ dictionary }: TripPageProps) {
             </article>
           ))}
         </div>
-        <PlannerDialogButton
-          planner={dictionary.planner}
-          variant="ghost"
-          size="sm"
-          className="mx-auto mt-9 flex h-auto w-fit bg-transparent p-0 text-[15px] font-bold leading-[1.5] text-[#403229] underline decoration-[#403229]/70 underline-offset-2 shadow-none hover:bg-transparent hover:text-[#403229]/75"
-        >
+        <PlannerDialogButton planner={dictionary.planner} variant="ghost" size="sm" className="mx-auto mt-9 flex h-auto w-fit bg-transparent p-0 text-[15px] font-bold leading-[1.5] text-[#403229] underline decoration-[#403229]/70 underline-offset-2 shadow-none hover:bg-transparent hover:text-[#403229]/75">
           Not sure on group size? Ask a planner - we&apos;ll figure it out together.
         </PlannerDialogButton>
       </div>
@@ -1035,9 +714,7 @@ function WidePlannerBand({ dictionary }: TripPageProps) {
         <div className="md:mt-[148px] md:w-[419px]">
           <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-[#E2B87F]">Free, no commitment</p>
           <h2 className="mt-[11px] text-[34px] font-semibold leading-[1.14]">Talk to a safari planner</h2>
-          <p className="mt-[11px] max-w-[394px] text-[15px] font-medium leading-[1.5] text-white/80">
-            This morning is yours to enjoy at a relaxed pace. Have a peaceful breakfast at the lodge and
-          </p>
+          <p className="mt-[11px] max-w-[394px] text-[15px] font-medium leading-[1.5] text-white/80">Tell us your dates, how many people, and what matters most to you.</p>
         </div>
         <InlinePlannerForm planner={dictionary.planner} className="md:mt-[106px]" />
       </div>
@@ -1058,13 +735,7 @@ function InlinePlannerForm({ planner, className = "" }: { planner: HomeDictionar
   function submitForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const missing = planner.fields.filter((field) => !values[field.name]?.trim()).map((field) => field.name);
-
-    if (missing.length > 0) {
-      setInvalidFields(missing);
-      setSubmitted(false);
-      return;
-    }
-
+    if (missing.length > 0) { setInvalidFields(missing); setSubmitted(false); return; }
     setSubmitted(true);
   }
 
@@ -1077,10 +748,7 @@ function InlinePlannerForm({ planner, className = "" }: { planner: HomeDictionar
         ))}
       </div>
       <InlinePlannerField field={planner.fields[3]} value={values[planner.fields[3].name] ?? ""} invalid={invalidFields.includes(planner.fields[3].name)} onChange={updateValue} />
-      <button
-        type="submit"
-        className="flex h-[42px] items-center rounded-[6px] bg-[#E2B87F] px-4 text-left text-[15px] font-semibold leading-[1.6] text-[#4a351c] transition hover:bg-[#d8aa6c] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
-      >
+      <button type="submit" className="flex h-[42px] items-center rounded-[6px] bg-[#E2B87F] px-4 text-left text-[15px] font-semibold leading-[1.6] text-[#4a351c] transition hover:bg-[#d8aa6c] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80">
         <span className="me-auto">Request a quote</span>
         <ArrowRight className="size-5" aria-hidden="true" />
       </button>
@@ -1089,79 +757,46 @@ function InlinePlannerForm({ planner, className = "" }: { planner: HomeDictionar
   );
 }
 
-function InlinePlannerField({
-  field,
-  value,
-  invalid,
-  onChange
-}: {
-  field: PlannerField;
-  value: string;
-  invalid: boolean;
-  onChange: (name: string, value: string) => void;
-}) {
-  const fieldClassName =
-    "h-[47px] w-full rounded-[4px] border border-[#654a29]/15 bg-[#fdfaf3]/98 px-4 text-[13px] font-bold leading-[1.4] text-[#403229] shadow-none outline-none backdrop-blur-[12px] placeholder:text-[#2c1a0e]/60 focus:border-[#E2B87F] focus:ring-2 focus:ring-[#E2B87F]/45";
-
+function InlinePlannerField({ field, value, invalid, onChange }: { field: PlannerField; value: string; invalid: boolean; onChange: (name: string, value: string) => void }) {
+  const fieldClassName = "h-[47px] w-full rounded-[4px] border border-[#654a29]/15 bg-[#fdfaf3]/98 px-4 text-[13px] font-bold leading-[1.4] text-[#403229] shadow-none outline-none backdrop-blur-[12px] placeholder:text-[#2c1a0e]/60 focus:border-[#E2B87F] focus:ring-2 focus:ring-[#E2B87F]/45";
   return field.type === "select" ? (
-    <select
-      aria-label={field.label}
-      aria-invalid={invalid}
-      value={value}
-      onChange={(event) => onChange(field.name, event.currentTarget.value)}
-      className={`${fieldClassName} appearance-auto`}
-    >
+    <select aria-label={field.label} aria-invalid={invalid} value={value} onChange={(event) => onChange(field.name, event.currentTarget.value)} className={`${fieldClassName} appearance-auto`}>
       <option value="">{field.placeholder}</option>
-      {field.options.map((option) => (
-        <option key={option} value={option}>
-          {option}
-        </option>
-      ))}
+      {field.options.map((option) => (<option key={option} value={option}>{option}</option>))}
     </select>
   ) : (
-    <input
-      name={field.name}
-      type={field.type}
-      value={value}
-      placeholder={field.placeholder}
-      autoComplete={field.type === "email" ? "email" : field.type === "tel" ? "tel" : "name"}
-      aria-label={field.label}
-      aria-invalid={invalid}
-      onChange={(event) => onChange(field.name, event.currentTarget.value)}
-      className={fieldClassName}
-    />
+    <input name={field.name} type={field.type} value={value} placeholder={field.placeholder} autoComplete={field.type === "email" ? "email" : field.type === "tel" ? "tel" : "name"} aria-label={field.label} aria-invalid={invalid} onChange={(event) => onChange(field.name, event.currentTarget.value)} className={fieldClassName} />
   );
 }
 
-function ReviewsSection() {
-  const reviews = [
-    { image: "/assets/figma/review-family.jpg", alt: "Safari guests posing beside vehicles" },
-    { image: "/assets/figma/review-family.jpg", alt: "Safari guests posing beside vehicles" },
-    { image: "/assets/figma/review-jeep.jpg", alt: "Guests riding in a safari vehicle" },
-    { image: "/assets/figma/review-jeep.jpg", alt: "Guests riding in a safari vehicle" }
+function ReviewsSection({ reviews }: { reviews?: { quote: string; authorName: string; authorDetails: string }[] }) {
+  const defaultReviews = [
+    { image: "/assets/figma/review-family.jpg", alt: "Safari guests posing beside vehicles", quote: "(Testimonial) lorem ipsum dolor sit amet, consec adipiscing sed do eiusmod.", name: "Full name", details: "Company name / details." },
+    { image: "/assets/figma/review-family.jpg", alt: "Safari guests posing beside vehicles", quote: "(Testimonial) lorem ipsum dolor sit amet, consec adipiscing sed do eiusmod.", name: "Full name", details: "Company name / details." },
+    { image: "/assets/figma/review-jeep.jpg", alt: "Guests riding in a safari vehicle", quote: "(Testimonial) lorem ipsum dolor sit amet, consec adipiscing sed do eiusmod.", name: "Full name", details: "Company name / details." },
+    { image: "/assets/figma/review-jeep.jpg", alt: "Guests riding in a safari vehicle", quote: "(Testimonial) lorem ipsum dolor sit amet, consec adipiscing sed do eiusmod.", name: "Full name", details: "Company name / details." },
   ];
+  const displayReviews = reviews && reviews.length > 0
+    ? reviews.map((r, i) => ({ image: defaultReviews[i % defaultReviews.length].image, alt: defaultReviews[i % defaultReviews.length].alt, quote: r.quote, name: r.authorName, details: r.authorDetails }))
+    : defaultReviews;
 
   return (
     <section id="reviews" className="bg-[#403229] px-6 py-[86px] text-white">
       <div className="mx-auto max-w-[1320px]">
         <p className="text-center text-[13px] font-bold uppercase leading-none tracking-[0.28em] text-[#e2b87f]">Experiences we offer</p>
         <h2 className="mt-7 text-center text-[48px] font-medium leading-[1.08] text-white">Customer reviews</h2>
-        <p className="mx-auto mt-7 max-w-[560px] text-center text-[21px] font-medium leading-[1.45] text-white/58">
-          A short and simple subheading can be added here
-        </p>
+        <p className="mx-auto mt-7 max-w-[560px] text-center text-[21px] font-medium leading-[1.45] text-white/58">A short and simple subheading can be added here</p>
         <div className="mt-[58px] grid gap-x-6 gap-y-7 lg:grid-cols-2">
-          {reviews.map((review, index) => (
-            <article key={`${review.image}-${index}`} className="grid gap-6 rounded-[10px] border border-white/20 bg-white/[0.075] p-6 shadow-[0_18px_44px_rgba(0,0,0,0.12)] sm:grid-cols-[220px_minmax(0,1fr)]">
+          {displayReviews.map((review, index) => (
+            <article key={index} className="grid gap-6 rounded-[10px] border border-white/20 bg-white/[0.075] p-6 shadow-[0_18px_44px_rgba(0,0,0,0.12)] sm:grid-cols-[220px_minmax(0,1fr)]">
               <div className="relative h-[158px] overflow-hidden rounded-[8px] bg-[#2c1f18] sm:h-[178px]">
                 <Image src={review.image} alt={review.alt} fill sizes="220px" className="object-cover" />
               </div>
               <div className="flex flex-col justify-center">
                 <RatingStars className="size-5" />
-                <p className="mt-7 text-[20px] font-medium leading-[1.42] text-white">
-                  &quot;(Testimonial) lorem ipsum dolor sit amet, consec adipiscing sed do eiusmod.&quot;
-                </p>
-                <p className="mt-2 text-[20px] font-bold leading-[1.2] text-white">Full name</p>
-                <p className="mt-2 text-[18px] font-medium leading-[1.25] text-white/72">Company name / details.</p>
+                <p className="mt-7 text-[20px] font-medium leading-[1.42] text-white">&quot;{review.quote}&quot;</p>
+                <p className="mt-2 text-[20px] font-bold leading-[1.2] text-white">{review.name}</p>
+                <p className="mt-2 text-[18px] font-medium leading-[1.25] text-white/72">{review.details}</p>
               </div>
             </article>
           ))}
@@ -1177,17 +812,9 @@ function StopPlanningSection({ dictionary }: TripPageProps) {
       <div className={`${pageContainer} grid gap-10 md:grid-cols-[1fr_520px] md:items-center`}>
         <div>
           <p className="text-[13px] font-bold uppercase tracking-[0.05em] text-[#E2B87F]">Experiences we offer</p>
-          <h2 className="mt-4 text-[42px] font-semibold leading-[1.08]">
-            Stop overthinking.
-            <br />
-            <span className="text-[#E2B87F]">Start planning.</span>
-          </h2>
-          <p className="mt-5 max-w-[520px] text-[15px] font-semibold leading-[1.65] text-white/72">
-            Tanzania is one of those trips people talk about for the rest of their lives - but only if you do it right. Tell us your dates, how many people, and what matters most to you.
-          </p>
-          <PlannerDialogButton planner={dictionary.planner} className={`mt-7 h-[48px] px-6 text-[14px] font-bold ${amberButton}`}>
-            Talk to Safari Planner
-          </PlannerDialogButton>
+          <h2 className="mt-4 text-[42px] font-semibold leading-[1.08]">Stop overthinking.<br /><span className="text-[#E2B87F]">Start planning.</span></h2>
+          <p className="mt-5 max-w-[520px] text-[15px] font-semibold leading-[1.65] text-white/72">Tanzania is one of those trips people talk about for the rest of their lives.</p>
+          <PlannerDialogButton planner={dictionary.planner} className={`mt-7 h-[48px] px-6 text-[14px] font-bold ${amberButton}`}>Talk to Safari Planner</PlannerDialogButton>
         </div>
         <div className="relative min-h-[420px]">
           <Image src="/assets/figma/planning-upper.jpg" alt="" width={280} height={190} className="absolute right-0 top-0 rounded-[8px] object-cover shadow-[0_18px_35px_rgba(0,0,0,0.28)]" />
@@ -1203,26 +830,18 @@ function SimilarTripsSection() {
   return (
     <section className={`${pageContainer} py-[76px]`}>
       <p className="text-center text-[13px] font-bold uppercase tracking-[0.05em] text-[#E2B87F]">Experiences we offer</p>
-      <h2 className="mt-4 text-center text-[34px] font-semibold leading-[1.15]">Other Simmilar Trips</h2>
+      <h2 className="mt-4 text-center text-[34px] font-semibold leading-[1.15]">Other Similar Trips</h2>
       <div className="mt-10 grid gap-5 lg:grid-cols-3">
         {tripCards.slice(0, 3).map((trip, index) => (
-          <Link
-            key={`${trip.slug}-similar-${index}`}
-            href={`/trip/${sharedTripSlug}`}
-            className="group overflow-hidden rounded-[8px] border border-[#403229]/10 bg-white shadow-[0_14px_34px_rgba(64,50,41,0.08)] transition hover:-translate-y-0.5 hover:shadow-[0_20px_44px_rgba(64,50,41,0.12)]"
-          >
+          <Link key={`${trip.slug}-similar-${index}`} href={`/trip/${trip.slug}`} className="group overflow-hidden rounded-[8px] border border-[#403229]/10 bg-white shadow-[0_14px_34px_rgba(64,50,41,0.08)] transition hover:-translate-y-0.5 hover:shadow-[0_20px_44px_rgba(64,50,41,0.12)]">
             <div className="relative h-[200px]">
               <Image src={trip.image} alt={trip.imageAlt} fill sizes="(min-width: 1024px) 380px, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
               <span className="absolute right-4 top-4 rounded-full bg-[#E2B87F] px-3 py-1 text-[11px] font-bold text-white">{trip.price}</span>
             </div>
             <div className="p-5">
               <h3 className="text-[17px] font-bold leading-[1.35]">{trip.title}</h3>
-              <p className="mt-2 text-[13px] font-semibold leading-[1.55] text-[#403229]/65">
-                {trip.duration} - {trip.route}
-              </p>
-              <span className="mt-4 inline-flex items-center gap-2 text-[13px] font-bold text-[#E2B87F]">
-                See Itinerary <ArrowRight className="size-4" aria-hidden="true" />
-              </span>
+              <p className="mt-2 text-[13px] font-semibold leading-[1.55] text-[#403229]/65">{trip.duration} - {trip.route}</p>
+              <span className="mt-4 inline-flex items-center gap-2 text-[13px] font-bold text-[#E2B87F]">See Itinerary <ArrowRight className="size-4" aria-hidden="true" /></span>
             </div>
           </Link>
         ))}
@@ -1231,9 +850,8 @@ function SimilarTripsSection() {
   );
 }
 
-function FaqSection({ dictionary }: TripPageProps) {
+function FaqSection({ dictionary, faqs }: { dictionary: HomeDictionary; faqs: { question: string; answer: string }[] }) {
   const [open, setOpen] = useState(0);
-
   return (
     <section className="mx-auto max-w-[900px] px-6 py-[76px]">
       <p className="text-center text-[13px] font-bold uppercase tracking-[0.05em] text-[#E2B87F]">Overline text</p>
@@ -1241,26 +859,17 @@ function FaqSection({ dictionary }: TripPageProps) {
       <p className="mt-3 text-center text-[15px] font-semibold leading-[1.6] text-[#403229]/55">Everything you need to know about this safari before you book.</p>
       <div className="mt-8 border-y border-[#403229]/12">
         {faqs.map((faq, index) => (
-          <button
-            key={`${faq.question}-${index}`}
-            type="button"
-            onClick={() => setOpen(open === index ? -1 : index)}
-            className="w-full border-b border-[#403229]/12 bg-transparent py-5 text-left last:border-b-0"
-          >
+          <button key={`${faq.question}-${index}`} type="button" onClick={() => setOpen(open === index ? -1 : index)} className="w-full border-b border-[#403229]/12 bg-transparent py-5 text-left last:border-b-0">
             <span className="flex items-center justify-between gap-4">
               <span className="text-[16px] font-medium leading-[1.5]">{faq.question}</span>
-              <span className="grid size-8 shrink-0 place-items-center rounded-full border border-[#403229]/12 text-[#E2B87F]">
-                <ChevronDown className={`size-4 transition ${open === index ? "rotate-180" : ""}`} aria-hidden="true" />
-              </span>
+              <span className="grid size-8 shrink-0 place-items-center rounded-full border border-[#403229]/12 text-[#E2B87F]"><ChevronDown className={`size-4 transition ${open === index ? "rotate-180" : ""}`} aria-hidden="true" /></span>
             </span>
             {open === index ? <span className="mt-4 block text-[15px] font-semibold leading-[1.6] text-[#403229]/62">{faq.answer}</span> : null}
           </button>
         ))}
       </div>
       <div className="mt-8 text-center">
-        <PlannerDialogButton planner={dictionary.planner} className={`h-[48px] px-6 text-[14px] font-bold ${amberButton}`}>
-          Talk to a planner
-        </PlannerDialogButton>
+        <PlannerDialogButton planner={dictionary.planner} className={`h-[48px] px-6 text-[14px] font-bold ${amberButton}`}>Talk to a planner</PlannerDialogButton>
       </div>
     </section>
   );

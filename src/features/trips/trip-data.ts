@@ -1,4 +1,4 @@
-export const sharedTripSlug = "great-migration-classic";
+import { client } from '@/lib/sanity'
 
 export type TripCard = {
   slug: string;
@@ -11,112 +11,131 @@ export type TripCard = {
   price: string;
   image: string;
   imageAlt: string;
-};
+}
 
-const tripCardSeed = [
-  ["The Great Migration Classic", "7 nights", "Serengeti + Ngorongoro", "July-October", "Wildlife Safari", 1459, "/assets/figma/itinerary-1.jpg"],
-  ["Northern Circuit Safari", "5 nights", "Tarangire + Ngorongoro", "June-October", "Wildlife Safari", 1890, "/assets/figma/itinerary-2.jpg"],
-  ["Serengeti Fly-in Safari", "4 nights", "Serengeti + Arusha", "All seasons", "Luxury Safari", 2890, "/assets/figma/itinerary-3.jpg"],
-  ["Zanzibar After Safari", "6 nights", "Serengeti + Zanzibar", "July-October", "Zanzibar Extension", 2140, "/assets/figma/itinerary-5.jpg"],
-  ["Kilimanjaro & Safari", "8 nights", "Kilimanjaro + Tarangire", "January-March", "Kilimanjaro", 3340, "/assets/figma/itinerary-4.jpg"],
-  ["Family Safari Classic", "5 nights", "Lake Manyara + Ngorongoro", "All seasons", "Family Safari", 1690, "/assets/figma/itinerary-6.jpg"],
-  ["Private Migration Safari", "7 nights", "Serengeti + Mara River", "July-October", "Wildlife Safari", 2450, "/assets/figma/itinerary-1.jpg"],
-  ["Luxury Crater Safari", "4 nights", "Ngorongoro + Tarangire", "June-October", "Luxury Safari", 3120, "/assets/figma/itinerary-2.jpg"],
-  ["Zanzibar Wildlife Combo", "9 nights", "Serengeti + Stone Town", "All seasons", "Zanzibar Extension", 2760, "/assets/figma/itinerary-5.jpg"],
-  ["Short Family Safari", "3 nights", "Tarangire + Arusha", "All seasons", "Family Safari", 1290, "/assets/figma/itinerary-6.jpg"],
-  ["Kilimanjaro Private Add-on", "6 nights", "Kilimanjaro + Arusha", "January-March", "Kilimanjaro", 1990, "/assets/figma/itinerary-4.jpg"],
-  ["Classic Big Five Safari", "6 nights", "Serengeti + Ngorongoro", "June-October", "Wildlife Safari", 2190, "/assets/figma/itinerary-3.jpg"],
-  ["Honeymoon Safari", "7 nights", "Serengeti + Zanzibar", "All seasons", "Luxury Safari", 3590, "/assets/figma/itinerary-5.jpg"],
-  ["Family Migration Safari", "7 nights", "Serengeti + Ngorongoro", "July-October", "Family Safari", 2380, "/assets/figma/itinerary-1.jpg"],
-  ["Kilimanjaro Wildlife Escape", "9 nights", "Kilimanjaro + Serengeti", "June-October", "Kilimanjaro", 3860, "/assets/figma/itinerary-4.jpg"]
-] as const;
+export type TripDetail = {
+  slug: string;
+  title: string;
+  duration: string;
+  route: string;
+  season: string;
+  tripType: string;
+  priceValue: number;
+  price: string;
+  heroImage: string;
+  gallery: { url: string; alt: string }[];
+  shortDescription: string;
+  overviewText: string;
+  targetAudience: string[];
+  featuredReviewQuote: string;
+  itinerary: { dayNumber: number; title: string; description: string; accommodation: string }[];
+  included: string[];
+  notIncluded: string[];
+  faqs: { question: string; answer: string }[];
+  reviews: { quote: string; authorName: string; authorDetails: string }[];
+  pricingTiers: { label: string; pricePerPerson: number }[];
+  bestTimeSeasons: { period: string; highlight: string }[];
+  reviewScore: number;
+  reviewCount: number;
+  popularityRank: number;
+  totalTravellers: string;
+  physicalRating: string;
+  minAge: number;
+  isFeatured: boolean;
+}
 
-export const tripCards: TripCard[] = tripCardSeed.map(([title, duration, route, season, tripType, priceValue, image], index) => ({
-  slug: sharedTripSlug,
-  title,
-  duration,
-  route,
-  season,
-  tripType,
-  priceValue,
-  price: `from $${priceValue.toLocaleString("en-US")} USD per person`,
-  image,
-  imageAlt: `Tanzania safari itinerary preview ${index + 1}`
-}));
+export async function getTripCards(): Promise<TripCard[]> {
+  const trips = await client.fetch(`
+    *[_type == "trip"] | order(priceFrom asc) {
+      "slug": slug.current,
+      title,
+      "duration": duration,
+      "route": destinations,
+      "season": bestSeason,
+      "tripType": category,
+      "priceValue": priceFrom,
+      "image": heroImage.asset->url,
+      "imageAlt": heroImage.alt
+    }
+  `)
+  return trips.map((t: any) => ({
+    ...t,
+    image: t.image || '/assets/figma/itinerary-1.jpg',
+    imageAlt: t.imageAlt || t.title,
+    price: `from $${t.priceValue?.toLocaleString('en-US')} USD per person`,
+  }))
+}
+
+export async function getTripBySlug(slug: string): Promise<TripDetail | null> {
+  const trip = await client.fetch(`
+    *[_type == "trip" && slug.current == $slug][0] {
+      "slug": slug.current,
+      title,
+      "duration": duration,
+      "route": destinations,
+      "season": bestSeason,
+      "tripType": category,
+      "priceValue": priceFrom,
+      "heroImage": heroImage.asset->url,
+      "gallery": gallery[]{ "url": asset->url, "alt": alt },
+      shortDescription,
+      "overviewText": pt::text(overviewText),
+      targetAudience,
+      featuredReviewQuote,
+      itinerary[]{ dayNumber, title, "description": pt::text(description), "accommodation": accommodation.name },
+      included,
+      notIncluded,
+      faqs[]{ question, "answer": pt::text(answer) },
+      reviews[]{ quote, authorName, authorDetails },
+      pricingTiers,
+      bestTimeSeasons,
+      reviewScore,
+      reviewCount,
+      popularityRank,
+      totalTravellers,
+      physicalRating,
+      minAge,
+      isFeatured,
+    }
+  `, { slug })
+  if (!trip) return null
+  return {
+    ...trip,
+    heroImage: trip.heroImage || '/assets/trips/trip-hero-zebras.png',
+    price: `from $${trip.priceValue?.toLocaleString('en-US')} USD per person`,
+  }
+}
+
+// Fallback static data used until Sanity has content
+export const sharedTripSlug = "great-migration-classic"
 
 export const galleryImages = [
-  {
-    src: "/assets/trips/trip-hero-zebras.png",
-    alt: "Zebras grazing in Serengeti during a Tanzania safari"
-  },
-  {
-    src: "/assets/figma/itinerary-2.jpg",
-    alt: "Tanzania wilderness road and plains"
-  },
-  {
-    src: "/assets/figma/itinerary-3.jpg",
-    alt: "Safari vehicle in the grass"
-  },
-  {
-    src: "/assets/figma/itinerary-5.jpg",
-    alt: "Zanzibar turquoise coastline"
-  }
-];
+  { src: "/assets/trips/trip-hero-zebras.png", alt: "Zebras grazing in Serengeti during a Tanzania safari" },
+  { src: "/assets/figma/itinerary-2.jpg", alt: "Tanzania wilderness road and plains" },
+  { src: "/assets/figma/itinerary-3.jpg", alt: "Safari vehicle in the grass" },
+  { src: "/assets/figma/itinerary-5.jpg", alt: "Zanzibar turquoise coastline" }
+]
 
 export const itineraryDays = [
-  {
-    day: "DAY 1",
-    title: "Tarangire National Park, Return To Arusha",
-    description:
-      "After breakfast, continue toward Tarangire National Park, one of Tanzania's most scenic and elephant-rich parks. Enjoy a private game drive with picnic lunch before returning toward Arusha.",
-    accommodation: "Ahadi Lodge"
-  },
-  {
-    day: "DAY 2",
-    title: "Tarangire National Park, Return To Arusha",
-    description:
-      "Your safari continues with a relaxed morning game drive and time to follow wildlife movement across the plains. The route and pace stay flexible around your private group.",
-    accommodation: "Ahadi Lodge"
-  },
-  {
-    day: "DAY 3",
-    title: "Tarangire National Park, Return To Arusha",
-    description:
-      "Enjoy your final safari experience before beginning the return journey to Arusha, marking the end of your unforgettable luxury safari adventure.",
-    accommodation: "Ahadi Lodge"
-  }
-];
+  { day: "DAY 1", title: "Tarangire National Park, Return To Arusha", description: "After breakfast, continue toward Tarangire National Park, one of Tanzania's most scenic and elephant-rich parks. Enjoy a private game drive with picnic lunch before returning toward Arusha.", accommodation: "Ahadi Lodge" },
+  { day: "DAY 2", title: "Tarangire National Park, Return To Arusha", description: "Your safari continues with a relaxed morning game drive and time to follow wildlife movement across the plains.", accommodation: "Ahadi Lodge" },
+  { day: "DAY 3", title: "Tarangire National Park, Return To Arusha", description: "Enjoy your final safari experience before beginning the return journey to Arusha.", accommodation: "Ahadi Lodge" }
+]
 
 export const includedItems = [
   "Professional English-speaking guide",
   "Private luxury 4x4 safari vehicle",
   "All park entry fees",
   "2 nights camp accommodation",
-  "All park entry fees",
-  "2 nights camp accommodation",
-  "Professional English-speaking guide",
-  "Private luxury 4x4 safari vehicle",
-  "All park entry fees",
-  "2 nights camp accommodation",
-  "All park entry fees",
-  "2 nights camp accommodation"
-];
+]
 
 export const faqs = [
-  {
-    question: "Question can be added here",
-    answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-  },
-  {
-    question: "Question can be added here",
-    answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-  },
-  {
-    question: "Question can be added here",
-    answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-  },
-  {
-    question: "Question can be added here",
-    answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-  }
-];
+  { question: "Question can be added here", answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
+  { question: "Question can be added here", answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
+]
+
+export const tripCards: TripCard[] = [
+  { slug: sharedTripSlug, title: "The Great Migration Classic", duration: "7 nights", route: "Serengeti + Ngorongoro", season: "July-October", tripType: "Wildlife Safari", priceValue: 1459, price: "from $1,459 USD per person", image: "/assets/figma/itinerary-1.jpg", imageAlt: "Tanzania safari itinerary preview 1" },
+  { slug: sharedTripSlug, title: "Northern Circuit Safari", duration: "5 nights", route: "Tarangire + Ngorongoro", season: "June-October", tripType: "Wildlife Safari", priceValue: 1890, price: "from $1,890 USD per person", image: "/assets/figma/itinerary-2.jpg", imageAlt: "Tanzania safari itinerary preview 2" },
+  { slug: sharedTripSlug, title: "Serengeti Fly-in Safari", duration: "4 nights", route: "Serengeti + Arusha", season: "All seasons", tripType: "Luxury Safari", priceValue: 2890, price: "from $2,890 USD per person", image: "/assets/figma/itinerary-3.jpg", imageAlt: "Tanzania safari itinerary preview 3" },
+]
