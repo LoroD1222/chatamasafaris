@@ -36,6 +36,7 @@ type TripPageProps = {
 type TripDetailPageProps = {
   dictionary: HomeDictionary;
   trip: TripDetail;
+  similarTrips?: TripCard[];
 };
 
 type TripsListPageProps = {
@@ -153,7 +154,7 @@ export function TripsListPage({ dictionary, initialTrips }: TripsListPageProps) 
   );
 }
 
-export function TripDetailPage({ dictionary, trip }: TripDetailPageProps) {
+export function TripDetailPage({ dictionary, trip, similarTrips = [] }: TripDetailPageProps) {
   const gallerySlides = trip.gallery && trip.gallery.length > 0
     ? trip.gallery.map((g) => ({ src: g.url, alt: g.alt || trip.title }))
     : [{ src: trip.heroImage || '/assets/trips/trip-hero-zebras.png', alt: trip.title }];
@@ -212,7 +213,7 @@ export function TripDetailPage({ dictionary, trip }: TripDetailPageProps) {
                 <p className="mt-2 text-[14px] font-bold leading-[1.6]">Trip Type: {trip.tripType || 'Private Group'}</p>
               </div>
               <p className="border-b border-[#403229]/13 py-5 text-[13px] font-semibold leading-[1.65] text-[#403229]/70">
-                Travel on your own schedule with full flexibility in dates, pace, and itinerary.
+                {trip.tourForMeDescription || "Travel on your own schedule with full flexibility in dates, pace, and itinerary."}
               </p>
               <PlannerDialogButton planner={dictionary.planner} className={`mt-6 h-[46px] w-full px-4 text-[14px] font-bold ${amberButton}`}>
                 Talk to a Planner
@@ -227,7 +228,7 @@ export function TripDetailPage({ dictionary, trip }: TripDetailPageProps) {
         <WidePlannerBand dictionary={dictionary} />
         <ReviewsSection reviews={trip.reviews} />
         <StopPlanningSection dictionary={dictionary} />
-        <SimilarTripsSection />
+        <SimilarTripsSection trips={similarTrips.length > 0 ? similarTrips : tripCards.slice(0, 3)} />
         <FaqSection dictionary={dictionary} faqs={faqs} />
         <FinalCtaFooter dictionary={dictionary} />
       </main>
@@ -341,11 +342,11 @@ function TripCardGrid({ className = "", limit, cards = tripCards }: { className?
   return (
     <div className={`mx-auto grid max-w-[1111px] gap-x-[18px] gap-y-[14px] md:grid-cols-2 lg:grid-cols-3 ${className}`}>
       {visibleCards.map((trip, index) => (
-        <Link key={`${trip.slug}-${index}`} href={`/trip/${sharedTripSlug}`} className="group relative h-[401px] overflow-hidden rounded-[8px] bg-[#403229] text-white outline-none transition focus-visible:ring-2 focus-visible:ring-[#E2B87F] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fdfaf3]">
+        <Link key={`${trip.slug}-${index}`} href={`/trip/${trip.slug}`} className="group relative h-[401px] overflow-hidden rounded-[8px] bg-[#403229] text-white outline-none transition focus-visible:ring-2 focus-visible:ring-[#E2B87F] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fdfaf3]">
           <Image src={trip.image} alt={trip.imageAlt} fill sizes="(min-width: 1024px) 356px, (min-width: 768px) 50vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
           <div className="absolute inset-x-0 bottom-0 h-[115px] rounded-b-[8px] bg-[#654d38]/60 backdrop-blur-[2.5px]" />
           <div className="absolute inset-x-0 bottom-[113px] h-[3px] bg-white/15" />
-          <div className="absolute right-[18px] top-[18px] rounded-[5px] border border-white/45 bg-[#E2B87F] px-3 py-1 text-[11px] font-bold leading-[1.5] text-white backdrop-blur">{trip.price}</div>
+          <div className="absolute right-[18px] top-[18px] rounded-[5px] border border-white/45 bg-[#E2B87F] px-3 py-1 text-[11px] font-bold leading-[1.5] text-white backdrop-blur">from ${trip.priceValue?.toLocaleString("en-US")} USD</div>
           <div className="absolute bottom-[25px] left-[19px] right-[19px]">
             <h2 className="text-[14px] font-bold leading-[1.6]">{trip.title} - <span className="font-semibold">{trip.duration}</span></h2>
             <p className="text-[14px] font-semibold leading-[1.51] text-white/85">{trip.route} - {trip.season}</p>
@@ -869,14 +870,14 @@ function StopPlanningSection({ dictionary }: TripPageProps) {
   );
 }
 
-function SimilarTripsSection() {
+function SimilarTripsSection({ trips }: { trips: TripCard[] }) {
   return (
     <section className={`${pageContainer} py-[76px]`}>
       <p className="text-center text-[13px] font-bold uppercase tracking-[0.05em] text-[#E2B87F]">Experiences we offer</p>
       <h2 className="mt-4 text-center text-[34px] font-semibold leading-[1.15]">Other Similar Trips</h2>
       <div className="mt-10 grid gap-5 lg:grid-cols-3">
         {tripCards.slice(0, 3).map((trip, index) => (
-          <Link key={`${trip.slug}-similar-${index}`} href={`/trip/${sharedTripSlug}`} className="group overflow-hidden rounded-[8px] border border-[#403229]/10 bg-white shadow-[0_14px_34px_rgba(64,50,41,0.08)] transition hover:-translate-y-0.5 hover:shadow-[0_20px_44px_rgba(64,50,41,0.12)]">
+          <Link key={`${trip.slug}-similar-${index}`} href={`/trip/${trip.slug}`} className="group overflow-hidden rounded-[8px] border border-[#403229]/10 bg-white shadow-[0_14px_34px_rgba(64,50,41,0.08)] transition hover:-translate-y-0.5 hover:shadow-[0_20px_44px_rgba(64,50,41,0.12)]">
             <div className="relative h-[200px]">
               <Image src={trip.image} alt={trip.imageAlt} fill sizes="(min-width: 1024px) 380px, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
               <span className="absolute right-4 top-4 rounded-full bg-[#E2B87F] px-3 py-1 text-[11px] font-bold text-white">{trip.price}</span>

@@ -20,13 +20,13 @@ const trustIcons = {
   support: Headphones
 };
 
-export function HomePage({ locale, dictionary }: { locale: Locale; dictionary: HomeDictionary }) {
+export function HomePage({ locale, dictionary, recentTrips = [] }: { locale: Locale; dictionary: HomeDictionary; recentTrips?: TripCard[] }) {
   return (
     <main className="astra-page-enter overflow-hidden bg-astra-cream text-astra-brown">
       <HeroSection dictionary={dictionary} />
       <ExperienceCategories locale={locale} dictionary={dictionary} />
       <WhySection dictionary={dictionary} />
-      <ItinerariesSection locale={locale} dictionary={dictionary} />
+      <ItinerariesSection locale={locale} dictionary={dictionary} recentTrips={recentTrips} />
       <ImageStrip />
       <PlanningSection dictionary={dictionary} />
       <ReviewsSection dictionary={dictionary} />
@@ -209,7 +209,7 @@ function WhySection({ dictionary }: { dictionary: HomeDictionary }) {
   );
 }
 
-function ItinerariesSection({ locale, dictionary }: { locale: Locale; dictionary: HomeDictionary }) {
+function ItinerariesSection({ locale, dictionary, recentTrips }: { locale: Locale; dictionary: HomeDictionary; recentTrips?: TripCard[] }) {
   return (
     <section id="itineraries" className="relative bg-astra-cream py-16 md:py-[72px]">
       <div className="container max-w-[1195px]">
@@ -226,9 +226,23 @@ function ItinerariesSection({ locale, dictionary }: { locale: Locale; dictionary
         />
         <div className="relative mt-10 overflow-hidden pb-px">
           <div className="grid gap-[18px] md:grid-cols-2 lg:grid-cols-3">
-            {dictionary.itineraries.items.map((item, index) => (
-              <ItineraryCard key={`${item.title}-${index}`} locale={locale} item={item} />
-            ))}
+            {recentTrips && recentTrips.length > 0
+              ? recentTrips.map((trip, index) => (
+                  <a key={`${trip.slug}-${index}`} href={`/trip/${trip.slug}`} className="group relative block h-[401px] overflow-hidden rounded-lg bg-astra-cocoa shadow-[0_18px_55px_rgba(64,50,41,0.15)] outline-none transition focus-visible:ring-2 focus-visible:ring-astra-gold focus-visible:ring-offset-2" aria-label={`See itinerary for ${trip.title}`}>
+                    <img src={trip.image} alt={trip.imageAlt} className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                    <div className="absolute right-4 top-4 rounded-[5px] border border-white/45 bg-astra-gold/60 px-3 py-1 text-[11px] font-bold leading-[1.51] text-astra-cocoa backdrop-blur-md">from ${trip.priceValue?.toLocaleString('en-US')} USD</div>
+                    <div className="absolute inset-x-0 bottom-0 min-h-[128px] rounded-b-lg bg-[#654d38]/40 px-5 pb-[25px] pt-5 text-white backdrop-blur-sm">
+                      <div className="absolute inset-x-0 top-0 h-[3px] bg-white/15" />
+                      <h3 className="text-sm font-bold leading-[1.6]">{trip.title} - <span className="font-semibold">{trip.duration}</span></h3>
+                      <p className="mt-1 text-sm leading-[1.51]">{trip.route} - {trip.season}</p>
+                      <span className="mt-3 inline-flex h-[27px] items-center rounded-full bg-astra-gold px-3 text-sm font-semibold leading-[1.6] text-astra-cocoa transition group-hover:bg-astra-gold/90">See Itinerary -&gt;</span>
+                    </div>
+                  </a>
+                ))
+              : dictionary.itineraries.items.map((item, index) => (
+                  <ItineraryCard key={`${item.title}-${index}`} locale={locale} item={item} />
+                ))
+            }
           </div>
           <div
             aria-hidden="true"

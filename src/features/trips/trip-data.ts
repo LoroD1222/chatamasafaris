@@ -28,7 +28,8 @@ export type TripDetail = {
   overviewText: string;
   targetAudience: string[];
   featuredReviewQuote: string;
-  itinerary: { dayNumber: number; title: string; description: string; accommodation: string }[];
+  tourForMeDescription: string;
+  itinerary: { dayNumber: number; title: string; description: string; accommodation: string; images: { url: string; alt: string }[] }[];
   included: string[];
   notIncluded: string[];
   faqs: { question: string; answer: string }[];
@@ -42,27 +43,11 @@ export type TripDetail = {
   physicalRating: string;
   minAge: number;
   isFeatured: boolean;
+  category: string;
 }
-
-type SanityTripCard = Omit<TripCard, "price"> & {
-  slug?: string | null;
-  title?: string | null;
-  duration?: string | null;
-  route?: string | null;
-  season?: string | null;
-  tripType?: string | null;
-  priceValue?: number | null;
-  image?: string | null;
-  imageAlt?: string | null;
-}
-
-type SanityTripDetail = Omit<TripDetail, "price">;
-
-// Shared static detail page used until CMS-driven detail templates are added.
-export const sharedTripSlug = "great-migration-classic"
 
 export async function getTripCards(): Promise<TripCard[]> {
-  const trips = await client.fetch<SanityTripCard[]>(`
+  const trips = await client.fetch(`
     *[_type == "trip"] | order(priceFrom asc) {
       "slug": slug.current,
       title,
@@ -75,23 +60,17 @@ export async function getTripCards(): Promise<TripCard[]> {
       "imageAlt": heroImage.alt
     }
   `)
-  return trips.map((t) => ({
-    slug: t.slug || sharedTripSlug,
-    title: t.title || "Tanzania Safari",
-    duration: t.duration || "",
-    route: t.route || "",
-    season: t.season || "",
-    tripType: t.tripType || "Wildlife Safari",
-    priceValue: t.priceValue || 0,
+  return trips.map((t: any) => ({
+    ...t,
     image: t.image || '/assets/figma/itinerary-1.jpg',
-    imageAlt: t.imageAlt || t.title || "Tanzania safari itinerary preview",
-    price: `from $${(t.priceValue || 0).toLocaleString('en-US')} USD per person`,
+    imageAlt: t.imageAlt || t.title,
+    price: `from $${t.priceValue?.toLocaleString('en-US')} USD per person`,
   }))
 }
 
-export async function getTripBySlug(slug: string): Promise<TripDetail | null> {
-  const trip = await client.fetch<SanityTripDetail | null>(`
-    *[_type == "trip" && slug.current == $slug][0] {
+export async function getRecentTrips(limit = 6): Promise<TripCard[]> {
+  const trips = await client.fetch(`
+    *[_type == "trip"] | order(_createdAt desc) [0...$limit] {
       "slug": slug.current,
       title,
       "duration": duration,
@@ -99,13 +78,67 @@ export async function getTripBySlug(slug: string): Promise<TripDetail | null> {
       "season": bestSeason,
       "tripType": category,
       "priceValue": priceFrom,
+      "image": heroImage.asset->url,
+      "imageAlt": heroImage.alt
+    }
+  `, { limit })
+  return trips.map((t: any) => ({
+    ...t,
+    image: t.image || '/assets/figma/itinerary-1.jpg',
+    imageAlt: t.imageAlt || t.title,
+    price: `from $${t.priceValue?.toLocaleString('en-US')} USD per person`,
+  }))
+}
+
+export async function getSimilarTrips(slug: string, category: string, limit = 3): Promise<TripCard[]> {
+  const trips = await client.fetch(`
+    *[_type == "trip" && slug.current != $slug && category == $category] | order(_createdAt desc) [0...$limit] {
+      "slug": slug.current,
+      title,
+      "duration": duration,
+      "route": destinations,
+      "season": bestSeason,
+      "tripType": category,
+      "priceValue": priceFrom,
+      "image": heroImage.asset->url,
+      "imageAlt": heroImage.alt
+    }
+  `, { slug, category, limit })
+  return trips.map((t: any) => ({
+    ...t,
+    image: t.image || '/assets/figma/itinerary-1.jpg',
+    imageAlt: t.imageAlt || t.title,
+    price: `from $${t.priceValue?.toLocaleString('en-US')} USD per person`,
+  }))
+}
+
+export async function getTripBySlug(slug: string): Promise<TripDetail | null> {
+  const trip = await client.fetch(`
+    *[_type == "trip" && slug.current == $slug][0] {
+      "slug": slug.current,
+      title,
+      "duration": duration,
+      "route": destinations,
+      "season": bestSeason,
+      "tripType": category,
+      "category": category,
+      "priceValue": priceFrom,
       "heroImage": heroImage.asset->url,
       "gallery": gallery[]{ "url": asset->url, "alt": alt },
       shortDescription,
       "overviewText": pt::text(overviewText),
       targetAudience,
       featuredReviewQuote,
-      itinerary[]{ dayNumber, title, "description": pt::text(description), "accommodation": accommodation.name },
+      tourForMeDescription,
+      itinerary[]{
+        dayNumber,
+        title,
+        "description": pt::text(description),
+        "accommodation": accommodation.name,
+        "images": [
+          { "url": accommodation.image.asset->url, "alt": accommodation.name }
+        ]
+      },
       included,
       notIncluded,
       faqs[]{ question, "answer": pt::text(answer) },
@@ -129,7 +162,9 @@ export async function getTripBySlug(slug: string): Promise<TripDetail | null> {
   }
 }
 
-// Fallback static data used until Sanity has content
+// Fallback static data
+export const sharedTripSlug = "great-migration-classic"
+
 export const galleryImages = [
   { src: "/assets/trips/trip-hero-zebras.png", alt: "Zebras grazing in Serengeti during a Tanzania safari" },
   { src: "/assets/figma/itinerary-2.jpg", alt: "Tanzania wilderness road and plains" },
@@ -137,28 +172,8 @@ export const galleryImages = [
   { src: "/assets/figma/itinerary-5.jpg", alt: "Zanzibar turquoise coastline" }
 ]
 
-export const itineraryDays = [
-  { day: "DAY 1", title: "Tarangire National Park, Return To Arusha", description: "After breakfast, continue toward Tarangire National Park, one of Tanzania's most scenic and elephant-rich parks. Enjoy a private game drive with picnic lunch before returning toward Arusha.", accommodation: "Ahadi Lodge" },
-  { day: "DAY 2", title: "Tarangire National Park, Return To Arusha", description: "Your safari continues with a relaxed morning game drive and time to follow wildlife movement across the plains.", accommodation: "Ahadi Lodge" },
-  { day: "DAY 3", title: "Tarangire National Park, Return To Arusha", description: "Enjoy your final safari experience before beginning the return journey to Arusha.", accommodation: "Ahadi Lodge" }
-]
-
-export const includedItems = [
-  "Professional English-speaking guide",
-  "Private luxury 4x4 safari vehicle",
-  "All park entry fees",
-  "2 nights camp accommodation",
-]
-
-export const faqs = [
-  { question: "Question can be added here", answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
-  { question: "Question can be added here", answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
-]
-
 export const tripCards: TripCard[] = [
   { slug: sharedTripSlug, title: "The Great Migration Classic", duration: "7 nights", route: "Serengeti + Ngorongoro", season: "July-October", tripType: "Wildlife Safari", priceValue: 1459, price: "from $1,459 USD per person", image: "/assets/figma/itinerary-1.jpg", imageAlt: "Tanzania safari itinerary preview 1" },
   { slug: sharedTripSlug, title: "Northern Circuit Safari", duration: "5 nights", route: "Tarangire + Ngorongoro", season: "June-October", tripType: "Wildlife Safari", priceValue: 1890, price: "from $1,890 USD per person", image: "/assets/figma/itinerary-2.jpg", imageAlt: "Tanzania safari itinerary preview 2" },
   { slug: sharedTripSlug, title: "Serengeti Fly-in Safari", duration: "4 nights", route: "Serengeti + Arusha", season: "All seasons", tripType: "Luxury Safari", priceValue: 2890, price: "from $2,890 USD per person", image: "/assets/figma/itinerary-3.jpg", imageAlt: "Tanzania safari itinerary preview 3" },
-  { slug: sharedTripSlug, title: "Zanzibar Island Retreat", duration: "4 nights", route: "Stone Town + Coast", season: "All seasons", tripType: "Zanzibar", priceValue: 2140, price: "from $2,140 USD per person", image: "/assets/figma/category-zanzibar.jpg", imageAlt: "Zanzibar turquoise water and tropical coast" },
-  { slug: sharedTripSlug, title: "Kilimanjaro Summit Climb", duration: "7 nights", route: "Machame + Moshi", season: "June-October", tripType: "Kilimanjaro", priceValue: 3340, price: "from $3,340 USD per person", image: "/assets/figma/category-kilimanjaro.jpg", imageAlt: "Tents below Mount Kilimanjaro" },
 ]
