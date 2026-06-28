@@ -46,8 +46,22 @@ export type TripDetail = {
   category: string;
 }
 
+type SanityTripCard = Omit<TripCard, "price" | "image" | "imageAlt"> & {
+  image?: string | null;
+  imageAlt?: string | null;
+};
+
+function normalizeTripCard(trip: SanityTripCard): TripCard {
+  return {
+    ...trip,
+    image: trip.image || '/assets/figma/itinerary-1.jpg',
+    imageAlt: trip.imageAlt || trip.title,
+    price: `from $${trip.priceValue?.toLocaleString('en-US')} USD per person`,
+  };
+}
+
 export async function getTripCards(): Promise<TripCard[]> {
-  const trips = await client.fetch(`
+  const trips = await client.fetch<SanityTripCard[]>(`
     *[_type == "trip"] | order(priceFrom asc) {
       "slug": slug.current,
       title,
@@ -60,16 +74,11 @@ export async function getTripCards(): Promise<TripCard[]> {
       "imageAlt": heroImage.alt
     }
   `)
-  return trips.map((t: any) => ({
-    ...t,
-    image: t.image || '/assets/figma/itinerary-1.jpg',
-    imageAlt: t.imageAlt || t.title,
-    price: `from $${t.priceValue?.toLocaleString('en-US')} USD per person`,
-  }))
+  return trips.map(normalizeTripCard)
 }
 
 export async function getRecentTrips(limit = 6): Promise<TripCard[]> {
-  const trips = await client.fetch(`
+  const trips = await client.fetch<SanityTripCard[]>(`
     *[_type == "trip"] | order(_createdAt desc) [0...$limit] {
       "slug": slug.current,
       title,
@@ -82,16 +91,11 @@ export async function getRecentTrips(limit = 6): Promise<TripCard[]> {
       "imageAlt": heroImage.alt
     }
   `, { limit })
-  return trips.map((t: any) => ({
-    ...t,
-    image: t.image || '/assets/figma/itinerary-1.jpg',
-    imageAlt: t.imageAlt || t.title,
-    price: `from $${t.priceValue?.toLocaleString('en-US')} USD per person`,
-  }))
+  return trips.map(normalizeTripCard)
 }
 
 export async function getSimilarTrips(slug: string, category: string, limit = 3): Promise<TripCard[]> {
-  const trips = await client.fetch(`
+  const trips = await client.fetch<SanityTripCard[]>(`
     *[_type == "trip" && slug.current != $slug && category == $category] | order(_createdAt desc) [0...$limit] {
       "slug": slug.current,
       title,
@@ -104,12 +108,7 @@ export async function getSimilarTrips(slug: string, category: string, limit = 3)
       "imageAlt": heroImage.alt
     }
   `, { slug, category, limit })
-  return trips.map((t: any) => ({
-    ...t,
-    image: t.image || '/assets/figma/itinerary-1.jpg',
-    imageAlt: t.imageAlt || t.title,
-    price: `from $${t.priceValue?.toLocaleString('en-US')} USD per person`,
-  }))
+  return trips.map(normalizeTripCard)
 }
 
 export async function getTripBySlug(slug: string): Promise<TripDetail | null> {

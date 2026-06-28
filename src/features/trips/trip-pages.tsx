@@ -20,6 +20,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { type FormEvent, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 import { SiteFinalCta } from "@/components/layouts/site-final-cta";
 import { SiteFooter } from "@/components/layouts/site-footer";
@@ -27,7 +28,7 @@ import { PlannerDialogButton } from "@/components/planner/planner-dialog";
 import { LeadPlanner } from "@/features/home/lead-planner";
 import { defaultLocale } from "@/i18n/config";
 import type { HomeDictionary, PlannerField } from "@/i18n/types";
-import { sharedTripSlug, type TripCard, type TripDetail, tripCards } from "@/features/trips/trip-data";
+import { type TripCard, type TripDetail, tripCards } from "@/features/trips/trip-data";
 
 type TripPageProps = {
   dictionary: HomeDictionary;
@@ -106,7 +107,7 @@ export function TripsListPage({ dictionary, initialTrips }: TripsListPageProps) 
   }
 
   return (
-    <div className="astra-page-enter min-h-screen overflow-x-hidden bg-[#fdfaf3] text-[#403229]">
+    <div className="astra-page-enter min-h-screen overflow-x-clip bg-[#fdfaf3] text-[#403229]">
       <TripHeader dictionary={dictionary} />
       <main>
         <section className={`${pageContainer} pb-[116px] pt-[64px] md:pt-[62px]`}>
@@ -180,7 +181,7 @@ export function TripDetailPage({ dictionary, trip, similarTrips = [] }: TripDeta
     : Array.from({ length: 6 }, (_, i) => ({ id: `rate-${i}`, people: "1 pax", price: "$2,890" }));
 
   return (
-    <div className="astra-page-enter min-h-screen overflow-x-hidden bg-[#fdfaf3] text-[#403229]">
+    <div className="astra-page-enter min-h-screen overflow-x-clip bg-[#fdfaf3] text-[#403229]">
       <TripHeader dictionary={dictionary} />
       <main>
         <section className="mx-auto max-w-[1200px] px-6 pb-[76px] pt-[65px]">
@@ -189,10 +190,15 @@ export function TripDetailPage({ dictionary, trip, similarTrips = [] }: TripDeta
             {trip.title}
           </h1>
           <div className="mt-[26px] grid items-start gap-7 lg:grid-cols-[708px_448px]">
-            <HeroGallery images={gallerySlides} />
-            <TripSummaryCard dictionary={dictionary} trip={trip} />
+            <div className="contents lg:block">
+              <HeroGallery images={gallerySlides} className="order-1" />
+              <BuiltForContent trip={trip} className="order-3 mt-[28px]" />
+            </div>
+            <div className="contents lg:grid lg:gap-7">
+              <TripSummaryCard dictionary={dictionary} trip={trip} className="order-2" />
+              <ReviewContactCard dictionary={dictionary} trip={trip} className="order-4" />
+            </div>
           </div>
-          <BuiltForSection dictionary={dictionary} trip={trip} />
         </section>
 
         <div className="relative">
@@ -358,7 +364,7 @@ function TripCardGrid({ className = "", limit, cards = tripCards }: { className?
   );
 }
 
-function HeroGallery({ images }: { images: { src: string; alt: string }[] }) {
+function HeroGallery({ images, className = "" }: { images: { src: string; alt: string }[]; className?: string }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const currentImage = images[currentIndex] || images[0];
@@ -380,7 +386,7 @@ function HeroGallery({ images }: { images: { src: string; alt: string }[] }) {
   }, [isLightboxOpen, images.length]);
 
   return (
-    <div>
+    <div className={className}>
       <div className="relative h-[420px] overflow-hidden rounded-[2px] bg-[#403229] lg:h-[574px]">
         <button type="button" onClick={() => setIsLightboxOpen(true)} className="absolute inset-0 cursor-zoom-in outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--astra-primary-amber)]" aria-label={`Open image gallery: ${currentImage.alt}`}>
           <Image src={currentImage.src} alt={currentImage.alt} fill priority sizes="707px" className="object-cover transition duration-300" />
@@ -397,14 +403,14 @@ function HeroGallery({ images }: { images: { src: string; alt: string }[] }) {
           </button>
         ))}
       </div>
-      {isLightboxOpen ? (
-        <div role="dialog" aria-modal="true" aria-label="Safari image gallery" className="fixed inset-0 z-[200] bg-black/70 px-5 py-6 text-white" onClick={() => setIsLightboxOpen(false)}>
-          <button type="button" onClick={() => setIsLightboxOpen(false)} className="absolute right-5 top-5 z-10 grid size-11 place-items-center rounded-full bg-white/12 text-white transition hover:bg-white/22 focus:outline-none focus-visible:ring-2 focus-visible:ring-white" aria-label="Close image gallery"><X className="size-5" aria-hidden="true" /></button>
-          <button type="button" onClick={(e) => { e.stopPropagation(); showPreviousImage(); }} className="absolute left-5 top-1/2 z-10 grid size-12 -translate-y-1/2 place-items-center rounded-full bg-white/12 text-white transition hover:bg-white/22 focus:outline-none focus-visible:ring-2 focus-visible:ring-white" aria-label="Show previous image in lightbox"><ChevronLeft className="size-6" aria-hidden="true" /></button>
-          <button type="button" onClick={(e) => { e.stopPropagation(); showNextImage(); }} className="absolute right-5 top-1/2 z-10 grid size-12 -translate-y-1/2 place-items-center rounded-full bg-white/12 text-white transition hover:bg-white/22 focus:outline-none focus-visible:ring-2 focus-visible:ring-white" aria-label="Show next image in lightbox"><ChevronRight className="size-6" aria-hidden="true" /></button>
-          <div className="mx-auto flex h-full max-w-[1180px] flex-col gap-5" onClick={(e) => e.stopPropagation()}>
-            <div className="relative min-h-0 flex-1">
-              <Image src={currentImage.src} alt={currentImage.alt} fill sizes="100vw" className="object-contain" priority />
+      {isLightboxOpen ? createPortal(
+        <div role="dialog" aria-modal="true" aria-label="Safari image gallery" className="fixed inset-0 z-[1000] isolate bg-black/85 px-5 py-6 text-white" onClick={() => setIsLightboxOpen(false)}>
+          <button type="button" onClick={() => setIsLightboxOpen(false)} className="absolute right-5 top-5 z-30 grid size-11 place-items-center rounded-full bg-white/12 text-white transition hover:bg-white/22 focus:outline-none focus-visible:ring-2 focus-visible:ring-white" aria-label="Close image gallery"><X className="size-5" aria-hidden="true" /></button>
+          <button type="button" onClick={(e) => { e.stopPropagation(); showPreviousImage(); }} className="absolute left-5 top-1/2 z-30 grid size-12 -translate-y-1/2 place-items-center rounded-full bg-white/12 text-white transition hover:bg-white/22 focus:outline-none focus-visible:ring-2 focus-visible:ring-white" aria-label="Show previous image in lightbox"><ChevronLeft className="size-6" aria-hidden="true" /></button>
+          <button type="button" onClick={(e) => { e.stopPropagation(); showNextImage(); }} className="absolute right-5 top-1/2 z-30 grid size-12 -translate-y-1/2 place-items-center rounded-full bg-white/12 text-white transition hover:bg-white/22 focus:outline-none focus-visible:ring-2 focus-visible:ring-white" aria-label="Show next image in lightbox"><ChevronRight className="size-6" aria-hidden="true" /></button>
+          <div className="relative z-20 mx-auto flex h-full w-full max-w-[1180px] flex-col gap-5" onClick={(e) => e.stopPropagation()}>
+            <div className="relative min-h-0 flex-1 overflow-hidden rounded-[6px] bg-black shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
+              <Image src={currentImage.src} alt={currentImage.alt} fill sizes="100vw" className="object-contain" priority unoptimized />
             </div>
             <div className="text-center text-[13px] font-semibold text-white/72">{currentIndex + 1} / {images.length}</div>
             <div className="mx-auto grid w-full max-w-[620px] grid-cols-4 gap-3">
@@ -415,7 +421,8 @@ function HeroGallery({ images }: { images: { src: string; alt: string }[] }) {
               ))}
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       ) : null}
     </div>
   );
@@ -431,9 +438,9 @@ function RatingStars({ className = "size-5" }: { className?: string }) {
   );
 }
 
-function TripSummaryCard({ dictionary, trip }: { dictionary: HomeDictionary; trip: TripDetail }) {
+function TripSummaryCard({ dictionary, trip, className = "" }: { dictionary: HomeDictionary; trip: TripDetail; className?: string }) {
   return (
-    <aside className="flex rounded-[10px] border border-[#403229]/12 bg-white shadow-[0_22px_44px_rgba(64,50,41,0.08)]">
+    <aside className={`flex rounded-[10px] border border-[#403229]/12 bg-white shadow-[0_22px_44px_rgba(64,50,41,0.08)] ${className}`}>
       <div className="flex min-h-full w-full flex-col px-6 py-6">
         <div className="border-b border-[#403229]/13 pb-5">
           <RatingStars className="size-6" />
@@ -479,7 +486,7 @@ function TripSummaryCard({ dictionary, trip }: { dictionary: HomeDictionary; tri
   );
 }
 
-function BuiltForSection({ dictionary, trip }: { dictionary: HomeDictionary; trip: TripDetail }) {
+function BuiltForContent({ trip, className = "" }: { trip: TripDetail; className?: string }) {
   const defaultItems = [
     { label: "Couples & honeymooners", Icon: Check },
     { label: "First-time safari travelers", Icon: Binoculars },
@@ -492,46 +499,49 @@ function BuiltForSection({ dictionary, trip }: { dictionary: HomeDictionary; tri
     : defaultItems;
 
   return (
-    <section className="mt-[28px] grid gap-7 lg:grid-cols-[708px_448px]">
-      <div>
-        <h2 className="text-[31px] font-semibold leading-[1.13]">Who this safari is built for?</h2>
-        <p className="mt-[29px] max-w-[663px] text-[16px] font-semibold leading-[1.65] text-[#403229]/70">
-          Private guided Tanzania safaris - planned for you, priced in USD, backed by 15 years of getting Americans to Africa.
-        </p>
-        <div className="mt-[25px] grid gap-6 sm:grid-cols-2">
-          {items.map(({ label, Icon }) => (
-            <p key={label} className="flex items-center gap-4 text-[18px] font-bold leading-[1.5]">
-              <Icon className="size-9 shrink-0 text-[#E2B87F]" strokeWidth={1.8} aria-hidden="true" />
-              {label}
-            </p>
-          ))}
-        </div>
+    <section className={className}>
+      <h2 className="text-[31px] font-semibold leading-[1.13]">Who this safari is built for?</h2>
+      <p className="mt-[29px] max-w-[663px] text-[16px] font-semibold leading-[1.65] text-[#403229]/70">
+        Private guided Tanzania safaris - planned for you, priced in USD, backed by 15 years of getting Americans to Africa.
+      </p>
+      <div className="mt-[25px] grid gap-6 sm:grid-cols-2">
+        {items.map(({ label, Icon }) => (
+          <p key={label} className="flex items-center gap-4 text-[18px] font-bold leading-[1.5]">
+            <Icon className="size-9 shrink-0 text-[#E2B87F]" strokeWidth={1.8} aria-hidden="true" />
+            {label}
+          </p>
+        ))}
       </div>
-      <aside className="self-start rounded-[10px] border border-[#403229]/12 bg-white p-7 shadow-[0_16px_36px_rgba(64,50,41,0.06)]">
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#403229]/13 pb-5">
-          <div>
-            <p className="flex items-center gap-3 text-[26px] font-bold leading-none text-[#E2B87F]">
-              {trip.reviewScore || 4.9}
-              <RatingStars className="size-3.5" />
-            </p>
-          </div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#1f8f5a]/25 bg-[#effaf4] px-3 py-1.5 text-[12px] font-bold leading-none text-[#1f8f5a]">
-            <span className="flex items-center gap-0.5" aria-hidden="true"><span className="size-2 rounded-full bg-[#1f8f5a]" /><span className="size-2 rounded-full bg-[#1f8f5a]" /><span className="size-2 rounded-full bg-[#1f8f5a]" /></span>
-            TripAdvisor
-          </div>
-        </div>
-        <p className="border-b border-[#403229]/13 py-5 text-[15px] font-semibold leading-[1.6] text-[#403229]/75">
-          {trip.featuredReviewQuote || 'Review from TripAdvisor "The river crossing was unlike anything I\'ve ever seen in my life."'}
-        </p>
-        <div className="pt-5">
-          <p className="text-[15px] font-semibold leading-[1.6]">For extra information please contact us</p>
-          <p className="mt-3 flex flex-wrap gap-x-5 gap-y-3 text-[13px] font-bold leading-[1.6] text-[#403229]/65">
-            <a href={`tel:${dictionary.topBar.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-2 hover:text-[#E2B87F]"><Phone className="size-4 text-[#E2B87F]" aria-hidden="true" />{dictionary.topBar.phone}</a>
-            <a href={`mailto:${dictionary.topBar.email}`} className="inline-flex items-center gap-2 hover:text-[#E2B87F]"><Mail className="size-4 text-[#E2B87F]" aria-hidden="true" />{dictionary.topBar.email}</a>
+    </section>
+  );
+}
+
+function ReviewContactCard({ dictionary, trip, className = "" }: { dictionary: HomeDictionary; trip: TripDetail; className?: string }) {
+  return (
+    <aside className={`self-start rounded-[10px] border border-[#403229]/12 bg-white p-7 shadow-[0_16px_36px_rgba(64,50,41,0.06)] ${className}`}>
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#403229]/13 pb-5">
+        <div>
+          <p className="flex items-center gap-3 text-[26px] font-bold leading-none text-[#E2B87F]">
+            {trip.reviewScore || 4.9}
+            <RatingStars className="size-3.5" />
           </p>
         </div>
-      </aside>
-    </section>
+        <div className="inline-flex items-center gap-2 rounded-full border border-[#1f8f5a]/25 bg-[#effaf4] px-3 py-1.5 text-[12px] font-bold leading-none text-[#1f8f5a]">
+          <span className="flex items-center gap-0.5" aria-hidden="true"><span className="size-2 rounded-full bg-[#1f8f5a]" /><span className="size-2 rounded-full bg-[#1f8f5a]" /><span className="size-2 rounded-full bg-[#1f8f5a]" /></span>
+          TripAdvisor
+        </div>
+      </div>
+      <p className="border-b border-[#403229]/13 py-5 text-[15px] font-semibold leading-[1.6] text-[#403229]/75">
+        {trip.featuredReviewQuote || 'Review from TripAdvisor "The river crossing was unlike anything I\'ve ever seen in my life."'}
+      </p>
+      <div className="pt-5">
+        <p className="text-[15px] font-semibold leading-[1.6]">For extra information please contact us</p>
+        <p className="mt-3 flex flex-wrap gap-x-5 gap-y-3 text-[13px] font-bold leading-[1.6] text-[#403229]/65">
+          <a href={`tel:${dictionary.topBar.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-2 hover:text-[#E2B87F]"><Phone className="size-4 text-[#E2B87F]" aria-hidden="true" />{dictionary.topBar.phone}</a>
+          <a href={`mailto:${dictionary.topBar.email}`} className="inline-flex items-center gap-2 hover:text-[#E2B87F]"><Mail className="size-4 text-[#E2B87F]" aria-hidden="true" />{dictionary.topBar.email}</a>
+        </p>
+      </div>
+    </aside>
   );
 }
 
@@ -571,7 +581,7 @@ function TripTabs() {
   }, []);
 
   return (
-    <div className="sticky top-0 z-[90] bg-[#fdfaf3]">
+    <div className="sticky left-0 top-0 z-[90] bg-[#fdfaf3]">
       <div className={pageContainer}>
         <nav className="flex h-[58px] items-center rounded-[10px] border border-[#403229]/10 bg-[#F8EEDD] px-2 text-[11px] font-bold leading-[1.2] text-[#403229]/70 shadow-[0_8px_20px_rgba(64,50,41,0.04)] sm:px-4 sm:text-[13px] md:px-8 md:text-[15px]" aria-label="Trip sections">
           <div className="grid h-full w-full grid-cols-5 items-center">
@@ -684,9 +694,9 @@ function IncludedSection({ dictionary, includedItems, priceTiers }: { dictionary
           <h3 className="shrink-0 text-center text-[27px] font-medium leading-[1.3] text-[#403229]">All-inclusive rates in USD</h3>
           <div className="h-[2px] flex-1 bg-[#e7ded1]" />
         </div>
-        <div className="mx-auto mt-3 grid w-full max-w-[1110px] grid-cols-2 gap-px overflow-hidden rounded-[8px] bg-[#f0e8dc] p-px shadow-[0_16px_35px_rgba(64,50,41,0.06)] md:grid-cols-3 lg:grid-cols-6">
+        <div className="mx-auto mt-3 flex w-full max-w-[1110px] flex-wrap justify-center gap-2">
           {priceTiers.map((tier) => (
-            <div key={tier.id} className="min-h-[92px] bg-white px-4 py-5 text-center">
+            <div key={tier.id} className="min-h-[92px] w-full max-w-[286px] rounded-[8px] border border-[#403229]/10 bg-white px-4 py-5 text-center shadow-[0_16px_35px_rgba(64,50,41,0.06)] sm:w-[calc(50%-4px)] md:w-[calc(33.333%-6px)] lg:w-[178px]">
               <p className="text-[11px] font-semibold leading-none text-[#403229]/78">{tier.people}</p>
               <p className="mt-3 text-[20px] font-bold leading-none text-[#e2b87f]">{tier.price}</p>
               <p className="mt-2 text-[11px] font-semibold leading-none text-[#403229]/68">per person</p>
@@ -730,9 +740,9 @@ function BestTimeSection({ dictionary, seasons }: { dictionary: HomeDictionary; 
           <h2 className="shrink-0 text-center text-[27px] font-medium leading-[1.3] text-[#403229]">Best time for this safari</h2>
           <div className="h-[2px] flex-1 bg-[#e7ded1]" />
         </div>
-        <div className="mx-auto mt-5 grid w-full max-w-[1110px] gap-px overflow-hidden rounded-[8px] bg-[#f0e8dc] p-px shadow-[0_16px_35px_rgba(64,50,41,0.05)] md:grid-cols-3">
+        <div className="mx-auto mt-5 flex w-full max-w-[1110px] flex-wrap justify-center gap-3">
           {seasons.map((season) => (
-            <article key={season.title} className="min-h-[100px] bg-white px-6 pb-7 pt-6">
+            <article key={season.title} className="min-h-[100px] w-full max-w-[360px] rounded-[8px] border border-[#403229]/10 bg-white px-6 pb-7 pt-6 shadow-[0_16px_35px_rgba(64,50,41,0.05)] md:w-[calc(33.333%-8px)]">
               <h3 className="flex items-center gap-3 text-[16px] font-medium leading-none text-[#e2b87f]">
                 <span className="size-3 rounded-full opacity-70" style={{ backgroundColor: season.dot }} aria-hidden="true" />
                 {season.title}
@@ -876,7 +886,7 @@ function SimilarTripsSection({ trips }: { trips: TripCard[] }) {
       <p className="text-center text-[13px] font-bold uppercase tracking-[0.05em] text-[#E2B87F]">Experiences we offer</p>
       <h2 className="mt-4 text-center text-[34px] font-semibold leading-[1.15]">Other Similar Trips</h2>
       <div className="mt-10 grid gap-5 lg:grid-cols-3">
-        {tripCards.slice(0, 3).map((trip, index) => (
+        {trips.slice(0, 3).map((trip, index) => (
           <Link key={`${trip.slug}-similar-${index}`} href={`/trip/${trip.slug}`} className="group overflow-hidden rounded-[8px] border border-[#403229]/10 bg-white shadow-[0_14px_34px_rgba(64,50,41,0.08)] transition hover:-translate-y-0.5 hover:shadow-[0_20px_44px_rgba(64,50,41,0.12)]">
             <div className="relative h-[200px]">
               <Image src={trip.image} alt={trip.imageAlt} fill sizes="(min-width: 1024px) 380px, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
