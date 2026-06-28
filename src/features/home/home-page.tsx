@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ArrowRight, BadgeCheck, Check, CircleDollarSign, Headphones, Mail, MapPinned, Phone, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
