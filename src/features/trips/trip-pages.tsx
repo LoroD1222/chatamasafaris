@@ -28,7 +28,7 @@ import { PlannerDialogButton } from "@/components/planner/planner-dialog";
 import { LeadPlanner } from "@/features/home/lead-planner";
 import { defaultLocale } from "@/i18n/config";
 import type { HomeDictionary, PlannerField } from "@/i18n/types";
-import { type TripCard, type TripDetail, tripCards } from "@/features/trips/trip-data";
+import { isActiveTripCategory, type TripCard, type TripDetail, tripCards, tripCategoryOrder } from "@/features/trips/trip-data";
 
 type TripPageProps = {
   dictionary: HomeDictionary;
@@ -46,9 +46,9 @@ type TripsListPageProps = {
 };
 
 const navLinks = [
-  { label: "Kilimanjaro", href: "/trips?category=Kilimanjaro" },
+  { label: "Wildlife Safari", href: "/trips?category=Wildlife+Safari" },
+  { label: "Luxury Safari", href: "/trips?category=Luxury+Safari" },
   { label: "Zanzibar", href: "/trips?category=Zanzibar" },
-  { label: "Safari", href: "/trips?category=Wildlife%20Safari" },
   { label: "About us", href: "/en#about-us" }
 ];
 
@@ -69,20 +69,21 @@ const includedImageSlides = [
 ];
 
 export function TripsListPage({ dictionary, initialTrips }: TripsListPageProps) {
-  const sourceCards = initialTrips && initialTrips.length > 0 ? initialTrips : tripCards;
+  const sourceCards = initialTrips && initialTrips.length > 0
+    ? initialTrips.filter((trip) => isActiveTripCategory(trip.tripType))
+    : tripCards;
   const cards = [
     ...sourceCards,
-    ...tripCards.filter((fallbackTrip) => !sourceCards.some((trip) => trip.tripType === fallbackTrip.tripType))
+    ...tripCards.filter((fallbackTrip) => isActiveTripCategory(fallbackTrip.tripType) && !sourceCards.some((trip) => trip.tripType === fallbackTrip.tripType))
   ];
-  const tripTypes = Array.from(new Set(cards.map((trip) => trip.tripType)));
+  const tripTypes = [...tripCategoryOrder];
   const minPrice = Math.min(...cards.map((trip) => trip.priceValue));
   const maxTripPrice = Math.max(...cards.map((trip) => trip.priceValue));
   const searchParams = useSearchParams();
   const categoryFromUrl = searchParams.get("category")?.trim() ?? "";
-  const selectedCategory = categoryFromUrl
-    ? tripTypes.find((type) => type.toLowerCase() === categoryFromUrl.toLowerCase()) ??
-      tripTypes.find((type) => type.toLowerCase().includes(categoryFromUrl.toLowerCase())) ??
-      categoryFromUrl
+  const normalizedCategoryFromUrl = categoryFromUrl.replace(/\+/g, " ");
+  const selectedCategory = normalizedCategoryFromUrl
+    ? tripTypes.find((type) => type.toLowerCase() === normalizedCategoryFromUrl.toLowerCase()) ?? ""
     : "";
   const [selectedTypes, setSelectedTypes] = useState<string[]>(() => (selectedCategory ? [selectedCategory] : []));
   const [maxPrice, setMaxPrice] = useState(maxTripPrice);
@@ -170,7 +171,7 @@ export function TripDetailPage({ dictionary, trip, similarTrips = [] }: TripDeta
 
   const faqs = trip.faqs && trip.faqs.length > 0
     ? trip.faqs
-    : [{ question: "Question can be added here", answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." }];
+    : dictionary.faq.items;
 
   const seasons = trip.bestTimeSeasons && trip.bestTimeSeasons.length > 0
     ? trip.bestTimeSeasons.map((s, i) => ({ title: s.period, dot: ["#f2e8dc","#ead9c3","#e2b87f"][i] || "#e2b87f", description: s.highlight }))
@@ -733,7 +734,7 @@ function IncludedImageSlider({ images }: { images: { src: string; alt: string }[
 
 function BestTimeSection({ dictionary, seasons }: { dictionary: HomeDictionary; seasons: { title: string; dot: string; description: string }[] }) {
   return (
-    <section className="bg-[#F8EEDD] pb-[72px] pt-[76px]">
+    <section className="bg-[#fdfaf3] pb-[72px] pt-[76px]">
       <div className={pageContainer}>
         <div className="mx-auto flex max-w-[1110px] items-center gap-8">
           <div className="h-[2px] flex-1 bg-[#e7ded1]" />
@@ -825,10 +826,10 @@ function InlinePlannerField({ field, value, invalid, onChange }: { field: Planne
 
 function ReviewsSection({ reviews }: { reviews?: { quote: string; authorName: string; authorDetails: string }[] }) {
   const defaultReviews = [
-    { image: "/assets/figma/review-family.jpg", alt: "Safari guests posing beside vehicles", quote: "(Testimonial) lorem ipsum dolor sit amet, consec adipiscing sed do eiusmod.", name: "Full name", details: "Company name / details." },
-    { image: "/assets/figma/review-family.jpg", alt: "Safari guests posing beside vehicles", quote: "(Testimonial) lorem ipsum dolor sit amet, consec adipiscing sed do eiusmod.", name: "Full name", details: "Company name / details." },
-    { image: "/assets/figma/review-jeep.jpg", alt: "Guests riding in a safari vehicle", quote: "(Testimonial) lorem ipsum dolor sit amet, consec adipiscing sed do eiusmod.", name: "Full name", details: "Company name / details." },
-    { image: "/assets/figma/review-jeep.jpg", alt: "Guests riding in a safari vehicle", quote: "(Testimonial) lorem ipsum dolor sit amet, consec adipiscing sed do eiusmod.", name: "Full name", details: "Company name / details." },
+    { image: "/assets/figma/review-family.jpg", alt: "Safari guests posing beside vehicles", quote: "We saw four of the Big Five on day one. Our guide knew exactly where to be and when - it was like he could read the animals' minds.", name: "Sarah M.", details: "12-Day Luxury Safari & Zanzibar, June 2024" },
+    { image: "/assets/figma/review-family.jpg", alt: "Safari guests posing beside vehicles", quote: "Astra handled everything from the moment we landed to the moment we left. Zero stress. Just pure experience.", name: "James & Linda R.", details: "6-Day Great Migration Safari, August 2024" },
+    { image: "/assets/figma/review-jeep.jpg", alt: "Guests riding in a safari vehicle", quote: "The Great Migration crossing was the most breathtaking thing I've ever witnessed. Worth every penny and every hour of planning.", name: "David K.", details: "4-Day Luxury Tanzania Safari, July 2024" },
+    { image: "/assets/figma/review-jeep.jpg", alt: "Guests riding in a safari vehicle", quote: "I've done group tours before and they're nothing like this. Private guides, our own vehicle, our own schedule. This is how safari should be done.", name: "Michelle T.", details: "7-Day Safari from Zanzibar, October 2024" },
   ];
   const displayReviews = reviews && reviews.length > 0
     ? reviews.map((r, i) => ({ image: defaultReviews[i % defaultReviews.length].image, alt: defaultReviews[i % defaultReviews.length].alt, quote: r.quote, name: r.authorName, details: r.authorDetails }))
@@ -839,7 +840,7 @@ function ReviewsSection({ reviews }: { reviews?: { quote: string; authorName: st
       <div className="mx-auto max-w-[1320px]">
         <p className="text-center text-[13px] font-bold uppercase leading-none tracking-[0.28em] text-[#e2b87f]">Experiences we offer</p>
         <h2 className="mt-7 text-center text-[48px] font-medium leading-[1.08] text-white">Customer reviews</h2>
-        <p className="mx-auto mt-7 max-w-[560px] text-center text-[21px] font-medium leading-[1.45] text-white/58">A short and simple subheading can be added here</p>
+        <p className="mx-auto mt-7 max-w-[560px] text-center text-[21px] font-medium leading-[1.45] text-white/58">What our travelers say</p>
         <div className="mt-[58px] grid gap-x-6 gap-y-7 lg:grid-cols-2">
           {displayReviews.map((review, index) => (
             <article key={index} className="grid gap-6 rounded-[10px] border border-white/20 bg-white/[0.075] p-6 shadow-[0_18px_44px_rgba(0,0,0,0.12)] sm:grid-cols-[220px_minmax(0,1fr)]">
@@ -908,9 +909,9 @@ function FaqSection({ dictionary, faqs }: { dictionary: HomeDictionary; faqs: { 
   const [open, setOpen] = useState(0);
   return (
     <section className="mx-auto max-w-[900px] px-6 py-[76px]">
-      <p className="text-center text-[13px] font-bold uppercase tracking-[0.05em] text-[#E2B87F]">Overline text</p>
-      <h2 className="mt-4 text-center text-[42px] font-semibold leading-[1.2]">Frequently asked questions</h2>
-      <p className="mt-3 text-center text-[15px] font-semibold leading-[1.6] text-[#403229]/55">Everything you need to know about this safari before you book.</p>
+      <p className="text-center text-[13px] font-bold uppercase tracking-[0.05em] text-[#E2B87F]">{dictionary.faq.eyebrow}</p>
+      <h2 className="mt-4 text-center text-[42px] font-semibold leading-[1.2]">{dictionary.faq.title}</h2>
+      <p className="mt-3 text-center text-[15px] font-semibold leading-[1.6] text-[#403229]/55">{dictionary.faq.description}</p>
       <div className="mt-8 border-y border-[#403229]/12">
         {faqs.map((faq, index) => (
           <button key={`${faq.question}-${index}`} type="button" onClick={() => setOpen(open === index ? -1 : index)} className="w-full border-b border-[#403229]/12 bg-transparent py-5 text-left last:border-b-0">

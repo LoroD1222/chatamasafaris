@@ -16,6 +16,7 @@ export function SiteFooter({ locale, dictionary }: { locale: Locale; dictionary:
           <Image src="/assets/figma/footer-logo-upload.png" alt={dictionary.brand.logoAlt} fill sizes="246px" className="object-contain" />
         </div>
         <div className="flex items-center justify-center gap-2" aria-label="Social links">
+          {/* TODO: Add real social media URLs */}
           {socialIcons.map((Icon, index) => (
             <a
               key={index}

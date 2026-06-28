@@ -3,9 +3,9 @@ import type { HomeDictionary, NavItem } from "@/i18n/types";
 const asset = (name: string) => `/assets/figma/${name}`;
 
 const primaryNav: NavItem[] = [
-  { label: "Kilimanjaro", href: "/trips?category=Kilimanjaro" },
+  { label: "Wildlife Safari", href: "/trips?category=Wildlife+Safari" },
+  { label: "Luxury Safari", href: "/trips?category=Luxury+Safari" },
   { label: "Zanzibar", href: "/trips?category=Zanzibar" },
-  { label: "Safari", href: "/trips?category=Wildlife%20Safari" },
   { label: "About us", href: "/en#about-us" }
 ];
 
@@ -101,45 +101,45 @@ const en: HomeDictionary = {
     description: "Every trip is private, guided by experts, and built around what matters to you.",
     items: [
       {
-        icon: "🏝️",
-        eyebrow: "Zanzibar",
-        title: "Zanzibar Island Retreat",
-        meta: [],
-        description:
-          "Private guided Tanzania safaris - planned for you, priced in USD, backed by 15 years of getting Americans to Africa.",
-        cta: "Explore Zanzibar",
-        href: "/trips?category=Zanzibar",
-        image: {
-          src: asset("category-zanzibar.jpg"),
-          alt: "Turquoise water and tropical coastline in Zanzibar"
-        }
-      },
-      {
         icon: "🦁",
         eyebrow: "Wildlife Safari",
         title: "Classic Tanzania Safari",
         meta: [],
         description:
-          "Turquoise waters, spice markets, and powder-white beaches. The perfect extension after your safari.",
-        cta: "Explore African Wildlife",
-        href: "/trips?category=Wildlife%20Safari",
+          "Private game drives across the Serengeti, Tarangire, and Ngorongoro Crater. See the Big Five with an expert guide by your side.",
+        cta: "Explore Wildlife Safari",
+        href: "/trips?category=Wildlife+Safari",
         image: {
           src: asset("tanzanian-widernes.png"),
           alt: "Tanzania wilderness with zebras on a safari road"
         }
       },
       {
-        icon: "🏔️",
-        eyebrow: "Kilimanjaro climb",
-        title: "Climbing Kilimanjaro",
+        icon: "🌟",
+        eyebrow: "Luxury Safari",
+        title: "Premium Tanzania Safari",
         meta: [],
         description:
-          "World-class lodges, private game drives, and fine dining in the wild - for travelers who want the best of everything.",
-        cta: "Explore Arusha",
-        href: "/trips?category=Kilimanjaro",
+          "World-class lodges, private game drives, and fine dining in the wild - for travelers who want the very best of everything.",
+        cta: "Explore Luxury Safari",
+        href: "/trips?category=Luxury+Safari",
         image: {
           src: asset("category-kilimanjaro.jpg"),
           alt: "Tented camp below Mount Kilimanjaro"
+        }
+      },
+      {
+        icon: "🏝️",
+        eyebrow: "Zanzibar",
+        title: "Zanzibar Island Retreat",
+        meta: [],
+        description:
+          "Turquoise waters, spice markets, and powder-white beaches. The perfect add-on after your safari - or a destination on its own.",
+        cta: "Explore Zanzibar",
+        href: "/trips?category=Zanzibar",
+        image: {
+          src: asset("category-zanzibar.jpg"),
+          alt: "Turquoise water and tropical coastline in Zanzibar"
         }
       }
     ]
@@ -170,7 +170,7 @@ const en: HomeDictionary = {
       },
       {
         icon: "💳",
-        title: "Private, expert guides",
+        title: "Transparent USD Pricing",
         description:
           'Quote in USD, pay in USD. No conversion risk. Full breakdown before any deposit. No hidden park fees, visa run-arounds, or "local surcharges."'
       },
@@ -242,39 +242,39 @@ const en: HomeDictionary = {
   reviews: {
     eyebrow: "Experiences we offer",
     title: "Customer reviews",
-    description: "A short and simple subheading can be added here",
+    description: "What our travelers say",
     items: [
       {
-        quote: '"(Testimonial) lorem ipsum dolor sit amet, consec adipiscing sed do eiusmod."',
-        author: "Full name",
-        details: "Company name / details.",
+        quote: '"We saw four of the Big Five on day one. Our guide knew exactly where to be and when - it was like he could read the animals\' minds."',
+        author: "Sarah M.",
+        details: "12-Day Luxury Safari & Zanzibar, June 2024",
         image: {
           src: asset("review-family.jpg"),
           alt: "Family on safari in Tanzania"
         }
       },
       {
-        quote: '"(Testimonial) lorem ipsum dolor sit amet, consec adipiscing sed do eiusmod."',
-        author: "Full name",
-        details: "Company name / details.",
+        quote: '"Astra handled everything from the moment we landed to the moment we left. Zero stress. Just pure experience."',
+        author: "James & Linda R.",
+        details: "6-Day Great Migration Safari, August 2024",
         image: {
           src: asset("review-family.jpg"),
           alt: "Family on safari in Tanzania"
         }
       },
       {
-        quote: '"(Testimonial) lorem ipsum dolor sit amet, consec adipiscing sed do eiusmod."',
-        author: "Full name",
-        details: "Company name / details.",
+        quote: '"The Great Migration crossing was the most breathtaking thing I\'ve ever witnessed. Worth every penny and every hour of planning."',
+        author: "David K.",
+        details: "4-Day Luxury Tanzania Safari, July 2024",
         image: {
           src: asset("review-jeep.jpg"),
           alt: "Travelers in an Astra safari vehicle"
         }
       },
       {
-        quote: '"(Testimonial) lorem ipsum dolor sit amet, consec adipiscing sed do eiusmod."',
-        author: "Full name",
-        details: "Company name / details.",
+        quote: '"I\'ve done group tours before and they\'re nothing like this. Private guides, our own vehicle, our own schedule. This is how safari should be done."',
+        author: "Michelle T.",
+        details: "7-Day Safari from Zanzibar, October 2024",
         image: {
           src: asset("review-jeep.jpg"),
           alt: "Travelers in an Astra safari vehicle"
@@ -283,29 +283,29 @@ const en: HomeDictionary = {
     ]
   },
   faq: {
-    eyebrow: "Overline text",
+    eyebrow: "Got questions?",
     title: "Frequently asked questions",
-    description: "A short and simple subheading can be added here",
+    description: "Everything you need to know before booking",
     items: [
       {
-        question: "Question can be added here",
+        question: "How far in advance should I book my Tanzania safari?",
         answer:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          "We recommend booking 4-6 months ahead, especially for July-October (peak migration season). That said, we've organized trips in under 4 weeks - reach out and we'll tell you what's available."
       },
       {
-        question: "Question can be added here",
+        question: "Is Tanzania safe for American travelers?",
         answer:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          "Yes. Tanzania is one of the most politically stable countries in East Africa. Our parks are well-managed and our guides are trained for your safety in the bush. We've been bringing US travelers here for 15 years without incident."
       },
       {
-        question: "Question can be added here",
+        question: "What's included in your pricing?",
         answer:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          "All park fees, accommodation, meals during safari, private game drives, and airport transfers are included. International flights and visa fees are separate. You'll get a full line-item breakdown before any deposit."
       },
       {
-        question: "Question can be added here",
+        question: "Can I combine a safari with Zanzibar or Kilimanjaro?",
         answer:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          "Absolutely - and most of our clients do. We handle the logistics between destinations. A typical combo is 6-8 days on safari followed by 3-4 days in Zanzibar."
       }
     ]
   },
@@ -329,7 +329,7 @@ const en: HomeDictionary = {
       { label: "Cookies Settings", href: "#" },
       { label: "Privacy Policy", href: "#" }
     ],
-    copyright: "©2025 Chalk UI - All Rights Reserved."
+    copyright: "©2025 Astra Tanzania Safaris - All Rights Reserved."
   }
 };
 

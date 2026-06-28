@@ -1,5 +1,27 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { client } from '@/lib/sanity'
+
+export const tripCategoryOrder = ["Wildlife Safari", "Luxury Safari", "Zanzibar"] as const;
+
+export type TripCategory = (typeof tripCategoryOrder)[number];
+
+const activeTripCategories = new Set<string>(tripCategoryOrder);
+
+const categoryReassignmentsByTitle: Record<string, TripCategory> = {
+  "12-Day Luxury Safari & Zanzibar Beach Escape": "Luxury Safari",
+  "4 Days Luxury Tanzania Safari": "Luxury Safari",
+  "5 Day Safari From Zanzibar": "Zanzibar",
+  "6 Days Great Migration Safari from Zanzibar": "Wildlife Safari",
+  "6 Days Semi-Luxury Great Migration Safari": "Wildlife Safari",
+  "7-Day Budget Safari from Zanzibar": "Wildlife Safari",
+};
+
+const legacyCategoryNames: Record<string, TripCategory> = {
+  "Wildlife Safari": "Wildlife Safari",
+  Safari: "Wildlife Safari",
+  "Luxury Safari": "Luxury Safari",
+  Zanzibar: "Zanzibar",
+  "Zanzibar Extension": "Zanzibar",
+};
 
 export type TripCard = {
   slug: string;
@@ -47,18 +69,41 @@ export type TripDetail = {
   category: string;
 }
 
-type SanityTripCard = Omit<TripCard, "price" | "image" | "imageAlt"> & {
+type SanityTripCard = Omit<TripCard, "price" | "image" | "imageAlt" | "tripType"> & {
+  tripType?: string | null;
   image?: string | null;
   imageAlt?: string | null;
 };
 
+function normalizeTripCategory(title: string, category?: string | null): string {
+  const reassignedCategory = categoryReassignmentsByTitle[title.trim()];
+  if (reassignedCategory) return reassignedCategory;
+
+  const trimmedCategory = category?.trim();
+  if (!trimmedCategory) return "Wildlife Safari";
+
+  return legacyCategoryNames[trimmedCategory] ?? trimmedCategory;
+}
+
+export function isActiveTripCategory(category: string) {
+  return activeTripCategories.has(category);
+}
+
 function normalizeTripCard(trip: SanityTripCard): TripCard {
+  const tripType = normalizeTripCategory(trip.title, trip.tripType);
+
   return {
     ...trip,
+    tripType,
     image: trip.image || '/assets/figma/itinerary-1.jpg',
     imageAlt: trip.imageAlt || trip.title,
     price: `from $${trip.priceValue?.toLocaleString('en-US')} USD per person`,
   };
+}
+
+function normalizeTripCards(trips: SanityTripCard[]): TripCard[] {
+  // TODO: Confirm whether to keep, reassign, or remove Kilimanjaro trips
+  return trips.map(normalizeTripCard).filter((trip) => isActiveTripCategory(trip.tripType));
 }
 
 export async function getTripCards(): Promise<TripCard[]> {
@@ -75,12 +120,13 @@ export async function getTripCards(): Promise<TripCard[]> {
       "imageAlt": heroImage.alt
     }
   `)
-  return trips.map(normalizeTripCard)
+  return normalizeTripCards(trips)
 }
 
 export async function getRecentTrips(limit = 6): Promise<TripCard[]> {
+  const fetchLimit = Math.max(limit * 3, 18);
   const trips = await client.fetch<SanityTripCard[]>(`
-    *[_type == "trip"] | order(_createdAt desc) [0...$limit] {
+    *[_type == "trip"] | order(_createdAt desc) [0...$fetchLimit] {
       "slug": slug.current,
       title,
       "duration": duration,
@@ -91,13 +137,13 @@ export async function getRecentTrips(limit = 6): Promise<TripCard[]> {
       "image": heroImage.asset->url,
       "imageAlt": heroImage.alt
     }
-  `, { limit })
-  return trips.map(normalizeTripCard)
+  `, { fetchLimit })
+  return normalizeTripCards(trips).slice(0, limit)
 }
 
 export async function getSimilarTrips(slug: string, category: string, limit = 3): Promise<TripCard[]> {
   const trips = await client.fetch<SanityTripCard[]>(`
-    *[_type == "trip" && slug.current != $slug && category == $category] | order(_createdAt desc) [0...$limit] {
+    *[_type == "trip" && slug.current != $slug] | order(_createdAt desc) [0...80] {
       "slug": slug.current,
       title,
       "duration": duration,
@@ -108,12 +154,15 @@ export async function getSimilarTrips(slug: string, category: string, limit = 3)
       "image": heroImage.asset->url,
       "imageAlt": heroImage.alt
     }
-  `, { slug, category, limit })
-  return trips.map(normalizeTripCard)
+  `, { slug })
+  return trips
+    .map(normalizeTripCard)
+    .filter((trip) => trip.tripType === category && isActiveTripCategory(trip.tripType))
+    .slice(0, limit)
 }
 
 export async function getTripBySlug(slug: string): Promise<TripDetail | null> {
-  const trip = await client.fetch(`
+  const trip = await client.fetch<(Omit<TripDetail, "price"> & { heroImage?: string | null; tripType?: string | null; category?: string | null }) | null>(`
     *[_type == "trip" && slug.current == $slug][0] {
       "slug": slug.current,
       title,
@@ -155,8 +204,11 @@ export async function getTripBySlug(slug: string): Promise<TripDetail | null> {
     }
   `, { slug })
   if (!trip) return null
+  const category = normalizeTripCategory(trip.title, trip.category || trip.tripType);
   return {
     ...trip,
+    tripType: category,
+    category,
     heroImage: trip.heroImage || '/assets/trips/trip-hero-zebras.png',
     price: `from $${trip.priceValue?.toLocaleString('en-US')} USD per person`,
   }

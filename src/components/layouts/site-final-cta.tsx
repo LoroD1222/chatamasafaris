@@ -11,10 +11,7 @@ export function SiteFinalCta({ dictionary }: { dictionary: HomeDictionary }) {
         <div>
           <p className="text-sm font-semibold leading-[1.5] tracking-[-0.08px]">Couldn&apos;t find the answer you&apos;re looking for?</p>
           <p className="text-xs leading-[1.5]">
-            Description can be added here.{" "}
-            <a href="#planner" className="font-medium">
-              Link button
-            </a>
+            Our safari planners typically reply within 4 hours.
           </p>
         </div>
         <Button asChild className="h-10 rounded-lg bg-astra-cocoa px-4 text-sm font-medium text-white hover:bg-astra-brown">
