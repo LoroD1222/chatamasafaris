@@ -8,6 +8,7 @@ import { PlannerDialogButton } from "@/components/planner/planner-dialog";
 import { Button } from "@/components/ui/button";
 import { FaqList } from "@/features/home/faq-list";
 import { LeadPlanner } from "@/features/home/lead-planner";
+import type { TripCard } from "@/features/trips/trip-data";
 import type { Locale } from "@/i18n/config";
 import type { HomeDictionary, Itinerary } from "@/i18n/types";
 import { cn } from "@/utils/cn";
