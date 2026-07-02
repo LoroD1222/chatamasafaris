@@ -6,8 +6,8 @@ import type { HomeDictionary } from "@/i18n/types";
 
 export function SiteFinalCta({ dictionary }: { dictionary: HomeDictionary }) {
   return (
-    <section className="relative bg-[linear-gradient(to_bottom,#fdfaf3_0%,#fdfaf3_32%,#403229_32%,#403229_100%)] px-4 pb-16 pt-8 text-white">
-      <div className="relative z-[100] mx-auto mb-[-34px] flex max-w-[628px] flex-col gap-4 rounded-[10px] bg-astra-gold p-3 text-[#2e3138] shadow-[0_15px_35px_rgba(64,50,41,0.2)] md:flex-row md:items-center md:justify-between">
+    <section className="relative bg-[linear-gradient(to_bottom,#F0E9DE_0%,#F0E9DE_32%,#1C1612_32%,#1C1612_100%)] px-4 pb-16 pt-8 text-white">
+      <div className="relative z-[100] mx-auto mb-[-34px] flex max-w-[628px] flex-col gap-4 rounded-[10px] bg-astra-gold p-3 text-[#2e3138] shadow-[0_15px_35px_rgba(28,22,18,0.2)] md:flex-row md:items-center md:justify-between">
         <div>
           <p className="text-sm font-semibold leading-[1.5] tracking-[-0.08px]">Couldn&apos;t find the answer you&apos;re looking for?</p>
           <p className="text-xs leading-[1.5]">
@@ -21,7 +21,7 @@ export function SiteFinalCta({ dictionary }: { dictionary: HomeDictionary }) {
       <div className="container max-w-[1230px]">
         <div className="relative overflow-hidden rounded-2xl border border-white/30">
           <Image src={dictionary.finalCta.background.src} alt={dictionary.finalCta.background.alt} fill sizes="100vw" className="object-cover" />
-          <div className="absolute inset-0 bg-[linear-gradient(86deg,#403229_3%,rgba(64,50,41,0.21)_99%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(86deg,#1C1612_3%,rgba(28,22,18,0.21)_99%)]" />
           <div className="relative grid min-h-[560px] gap-10 px-6 py-16 md:px-16 lg:grid-cols-[minmax(0,640px)] lg:items-center lg:px-[97px]">
             <div>
               <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">{dictionary.finalCta.eyebrow}</p>

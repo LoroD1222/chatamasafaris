@@ -5,8 +5,8 @@ import type { ReactNode } from "react";
 import { getTextDirection, isLocale, locales, type Locale } from "@/i18n/config";
 
 export const metadata: Metadata = {
-  title: "Astra Tanzania Safaris | Private Tanzania Safaris for USA Travelers",
-  description: "Plan a private Tanzania safari with Astra: expert guides, USD pricing, vetted camps, migration timing, and planner support."
+  title: "Catama Safaris | Private Tanzania Safaris for USA Travelers",
+  description: "Plan a private Tanzania safari with Catama Safaris: expert guides, USD pricing, vetted camps, migration timing, and planner support."
 };
 
 export function generateStaticParams() {

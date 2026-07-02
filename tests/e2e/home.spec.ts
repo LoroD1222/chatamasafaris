@@ -19,7 +19,7 @@ test("renders the English homepage on desktop", async ({ page }) => {
   await gotoApp(page, "/en", { waitForPlanner: true });
 
   await expect(page.locator("html")).toHaveAttribute("dir", "ltr");
-  await expect(page.getByRole("banner")).toContainText("Astra Tanzania Safaris");
+  await expect(page.getByRole("banner")).toContainText("Catama Safaris");
   await expect(page.getByRole("heading", { name: "Talk to a safari planner" }).first()).toBeVisible();
   await expect(page.getByPlaceholder("Your name").first()).toBeVisible();
   await expect(page.getByRole("heading", { name: "Choose your Tanzania Experience Category" })).toBeVisible();

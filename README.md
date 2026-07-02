@@ -1,6 +1,6 @@
-# Astra
+# Catama Safaris
 
-Next.js homepage implementation for the Seba Safari `home-astra` Figma canvas.
+Next.js homepage implementation for the Catama Safaris Figma canvas.
 
 ## Scripts
 

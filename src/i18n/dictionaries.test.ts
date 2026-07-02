@@ -6,7 +6,7 @@ describe("dictionaries", () => {
   it("contains the Figma homepage sections for English", () => {
     const en = getDictionary("en");
 
-    expect(en.brand.name).toBe("Astra Tanzania Safaris");
+    expect(en.brand.name).toBe("Catama Safaris");
     expect(en.nav).toHaveLength(4);
     expect(en.planner.fields).toHaveLength(4);
     expect(en.experienceCategories.items).toHaveLength(3);

@@ -5,14 +5,14 @@
 @tailwind utilities;
 
 :root {
-  --background: 40 71% 97%;
-  --foreground: 26 54% 16%;
+  --background: 37 37% 91%;
+  --foreground: 24 22% 9%;
   --card: 0 0% 100%;
   --card-foreground: 26 54% 16%;
   --popover: 0 0% 100%;
   --popover-foreground: 26 54% 16%;
-  --primary: 34 45% 20%;
-  --primary-foreground: 40 71% 97%;
+  --primary: 24 22% 9%;
+  --primary-foreground: 37 37% 91%;
   --secondary: 33 61% 89%;
   --secondary-foreground: 34 45% 20%;
   --muted: 39 38% 91%;
@@ -23,10 +23,10 @@
   --input: 34 25% 82%;
   --ring: 34 61% 69%;
   --radius: 0.625rem;
-  --astra-primary-amber: #E2B87F;
-  --astra-primary-amber-hover: #d6a86e;
-  --astra-cream-panel: #fdf6ec;
-  --astra-dark-espresso: #2c1a0e;
+  --astra-primary-amber: #E07B39;
+  --astra-primary-amber-hover: #C96A2A;
+  --astra-cream-panel: #F0E9DE;
+  --astra-dark-espresso: #1C1612;
 }
 
 * {
@@ -39,8 +39,8 @@ html {
 
 body {
   min-height: 100vh;
-  background: #fdfaf3;
-  color: #403229;
+  background: #F0E9DE;
+  color: #1C1612;
   font-family: "Satoshi", Arial, sans-serif;
   font-weight: 600;
 }

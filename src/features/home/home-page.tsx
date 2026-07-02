@@ -42,12 +42,12 @@ function HeroSection({ dictionary }: { dictionary: HomeDictionary }) {
     <section className="relative overflow-hidden bg-astra-cocoa text-white md:min-h-[543px]">
       <div className="absolute inset-0 hidden md:block">
         <Image src={dictionary.hero.image.src} alt={dictionary.hero.image.alt} fill priority sizes="100vw" className="object-cover" />
-        <div className="absolute inset-0 bg-[linear-gradient(69deg,#403229_27%,rgba(64,50,41,0)_69%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(69deg,#1C1612_27%,rgba(28,22,18,0)_69%)]" />
       </div>
       <div className="container relative grid max-w-[1112px] gap-8 md:min-h-[543px] md:items-center md:py-14 lg:grid-cols-[627px_365px] lg:gap-[75px]">
         <div className="relative -mx-4 overflow-hidden px-4 py-14 md:mx-0 md:max-w-[640px] md:overflow-visible md:px-0 md:py-0">
           <Image src={dictionary.hero.image.src} alt={dictionary.hero.image.alt} fill priority sizes="100vw" className="object-cover md:hidden" />
-          <div className="absolute inset-0 bg-[linear-gradient(69deg,#403229_24%,rgba(64,50,41,0.3)_100%)] md:hidden" />
+          <div className="absolute inset-0 bg-[linear-gradient(69deg,#1C1612_24%,rgba(28,22,18,0.3)_100%)] md:hidden" />
           <div className="relative">
             <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">
               {dictionary.hero.eyebrow}
@@ -96,7 +96,7 @@ function ExperienceCategories({ locale, dictionary }: { locale: Locale; dictiona
               key={item.title}
               href={localizedHref(locale, item.href)}
               className={cn(
-                "group flex h-full min-h-[520px] flex-col rounded-[10px] border border-[#795b35]/20 bg-white p-2 shadow-[0_14px_40px_rgba(64,50,41,0.06)] outline-none transition hover:-translate-y-0.5 hover:shadow-[0_18px_50px_rgba(64,50,41,0.1)] focus-visible:ring-2 focus-visible:ring-astra-gold focus-visible:ring-offset-2",
+                "group flex h-full min-h-[520px] flex-col rounded-[10px] border border-[#1C1612]/20 bg-white p-2 shadow-[0_14px_40px_rgba(28,22,18,0.06)] outline-none transition hover:-translate-y-0.5 hover:shadow-[0_18px_50px_rgba(28,22,18,0.1)] focus-visible:ring-2 focus-visible:ring-astra-gold focus-visible:ring-offset-2",
                 index === 1 && "md:min-h-[520px]"
               )}
             >
@@ -229,7 +229,7 @@ function ItinerariesSection({ locale, dictionary, recentTrips }: { locale: Local
           <div className="grid gap-[18px] md:grid-cols-2 lg:grid-cols-3">
             {recentTrips && recentTrips.length > 0
               ? recentTrips.map((trip, index) => (
-                  <a key={`${trip.slug}-${index}`} href={`/trip/${trip.slug}`} className="group relative block h-[401px] overflow-hidden rounded-lg bg-astra-cocoa shadow-[0_18px_55px_rgba(64,50,41,0.15)] outline-none transition focus-visible:ring-2 focus-visible:ring-astra-gold focus-visible:ring-offset-2" aria-label={`See itinerary for ${trip.title}`}>
+                  <a key={`${trip.slug}-${index}`} href={`/trip/${trip.slug}`} className="group relative block h-[401px] overflow-hidden rounded-lg bg-astra-cocoa shadow-[0_18px_55px_rgba(28,22,18,0.15)] outline-none transition focus-visible:ring-2 focus-visible:ring-astra-gold focus-visible:ring-offset-2" aria-label={`See itinerary for ${trip.title}`}>
                     <img src={trip.image} alt={trip.imageAlt} className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" />
                     <div className="absolute right-4 top-4 rounded-[5px] border border-white/45 bg-astra-gold/60 px-3 py-1 text-[11px] font-bold leading-[1.51] text-astra-cocoa backdrop-blur-md">from ${trip.priceValue?.toLocaleString('en-US')} USD</div>
                     <div className="absolute inset-x-0 bottom-0 min-h-[128px] rounded-b-lg bg-[#654d38]/40 px-5 pb-[25px] pt-5 text-white backdrop-blur-sm">
@@ -264,7 +264,7 @@ function ItineraryCard({ locale, item }: { locale: Locale; item: Itinerary }) {
   return (
     <Link
       href={localizedSharedTripHref(locale)}
-      className="group relative block h-[401px] overflow-hidden rounded-lg bg-astra-cocoa shadow-[0_18px_55px_rgba(64,50,41,0.15)] outline-none transition focus-visible:ring-2 focus-visible:ring-astra-gold focus-visible:ring-offset-2"
+      className="group relative block h-[401px] overflow-hidden rounded-lg bg-astra-cocoa shadow-[0_18px_55px_rgba(28,22,18,0.15)] outline-none transition focus-visible:ring-2 focus-visible:ring-astra-gold focus-visible:ring-offset-2"
       aria-label={`See itinerary for ${item.title}`}
     >
       <Image src={item.image.src} alt={item.image.alt} fill sizes="(min-width: 1024px) 356px, (min-width: 768px) 50vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
@@ -352,9 +352,9 @@ function ReviewsSection({ dictionary }: { dictionary: HomeDictionary }) {
               </div>
               <div className="flex flex-col justify-between gap-6">
                 <div>
-                  <div className="flex gap-2 text-[#E2B87F]" aria-label="5 star rating">
+                  <div className="flex gap-2 text-[#E07B39]" aria-label="5 star rating">
                     {Array.from({ length: 5 }).map((_, starIndex) => (
-                      <Star key={starIndex} className="size-4 fill-[#E2B87F] text-[#E2B87F]" aria-hidden="true" />
+                      <Star key={starIndex} className="size-4 fill-[#E07B39] text-[#E07B39]" aria-hidden="true" />
                     ))}
                   </div>
                   <p className="mt-6 text-lg font-medium leading-[1.5] tracking-[-0.26px] text-[#2e3138]">{review.quote}</p>

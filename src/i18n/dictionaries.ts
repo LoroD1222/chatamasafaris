@@ -57,9 +57,9 @@ const itinerarySlugs = [
 
 const en: HomeDictionary = {
   brand: {
-    name: "Astra Tanzania Safaris",
+    name: "Catama Safaris",
     tagline: "Safari operator for USA travelers",
-    logoAlt: "Astra Tanzania Safaris"
+    logoAlt: "Catama Safaris"
   },
   topBar: {
     label: "Safari Operator for USA Travelers",
@@ -92,7 +92,7 @@ const en: HomeDictionary = {
     description: "We reply within 4 hours - by email or WhatsApp, your choice.",
     submit: "Talk to Safari Planner",
     success: "Thanks. A safari planner will reply within 4 hours.",
-    note: "Free, no commitment. Your details stay with Astra Tanzania Safaris.",
+    note: "Free, no commitment. Your details stay with Catama Safaris.",
     fields: plannerFields
   },
   experienceCategories: {
@@ -154,7 +154,7 @@ const en: HomeDictionary = {
     note: "Not sure what is right for you? Talk to a safari planner - it's free."
   },
   why: {
-    eyebrow: "Why Astra Tanzania",
+    eyebrow: "Why Catama Safaris",
     titleLead: "Built for travelers",
     titleHighlight: "who expect more",
     plannerLabel: "Talk to a safari planner",
@@ -227,7 +227,7 @@ const en: HomeDictionary = {
     titleHighlight: "Start planning.",
     paragraphs: [
       "Tanzania is one of those trips people talk about for the rest of their lives - but only if you do it right. The Serengeti, Zanzibar, Kilimanjaro. It's all here, and it's all within reach. The hard part isn't getting to Tanzania. It's knowing who to trust to get you there.",
-      "That's where we come in. We're Astra Tanzania - a small team based in Arusha with one job: building Tanzania trips that actually deliver what the photos promise. Not a call center. Not a booking engine. Real people who live here, know the parks, and answer your WhatsApp.",
+      "That's where we come in. We're Catama Safaris - a small team based in Arusha with one job: building Tanzania trips that actually deliver what the photos promise. Not a call center. Not a booking engine. Real people who live here, know the parks, and answer your WhatsApp.",
       "Tell us your dates, how many people, and what matters most to you. We'll handle everything else - from which park to visit in your month, to what's included in every dollar you spend. No hidden fees. No vague itineraries. No surprises when you land.",
       "Immerse yourself in local culture, meet the Maasai, and experience Tanzania's breathtaking landscapes.",
       "With a focus on sustainable travel, we create unforgettable adventures while supporting local communities."
@@ -254,7 +254,7 @@ const en: HomeDictionary = {
         }
       },
       {
-        quote: '"Astra handled everything from the moment we landed to the moment we left. Zero stress. Just pure experience."',
+        quote: '"Catama Safaris handled everything from the moment we landed to the moment we left. Zero stress. Just pure experience."',
         author: "James & Linda R.",
         details: "6-Day Great Migration Safari, August 2024",
         image: {
@@ -268,7 +268,7 @@ const en: HomeDictionary = {
         details: "4-Day Luxury Tanzania Safari, July 2024",
         image: {
           src: asset("review-jeep.jpg"),
-          alt: "Travelers in an Astra safari vehicle"
+          alt: "Travelers in a Catama Safaris vehicle"
         }
       },
       {
@@ -277,7 +277,7 @@ const en: HomeDictionary = {
         details: "7-Day Safari from Zanzibar, October 2024",
         image: {
           src: asset("review-jeep.jpg"),
-          alt: "Travelers in an Astra safari vehicle"
+          alt: "Travelers in a Catama Safaris vehicle"
         }
       }
     ]
@@ -329,7 +329,7 @@ const en: HomeDictionary = {
       { label: "Cookies Settings", href: "#" },
       { label: "Privacy Policy", href: "#" }
     ],
-    copyright: "©2025 Astra Tanzania Safaris - All Rights Reserved."
+    copyright: "©2025 Catama Safaris - All Rights Reserved."
   }
 };
 

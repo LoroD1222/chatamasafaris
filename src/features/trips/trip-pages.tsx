@@ -54,7 +54,7 @@ const navLinks = [
 
 const pageContainer = "mx-auto max-w-[1200px] px-6";
 const amberButton =
-  "rounded-[10px] bg-[#E2B87F] text-[#403229] shadow-none transition hover:bg-[#d8aa6c]";
+  "rounded-[10px] bg-[#E07B39] text-[#1C1612] shadow-none transition hover:bg-[#C96A2A]";
 
 const itineraryAccommodationSlides = [
   { src: "/assets/trips/itinerary-ahadi-lodge-design.png", alt: "Ahadi Lodge swimming pool and stone lodge exterior" },
@@ -108,17 +108,17 @@ export function TripsListPage({ dictionary, initialTrips }: TripsListPageProps) 
   }
 
   return (
-    <div className="astra-page-enter min-h-screen overflow-x-clip bg-[#fdfaf3] text-[#403229]">
+    <div className="astra-page-enter min-h-screen overflow-x-clip bg-[#F0E9DE] text-[#1C1612]">
       <TripHeader dictionary={dictionary} />
       <main>
         <section className={`${pageContainer} pb-[116px] pt-[64px] md:pt-[62px]`}>
           <div className="text-center">
             <p className="text-[13px] font-semibold leading-[1.6]">
-              <Link href="/trips" className="text-[#6d5b4c]/75">Tanzania</Link>
-              <span className="mx-3 text-[#6d5b4c]/45">&gt;</span>
-              <span className="font-bold text-[#403229]">Safari</span>
+              <Link href="/trips" className="text-[#1C1612]/75">Tanzania</Link>
+              <span className="mx-3 text-[#1C1612]/45">&gt;</span>
+              <span className="font-bold text-[#1C1612]">Safari</span>
             </p>
-            <h1 className="mt-8 text-[34px] font-semibold leading-[1.15] tracking-[-0.01em] text-[#403229] md:text-[43px]">
+            <h1 className="mt-8 text-[34px] font-semibold leading-[1.15] tracking-[-0.01em] text-[#1C1612] md:text-[43px]">
               Tanzania safari in 2026 - 2027
             </h1>
           </div>
@@ -134,19 +134,19 @@ export function TripsListPage({ dictionary, initialTrips }: TripsListPageProps) 
             onResetFilters={resetFilters}
           />
           <div className="mt-[34px] text-center">
-            <p className="inline-flex rounded-full border border-[#E2B87F] bg-[#fff8e8] px-5 py-2 text-[12px] font-bold leading-none text-[#E2B87F]">
+            <p className="inline-flex rounded-full border border-[#E07B39] bg-[#F0E9DE] px-5 py-2 text-[12px] font-bold leading-none text-[#E07B39]">
               ? The itineraries shown are examples - your journey will be personally tailored to you.
             </p>
           </div>
           {filteredCards.length > 0 ? (
             <TripCardGrid cards={filteredCards} className="mt-[57px]" />
           ) : (
-            <div className="mx-auto mt-[57px] max-w-[680px] rounded-[8px] border border-[#403229]/12 bg-white p-8 text-center shadow-[0_14px_34px_rgba(64,50,41,0.08)]">
+            <div className="mx-auto mt-[57px] max-w-[680px] rounded-[8px] border border-[#1C1612]/12 bg-white p-8 text-center shadow-[0_14px_34px_rgba(28,22,18,0.08)]">
               <p className="text-[18px] font-bold leading-[1.35]">No trips match those filters.</p>
-              <button type="button" onClick={resetFilters} className="mt-4 text-[14px] font-bold text-[#E2B87F] underline underline-offset-4">Reset filters</button>
+              <button type="button" onClick={resetFilters} className="mt-4 text-[14px] font-bold text-[#E07B39] underline underline-offset-4">Reset filters</button>
             </div>
           )}
-          <p className="mx-auto mt-[88px] max-w-[960px] text-center text-[15px] font-semibold leading-[1.6] text-[#403229]/70">
+          <p className="mx-auto mt-[88px] max-w-[960px] text-center text-[15px] font-semibold leading-[1.6] text-[#1C1612]/70">
             Private guided Tanzania safaris - planned for you, priced in USD, backed by 15 years of getting Americans to Africa.
           </p>
         </section>
@@ -174,20 +174,20 @@ export function TripDetailPage({ dictionary, trip, similarTrips = [] }: TripDeta
     : dictionary.faq.items;
 
   const seasons = trip.bestTimeSeasons && trip.bestTimeSeasons.length > 0
-    ? trip.bestTimeSeasons.map((s, i) => ({ title: s.period, dot: ["#f2e8dc","#ead9c3","#e2b87f"][i] || "#e2b87f", description: s.highlight }))
-    : [{ title: "Jul - Oct", dot: "#f2e8dc", description: "Peak migration. River crossings most frequent. Best overall wildlife." }];
+    ? trip.bestTimeSeasons.map((s, i) => ({ title: s.period, dot: ["#F0E9DE","#F0E9DE","#E07B39"][i] || "#E07B39", description: s.highlight }))
+    : [{ title: "Jul - Oct", dot: "#F0E9DE", description: "Peak migration. River crossings most frequent. Best overall wildlife." }];
 
   const priceTiers = trip.pricingTiers && trip.pricingTiers.length > 0
     ? trip.pricingTiers.map((t, i) => ({ id: `rate-${i}`, people: t.label, price: `$${t.pricePerPerson?.toLocaleString('en-US')}` }))
     : Array.from({ length: 6 }, (_, i) => ({ id: `rate-${i}`, people: "1 pax", price: "$2,890" }));
 
   return (
-    <div className="astra-page-enter min-h-screen overflow-x-clip bg-[#fdfaf3] text-[#403229]">
+    <div className="astra-page-enter min-h-screen overflow-x-clip bg-[#F0E9DE] text-[#1C1612]">
       <TripHeader dictionary={dictionary} />
       <main>
         <section className="mx-auto max-w-[1200px] px-6 pb-[76px] pt-[65px]">
           <TripBreadcrumb />
-          <h1 className="text-[31px] font-semibold leading-[1.14] tracking-[-0.01em] text-[#403229] md:text-[37px]">
+          <h1 className="text-[31px] font-semibold leading-[1.14] tracking-[-0.01em] text-[#1C1612] md:text-[37px]">
             {trip.title}
           </h1>
           <div className="mt-[26px] grid items-start gap-7 lg:grid-cols-[708px_448px]">
@@ -213,13 +213,13 @@ export function TripDetailPage({ dictionary, trip, similarTrips = [] }: TripDeta
             <div className="relative overflow-hidden rounded-[10px]">
               <Image src="/assets/trips/trip-map.png" alt="Tanzania safari map" width={879} height={705} className="h-auto w-full" />
             </div>
-            <aside className="relative z-[100] self-center rounded-[10px] border border-[rgba(200,134,10,0.25)] bg-white p-8 shadow-[0_20px_45px_rgba(64,50,41,0.12)] lg:-ml-[200px] lg:w-[calc(100%+200px)]">
-              <h2 className="border-b border-[#403229]/18 pb-5 text-[24px] font-semibold leading-[1.18]">Is this tour for me?</h2>
-              <div className="border-b border-[#403229]/13 py-5">
+            <aside className="relative z-[100] self-center rounded-[10px] border border-[rgba(224,123,57,0.25)] bg-white p-8 shadow-[0_20px_45px_rgba(28,22,18,0.12)] lg:-ml-[200px] lg:w-[calc(100%+200px)]">
+              <h2 className="border-b border-[#1C1612]/18 pb-5 text-[24px] font-semibold leading-[1.18]">Is this tour for me?</h2>
+              <div className="border-b border-[#1C1612]/13 py-5">
                 <p className="text-[14px] font-bold leading-[1.6]">Age Requirements: {trip.minAge ? `${trip.minAge}+` : '3+'}</p>
                 <p className="mt-2 text-[14px] font-bold leading-[1.6]">Trip Type: {trip.tripType || 'Private Group'}</p>
               </div>
-              <p className="border-b border-[#403229]/13 py-5 text-[13px] font-semibold leading-[1.65] text-[#403229]/70">
+              <p className="border-b border-[#1C1612]/13 py-5 text-[13px] font-semibold leading-[1.65] text-[#1C1612]/70">
                 {trip.tourForMeDescription || "Travel on your own schedule with full flexibility in dates, pace, and itinerary."}
               </p>
               <PlannerDialogButton planner={dictionary.planner} className={`mt-6 h-[46px] w-full px-4 text-[14px] font-bold ${amberButton}`}>
@@ -245,14 +245,14 @@ export function TripDetailPage({ dictionary, trip, similarTrips = [] }: TripDeta
 
 function TripHeader({ dictionary }: TripPageProps) {
   return (
-    <header className="bg-[#fdfaf3] text-[#403229]">
-      <div className="bg-[#E2B87F]">
+    <header className="bg-[#F0E9DE] text-[#1C1612]">
+      <div className="bg-[#E07B39]">
         <div className="mx-auto flex h-[37px] max-w-[1150px] items-center justify-between gap-3 px-5 text-[12px] font-bold leading-[1.6] sm:text-[13px]">
-          <p className="flex min-w-0 items-center gap-2 uppercase tracking-[0.08em] text-[#403229]/40 sm:pl-4">
+          <p className="flex min-w-0 items-center gap-2 uppercase tracking-[0.08em] text-[#1C1612]/40 sm:pl-4">
             <Image src="/assets/figma/nav-bar-star.png" alt="" width={18} height={18} className="size-[15px] shrink-0 object-contain sm:size-[18px]" aria-hidden="true" />
             <span className="truncate">Safari Operator for USA Travelers</span>
           </p>
-          <div className="ms-auto flex min-w-0 shrink-0 items-center gap-7 text-[#403229]/65">
+          <div className="ms-auto flex min-w-0 shrink-0 items-center gap-7 text-[#1C1612]/65">
             <a href={`tel:${dictionary.topBar.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-1 underline underline-offset-2">
               <Phone className="size-3.5" aria-hidden="true" />
               {dictionary.topBar.phone}
@@ -264,14 +264,14 @@ function TripHeader({ dictionary }: TripPageProps) {
           </div>
         </div>
       </div>
-      <div className="border-b border-[#403229]/10 bg-[#fdfaf3]">
+      <div className="border-b border-[#1C1612]/10 bg-[#F0E9DE]">
         <div className="mx-auto flex h-[100px] max-w-[1150px] items-center justify-between gap-8 px-5">
-          <Link href="/en" className="relative h-[92px] w-[219px] shrink-0" aria-label="Astra Tanzania Safaris">
-            <Image src="/assets/figma/logo-header.png" alt="Astra Tanzania Safaris" fill priority sizes="219px" className="object-contain" />
+          <Link href="/en" className="relative h-[92px] w-[219px] shrink-0" aria-label="Catama Safaris">
+            <Image src="/assets/figma/logo-header.png" alt="Catama Safaris" fill priority sizes="219px" className="object-contain" />
           </Link>
           <nav className="hidden items-center gap-8 text-[15px] font-semibold leading-[1.6] md:flex" aria-label="Primary">
             {navLinks.map((link) => (
-              <Link key={link.label} href={link.href} className="transition hover:text-[#E2B87F]">{link.label}</Link>
+              <Link key={link.label} href={link.href} className="transition hover:text-[#E07B39]">{link.label}</Link>
             ))}
           </nav>
           <PlannerDialogButton planner={dictionary.planner} className={`hidden h-[54px] px-[21px] text-[16px] font-bold md:inline-flex ${amberButton}`}>
@@ -288,32 +288,32 @@ function TripHeader({ dictionary }: TripPageProps) {
 
 function TripBreadcrumb() {
   return (
-    <nav className="mb-[47px] text-[13px] font-semibold leading-none text-[#403229]/55" aria-label="Breadcrumb">
-      <Link href="/trips" className="transition hover:text-[#403229]">Tanzania</Link>
-      <span className="mx-2 text-[#403229]/35">&gt;</span>
-      <Link href="/trips" className="transition hover:text-[#403229]">Safari</Link>
-      <span className="mx-2 text-[#403229]/35">&gt;</span>
-      <span className="text-[#403229]/80">Great Migration</span>
+    <nav className="mb-[47px] text-[13px] font-semibold leading-none text-[#1C1612]/55" aria-label="Breadcrumb">
+      <Link href="/trips" className="transition hover:text-[#1C1612]">Tanzania</Link>
+      <span className="mx-2 text-[#1C1612]/35">&gt;</span>
+      <Link href="/trips" className="transition hover:text-[#1C1612]">Safari</Link>
+      <span className="mx-2 text-[#1C1612]/35">&gt;</span>
+      <span className="text-[#1C1612]/80">Great Migration</span>
     </nav>
   );
 }
 
 function TripFilterBar({ tripTypes, selectedTypes, minPrice, maxTripPrice, maxPrice, resultCount, onToggleType, onPriceChange, onResetFilters }: { tripTypes: string[]; selectedTypes: string[]; minPrice: number; maxTripPrice: number; maxPrice: number; resultCount: number; onToggleType: (type: string) => void; onPriceChange: (price: number) => void; onResetFilters: () => void; }) {
   return (
-    <div className="mx-auto mt-[72px] grid max-w-[766px] overflow-hidden rounded-[2px] border border-[#403229]/12 bg-white md:grid-cols-[1fr_1.15fr]">
-      <div className="border-b border-[#403229]/12 px-5 py-4 md:border-b-0 md:border-r">
+    <div className="mx-auto mt-[72px] grid max-w-[766px] overflow-hidden rounded-[2px] border border-[#1C1612]/12 bg-white md:grid-cols-[1fr_1.15fr]">
+      <div className="border-b border-[#1C1612]/12 px-5 py-4 md:border-b-0 md:border-r">
         <div className="flex items-center justify-between gap-3">
           <p className="text-[12px] font-bold leading-[1.4]">Trip type:</p>
           {selectedTypes.length > 0 ? (
-            <button type="button" onClick={onResetFilters} className="text-[11px] font-bold leading-none text-[#E2B87F] underline underline-offset-2">Clear</button>
+            <button type="button" onClick={onResetFilters} className="text-[11px] font-bold leading-none text-[#E07B39] underline underline-offset-2">Clear</button>
           ) : null}
         </div>
         <div className="mt-4 flex flex-wrap gap-2.5">
           {tripTypes.map((type) => {
             const selected = selectedTypes.includes(type);
             return (
-              <button key={type} type="button" onClick={() => onToggleType(type)} className={`inline-flex h-[28px] items-center gap-2 rounded-full border px-3 text-[11px] font-bold leading-none transition ${selected ? "border-[#E2B87F] bg-[#fff4dc] text-[#403229]" : "border-[#403229]/12 bg-[#fdfaf3] text-[#403229]/62 hover:border-[#E2B87F]"}`} aria-pressed={selected}>
-                <span className={`grid size-[14px] place-items-center rounded-full border ${selected ? "border-[#E2B87F] bg-[#E2B87F] text-white" : "border-[#403229]/20"}`}>
+              <button key={type} type="button" onClick={() => onToggleType(type)} className={`inline-flex h-[28px] items-center gap-2 rounded-full border px-3 text-[11px] font-bold leading-none transition ${selected ? "border-[#E07B39] bg-[#F0E9DE] text-[#1C1612]" : "border-[#1C1612]/12 bg-[#F0E9DE] text-[#1C1612]/62 hover:border-[#E07B39]"}`} aria-pressed={selected}>
+                <span className={`grid size-[14px] place-items-center rounded-full border ${selected ? "border-[#E07B39] bg-[#E07B39] text-white" : "border-[#1C1612]/20"}`}>
                   {selected ? <Check className="size-2.5" aria-hidden="true" /> : null}
                 </span>
                 {type}
@@ -325,16 +325,16 @@ function TripFilterBar({ tripTypes, selectedTypes, minPrice, maxTripPrice, maxPr
       <div className="px-5 py-4">
         <div className="flex items-center justify-between gap-3">
           <p className="text-[12px] font-bold leading-[1.4]">Filter by price:</p>
-          <p className="text-[11px] font-bold leading-none text-[#403229]/58">{resultCount} trips</p>
+          <p className="text-[11px] font-bold leading-none text-[#1C1612]/58">{resultCount} trips</p>
         </div>
         <div className="mt-4">
           <div className="relative h-[14px]">
-            <div className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 bg-[#E2B87F]/55" />
-            <div className="absolute left-0 top-1/2 size-[14px] -translate-y-1/2 rounded-full bg-[#E2B87F]" />
+            <div className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 bg-[#E07B39]/55" />
+            <div className="absolute left-0 top-1/2 size-[14px] -translate-y-1/2 rounded-full bg-[#E07B39]" />
             <input type="range" min={minPrice} max={maxTripPrice} step={100} value={maxPrice} onChange={(event) => onPriceChange(Number(event.currentTarget.value))} className="absolute inset-x-0 top-1/2 h-[18px] -translate-y-1/2 cursor-pointer opacity-0" aria-label="Maximum trip price" />
-            <div className="absolute top-1/2 size-[14px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#E2B87F]" style={{ left: `${((maxPrice - minPrice) / (maxTripPrice - minPrice)) * 100}%` }} />
+            <div className="absolute top-1/2 size-[14px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#E07B39]" style={{ left: `${((maxPrice - minPrice) / (maxTripPrice - minPrice)) * 100}%` }} />
           </div>
-          <div className="mt-2 flex justify-between text-[12px] font-semibold text-[#E2B87F]">
+          <div className="mt-2 flex justify-between text-[12px] font-semibold text-[#E07B39]">
             <span>${minPrice.toLocaleString("en-US")}</span>
             <span>${maxPrice.toLocaleString("en-US")}</span>
           </div>
@@ -349,15 +349,15 @@ function TripCardGrid({ className = "", limit, cards = tripCards }: { className?
   return (
     <div className={`mx-auto grid max-w-[1111px] gap-x-[18px] gap-y-[14px] md:grid-cols-2 lg:grid-cols-3 ${className}`}>
       {visibleCards.map((trip, index) => (
-        <Link key={`${trip.slug}-${index}`} href={`/trip/${trip.slug}`} className="group relative h-[401px] overflow-hidden rounded-[8px] bg-[#403229] text-white outline-none transition focus-visible:ring-2 focus-visible:ring-[#E2B87F] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fdfaf3]">
+        <Link key={`${trip.slug}-${index}`} href={`/trip/${trip.slug}`} className="group relative h-[401px] overflow-hidden rounded-[8px] bg-[#1C1612] text-white outline-none transition focus-visible:ring-2 focus-visible:ring-[#E07B39] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F0E9DE]">
           <Image src={trip.image} alt={trip.imageAlt} fill sizes="(min-width: 1024px) 356px, (min-width: 768px) 50vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
-          <div className="absolute inset-x-0 bottom-0 h-[115px] rounded-b-[8px] bg-[#654d38]/60 backdrop-blur-[2.5px]" />
+          <div className="absolute inset-x-0 bottom-0 h-[115px] rounded-b-[8px] bg-[#1C1612]/60 backdrop-blur-[2.5px]" />
           <div className="absolute inset-x-0 bottom-[113px] h-[3px] bg-white/15" />
-          <div className="absolute right-[18px] top-[18px] rounded-[5px] border border-white/45 bg-[#E2B87F] px-3 py-1 text-[11px] font-bold leading-[1.5] text-white backdrop-blur">from ${trip.priceValue?.toLocaleString("en-US")} USD</div>
+          <div className="absolute right-[18px] top-[18px] rounded-[5px] border border-white/45 bg-[#E07B39] px-3 py-1 text-[11px] font-bold leading-[1.5] text-white backdrop-blur">from ${trip.priceValue?.toLocaleString("en-US")} USD</div>
           <div className="absolute bottom-[25px] left-[19px] right-[19px]">
             <h2 className="text-[14px] font-bold leading-[1.6]">{trip.title} - <span className="font-semibold">{trip.duration}</span></h2>
             <p className="text-[14px] font-semibold leading-[1.51] text-white/85">{trip.route} - {trip.season}</p>
-            <span className="mt-3 inline-flex h-[27px] items-center gap-1 rounded-full bg-[#E2B87F] px-3 text-[14px] font-semibold leading-none text-white">See Itinerary<ArrowRight className="size-3.5" aria-hidden="true" /></span>
+            <span className="mt-3 inline-flex h-[27px] items-center gap-1 rounded-full bg-[#E07B39] px-3 text-[14px] font-semibold leading-none text-white">See Itinerary<ArrowRight className="size-3.5" aria-hidden="true" /></span>
           </div>
         </Link>
       ))}
@@ -388,18 +388,18 @@ function HeroGallery({ images, className = "" }: { images: { src: string; alt: s
 
   return (
     <div className={className}>
-      <div className="relative h-[420px] overflow-hidden rounded-[2px] bg-[#403229] lg:h-[574px]">
+      <div className="relative h-[420px] overflow-hidden rounded-[2px] bg-[#1C1612] lg:h-[574px]">
         <button type="button" onClick={() => setIsLightboxOpen(true)} className="absolute inset-0 cursor-zoom-in outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--astra-primary-amber)]" aria-label={`Open image gallery: ${currentImage.alt}`}>
           <Image src={currentImage.src} alt={currentImage.alt} fill priority sizes="707px" className="object-cover transition duration-300" />
         </button>
         <div className="absolute left-[17px] top-[17px] rounded-full bg-[var(--astra-primary-amber)] px-[15px] py-[9px] text-[14px] font-bold leading-none text-white shadow-[0_10px_24px_rgba(0,0,0,0.18)]">Featured</div>
-        <button type="button" onClick={showPreviousImage} className="absolute left-4 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-full bg-white/92 text-[#403229] shadow-[0_10px_24px_rgba(0,0,0,0.2)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]" aria-label="Show previous safari image"><ChevronLeft className="size-5" aria-hidden="true" /></button>
-        <button type="button" onClick={showNextImage} className="absolute right-4 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-full bg-white/92 text-[#403229] shadow-[0_10px_24px_rgba(0,0,0,0.2)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]" aria-label="Show next safari image"><ChevronRight className="size-5" aria-hidden="true" /></button>
+        <button type="button" onClick={showPreviousImage} className="absolute left-4 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-full bg-white/92 text-[#1C1612] shadow-[0_10px_24px_rgba(0,0,0,0.2)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]" aria-label="Show previous safari image"><ChevronLeft className="size-5" aria-hidden="true" /></button>
+        <button type="button" onClick={showNextImage} className="absolute right-4 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-full bg-white/92 text-[#1C1612] shadow-[0_10px_24px_rgba(0,0,0,0.2)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]" aria-label="Show next safari image"><ChevronRight className="size-5" aria-hidden="true" /></button>
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/45 px-3 py-1 text-[12px] font-bold text-white backdrop-blur-sm">{currentIndex + 1} / {images.length}</div>
       </div>
       <div className="mt-[17px] grid grid-cols-4 gap-[10px]">
         {images.map((image, index) => (
-          <button key={image.src} type="button" onClick={() => setCurrentIndex(index)} className={`relative h-[118px] overflow-hidden rounded-[2px] outline-none transition focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)] ${index === currentIndex ? "ring-2 ring-[var(--astra-primary-amber)] ring-offset-2 ring-offset-[#fdfaf3]" : "opacity-80 hover:opacity-100"}`} aria-label={`Show gallery image ${index + 1}: ${image.alt}`} aria-current={index === currentIndex ? "true" : undefined}>
+          <button key={image.src} type="button" onClick={() => setCurrentIndex(index)} className={`relative h-[118px] overflow-hidden rounded-[2px] outline-none transition focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)] ${index === currentIndex ? "ring-2 ring-[var(--astra-primary-amber)] ring-offset-2 ring-offset-[#F0E9DE]" : "opacity-80 hover:opacity-100"}`} aria-label={`Show gallery image ${index + 1}: ${image.alt}`} aria-current={index === currentIndex ? "true" : undefined}>
             <Image src={image.src} alt={image.alt} fill sizes="169px" className="object-cover" />
           </button>
         ))}
@@ -433,7 +433,7 @@ function RatingStars({ className = "size-5" }: { className?: string }) {
   return (
     <span className="flex items-center gap-1" aria-label="5 star rating">
       {Array.from({ length: 5 }).map((_, index) => (
-        <Star key={index} className={`${className} fill-[#E2B87F] text-[#E2B87F]`} aria-hidden="true" />
+        <Star key={index} className={`${className} fill-[#E07B39] text-[#E07B39]`} aria-hidden="true" />
       ))}
     </span>
   );
@@ -441,43 +441,43 @@ function RatingStars({ className = "size-5" }: { className?: string }) {
 
 function TripSummaryCard({ dictionary, trip, className = "" }: { dictionary: HomeDictionary; trip: TripDetail; className?: string }) {
   return (
-    <aside className={`flex rounded-[10px] border border-[#403229]/12 bg-white shadow-[0_22px_44px_rgba(64,50,41,0.08)] ${className}`}>
+    <aside className={`flex rounded-[10px] border border-[#1C1612]/12 bg-white shadow-[0_22px_44px_rgba(28,22,18,0.08)] ${className}`}>
       <div className="flex min-h-full w-full flex-col px-6 py-6">
-        <div className="border-b border-[#403229]/13 pb-5">
+        <div className="border-b border-[#1C1612]/13 pb-5">
           <RatingStars className="size-6" />
           <div className="mt-3 flex items-end gap-3">
-            <p className="text-[42px] font-bold leading-none text-[#403229]">{trip.reviewScore || 4.9}</p>
-            <p className="pb-1 text-[13px] font-semibold leading-[1.4] text-[#403229]/62">from {trip.reviewCount || 312} verified reviews</p>
+            <p className="text-[42px] font-bold leading-none text-[#1C1612]">{trip.reviewScore || 4.9}</p>
+            <p className="pb-1 text-[13px] font-semibold leading-[1.4] text-[#1C1612]/62">from {trip.reviewCount || 312} verified reviews</p>
           </div>
         </div>
-        <div className="grid gap-3 border-b border-[#403229]/13 py-5">
+        <div className="grid gap-3 border-b border-[#1C1612]/13 py-5">
           <div className="flex items-center justify-between rounded-[8px] bg-[var(--astra-cream-panel)] px-4 py-3">
-            <span className="flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.05em] text-[#403229]/62"><TrendingUp className="size-4 text-[var(--astra-primary-amber)]" aria-hidden="true" />In Popularity</span>
+            <span className="flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.05em] text-[#1C1612]/62"><TrendingUp className="size-4 text-[var(--astra-primary-amber)]" aria-hidden="true" />In Popularity</span>
             <span className="flex items-center gap-2 text-[32px] font-bold leading-none text-[var(--astra-primary-amber)]"><Trophy className="size-6" aria-hidden="true" />#{trip.popularityRank || 4}</span>
           </div>
-          <div className="flex items-center gap-3 rounded-[8px] border border-[#403229]/10 px-4 py-3 text-[16px] font-bold">
+          <div className="flex items-center gap-3 rounded-[8px] border border-[#1C1612]/10 px-4 py-3 text-[16px] font-bold">
             <UsersRound className="size-5 text-[var(--astra-primary-amber)]" aria-hidden="true" />
-            {trip.totalTravellers || '2,000+'} travellers booked with Astra
+            {trip.totalTravellers || '2,000+'} travellers booked with Catama Safaris
           </div>
         </div>
-        <dl className="grid gap-4 border-b border-[#403229]/13 py-5 text-[16px] leading-[1.6]">
+        <dl className="grid gap-4 border-b border-[#1C1612]/13 py-5 text-[16px] leading-[1.6]">
           <div className="grid grid-cols-[140px_1fr]">
-            <dt className="font-semibold text-[#403229]/65">Physical rating</dt>
+            <dt className="font-semibold text-[#1C1612]/65">Physical rating</dt>
             <dd className="font-bold">{trip.physicalRating || 'Easy'}</dd>
           </div>
           <div className="grid grid-cols-[140px_1fr]">
-            <dt className="font-semibold text-[#403229]/65">Tour Start</dt>
+            <dt className="font-semibold text-[#1C1612]/65">Tour Start</dt>
             <dd className="font-bold">{trip.season || 'All seasons'}</dd>
           </div>
           <div className="grid grid-cols-[140px_1fr]">
-            <dt className="font-semibold text-[#403229]/65">Duration</dt>
+            <dt className="font-semibold text-[#1C1612]/65">Duration</dt>
             <dd className="font-bold">{trip.duration}</dd>
           </div>
         </dl>
-        <p className="mt-5 text-[15px] font-semibold leading-[1.65] text-[#403229]/66">
+        <p className="mt-5 text-[15px] font-semibold leading-[1.65] text-[#1C1612]/66">
           {trip.shortDescription || 'This morning is yours to enjoy at a relaxed pace.'}
         </p>
-        <div className="mt-8 border-t border-[#403229]/13 pt-5">
+        <div className="mt-8 border-t border-[#1C1612]/13 pt-5">
           <PlannerDialogButton planner={dictionary.planner} className={`h-[54px] w-full px-4 text-[15px] font-bold ${amberButton}`}>
             Book a Safari
           </PlannerDialogButton>
@@ -502,13 +502,13 @@ function BuiltForContent({ trip, className = "" }: { trip: TripDetail; className
   return (
     <section className={className}>
       <h2 className="text-[31px] font-semibold leading-[1.13]">Who this safari is built for?</h2>
-      <p className="mt-[29px] max-w-[663px] text-[16px] font-semibold leading-[1.65] text-[#403229]/70">
+      <p className="mt-[29px] max-w-[663px] text-[16px] font-semibold leading-[1.65] text-[#1C1612]/70">
         Private guided Tanzania safaris - planned for you, priced in USD, backed by 15 years of getting Americans to Africa.
       </p>
       <div className="mt-[25px] grid gap-6 sm:grid-cols-2">
         {items.map(({ label, Icon }) => (
           <p key={label} className="flex items-center gap-4 text-[18px] font-bold leading-[1.5]">
-            <Icon className="size-9 shrink-0 text-[#E2B87F]" strokeWidth={1.8} aria-hidden="true" />
+            <Icon className="size-9 shrink-0 text-[#E07B39]" strokeWidth={1.8} aria-hidden="true" />
             {label}
           </p>
         ))}
@@ -519,10 +519,10 @@ function BuiltForContent({ trip, className = "" }: { trip: TripDetail; className
 
 function ReviewContactCard({ dictionary, trip, className = "" }: { dictionary: HomeDictionary; trip: TripDetail; className?: string }) {
   return (
-    <aside className={`self-start rounded-[10px] border border-[#403229]/12 bg-white p-7 shadow-[0_16px_36px_rgba(64,50,41,0.06)] ${className}`}>
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#403229]/13 pb-5">
+    <aside className={`self-start rounded-[10px] border border-[#1C1612]/12 bg-white p-7 shadow-[0_16px_36px_rgba(28,22,18,0.06)] ${className}`}>
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#1C1612]/13 pb-5">
         <div>
-          <p className="flex items-center gap-3 text-[26px] font-bold leading-none text-[#E2B87F]">
+          <p className="flex items-center gap-3 text-[26px] font-bold leading-none text-[#E07B39]">
             {trip.reviewScore || 4.9}
             <RatingStars className="size-3.5" />
           </p>
@@ -532,14 +532,14 @@ function ReviewContactCard({ dictionary, trip, className = "" }: { dictionary: H
           TripAdvisor
         </div>
       </div>
-      <p className="border-b border-[#403229]/13 py-5 text-[15px] font-semibold leading-[1.6] text-[#403229]/75">
+      <p className="border-b border-[#1C1612]/13 py-5 text-[15px] font-semibold leading-[1.6] text-[#1C1612]/75">
         {trip.featuredReviewQuote || 'Review from TripAdvisor "The river crossing was unlike anything I\'ve ever seen in my life."'}
       </p>
       <div className="pt-5">
         <p className="text-[15px] font-semibold leading-[1.6]">For extra information please contact us</p>
-        <p className="mt-3 flex flex-wrap gap-x-5 gap-y-3 text-[13px] font-bold leading-[1.6] text-[#403229]/65">
-          <a href={`tel:${dictionary.topBar.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-2 hover:text-[#E2B87F]"><Phone className="size-4 text-[#E2B87F]" aria-hidden="true" />{dictionary.topBar.phone}</a>
-          <a href={`mailto:${dictionary.topBar.email}`} className="inline-flex items-center gap-2 hover:text-[#E2B87F]"><Mail className="size-4 text-[#E2B87F]" aria-hidden="true" />{dictionary.topBar.email}</a>
+        <p className="mt-3 flex flex-wrap gap-x-5 gap-y-3 text-[13px] font-bold leading-[1.6] text-[#1C1612]/65">
+          <a href={`tel:${dictionary.topBar.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-2 hover:text-[#E07B39]"><Phone className="size-4 text-[#E07B39]" aria-hidden="true" />{dictionary.topBar.phone}</a>
+          <a href={`mailto:${dictionary.topBar.email}`} className="inline-flex items-center gap-2 hover:text-[#E07B39]"><Mail className="size-4 text-[#E07B39]" aria-hidden="true" />{dictionary.topBar.email}</a>
         </p>
       </div>
     </aside>
@@ -582,14 +582,14 @@ function TripTabs() {
   }, []);
 
   return (
-    <div className="sticky left-0 top-0 z-[90] bg-[#fdfaf3]">
+    <div className="sticky left-0 top-0 z-[90] bg-[#F0E9DE]">
       <div className={pageContainer}>
-        <nav className="flex h-[58px] items-center rounded-[10px] border border-[#403229]/10 bg-[#F8EEDD] px-2 text-[11px] font-bold leading-[1.2] text-[#403229]/70 shadow-[0_8px_20px_rgba(64,50,41,0.04)] sm:px-4 sm:text-[13px] md:px-8 md:text-[15px]" aria-label="Trip sections">
+        <nav className="flex h-[58px] items-center rounded-[10px] border border-[#1C1612]/10 bg-[#F0E9DE] px-2 text-[11px] font-bold leading-[1.2] text-[#1C1612]/70 shadow-[0_8px_20px_rgba(28,22,18,0.04)] sm:px-4 sm:text-[13px] md:px-8 md:text-[15px]" aria-label="Trip sections">
           <div className="grid h-full w-full grid-cols-5 items-center">
             {tripTabs.map((tab) => (
-              <a key={tab.label} href={tab.href} onClick={() => setActiveTab(tab.href)} className={`relative flex h-full items-center justify-center px-1 text-center transition hover:text-[#403229] ${activeTab === tab.href ? "text-[#403229]" : ""}`}>
+              <a key={tab.label} href={tab.href} onClick={() => setActiveTab(tab.href)} className={`relative flex h-full items-center justify-center px-1 text-center transition hover:text-[#1C1612] ${activeTab === tab.href ? "text-[#1C1612]" : ""}`}>
                 {tab.label}
-                {activeTab === tab.href ? <span className="absolute bottom-0 left-1/2 h-[4px] w-[min(100%,72px)] -translate-x-1/2 rounded-t-full bg-[#E2B87F]" /> : null}
+                {activeTab === tab.href ? <span className="absolute bottom-0 left-1/2 h-[4px] w-[min(100%,72px)] -translate-x-1/2 rounded-t-full bg-[#E07B39]" /> : null}
               </a>
             ))}
           </div>
@@ -603,7 +603,7 @@ function OverviewText({ trip }: { trip: TripDetail }) {
   return (
     <div>
       <h2 className="sr-only">Overview</h2>
-      <p className="whitespace-pre-line text-[15px] font-semibold leading-[1.68] text-[#403229]/74">
+      <p className="whitespace-pre-line text-[15px] font-semibold leading-[1.68] text-[#1C1612]/74">
         {trip.overviewText || `Tanzania is one of those trips people talk about for the rest of their lives - but only if you do it right.`}
       </p>
     </div>
@@ -612,7 +612,7 @@ function OverviewText({ trip }: { trip: TripDetail }) {
 
 function PlannerQuoteCard({ dictionary }: TripPageProps) {
   return (
-    <LeadPlanner planner={dictionary.planner} className="w-full self-start rounded-[10px] border-[#403229]/12 bg-white p-7 text-[#403229] shadow-[0_18px_45px_rgba(64,50,41,0.08)] backdrop-blur-none" />
+    <LeadPlanner planner={dictionary.planner} className="w-full self-start rounded-[10px] border-[#1C1612]/12 bg-white p-7 text-[#1C1612] shadow-[0_18px_45px_rgba(28,22,18,0.08)] backdrop-blur-none" />
   );
 }
 
@@ -621,28 +621,28 @@ function ItinerarySection({ itineraryDays, gallerySlides }: { itineraryDays: { d
   return (
     <section id="itinerary" className={`${pageContainer} scroll-mt-[82px] py-[72px]`}>
       <div className="flex items-center gap-8">
-        <h2 className="shrink-0 text-[34px] font-semibold leading-[1.15] text-[#403229] md:text-[38px]">Trip Itinerary</h2>
-        <div className="h-[2px] flex-1 bg-[#ddd7cc]" />
+        <h2 className="shrink-0 text-[34px] font-semibold leading-[1.15] text-[#1C1612] md:text-[38px]">Trip Itinerary</h2>
+        <div className="h-[2px] flex-1 bg-[#F0E9DE]" />
       </div>
-      <article className="mt-[56px] grid overflow-hidden rounded-[8px] border border-[#403229]/10 bg-white shadow-[0_18px_45px_rgba(64,50,41,0.08)] lg:grid-cols-[605px_64px_minmax(0,1fr)]">
+      <article className="mt-[56px] grid overflow-hidden rounded-[8px] border border-[#1C1612]/10 bg-white shadow-[0_18px_45px_rgba(28,22,18,0.08)] lg:grid-cols-[605px_64px_minmax(0,1fr)]">
         <div className="grid gap-4 p-5">
           <ItineraryImageSlider images={gallerySlides} sizes="565px" />
           <ItineraryImageSlider images={itineraryAccommodationSlides} sizes="565px" />
         </div>
         <div className="relative hidden lg:block" aria-hidden="true">
-          <div className="absolute left-1/2 top-5 h-[calc(100%-40px)] w-px -translate-x-1/2 border-l border-dashed border-[#403229]/25" />
+          <div className="absolute left-1/2 top-5 h-[calc(100%-40px)] w-px -translate-x-1/2 border-l border-dashed border-[#1C1612]/25" />
           <Image src="/assets/trips/itinerary-map-pin.svg" alt="" width={49} height={49} className="absolute left-1/2 top-[92px] z-10 size-[49px] -translate-x-1/2" />
           <Image src="/assets/trips/itinerary-bed.svg" alt="" width={49} height={49} className="absolute left-1/2 top-[358px] z-10 size-[49px] -translate-x-1/2" />
         </div>
         <div className="px-6 pb-10 pt-8 lg:px-0 lg:pb-0 lg:pr-10 lg:pt-[46px]">
           <div className="lg:min-h-[284px]">
-            <p className="text-[13px] font-bold uppercase leading-none tracking-[0.12em] text-[#e2bd7d]">{day.day}</p>
-            <h3 className="mt-5 max-w-[540px] text-[31px] font-semibold leading-[1.16] text-[#403229] md:text-[34px]">{day.title}</h3>
-            <p className="mt-7 max-w-[690px] text-[16px] font-semibold leading-[1.68] text-[#403229]">{day.description}</p>
+            <p className="text-[13px] font-bold uppercase leading-none tracking-[0.12em] text-[#E07B39]">{day.day}</p>
+            <h3 className="mt-5 max-w-[540px] text-[31px] font-semibold leading-[1.16] text-[#1C1612] md:text-[34px]">{day.title}</h3>
+            <p className="mt-7 max-w-[690px] text-[16px] font-semibold leading-[1.68] text-[#1C1612]">{day.description}</p>
           </div>
           <div className="mt-8 lg:mt-[36px]">
-            <h4 className="text-[30px] font-semibold leading-[1.16] text-[#403229]">Accommodations:</h4>
-            <p className="mt-5 max-w-[650px] text-[16px] font-semibold leading-[1.65] text-[#403229]">{day.accommodation}</p>
+            <h4 className="text-[30px] font-semibold leading-[1.16] text-[#1C1612]">Accommodations:</h4>
+            <p className="mt-5 max-w-[650px] text-[16px] font-semibold leading-[1.65] text-[#1C1612]">{day.accommodation}</p>
           </div>
         </div>
       </article>
@@ -656,15 +656,15 @@ function ItineraryImageSlider({ images, sizes, label }: { images: { src: string;
   const showPrevious = () => setActiveIndex((index) => (index === 0 ? images.length - 1 : index - 1));
   const showNext = () => setActiveIndex((index) => (index === images.length - 1 ? 0 : index + 1));
   return (
-    <div className="relative aspect-[589/300] overflow-hidden rounded-[10px] bg-[#403229]">
+    <div className="relative aspect-[589/300] overflow-hidden rounded-[10px] bg-[#1C1612]">
       {images.map((image, index) => (
         <Image key={image.src} src={image.src} alt={index === activeIndex ? image.alt : ""} fill sizes={sizes} loading="eager" unoptimized aria-hidden={index === activeIndex ? undefined : true} className={`object-cover transition-opacity duration-300 ${index === activeIndex ? "opacity-100" : "opacity-0"}`} />
       ))}
-      {label ? <span className="absolute left-5 top-5 rounded-[8px] bg-white/92 px-5 py-3 text-[15px] font-bold leading-none text-[#403229] shadow-[0_12px_24px_rgba(64,50,41,0.12)]">{label}</span> : null}
+      {label ? <span className="absolute left-5 top-5 rounded-[8px] bg-white/92 px-5 py-3 text-[15px] font-bold leading-none text-[#1C1612] shadow-[0_12px_24px_rgba(28,22,18,0.12)]">{label}</span> : null}
       {hasMultipleImages ? (
         <>
-          <button type="button" onClick={showPrevious} className="absolute left-0 top-1/2 z-20 grid h-11 w-[70px] -translate-y-1/2 place-items-center rounded-r-[8px] bg-[#f8f2e9] text-[#403229] shadow-[0_10px_22px_rgba(64,50,41,0.12)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]" aria-label="Previous itinerary image"><ChevronLeft className="size-7" aria-hidden="true" /></button>
-          <button type="button" onClick={showNext} className="absolute right-0 top-1/2 z-20 grid h-11 w-[70px] -translate-y-1/2 place-items-center rounded-l-[8px] bg-[#f8f2e9] text-[#403229] shadow-[0_10px_22px_rgba(64,50,41,0.12)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]" aria-label="Next itinerary image"><ChevronRight className="size-7" aria-hidden="true" /></button>
+          <button type="button" onClick={showPrevious} className="absolute left-0 top-1/2 z-20 grid h-11 w-[70px] -translate-y-1/2 place-items-center rounded-r-[8px] bg-[#F0E9DE] text-[#1C1612] shadow-[0_10px_22px_rgba(28,22,18,0.12)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]" aria-label="Previous itinerary image"><ChevronLeft className="size-7" aria-hidden="true" /></button>
+          <button type="button" onClick={showNext} className="absolute right-0 top-1/2 z-20 grid h-11 w-[70px] -translate-y-1/2 place-items-center rounded-l-[8px] bg-[#F0E9DE] text-[#1C1612] shadow-[0_10px_22px_rgba(28,22,18,0.12)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]" aria-label="Next itinerary image"><ChevronRight className="size-7" aria-hidden="true" /></button>
         </>
       ) : null}
     </div>
@@ -677,12 +677,12 @@ function IncludedSection({ dictionary, includedItems, priceTiers }: { dictionary
       <div>
         <div className="flex items-center gap-4">
           <h2 className="shrink-0 text-[30px] font-semibold leading-[1.2]">What is included?</h2>
-          <div className="h-[2px] flex-1 bg-[#ddd7cc]" />
+          <div className="h-[2px] flex-1 bg-[#F0E9DE]" />
         </div>
         <ul className="mt-10 grid gap-x-9 gap-y-5 sm:grid-cols-2">
           {includedItems.map((item, index) => (
-            <li key={`${item}-${index}`} className="flex items-center gap-3 text-[13px] font-semibold leading-[1.5] text-[#403229]/75">
-              <span className="grid size-[25px] shrink-0 place-items-center rounded-full bg-[#E2B87F] text-white"><Check className="size-4" strokeWidth={3} aria-hidden="true" /></span>
+            <li key={`${item}-${index}`} className="flex items-center gap-3 text-[13px] font-semibold leading-[1.5] text-[#1C1612]/75">
+              <span className="grid size-[25px] shrink-0 place-items-center rounded-full bg-[#E07B39] text-white"><Check className="size-4" strokeWidth={3} aria-hidden="true" /></span>
               {item}
             </li>
           ))}
@@ -691,20 +691,20 @@ function IncludedSection({ dictionary, includedItems, priceTiers }: { dictionary
       <IncludedImageSlider images={includedImageSlides} />
       <div id="pricing" className="scroll-mt-[82px] pt-8 lg:col-span-2">
         <div className="mx-auto flex max-w-[1110px] items-center gap-7">
-          <div className="h-[2px] flex-1 bg-[#e7ded1]" />
-          <h3 className="shrink-0 text-center text-[27px] font-medium leading-[1.3] text-[#403229]">All-inclusive rates in USD</h3>
-          <div className="h-[2px] flex-1 bg-[#e7ded1]" />
+          <div className="h-[2px] flex-1 bg-[#F0E9DE]" />
+          <h3 className="shrink-0 text-center text-[27px] font-medium leading-[1.3] text-[#1C1612]">All-inclusive rates in USD</h3>
+          <div className="h-[2px] flex-1 bg-[#F0E9DE]" />
         </div>
         <div className="mx-auto mt-3 flex w-full max-w-[1110px] flex-wrap justify-center gap-2">
           {priceTiers.map((tier) => (
-            <div key={tier.id} className="min-h-[92px] w-full max-w-[286px] rounded-[8px] border border-[#403229]/10 bg-white px-4 py-5 text-center shadow-[0_16px_35px_rgba(64,50,41,0.06)] sm:w-[calc(50%-4px)] md:w-[calc(33.333%-6px)] lg:w-[178px]">
-              <p className="text-[11px] font-semibold leading-none text-[#403229]/78">{tier.people}</p>
-              <p className="mt-3 text-[20px] font-bold leading-none text-[#e2b87f]">{tier.price}</p>
-              <p className="mt-2 text-[11px] font-semibold leading-none text-[#403229]/68">per person</p>
+            <div key={tier.id} className="min-h-[92px] w-full max-w-[286px] rounded-[8px] border border-[#1C1612]/10 bg-white px-4 py-5 text-center shadow-[0_16px_35px_rgba(28,22,18,0.06)] sm:w-[calc(50%-4px)] md:w-[calc(33.333%-6px)] lg:w-[178px]">
+              <p className="text-[11px] font-semibold leading-none text-[#1C1612]/78">{tier.people}</p>
+              <p className="mt-3 text-[20px] font-bold leading-none text-[#E07B39]">{tier.price}</p>
+              <p className="mt-2 text-[11px] font-semibold leading-none text-[#1C1612]/68">per person</p>
             </div>
           ))}
         </div>
-        <PlannerDialogButton planner={dictionary.planner} variant="ghost" size="sm" className="mx-auto mt-9 flex h-auto w-fit bg-transparent p-0 text-[15px] font-bold leading-[1.5] text-[#403229] underline decoration-[#403229]/70 underline-offset-2 shadow-none hover:bg-transparent hover:text-[#403229]/75">
+        <PlannerDialogButton planner={dictionary.planner} variant="ghost" size="sm" className="mx-auto mt-9 flex h-auto w-fit bg-transparent p-0 text-[15px] font-bold leading-[1.5] text-[#1C1612] underline decoration-[#1C1612]/70 underline-offset-2 shadow-none hover:bg-transparent hover:text-[#1C1612]/75">
           Not sure on group size? Ask a planner - we&apos;ll figure it out together.
         </PlannerDialogButton>
       </div>
@@ -718,14 +718,14 @@ function IncludedImageSlider({ images }: { images: { src: string; alt: string }[
   const showPrevious = () => setActiveIndex((index) => (index === 0 ? images.length - 1 : index - 1));
   const showNext = () => setActiveIndex((index) => (index === images.length - 1 ? 0 : index + 1));
   return (
-    <div className="relative min-h-[357px] overflow-hidden rounded-[8px] bg-[#403229]">
+    <div className="relative min-h-[357px] overflow-hidden rounded-[8px] bg-[#1C1612]">
       {images.map((image, index) => (
         <Image key={image.src} src={image.src} alt={index === activeIndex ? image.alt : ""} fill sizes="340px" loading="eager" unoptimized aria-hidden={index === activeIndex ? undefined : true} className={`object-cover transition-opacity duration-300 ${index === activeIndex ? "opacity-100" : "opacity-0"}`} />
       ))}
       {hasMultipleImages ? (
         <>
-          <button type="button" onClick={showPrevious} className="absolute left-0 top-1/2 z-20 grid h-10 w-14 -translate-y-1/2 place-items-center rounded-r-[8px] bg-[#f8f2e9] text-[#403229] shadow-[0_10px_22px_rgba(64,50,41,0.12)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e2b87f]" aria-label="Previous included image"><ChevronLeft className="size-6" aria-hidden="true" /></button>
-          <button type="button" onClick={showNext} className="absolute right-0 top-1/2 z-20 grid h-10 w-14 -translate-y-1/2 place-items-center rounded-l-[8px] bg-[#f8f2e9] text-[#403229] shadow-[0_10px_22px_rgba(64,50,41,0.12)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e2b87f]" aria-label="Next included image"><ChevronRight className="size-6" aria-hidden="true" /></button>
+          <button type="button" onClick={showPrevious} className="absolute left-0 top-1/2 z-20 grid h-10 w-14 -translate-y-1/2 place-items-center rounded-r-[8px] bg-[#F0E9DE] text-[#1C1612] shadow-[0_10px_22px_rgba(28,22,18,0.12)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E07B39]" aria-label="Previous included image"><ChevronLeft className="size-6" aria-hidden="true" /></button>
+          <button type="button" onClick={showNext} className="absolute right-0 top-1/2 z-20 grid h-10 w-14 -translate-y-1/2 place-items-center rounded-l-[8px] bg-[#F0E9DE] text-[#1C1612] shadow-[0_10px_22px_rgba(28,22,18,0.12)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E07B39]" aria-label="Next included image"><ChevronRight className="size-6" aria-hidden="true" /></button>
         </>
       ) : null}
     </div>
@@ -734,25 +734,25 @@ function IncludedImageSlider({ images }: { images: { src: string; alt: string }[
 
 function BestTimeSection({ dictionary, seasons }: { dictionary: HomeDictionary; seasons: { title: string; dot: string; description: string }[] }) {
   return (
-    <section className="bg-[#fdfaf3] pb-[72px] pt-[76px]">
+    <section className="bg-[#F0E9DE] pb-[72px] pt-[76px]">
       <div className={pageContainer}>
         <div className="mx-auto flex max-w-[1110px] items-center gap-8">
-          <div className="h-[2px] flex-1 bg-[#e7ded1]" />
-          <h2 className="shrink-0 text-center text-[27px] font-medium leading-[1.3] text-[#403229]">Best time for this safari</h2>
-          <div className="h-[2px] flex-1 bg-[#e7ded1]" />
+          <div className="h-[2px] flex-1 bg-[#F0E9DE]" />
+          <h2 className="shrink-0 text-center text-[27px] font-medium leading-[1.3] text-[#1C1612]">Best time for this safari</h2>
+          <div className="h-[2px] flex-1 bg-[#F0E9DE]" />
         </div>
         <div className="mx-auto mt-5 flex w-full max-w-[1110px] flex-wrap justify-center gap-3">
           {seasons.map((season) => (
-            <article key={season.title} className="min-h-[100px] w-full max-w-[360px] rounded-[8px] border border-[#403229]/10 bg-white px-6 pb-7 pt-6 shadow-[0_16px_35px_rgba(64,50,41,0.05)] md:w-[calc(33.333%-8px)]">
-              <h3 className="flex items-center gap-3 text-[16px] font-medium leading-none text-[#e2b87f]">
+            <article key={season.title} className="min-h-[100px] w-full max-w-[360px] rounded-[8px] border border-[#1C1612]/10 bg-white px-6 pb-7 pt-6 shadow-[0_16px_35px_rgba(28,22,18,0.05)] md:w-[calc(33.333%-8px)]">
+              <h3 className="flex items-center gap-3 text-[16px] font-medium leading-none text-[#E07B39]">
                 <span className="size-3 rounded-full opacity-70" style={{ backgroundColor: season.dot }} aria-hidden="true" />
                 {season.title}
               </h3>
-              <p className="mt-5 text-[13px] font-semibold leading-[1.6] text-[#403229]/76">{season.description}</p>
+              <p className="mt-5 text-[13px] font-semibold leading-[1.6] text-[#1C1612]/76">{season.description}</p>
             </article>
           ))}
         </div>
-        <PlannerDialogButton planner={dictionary.planner} variant="ghost" size="sm" className="mx-auto mt-9 flex h-auto w-fit bg-transparent p-0 text-[15px] font-bold leading-[1.5] text-[#403229] underline decoration-[#403229]/70 underline-offset-2 shadow-none hover:bg-transparent hover:text-[#403229]/75">
+        <PlannerDialogButton planner={dictionary.planner} variant="ghost" size="sm" className="mx-auto mt-9 flex h-auto w-fit bg-transparent p-0 text-[15px] font-bold leading-[1.5] text-[#1C1612] underline decoration-[#1C1612]/70 underline-offset-2 shadow-none hover:bg-transparent hover:text-[#1C1612]/75">
           Not sure on group size? Ask a planner - we&apos;ll figure it out together.
         </PlannerDialogButton>
       </div>
@@ -762,12 +762,12 @@ function BestTimeSection({ dictionary, seasons }: { dictionary: HomeDictionary; 
 
 function WidePlannerBand({ dictionary }: TripPageProps) {
   return (
-    <section className="relative min-h-[441px] overflow-hidden border border-white/30 bg-[#4a351c] text-white shadow-[0_4px_11px_rgba(0,0,0,0.05)]">
+    <section className="relative min-h-[441px] overflow-hidden border border-white/30 bg-[#1C1612] text-white shadow-[0_4px_11px_rgba(0,0,0,0.05)]">
       <Image src="/assets/figma/final-cta-bg.jpg" alt="" fill sizes="100vw" className="object-cover object-[62%_center]" aria-hidden="true" />
-      <div className="absolute inset-0 bg-[linear-gradient(86deg,#4a351c_1%,rgba(74,53,28,0.4)_89%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(86deg,#1C1612_1%,rgba(28,22,18,0.4)_89%)]" />
       <div className="relative mx-auto flex min-h-[441px] max-w-[1206px] flex-col gap-8 px-6 py-[78px] md:flex-row md:items-start md:gap-[18px] md:py-0">
         <div className="md:mt-[148px] md:w-[419px]">
-          <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-[#E2B87F]">Free, no commitment</p>
+          <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-[#E07B39]">Free, no commitment</p>
           <h2 className="mt-[11px] text-[34px] font-semibold leading-[1.14]">Talk to a safari planner</h2>
           <p className="mt-[11px] max-w-[394px] text-[15px] font-medium leading-[1.5] text-white/80">Tell us your dates, how many people, and what matters most to you.</p>
         </div>
@@ -803,7 +803,7 @@ function InlinePlannerForm({ planner, className = "" }: { planner: HomeDictionar
         ))}
       </div>
       <InlinePlannerField field={planner.fields[3]} value={values[planner.fields[3].name] ?? ""} invalid={invalidFields.includes(planner.fields[3].name)} onChange={updateValue} />
-      <button type="submit" className="flex h-[42px] items-center rounded-[6px] bg-[#E2B87F] px-4 text-left text-[15px] font-semibold leading-[1.6] text-[#4a351c] transition hover:bg-[#d8aa6c] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80">
+      <button type="submit" className="flex h-[42px] items-center rounded-[6px] bg-[#E07B39] px-4 text-left text-[15px] font-semibold leading-[1.6] text-[#1C1612] transition hover:bg-[#C96A2A] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80">
         <span className="me-auto">Request a quote</span>
         <ArrowRight className="size-5" aria-hidden="true" />
       </button>
@@ -813,7 +813,7 @@ function InlinePlannerForm({ planner, className = "" }: { planner: HomeDictionar
 }
 
 function InlinePlannerField({ field, value, invalid, onChange }: { field: PlannerField; value: string; invalid: boolean; onChange: (name: string, value: string) => void }) {
-  const fieldClassName = "h-[47px] w-full rounded-[4px] border border-[#654a29]/15 bg-[#fdfaf3]/98 px-4 text-[13px] font-bold leading-[1.4] text-[#403229] shadow-none outline-none backdrop-blur-[12px] placeholder:text-[#2c1a0e]/60 focus:border-[#E2B87F] focus:ring-2 focus:ring-[#E2B87F]/45";
+  const fieldClassName = "h-[47px] w-full rounded-[4px] border border-[#1C1612]/15 bg-[#F0E9DE]/98 px-4 text-[13px] font-bold leading-[1.4] text-[#1C1612] shadow-none outline-none backdrop-blur-[12px] placeholder:text-[#1C1612]/60 focus:border-[#E07B39] focus:ring-2 focus:ring-[#E07B39]/45";
   return field.type === "select" ? (
     <select aria-label={field.label} aria-invalid={invalid} value={value} onChange={(event) => onChange(field.name, event.currentTarget.value)} className={`${fieldClassName} appearance-auto`}>
       <option value="">{field.placeholder}</option>
@@ -827,7 +827,7 @@ function InlinePlannerField({ field, value, invalid, onChange }: { field: Planne
 function ReviewsSection({ reviews }: { reviews?: { quote: string; authorName: string; authorDetails: string }[] }) {
   const defaultReviews = [
     { image: "/assets/figma/review-family.jpg", alt: "Safari guests posing beside vehicles", quote: "We saw four of the Big Five on day one. Our guide knew exactly where to be and when - it was like he could read the animals' minds.", name: "Sarah M.", details: "12-Day Luxury Safari & Zanzibar, June 2024" },
-    { image: "/assets/figma/review-family.jpg", alt: "Safari guests posing beside vehicles", quote: "Astra handled everything from the moment we landed to the moment we left. Zero stress. Just pure experience.", name: "James & Linda R.", details: "6-Day Great Migration Safari, August 2024" },
+    { image: "/assets/figma/review-family.jpg", alt: "Safari guests posing beside vehicles", quote: "Catama Safaris handled everything from the moment we landed to the moment we left. Zero stress. Just pure experience.", name: "James & Linda R.", details: "6-Day Great Migration Safari, August 2024" },
     { image: "/assets/figma/review-jeep.jpg", alt: "Guests riding in a safari vehicle", quote: "The Great Migration crossing was the most breathtaking thing I've ever witnessed. Worth every penny and every hour of planning.", name: "David K.", details: "4-Day Luxury Tanzania Safari, July 2024" },
     { image: "/assets/figma/review-jeep.jpg", alt: "Guests riding in a safari vehicle", quote: "I've done group tours before and they're nothing like this. Private guides, our own vehicle, our own schedule. This is how safari should be done.", name: "Michelle T.", details: "7-Day Safari from Zanzibar, October 2024" },
   ];
@@ -836,15 +836,15 @@ function ReviewsSection({ reviews }: { reviews?: { quote: string; authorName: st
     : defaultReviews;
 
   return (
-    <section id="reviews" className="bg-[#403229] px-6 py-[86px] text-white">
+    <section id="reviews" className="bg-[#1C1612] px-6 py-[86px] text-white">
       <div className="mx-auto max-w-[1320px]">
-        <p className="text-center text-[13px] font-bold uppercase leading-none tracking-[0.28em] text-[#e2b87f]">Experiences we offer</p>
+        <p className="text-center text-[13px] font-bold uppercase leading-none tracking-[0.28em] text-[#E07B39]">Experiences we offer</p>
         <h2 className="mt-7 text-center text-[48px] font-medium leading-[1.08] text-white">Customer reviews</h2>
         <p className="mx-auto mt-7 max-w-[560px] text-center text-[21px] font-medium leading-[1.45] text-white/58">What our travelers say</p>
         <div className="mt-[58px] grid gap-x-6 gap-y-7 lg:grid-cols-2">
           {displayReviews.map((review, index) => (
             <article key={index} className="grid gap-6 rounded-[10px] border border-white/20 bg-white/[0.075] p-6 shadow-[0_18px_44px_rgba(0,0,0,0.12)] sm:grid-cols-[220px_minmax(0,1fr)]">
-              <div className="relative h-[158px] overflow-hidden rounded-[8px] bg-[#2c1f18] sm:h-[178px]">
+              <div className="relative h-[158px] overflow-hidden rounded-[8px] bg-[#1C1612] sm:h-[178px]">
                 <Image src={review.image} alt={review.alt} fill sizes="220px" className="object-cover" />
               </div>
               <div className="flex flex-col justify-center">
@@ -863,11 +863,11 @@ function ReviewsSection({ reviews }: { reviews?: { quote: string; authorName: st
 
 function StopPlanningSection({ dictionary }: TripPageProps) {
   return (
-    <section className="bg-[#403229] py-[76px] text-white">
+    <section className="bg-[#1C1612] py-[76px] text-white">
       <div className={`${pageContainer} grid gap-10 md:grid-cols-[1fr_520px] md:items-center`}>
         <div>
-          <p className="text-[13px] font-bold uppercase tracking-[0.05em] text-[#E2B87F]">Experiences we offer</p>
-          <h2 className="mt-4 text-[42px] font-semibold leading-[1.08]">Stop overthinking.<br /><span className="text-[#E2B87F]">Start planning.</span></h2>
+          <p className="text-[13px] font-bold uppercase tracking-[0.05em] text-[#E07B39]">Experiences we offer</p>
+          <h2 className="mt-4 text-[42px] font-semibold leading-[1.08]">Stop overthinking.<br /><span className="text-[#E07B39]">Start planning.</span></h2>
           <p className="mt-5 max-w-[520px] text-[15px] font-semibold leading-[1.65] text-white/72">Tanzania is one of those trips people talk about for the rest of their lives.</p>
           <PlannerDialogButton planner={dictionary.planner} className={`mt-7 h-[48px] px-6 text-[14px] font-bold ${amberButton}`}>Talk to Safari Planner</PlannerDialogButton>
         </div>
@@ -884,19 +884,19 @@ function StopPlanningSection({ dictionary }: TripPageProps) {
 function SimilarTripsSection({ trips }: { trips: TripCard[] }) {
   return (
     <section className={`${pageContainer} py-[76px]`}>
-      <p className="text-center text-[13px] font-bold uppercase tracking-[0.05em] text-[#E2B87F]">Experiences we offer</p>
+      <p className="text-center text-[13px] font-bold uppercase tracking-[0.05em] text-[#E07B39]">Experiences we offer</p>
       <h2 className="mt-4 text-center text-[34px] font-semibold leading-[1.15]">Other Similar Trips</h2>
       <div className="mt-10 grid gap-5 lg:grid-cols-3">
         {trips.slice(0, 3).map((trip, index) => (
-          <Link key={`${trip.slug}-similar-${index}`} href={`/trip/${trip.slug}`} className="group overflow-hidden rounded-[8px] border border-[#403229]/10 bg-white shadow-[0_14px_34px_rgba(64,50,41,0.08)] transition hover:-translate-y-0.5 hover:shadow-[0_20px_44px_rgba(64,50,41,0.12)]">
+          <Link key={`${trip.slug}-similar-${index}`} href={`/trip/${trip.slug}`} className="group overflow-hidden rounded-[8px] border border-[#1C1612]/10 bg-white shadow-[0_14px_34px_rgba(28,22,18,0.08)] transition hover:-translate-y-0.5 hover:shadow-[0_20px_44px_rgba(28,22,18,0.12)]">
             <div className="relative h-[200px]">
               <Image src={trip.image} alt={trip.imageAlt} fill sizes="(min-width: 1024px) 380px, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
-              <span className="absolute right-4 top-4 rounded-full bg-[#E2B87F] px-3 py-1 text-[11px] font-bold text-white">{trip.price}</span>
+              <span className="absolute right-4 top-4 rounded-full bg-[#E07B39] px-3 py-1 text-[11px] font-bold text-white">{trip.price}</span>
             </div>
             <div className="p-5">
               <h3 className="text-[17px] font-bold leading-[1.35]">{trip.title}</h3>
-              <p className="mt-2 text-[13px] font-semibold leading-[1.55] text-[#403229]/65">{trip.duration} - {trip.route}</p>
-              <span className="mt-4 inline-flex items-center gap-2 text-[13px] font-bold text-[#E2B87F]">See Itinerary <ArrowRight className="size-4" aria-hidden="true" /></span>
+              <p className="mt-2 text-[13px] font-semibold leading-[1.55] text-[#1C1612]/65">{trip.duration} - {trip.route}</p>
+              <span className="mt-4 inline-flex items-center gap-2 text-[13px] font-bold text-[#E07B39]">See Itinerary <ArrowRight className="size-4" aria-hidden="true" /></span>
             </div>
           </Link>
         ))}
@@ -909,17 +909,17 @@ function FaqSection({ dictionary, faqs }: { dictionary: HomeDictionary; faqs: { 
   const [open, setOpen] = useState(0);
   return (
     <section className="mx-auto max-w-[900px] px-6 py-[76px]">
-      <p className="text-center text-[13px] font-bold uppercase tracking-[0.05em] text-[#E2B87F]">{dictionary.faq.eyebrow}</p>
+      <p className="text-center text-[13px] font-bold uppercase tracking-[0.05em] text-[#E07B39]">{dictionary.faq.eyebrow}</p>
       <h2 className="mt-4 text-center text-[42px] font-semibold leading-[1.2]">{dictionary.faq.title}</h2>
-      <p className="mt-3 text-center text-[15px] font-semibold leading-[1.6] text-[#403229]/55">{dictionary.faq.description}</p>
-      <div className="mt-8 border-y border-[#403229]/12">
+      <p className="mt-3 text-center text-[15px] font-semibold leading-[1.6] text-[#1C1612]/55">{dictionary.faq.description}</p>
+      <div className="mt-8 border-y border-[#1C1612]/12">
         {faqs.map((faq, index) => (
-          <button key={`${faq.question}-${index}`} type="button" onClick={() => setOpen(open === index ? -1 : index)} className="w-full border-b border-[#403229]/12 bg-transparent py-5 text-left last:border-b-0">
+          <button key={`${faq.question}-${index}`} type="button" onClick={() => setOpen(open === index ? -1 : index)} className="w-full border-b border-[#1C1612]/12 bg-transparent py-5 text-left last:border-b-0">
             <span className="flex items-center justify-between gap-4">
               <span className="text-[16px] font-medium leading-[1.5]">{faq.question}</span>
-              <span className="grid size-8 shrink-0 place-items-center rounded-full border border-[#403229]/12 text-[#E2B87F]"><ChevronDown className={`size-4 transition ${open === index ? "rotate-180" : ""}`} aria-hidden="true" /></span>
+              <span className="grid size-8 shrink-0 place-items-center rounded-full border border-[#1C1612]/12 text-[#E07B39]"><ChevronDown className={`size-4 transition ${open === index ? "rotate-180" : ""}`} aria-hidden="true" /></span>
             </span>
-            {open === index ? <span className="mt-4 block text-[15px] font-semibold leading-[1.6] text-[#403229]/62">{faq.answer}</span> : null}
+            {open === index ? <span className="mt-4 block text-[15px] font-semibold leading-[1.6] text-[#1C1612]/62">{faq.answer}</span> : null}
           </button>
         ))}
       </div>
