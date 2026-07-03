@@ -41,30 +41,33 @@ const itineraryImages = [
   "itinerary-1.jpg",
   "itinerary-2.jpg",
   "itinerary-3.jpg",
-  "itinerary-4.jpg",
-  "itinerary-5.jpg",
-  "itinerary-6.jpg"
+  "itinerary-4.jpg"
 ];
 
 const itinerarySlugs = [
-  "great-migration-classic",
-  "ngorongoro-serengeti-private-safari",
-  "tarangire-ngorongoro-family-safari",
-  "northern-circuit-luxury-safari",
-  "zanzibar-safari-extension",
-  "kilimanjaro-and-safari-adventure"
+  "7-days-full-tanzanian-safari-experience",
+  "10-day-ultimate-tanzania-safari",
+  "9-days-tanzania-birdwatching-safaris",
+  "3-days-serengeti-safari"
+];
+
+const itineraryTitles = [
+  "7 Days Full Tanzanian Safari Experience",
+  "10 Days Ultimate Tanzania Safari",
+  "9 Days Tanzania Birdwatching Safaris",
+  "3 Days Serengeti Safari"
 ];
 
 const en: HomeDictionary = {
   brand: {
-    name: "Catama Safaris",
-    tagline: "Safari operator for USA travelers",
-    logoAlt: "Catama Safaris"
+    name: "Chatama Safaris",
+    tagline: "Connecting with Nature",
+    logoAlt: "Chatama Safaris"
   },
   topBar: {
     label: "Safari Operator for USA Travelers",
     phone: "+255 62 674 7949",
-    email: "info@astratanzaniasafaris.com"
+    email: "info@chatamasafaris.com"
   },
   nav: primaryNav,
   header: {
@@ -73,13 +76,13 @@ const en: HomeDictionary = {
     closeLabel: "Close menu"
   },
   hero: {
-    eyebrow: "Tanzania's #1 Rated Safari Operator for USA Travelers",
-    titleBeforeBreak: "A lot of People visit",
-    titleAfterBreakLead: "Africa.",
-    titleHighlight: "A Few Witness It.",
+    eyebrow: "Welcome to Chatama Safaris",
+    titleBeforeBreak: "Your Gateway to",
+    titleAfterBreakLead: "the Heart of",
+    titleHighlight: "Africa",
     description:
       "Private guided Tanzania safaris - planned for you, priced in USD, backed by 15 years of getting Americans to Africa.",
-    primaryCta: "Talk to Safari Planner",
+    primaryCta: "Let's Start Planning",
     secondaryCta: "Check Available Tours",
     image: {
       src: asset("hero.jpg"),
@@ -92,13 +95,13 @@ const en: HomeDictionary = {
     description: "We reply within 4 hours - by email or WhatsApp, your choice.",
     submit: "Talk to Safari Planner",
     success: "Thanks. A safari planner will reply within 4 hours.",
-    note: "Free, no commitment. Your details stay with Catama Safaris.",
+    note: "Free, no commitment. Your details stay with Chatama Safaris.",
     fields: plannerFields
   },
   experienceCategories: {
     eyebrow: "Our experiences",
-    title: "Choose your Tanzania Experience Category",
-    description: "Every trip is private, guided by experts, and built around what matters to you.",
+    title: "Tanzania — A Land of Wonders",
+    description: "Imagine waking up to the soft roars of lions in the distance, the serenity of the savannah at dawn, and the unmatched thrill of witnessing the Great Migration across the Serengeti plains. Tanzania is a treasure trove of biodiversity, culture, and history, offering more than just a safari but an immersion into a world where nature reigns supreme. With Chatama Safaris, discover why Tanzania is the jewel of Africa, from the majestic Kilimanjaro to the pristine beaches of Zanzibar.",
     items: [
       {
         icon: "🦁",
@@ -154,63 +157,63 @@ const en: HomeDictionary = {
     note: "Not sure what is right for you? Talk to a safari planner - it's free."
   },
   why: {
-    eyebrow: "Why Catama Safaris",
+    eyebrow: "Why Chatama Safaris",
     titleLead: "Built for travelers",
     titleHighlight: "who expect more",
     plannerLabel: "Talk to a safari planner",
     phone: "+255 62 674 7949",
-    email: "info@astratanzaniasafaris.com",
+    email: "info@chatamasafaris.com",
     cta: "Talk to Safari Planner",
     items: [
       {
         icon: "🧭",
-        title: "Private, expert guides",
+        title: "Unmatched Expertise",
         description:
-          "Your guide has 10+ years in the bush - not a resort employee running a route. They know where the leopards sleep."
+          "Our team's profound knowledge of Tanzania ensures a safari experience that's both authentic and deeply engaging."
       },
       {
         icon: "💳",
-        title: "Transparent USD Pricing",
+        title: "Personalized Journeys",
         description:
-          'Quote in USD, pay in USD. No conversion risk. Full breakdown before any deposit. No hidden park fees, visa run-arounds, or "local surcharges."'
+          "Every safari is tailored to fit your dreams, offering unique adventures that resonate with your spirit of exploration."
       },
       {
         icon: "📡",
-        title: "24/7 US time-zone support",
+        title: "Commitment to Conservation",
         description:
-          "Your US-based trip coordinator is reachable before and during your trip. Real person. Real phone. Not a chatbot at 3am Tanzania time."
+          "We advocate for the conservation of the Wild places for future generations."
       },
       {
         icon: "🗓️",
-        title: "Migration-timed itineraries",
+        title: "Exceptional Value",
         description:
-          "We map your dates to peak wildlife movements - Serengeti crossings, calving season, dry-season concentrations."
+          "With competitive pricing and unmatched service, we ensure your safari adventure delivers unforgettable moments at the best value."
       },
       {
         icon: "🏕️",
-        title: "Vetted camps only",
+        title: "Certified Team",
         description:
-          "We've slept in every camp we recommend. Mobile tented camps, private conservancy lodges - zero compromise on safety or comfort."
+          "Expertly trained and certified, our team ensures a safe, enlightening safari experience, bringing the best of Tanzania to life."
       },
       {
         icon: "🔄",
-        title: "Free rebooking guarantee",
+        title: "Trusted Company",
         description:
-          "Life changes. Rebook your safari up to 30 days before departure at no extra cost. No questions asked."
+          "As a trusted safari provider, we're dedicated to authentic, sustainable adventures, earning accolades and trust globally."
       }
     ]
   },
   itineraries: {
-    eyebrow: "Experiences we offer",
-    titleLead: "Choose your",
-    titleHighlight: "Tanzania",
-    titleTrail: "experience",
+    eyebrow: "WHAT WE OFFER",
+    titleLead: "Signature Safari",
+    titleHighlight: "Experiences",
+    titleTrail: "",
     description:
       "Private guided Tanzania safaris - planned for you, priced in USD, backed by 15 years of getting Americans to Africa.",
-    cta: "View More Experiences",
+    cta: "VIEW ALL PACKAGES",
     items: itineraryImages.map((image, index) => ({
       slug: itinerarySlugs[index],
-      title: "The Great Migration Classic",
+      title: itineraryTitles[index],
       duration: "7 nights",
       route: "Serengeti + Ngorongoro",
       season: "July-October",
@@ -222,15 +225,13 @@ const en: HomeDictionary = {
     }))
   },
   planning: {
-    eyebrow: "Experiences we offer",
-    titleLead: "Stop overthinking.",
-    titleHighlight: "Start planning.",
+    eyebrow: "Embrace the Wild Heart of Africa",
+    titleLead: "Embrace the Wild",
+    titleHighlight: "Heart of Africa",
     paragraphs: [
-      "Tanzania is one of those trips people talk about for the rest of their lives - but only if you do it right. The Serengeti, Zanzibar, Kilimanjaro. It's all here, and it's all within reach. The hard part isn't getting to Tanzania. It's knowing who to trust to get you there.",
-      "That's where we come in. We're Catama Safaris - a small team based in Arusha with one job: building Tanzania trips that actually deliver what the photos promise. Not a call center. Not a booking engine. Real people who live here, know the parks, and answer your WhatsApp.",
-      "Tell us your dates, how many people, and what matters most to you. We'll handle everything else - from which park to visit in your month, to what's included in every dollar you spend. No hidden fees. No vague itineraries. No surprises when you land.",
-      "Immerse yourself in local culture, meet the Maasai, and experience Tanzania's breathtaking landscapes.",
-      "With a focus on sustainable travel, we create unforgettable adventures while supporting local communities."
+      "Welcome to Chatama Safaris where your journey into the heart of Tanzania begins. Here, every safari is more than just a trip; it's a story written in the golden light of the savannah, the distant call of wildlife, and the peaceful rustle of untouched landscapes.",
+      "We're here to craft unforgettable experiences that bring you face-to-face with nature in its purest form. Whether it's your first time or your fifth, Tanzania will move you, surprise you, and stay with you long after you've gone.",
+      "Ready to create memories you'll never forget? Your adventure starts now."
     ],
     cta: "Talk to Safari Planner",
     aside: "Your journey begins here!",
@@ -254,7 +255,7 @@ const en: HomeDictionary = {
         }
       },
       {
-        quote: '"Catama Safaris handled everything from the moment we landed to the moment we left. Zero stress. Just pure experience."',
+        quote: '"Chatama Safaris handled everything from the moment we landed to the moment we left. Zero stress. Just pure experience."',
         author: "James & Linda R.",
         details: "6-Day Great Migration Safari, August 2024",
         image: {
@@ -268,7 +269,7 @@ const en: HomeDictionary = {
         details: "4-Day Luxury Tanzania Safari, July 2024",
         image: {
           src: asset("review-jeep.jpg"),
-          alt: "Travelers in a Catama Safaris vehicle"
+          alt: "Travelers in a Chatama Safaris vehicle"
         }
       },
       {
@@ -277,7 +278,7 @@ const en: HomeDictionary = {
         details: "7-Day Safari from Zanzibar, October 2024",
         image: {
           src: asset("review-jeep.jpg"),
-          alt: "Travelers in a Catama Safaris vehicle"
+          alt: "Travelers in a Chatama Safaris vehicle"
         }
       }
     ]
@@ -310,13 +311,13 @@ const en: HomeDictionary = {
     ]
   },
   finalCta: {
-    eyebrow: "Experiences we offer",
-    titleLead: "Still thinking about it?",
-    titleHighlight: "Talk to a planner first - it's free.",
+    eyebrow: "BOOK / ENQUIRE NOW",
+    titleLead: "Start Your Safari",
+    titleHighlight: "Journey Now",
     description:
-      "Just a 10-minute conversation with someone who knows Tanzania inside out. Tell us your dates, your budget, and what matters most - we'll tell you honestly whether we're the right fit.",
+      "Adventure calls from the wild heart of Africa. Are you ready to answer? With Chatama Safaris, step into a world where each day brings a new story, and a new discovery.",
     aside: "July and August departures are filling up. If those months work for you, now is the time.",
-    whatsappCta: "Ask us on Whatsapp",
+    whatsappCta: "BOOK YOUR NEXT VACATION",
     background: {
       src: asset("final-cta-backgroundimage.png"),
       alt: "Safari travelers in a Tanzania final planning scene"
@@ -329,7 +330,7 @@ const en: HomeDictionary = {
       { label: "Cookies Settings", href: "#" },
       { label: "Privacy Policy", href: "#" }
     ],
-    copyright: "©2025 Catama Safaris - All Rights Reserved."
+    copyright: "©2025 Chatama Safaris - All Rights Reserved."
   }
 };
 
