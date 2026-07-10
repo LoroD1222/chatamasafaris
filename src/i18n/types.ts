@@ -107,6 +107,7 @@ export type HomeDictionary = {
     eyebrow: string;
     title: string;
     description: string;
+    descriptionBelow: string;
     items: ExperienceCategory[];
   };
   trust: {

@@ -136,6 +136,9 @@ function ExperienceCategories({ locale, dictionary }: { locale: Locale; dictiona
             </Link>
           ))}
         </div>
+        <p className="mx-auto mt-10 max-w-[920px] text-center text-base leading-[1.7] text-astra-brown/80">
+          {dictionary.experienceCategories.descriptionBelow}
+        </p>
         <TrustRow dictionary={dictionary} />
       </div>
     </section>
@@ -302,7 +305,7 @@ function PlanningSection({ dictionary }: { dictionary: HomeDictionary }) {
     <section id="about-us" className="bg-astra-cocoa py-16 text-white md:py-[98px]">
       <div className="container grid max-w-[1210px] gap-12 lg:grid-cols-[604px_542px] lg:gap-16">
         <PlanningImage image={dictionary.planning.image} />
-        <div>
+        <div className="lg:flex lg:flex-col lg:justify-center">
           <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">{dictionary.planning.eyebrow}</p>
           <h2 className="mt-5 text-[44px] font-normal leading-[1.3] md:text-[49px]">
             {dictionary.planning.titleLead}

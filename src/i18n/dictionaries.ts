@@ -101,7 +101,8 @@ const en: HomeDictionary = {
   experienceCategories: {
     eyebrow: "Our experiences",
     title: "Tanzania — A Land of Wonders",
-    description: "Imagine waking up to the soft roars of lions in the distance, the serenity of the savannah at dawn, and the unmatched thrill of witnessing the Great Migration across the Serengeti plains. Tanzania is a treasure trove of biodiversity, culture, and history, offering more than just a safari but an immersion into a world where nature reigns supreme. With Chatama Safaris, discover why Tanzania is the jewel of Africa, from the majestic Kilimanjaro to the pristine beaches of Zanzibar.",
+    description: "Imagine waking up to the soft roars of lions in the distance, the serenity of the savannah at dawn, and the unmatched thrill of witnessing the Great Migration across the Serengeti plains.",
+    descriptionBelow: "Tanzania is a treasure trove of biodiversity, culture, and history, offering more than just a safari but an immersion into a world where nature reigns supreme. With Chatama Safaris, discover why Tanzania is the jewel of Africa, from the majestic Kilimanjaro to the pristine beaches of Zanzibar.",
     items: [
       {
         icon: "🦁",
@@ -210,7 +211,7 @@ const en: HomeDictionary = {
     titleTrail: "",
     description:
       "Private guided Tanzania safaris - planned for you, priced in USD, backed by 15 years of getting Americans to Africa.",
-    cta: "VIEW ALL PACKAGES",
+    cta: "View all packages",
     items: itineraryImages.map((image, index) => ({
       slug: itinerarySlugs[index],
       title: itineraryTitles[index],
@@ -317,7 +318,7 @@ const en: HomeDictionary = {
     description:
       "Adventure calls from the wild heart of Africa. Are you ready to answer? With Chatama Safaris, step into a world where each day brings a new story, and a new discovery.",
     aside: "July and August departures are filling up. If those months work for you, now is the time.",
-    whatsappCta: "BOOK YOUR NEXT VACATION",
+    whatsappCta: "Contact us on WhatsApp",
     background: {
       src: asset("final-cta-backgroundimage.png"),
       alt: "Safari travelers in a Tanzania final planning scene"

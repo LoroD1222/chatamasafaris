@@ -9,6 +9,7 @@ import {
   ChevronRight,
   Mail,
   Phone,
+  Sparkle,
   Star,
   TrendingUp,
   Trophy,
@@ -249,7 +250,7 @@ function TripHeader({ dictionary }: TripPageProps) {
       <div className="bg-[#E07B39]">
         <div className="mx-auto flex h-[37px] max-w-[1150px] items-center justify-between gap-3 px-5 text-[12px] font-bold leading-[1.6] sm:text-[13px]">
           <p className="flex min-w-0 items-center gap-2 uppercase tracking-[0.08em] text-[#1C1612]/40 sm:pl-4">
-            <Image src="/assets/figma/nav-bar-star.png" alt="" width={18} height={18} className="size-[15px] shrink-0 object-contain sm:size-[18px]" aria-hidden="true" />
+            <Sparkle className="size-[15px] shrink-0 text-current sm:size-[18px]" aria-hidden="true" />
             <span className="truncate">Safari Operator for USA Travelers</span>
           </p>
           <div className="ms-auto flex min-w-0 shrink-0 items-center gap-7 text-[#1C1612]/65">
