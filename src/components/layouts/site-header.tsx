@@ -1,6 +1,6 @@
 "use client";
 
-import { Mail, Menu, Phone, Sparkle } from "lucide-react";
+import { Mail, Menu, Phone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -17,7 +17,7 @@ export function SiteHeader({ locale, dictionary }: { locale: Locale; dictionary:
       <div className="bg-astra-gold">
         <div className="container flex h-[37px] max-w-[1160px] items-center justify-between gap-3 text-[12px] font-bold leading-[1.6] sm:text-[13px]">
           <p className="flex min-w-0 items-center gap-2 uppercase tracking-[0.05em] text-astra-cocoa/40 sm:pl-4">
-            <Sparkle className="size-[15px] shrink-0 text-current sm:size-[18px]" aria-hidden="true" />
+            <span className="size-[15px] shrink-0 bg-current [mask:url('/assets/figma/nav-bar-star.png')_center/contain_no-repeat] sm:size-[18px]" aria-hidden="true" />
             <span className="truncate">{dictionary.topBar.label}</span>
           </p>
           <div className="ms-auto flex min-w-0 shrink-0 items-center gap-5 text-astra-cocoa/65">

@@ -9,7 +9,6 @@ import {
   ChevronRight,
   Mail,
   Phone,
-  Sparkle,
   Star,
   TrendingUp,
   Trophy,
@@ -47,8 +46,8 @@ type TripsListPageProps = {
 };
 
 const navLinks = [
-  { label: "Wildlife Safari", href: "/trips?category=Wildlife+Safari" },
-  { label: "Luxury Safari", href: "/trips?category=Luxury+Safari" },
+  { label: "Safaris", href: "/trips?category=Safaris" },
+  { label: "Honeymoon", href: "/trips?category=Honeymoon" },
   { label: "Zanzibar", href: "/trips?category=Zanzibar" },
   { label: "About us", href: "/en#about-us" }
 ];
@@ -250,7 +249,7 @@ function TripHeader({ dictionary }: TripPageProps) {
       <div className="bg-[#E07B39]">
         <div className="mx-auto flex h-[37px] max-w-[1150px] items-center justify-between gap-3 px-5 text-[12px] font-bold leading-[1.6] sm:text-[13px]">
           <p className="flex min-w-0 items-center gap-2 uppercase tracking-[0.08em] text-[#1C1612]/40 sm:pl-4">
-            <Sparkle className="size-[15px] shrink-0 text-current sm:size-[18px]" aria-hidden="true" />
+            <span className="size-[15px] shrink-0 bg-current [mask:url('/assets/figma/nav-bar-star.png')_center/contain_no-repeat] sm:size-[18px]" aria-hidden="true" />
             <span className="truncate">Safari Operator for USA Travelers</span>
           </p>
           <div className="ms-auto flex min-w-0 shrink-0 items-center gap-7 text-[#1C1612]/65">
@@ -352,10 +351,8 @@ function TripCardGrid({ className = "", limit, cards = tripCards }: { className?
       {visibleCards.map((trip, index) => (
         <Link key={`${trip.slug}-${index}`} href={`/trip/${trip.slug}`} className="group relative h-[401px] overflow-hidden rounded-[8px] bg-[#1C1612] text-white outline-none transition focus-visible:ring-2 focus-visible:ring-[#E07B39] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F0E9DE]">
           <Image src={trip.image} alt={trip.imageAlt} fill sizes="(min-width: 1024px) 356px, (min-width: 768px) 50vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
-          <div className="absolute inset-x-0 bottom-0 h-[115px] rounded-b-[8px] bg-[#1C1612]/60 backdrop-blur-[2.5px]" />
-          <div className="absolute inset-x-0 bottom-[113px] h-[3px] bg-white/15" />
           <div className="absolute right-[18px] top-[18px] rounded-[5px] border border-white/45 bg-[#E07B39] px-3 py-1 text-[11px] font-bold leading-[1.5] text-white backdrop-blur">from ${trip.priceValue?.toLocaleString("en-US")} USD</div>
-          <div className="absolute bottom-[25px] left-[19px] right-[19px]">
+          <div className="absolute inset-x-0 bottom-0 rounded-b-[8px] border-t border-white/15 bg-[#1C1612]/60 px-[19px] pb-[25px] pt-4 backdrop-blur-[2.5px]">
             <h2 className="text-[14px] font-bold leading-[1.6]">{trip.title} - <span className="font-semibold">{trip.duration}</span></h2>
             <p className="text-[14px] font-semibold leading-[1.51] text-white/85">{trip.route} - {trip.season}</p>
             <span className="mt-3 inline-flex h-[27px] items-center gap-1 rounded-full bg-[#E07B39] px-3 text-[14px] font-semibold leading-none text-white">See Itinerary<ArrowRight className="size-3.5" aria-hidden="true" /></span>

@@ -1,24 +1,24 @@
 import { client } from '@/lib/sanity'
 
-export const tripCategoryOrder = ["Wildlife Safari", "Luxury Safari", "Zanzibar"] as const;
+export const tripCategoryOrder = ["Safaris", "Honeymoon", "Zanzibar"] as const;
 
 export type TripCategory = (typeof tripCategoryOrder)[number];
 
 const activeTripCategories = new Set<string>(tripCategoryOrder);
 
 const categoryReassignmentsByTitle: Record<string, TripCategory> = {
-  "12-Day Luxury Safari & Zanzibar Beach Escape": "Luxury Safari",
-  "4 Days Luxury Tanzania Safari": "Luxury Safari",
+  "12-Day Luxury Safari & Zanzibar Beach Escape": "Honeymoon",
+  "4 Days Luxury Tanzania Safari": "Honeymoon",
   "5 Day Safari From Zanzibar": "Zanzibar",
-  "6 Days Great Migration Safari from Zanzibar": "Wildlife Safari",
-  "6 Days Semi-Luxury Great Migration Safari": "Wildlife Safari",
-  "7-Day Budget Safari from Zanzibar": "Wildlife Safari",
+  "6 Days Great Migration Safari from Zanzibar": "Safaris",
+  "6 Days Semi-Luxury Great Migration Safari": "Safaris",
+  "7-Day Budget Safari from Zanzibar": "Safaris",
 };
 
 const legacyCategoryNames: Record<string, TripCategory> = {
-  "Wildlife Safari": "Wildlife Safari",
-  Safari: "Wildlife Safari",
-  "Luxury Safari": "Luxury Safari",
+  "Wildlife Safari": "Safaris",
+  Safari: "Safaris",
+  "Luxury Safari": "Honeymoon",
   Zanzibar: "Zanzibar",
   "Zanzibar Extension": "Zanzibar",
 };
@@ -80,7 +80,7 @@ function normalizeTripCategory(title: string, category?: string | null): string 
   if (reassignedCategory) return reassignedCategory;
 
   const trimmedCategory = category?.trim();
-  if (!trimmedCategory) return "Wildlife Safari";
+  if (!trimmedCategory) return "Safaris";
 
   return legacyCategoryNames[trimmedCategory] ?? trimmedCategory;
 }
@@ -225,7 +225,7 @@ export const galleryImages = [
 ]
 
 export const tripCards: TripCard[] = [
-  { slug: sharedTripSlug, title: "The Great Migration Classic", duration: "7 nights", route: "Serengeti + Ngorongoro", season: "July-October", tripType: "Wildlife Safari", priceValue: 1459, price: "from $1,459 USD per person", image: "/assets/figma/itinerary-1.jpg", imageAlt: "Tanzania safari itinerary preview 1" },
-  { slug: sharedTripSlug, title: "Northern Circuit Safari", duration: "5 nights", route: "Tarangire + Ngorongoro", season: "June-October", tripType: "Wildlife Safari", priceValue: 1890, price: "from $1,890 USD per person", image: "/assets/figma/itinerary-2.jpg", imageAlt: "Tanzania safari itinerary preview 2" },
-  { slug: sharedTripSlug, title: "Serengeti Fly-in Safari", duration: "4 nights", route: "Serengeti + Arusha", season: "All seasons", tripType: "Luxury Safari", priceValue: 2890, price: "from $2,890 USD per person", image: "/assets/figma/itinerary-3.jpg", imageAlt: "Tanzania safari itinerary preview 3" },
+  { slug: sharedTripSlug, title: "The Great Migration Classic", duration: "7 nights", route: "Serengeti + Ngorongoro", season: "July-October", tripType: "Safaris", priceValue: 1459, price: "from $1,459 USD per person", image: "/assets/figma/itinerary-1.jpg", imageAlt: "Tanzania safari itinerary preview 1" },
+  { slug: sharedTripSlug, title: "Northern Circuit Safari", duration: "5 nights", route: "Tarangire + Ngorongoro", season: "June-October", tripType: "Safaris", priceValue: 1890, price: "from $1,890 USD per person", image: "/assets/figma/itinerary-2.jpg", imageAlt: "Tanzania safari itinerary preview 2" },
+  { slug: sharedTripSlug, title: "Serengeti Fly-in Safari", duration: "4 nights", route: "Serengeti + Arusha", season: "All seasons", tripType: "Honeymoon", priceValue: 2890, price: "from $2,890 USD per person", image: "/assets/figma/itinerary-3.jpg", imageAlt: "Tanzania safari itinerary preview 3" },
 ]

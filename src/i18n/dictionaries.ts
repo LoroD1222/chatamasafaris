@@ -3,8 +3,8 @@ import type { HomeDictionary, NavItem } from "@/i18n/types";
 const asset = (name: string) => `/assets/figma/${name}`;
 
 const primaryNav: NavItem[] = [
-  { label: "Wildlife Safari", href: "/trips?category=Wildlife+Safari" },
-  { label: "Luxury Safari", href: "/trips?category=Luxury+Safari" },
+  { label: "Safaris", href: "/trips?category=Safaris" },
+  { label: "Honeymoon", href: "/trips?category=Honeymoon" },
   { label: "Zanzibar", href: "/trips?category=Zanzibar" },
   { label: "About us", href: "/en#about-us" }
 ];
@@ -106,13 +106,13 @@ const en: HomeDictionary = {
     items: [
       {
         icon: "🦁",
-        eyebrow: "Wildlife Safari",
-        title: "Classic Tanzania Safari",
+        eyebrow: "Safaris",
+        title: "Safaris",
         meta: [],
         description:
           "Private game drives across the Serengeti, Tarangire, and Ngorongoro Crater. See the Big Five with an expert guide by your side.",
-        cta: "Explore Wildlife Safari",
-        href: "/trips?category=Wildlife+Safari",
+        cta: "Explore Safaris",
+        href: "/trips?category=Safaris",
         image: {
           src: asset("tanzanian-widernes.png"),
           alt: "Tanzania wilderness with zebras on a safari road"
@@ -120,13 +120,13 @@ const en: HomeDictionary = {
       },
       {
         icon: "🌟",
-        eyebrow: "Luxury Safari",
-        title: "Premium Tanzania Safari",
+        eyebrow: "Honeymoon",
+        title: "Honeymoon",
         meta: [],
         description:
           "World-class lodges, private game drives, and fine dining in the wild - for travelers who want the very best of everything.",
-        cta: "Explore Luxury Safari",
-        href: "/trips?category=Luxury+Safari",
+        cta: "Explore Honeymoon",
+        href: "/trips?category=Honeymoon",
         image: {
           src: asset("category-kilimanjaro.jpg"),
           alt: "Tented camp below Mount Kilimanjaro"
