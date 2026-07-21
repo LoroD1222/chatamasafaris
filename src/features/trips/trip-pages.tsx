@@ -61,13 +61,6 @@ const itineraryAccommodationSlides = [
   { src: "/assets/figma/review-jeep.jpg", alt: "Guests enjoying a private Tanzania safari vehicle" },
   { src: "/assets/figma/itinerary-2.jpg", alt: "Tanzania wilderness road and plains" }
 ];
-const includedImageSlides = [
-  { src: "/assets/trips/trip-included.png", alt: "Safari landscape included in trip" },
-  { src: "/assets/figma/itinerary-2.jpg", alt: "Zebras resting beside a Tanzania wilderness road" },
-  { src: "/assets/trips/trip-hero-zebras.png", alt: "Zebras grazing in Serengeti grassland" },
-  { src: "/assets/figma/review-jeep.jpg", alt: "Guests riding in a private Tanzania safari vehicle" }
-];
-
 export function TripsListPage({ dictionary, initialTrips }: TripsListPageProps) {
   const sourceCards = initialTrips && initialTrips.length > 0
     ? initialTrips.filter((trip) => isActiveTripCategory(trip.tripType))
@@ -162,8 +155,22 @@ export function TripDetailPage({ dictionary, trip, similarTrips = [] }: TripDeta
     : [{ src: trip.heroImage || '/assets/trips/trip-hero-zebras.png', alt: trip.title }];
 
   const itineraryDays = trip.itinerary && trip.itinerary.length > 0
-    ? trip.itinerary.map((d) => ({ day: `DAY ${d.dayNumber}`, title: d.title, description: d.description, accommodation: d.accommodation }))
-    : [{ day: "DAY 1", title: "Tarangire National Park, Return To Arusha", description: "After breakfast, continue toward Tarangire National Park, one of Tanzania's most scenic and elephant-rich parks.", accommodation: "Ahadi Lodge" }];
+    ? trip.itinerary.map((d) => ({
+        day: `DAY ${d.dayNumber}`,
+        title: d.title,
+        description: d.description,
+        accommodation: d.accommodation,
+        images: d.images
+          ?.map((image) => ({ src: image.url, alt: image.alt || d.title }))
+          .filter((image) => Boolean(image.src)) || [],
+      }))
+    : [{
+        day: "DAY 1",
+        title: "Tarangire National Park, Return To Arusha",
+        description: "After breakfast, continue toward Tarangire National Park, one of Tanzania's most scenic and elephant-rich parks.",
+        accommodation: "Ahadi Lodge",
+        images: [],
+      }];
 
   const includedItems = trip.included && trip.included.length > 0
     ? trip.included
@@ -441,13 +448,6 @@ function TripSummaryCard({ dictionary, trip, className = "" }: { dictionary: Hom
   return (
     <aside className={`flex rounded-[10px] border border-[#1C1612]/12 bg-white shadow-[0_22px_44px_rgba(28,22,18,0.08)] ${className}`}>
       <div className="flex min-h-full w-full flex-col px-6 py-6">
-        <div className="border-b border-[#1C1612]/13 pb-5">
-          <RatingStars className="size-6" />
-          <div className="mt-3 flex items-end gap-3">
-            <p className="text-[42px] font-bold leading-none text-[#1C1612]">{trip.reviewScore || 4.9}</p>
-            <p className="pb-1 text-[13px] font-semibold leading-[1.4] text-[#1C1612]/62">from {trip.reviewCount || 312} verified reviews</p>
-          </div>
-        </div>
         <div className="grid gap-3 border-b border-[#1C1612]/13 py-5">
           <div className="flex items-center justify-between rounded-[8px] bg-[var(--astra-cream-panel)] px-4 py-3">
             <span className="flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.05em] text-[#1C1612]/62"><TrendingUp className="size-4 text-[var(--astra-primary-amber)]" aria-hidden="true" />In Popularity</span>
@@ -516,23 +516,19 @@ function BuiltForContent({ trip, className = "" }: { trip: TripDetail; className
 }
 
 function ReviewContactCard({ dictionary, trip, className = "" }: { dictionary: HomeDictionary; trip: TripDetail; className?: string }) {
+  const reviewAuthor = trip.reviews?.[0]?.authorName || "Catama Safaris guest";
+
   return (
     <aside className={`self-start rounded-[10px] border border-[#1C1612]/12 bg-white p-7 shadow-[0_16px_36px_rgba(28,22,18,0.06)] ${className}`}>
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#1C1612]/13 pb-5">
-        <div>
-          <p className="flex items-center gap-3 text-[26px] font-bold leading-none text-[#E07B39]">
-            {trip.reviewScore || 4.9}
-            <RatingStars className="size-3.5" />
-          </p>
-        </div>
-        <div className="inline-flex items-center gap-2 rounded-full border border-[#1f8f5a]/25 bg-[#effaf4] px-3 py-1.5 text-[12px] font-bold leading-none text-[#1f8f5a]">
-          <span className="flex items-center gap-0.5" aria-hidden="true"><span className="size-2 rounded-full bg-[#1f8f5a]" /><span className="size-2 rounded-full bg-[#1f8f5a]" /><span className="size-2 rounded-full bg-[#1f8f5a]" /></span>
-          TripAdvisor
-        </div>
-      </div>
-      <p className="border-b border-[#1C1612]/13 py-5 text-[15px] font-semibold leading-[1.6] text-[#1C1612]/75">
-        {trip.featuredReviewQuote || 'Review from TripAdvisor "The river crossing was unlike anything I\'ve ever seen in my life."'}
-      </p>
+      <blockquote className="border-b border-[#1C1612]/13 pb-5">
+        <RatingStars className="size-4" />
+        <p className="mt-4 text-[17px] font-semibold italic leading-[1.65] text-[#1C1612]/75">
+          &ldquo;{trip.featuredReviewQuote || "The river crossing was unlike anything I've ever seen in my life."}&rdquo;
+        </p>
+        <footer className="mt-4 text-[14px] font-bold leading-none text-[#1C1612]">
+          {reviewAuthor}
+        </footer>
+      </blockquote>
       <div className="pt-5">
         <p className="text-[15px] font-semibold leading-[1.6]">For extra information please contact us</p>
         <p className="mt-3 flex flex-wrap gap-x-5 gap-y-3 text-[13px] font-bold leading-[1.6] text-[#1C1612]/65">
@@ -580,7 +576,7 @@ function TripTabs() {
   }, []);
 
   return (
-    <div className="sticky left-0 top-0 z-[90] bg-[#F0E9DE]">
+    <div className="sticky left-0 top-0 z-[100000] bg-[#F0E9DE]">
       <div className={pageContainer}>
         <nav className="flex h-[58px] items-center rounded-[10px] border border-[#1C1612]/10 bg-[#F0E9DE] px-2 text-[11px] font-bold leading-[1.2] text-[#1C1612]/70 shadow-[0_8px_20px_rgba(28,22,18,0.04)] sm:px-4 sm:text-[13px] md:px-8 md:text-[15px]" aria-label="Trip sections">
           <div className="grid h-full w-full grid-cols-5 items-center">
@@ -614,68 +610,56 @@ function PlannerQuoteCard({ dictionary }: TripPageProps) {
   );
 }
 
-function ItinerarySection({ itineraryDays, gallerySlides }: { itineraryDays: { day: string; title: string; description: string; accommodation: string }[]; gallerySlides: { src: string; alt: string }[] }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const days = itineraryDays.length > 0 ? itineraryDays : [{ day: "DAY 1", title: "Arrival", description: "", accommodation: "" }];
-  const day = days[activeIndex];
-  const showPrev = () => setActiveIndex((i) => (i === 0 ? days.length - 1 : i - 1));
-  const showNext = () => setActiveIndex((i) => (i === days.length - 1 ? 0 : i + 1));
+type ItineraryDayCard = {
+  day: string;
+  title: string;
+  description: string;
+  accommodation: string;
+  images: { src: string; alt: string }[];
+};
+
+function ItinerarySection({ itineraryDays, gallerySlides }: { itineraryDays: ItineraryDayCard[]; gallerySlides: { src: string; alt: string }[] }) {
+  const days = itineraryDays.length > 0 ? itineraryDays : [{ day: "DAY 1", title: "Arrival", description: "", accommodation: "", images: [] }];
+
   return (
     <section id="itinerary" className={`${pageContainer} scroll-mt-[82px] py-[72px]`}>
       <div className="flex items-center gap-8">
         <h2 className="shrink-0 text-[34px] font-semibold leading-[1.15] text-[#1C1612] md:text-[38px]">Trip Itinerary</h2>
         <div className="h-[2px] flex-1 bg-[#F0E9DE]" />
       </div>
-      <article className="mt-[56px] grid overflow-hidden rounded-[8px] border border-[#1C1612]/10 bg-white shadow-[0_18px_45px_rgba(28,22,18,0.08)] lg:grid-cols-[605px_64px_minmax(0,1fr)]">
-        <div className="grid gap-4 p-5">
-          <ItineraryImageSlider images={gallerySlides} sizes="565px" />
-          <ItineraryImageSlider images={itineraryAccommodationSlides} sizes="565px" />
-        </div>
-        <div className="relative hidden lg:block" aria-hidden="true">
-          <div className="absolute left-1/2 top-5 h-[calc(100%-40px)] w-px -translate-x-1/2 border-l border-dashed border-[#1C1612]/25" />
-          <Image src="/assets/trips/itinerary-map-pin.svg" alt="" width={49} height={49} className="absolute left-1/2 top-[92px] z-10 size-[49px] -translate-x-1/2" />
-          <Image src="/assets/trips/itinerary-bed.svg" alt="" width={49} height={49} className="absolute left-1/2 top-[358px] z-10 size-[49px] -translate-x-1/2" />
-        </div>
-        <div className="px-6 pb-10 pt-8 lg:px-0 lg:pb-0 lg:pr-10 lg:pt-[46px]">
-          <div className="lg:min-h-[284px]">
-            <p className="text-[13px] font-bold uppercase leading-none tracking-[0.12em] text-[#E07B39]">{day.day}</p>
-            <h3 className="mt-5 max-w-[540px] text-[31px] font-semibold leading-[1.16] text-[#1C1612] md:text-[34px]">{day.title}</h3>
-            <p className="mt-7 max-w-[690px] text-[16px] font-semibold leading-[1.68] text-[#1C1612]">{day.description}</p>
-          </div>
-          <div className="mt-8 lg:mt-[36px]">
-            <h4 className="text-[30px] font-semibold leading-[1.16] text-[#1C1612]">Accommodations:</h4>
-            <p className="mt-5 max-w-[650px] text-[16px] font-semibold leading-[1.65] text-[#1C1612]">{day.accommodation}</p>
-          </div>
-          {days.length > 1 && (
-            <div className="mt-8 flex items-center gap-4">
-              <button type="button" onClick={showPrev} className="grid h-10 w-10 place-items-center rounded-full border border-[#1C1612]/15 bg-white shadow-sm transition hover:bg-[#F0E9DE]" aria-label="Previous day"><ChevronLeft className="size-5 text-[#1C1612]" /></button>
-              <span className="text-[13px] font-semibold text-[#1C1612]/60">{activeIndex + 1} / {days.length}</span>
-              <button type="button" onClick={showNext} className="grid h-10 w-10 place-items-center rounded-full border border-[#1C1612]/15 bg-white shadow-sm transition hover:bg-[#F0E9DE]" aria-label="Next day"><ChevronRight className="size-5 text-[#1C1612]" /></button>
-            </div>
-          )}
-        </div>
-      </article>
+      <div className="mt-[56px] grid gap-6">
+        {days.map((day, index) => {
+          const dayImage = day.images[0] || gallerySlides[index % gallerySlides.length] || itineraryAccommodationSlides[0];
+
+          return (
+            <article key={`${day.day}-${day.title}`} className="grid overflow-hidden rounded-[8px] border border-[#1C1612]/10 bg-white shadow-[0_18px_45px_rgba(28,22,18,0.08)] lg:grid-cols-[420px_minmax(0,1fr)]">
+              <ItineraryImage images={[dayImage]} sizes="420px" />
+              <div className="px-6 py-8 lg:order-2 lg:px-10 lg:py-9">
+                <p className="text-[13px] font-bold uppercase leading-none tracking-[0.12em] text-[#E07B39]">{day.day}</p>
+                <h3 className="mt-4 max-w-[680px] text-[27px] font-semibold leading-[1.18] text-[#1C1612] md:text-[31px]">{day.title}</h3>
+                <p className="mt-6 max-w-[760px] text-[16px] font-semibold leading-[1.68] text-[#1C1612]">{day.description}</p>
+                <div className="mt-7 border-t border-[#1C1612]/13 pt-6">
+                  <h4 className="text-[22px] font-semibold leading-[1.18] text-[#1C1612]">Accommodations:</h4>
+                  <p className="mt-3 max-w-[650px] text-[16px] font-semibold leading-[1.65] text-[#1C1612]">{day.accommodation}</p>
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
     </section>
   );
 }
 
-function ItineraryImageSlider({ images, sizes, label }: { images: { src: string; alt: string }[]; sizes: string; label?: string }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const hasMultipleImages = images.length > 1;
-  const showPrevious = () => setActiveIndex((index) => (index === 0 ? images.length - 1 : index - 1));
-  const showNext = () => setActiveIndex((index) => (index === images.length - 1 ? 0 : index + 1));
+function ItineraryImage({ images, sizes, label, className = "" }: { images: { src: string; alt: string }[]; sizes: string; label?: string; className?: string }) {
+  const image = images[0];
+
   return (
-    <div className="relative aspect-[589/300] overflow-hidden rounded-[10px] bg-[#1C1612]">
-      {images.map((image, index) => (
-        <Image key={image.src} src={image.src} alt={index === activeIndex ? image.alt : ""} fill sizes={sizes} loading="eager" unoptimized aria-hidden={index === activeIndex ? undefined : true} className={`object-cover transition-opacity duration-300 ${index === activeIndex ? "opacity-100" : "opacity-0"}`} />
-      ))}
-      {label ? <span className="absolute left-5 top-5 rounded-[8px] bg-white/92 px-5 py-3 text-[15px] font-bold leading-none text-[#1C1612] shadow-[0_12px_24px_rgba(28,22,18,0.12)]">{label}</span> : null}
-      {hasMultipleImages ? (
-        <>
-          <button type="button" onClick={showPrevious} className="absolute left-0 top-1/2 z-20 grid h-11 w-[70px] -translate-y-1/2 place-items-center rounded-r-[8px] bg-[#F0E9DE] text-[#1C1612] shadow-[0_10px_22px_rgba(28,22,18,0.12)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]" aria-label="Previous itinerary image"><ChevronLeft className="size-7" aria-hidden="true" /></button>
-          <button type="button" onClick={showNext} className="absolute right-0 top-1/2 z-20 grid h-11 w-[70px] -translate-y-1/2 place-items-center rounded-l-[8px] bg-[#F0E9DE] text-[#1C1612] shadow-[0_10px_22px_rgba(28,22,18,0.12)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]" aria-label="Next itinerary image"><ChevronRight className="size-7" aria-hidden="true" /></button>
-        </>
+    <div className={`relative min-h-[240px] overflow-hidden bg-[#1C1612] lg:min-h-full ${className}`}>
+      {image ? (
+        <Image src={image.src} alt={image.alt} fill sizes={sizes} loading="eager" unoptimized className="object-cover" />
       ) : null}
+      {label ? <span className="absolute left-5 top-5 rounded-[8px] bg-white/92 px-5 py-3 text-[15px] font-bold leading-none text-[#1C1612] shadow-[0_12px_24px_rgba(28,22,18,0.12)]">{label}</span> : null}
     </div>
   );
 }
@@ -697,7 +681,6 @@ function IncludedSection({ dictionary, includedItems, priceTiers }: { dictionary
           ))}
         </ul>
       </div>
-      <IncludedImageSlider images={includedImageSlides} />
       <div id="pricing" className="scroll-mt-[82px] pt-8 lg:col-span-2">
         <div className="mx-auto flex max-w-[1110px] items-center gap-7">
           <div className="h-[2px] flex-1 bg-[#F0E9DE]" />
@@ -718,26 +701,6 @@ function IncludedSection({ dictionary, includedItems, priceTiers }: { dictionary
         </PlannerDialogButton>
       </div>
     </section>
-  );
-}
-
-function IncludedImageSlider({ images }: { images: { src: string; alt: string }[] }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const hasMultipleImages = images.length > 1;
-  const showPrevious = () => setActiveIndex((index) => (index === 0 ? images.length - 1 : index - 1));
-  const showNext = () => setActiveIndex((index) => (index === images.length - 1 ? 0 : index + 1));
-  return (
-    <div className="relative min-h-[357px] overflow-hidden rounded-[8px] bg-[#1C1612]">
-      {images.map((image, index) => (
-        <Image key={image.src} src={image.src} alt={index === activeIndex ? image.alt : ""} fill sizes="340px" loading="eager" unoptimized aria-hidden={index === activeIndex ? undefined : true} className={`object-cover transition-opacity duration-300 ${index === activeIndex ? "opacity-100" : "opacity-0"}`} />
-      ))}
-      {hasMultipleImages ? (
-        <>
-          <button type="button" onClick={showPrevious} className="absolute left-0 top-1/2 z-20 grid h-10 w-14 -translate-y-1/2 place-items-center rounded-r-[8px] bg-[#F0E9DE] text-[#1C1612] shadow-[0_10px_22px_rgba(28,22,18,0.12)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E07B39]" aria-label="Previous included image"><ChevronLeft className="size-6" aria-hidden="true" /></button>
-          <button type="button" onClick={showNext} className="absolute right-0 top-1/2 z-20 grid h-10 w-14 -translate-y-1/2 place-items-center rounded-l-[8px] bg-[#F0E9DE] text-[#1C1612] shadow-[0_10px_22px_rgba(28,22,18,0.12)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E07B39]" aria-label="Next included image"><ChevronRight className="size-6" aria-hidden="true" /></button>
-        </>
-      ) : null}
-    </div>
   );
 }
 

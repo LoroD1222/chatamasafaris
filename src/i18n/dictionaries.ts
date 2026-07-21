@@ -119,7 +119,7 @@ const en: HomeDictionary = {
         }
       },
       {
-        icon: "🌟",
+        icon: "💍",
         eyebrow: "Honeymoon",
         title: "Honeymoon",
         meta: [],
@@ -128,8 +128,8 @@ const en: HomeDictionary = {
         cta: "Explore Honeymoon",
         href: "/trips?category=Honeymoon",
         image: {
-          src: asset("category-kilimanjaro.jpg"),
-          alt: "Tented camp below Mount Kilimanjaro"
+          src: asset("category-honeymoon.jpg"),
+          alt: "Couple holding hands on a Tanzania safari honeymoon"
         }
       },
       {
