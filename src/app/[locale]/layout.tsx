@@ -5,8 +5,8 @@ import type { ReactNode } from "react";
 import { getTextDirection, isLocale, locales, type Locale } from "@/i18n/config";
 
 export const metadata: Metadata = {
-  title: "Catama Safaris | Private Tanzania Safaris for USA Travelers",
-  description: "Plan a private Tanzania safari with Catama Safaris: expert guides, USD pricing, vetted camps, migration timing, and planner support.",
+  title: "Chatama Safaris | Private Tanzania Safari Tours",
+  description: "Private guided safaris across the Serengeti, Ngorongoro Crater, and Zanzibar. Tailor-made Tanzania trips with expert local guides. Start planning your safari today.",
   icons: {
     icon: [
       { url: "/icon.png?v=2", type: "image/png", sizes: "59x59" },

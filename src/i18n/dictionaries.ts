@@ -206,11 +206,11 @@ const en: HomeDictionary = {
   },
   itineraries: {
     eyebrow: "WHAT WE OFFER",
-    titleLead: "Signature Safari",
-    titleHighlight: "Experiences",
+    titleLead: "Our Safari Packages",
+    titleHighlight: "",
     titleTrail: "",
     description:
-      "Private guided Tanzania safaris - planned for you, priced in USD, backed by 15 years of getting Americans to Africa.",
+      "Every trip is private, guided by experts, and built around what you want to see.",
     cta: "View all packages",
     items: itineraryImages.map((image, index) => ({
       slug: itinerarySlugs[index],

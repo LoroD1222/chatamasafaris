@@ -709,7 +709,7 @@ function IncludedSection({ dictionary, includedItems, excludedItems, priceTiers 
           </div>
         ) : null}
       </div>
-      <div id="pricing" className="scroll-mt-[82px] pt-8 lg:col-span-2">
+      <div id="pricing" className="scroll-mt-[82px] pt-[82px] lg:col-span-2">
         <div className="mx-auto flex max-w-[1110px] items-center gap-7">
           <div className="h-[2px] flex-1 bg-[#F0E9DE]" />
           <h3 className="shrink-0 text-center text-[27px] font-medium leading-[1.3] text-[#1C1612]">All-inclusive rates in USD</h3>
