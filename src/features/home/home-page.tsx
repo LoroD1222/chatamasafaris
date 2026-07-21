@@ -238,8 +238,7 @@ function ItinerariesSection({ locale, dictionary, recentTrips }: { locale: Local
                     <div className="absolute inset-x-0 bottom-0 min-h-[128px] rounded-b-lg bg-[#654d38]/40 px-5 pb-[25px] pt-5 text-white backdrop-blur-sm">
                       <div className="absolute inset-x-0 top-0 h-[3px] bg-white/15" />
                       <h3 className="text-sm font-bold leading-[1.6]">{trip.title} - <span className="font-semibold">{trip.duration}</span></h3>
-                      <p className="mt-1 text-sm leading-[1.51]">{trip.route} - {trip.season}</p>
-                      <span className="mt-3 inline-flex h-[27px] items-center rounded-full bg-astra-gold px-3 text-sm font-semibold leading-[1.6] text-astra-cocoa transition group-hover:bg-astra-gold/90">See Itinerary -&gt;</span>
+                      <span className="mt-4 inline-flex h-[27px] items-center rounded-full bg-astra-gold px-3 text-sm font-semibold leading-[1.6] text-astra-cocoa transition group-hover:bg-astra-gold/90">See Itinerary -&gt;</span>
                     </div>
                   </a>
                 ))
@@ -279,10 +278,7 @@ function ItineraryCard({ locale, item }: { locale: Locale; item: Itinerary }) {
         <h3 className="text-sm font-bold leading-[1.6]">
           {item.title} - <span className="font-semibold">{item.duration}</span>
         </h3>
-        <p className="mt-1 text-sm leading-[1.51]">
-          {item.route} - {item.season}
-        </p>
-        <span className="mt-3 inline-flex h-[27px] items-center rounded-full bg-astra-gold px-3 text-sm font-semibold leading-[1.6] text-astra-cocoa transition group-hover:bg-astra-gold/90">
+        <span className="mt-4 inline-flex h-[27px] items-center rounded-full bg-astra-gold px-3 text-sm font-semibold leading-[1.6] text-astra-cocoa transition group-hover:bg-astra-gold/90">
           See Itinerary -&gt;
         </span>
       </div>

@@ -150,9 +150,11 @@ export function TripsListPage({ dictionary, initialTrips }: TripsListPageProps) 
 }
 
 export function TripDetailPage({ dictionary, trip, similarTrips = [] }: TripDetailPageProps) {
-  const gallerySlides = trip.gallery && trip.gallery.length > 0
-    ? trip.gallery.map((g) => ({ src: g.url, alt: g.alt || trip.title }))
-    : [{ src: trip.heroImage || '/assets/trips/trip-hero-zebras.png', alt: trip.title }];
+  const gallerySlides = dedupeImages(
+    trip.gallery && trip.gallery.length > 0
+      ? trip.gallery.map((g) => ({ src: g.url, alt: g.alt || trip.title }))
+      : [{ src: trip.heroImage || '/assets/trips/trip-hero-zebras.png', alt: trip.title }]
+  );
 
   const itineraryDays = trip.itinerary && trip.itinerary.length > 0
     ? trip.itinerary.map((d) => ({
@@ -175,6 +177,10 @@ export function TripDetailPage({ dictionary, trip, similarTrips = [] }: TripDeta
   const includedItems = trip.included && trip.included.length > 0
     ? trip.included
     : ["Professional English-speaking guide", "Private luxury 4x4 safari vehicle", "All park entry fees", "2 nights camp accommodation"];
+
+  const excludedItems = trip.notIncluded && trip.notIncluded.length > 0
+    ? trip.notIncluded
+    : ["International flights", "Travel insurance", "Visa fees", "Tips and personal expenses"];
 
   const faqs = trip.faqs && trip.faqs.length > 0
     ? trip.faqs
@@ -236,7 +242,7 @@ export function TripDetailPage({ dictionary, trip, similarTrips = [] }: TripDeta
           </section>
 
           <ItinerarySection itineraryDays={itineraryDays} gallerySlides={gallerySlides} />
-          <IncludedSection dictionary={dictionary} includedItems={includedItems} priceTiers={priceTiers} />
+          <IncludedSection dictionary={dictionary} includedItems={includedItems} excludedItems={excludedItems} priceTiers={priceTiers} />
         </div>
         <BestTimeSection dictionary={dictionary} seasons={seasons} />
         <WidePlannerBand dictionary={dictionary} />
@@ -250,6 +256,16 @@ export function TripDetailPage({ dictionary, trip, similarTrips = [] }: TripDeta
   );
 }
 
+function dedupeImages(images: { src: string; alt: string }[]) {
+  const seen = new Set<string>();
+
+  return images.filter((image) => {
+    if (!image.src || seen.has(image.src)) return false;
+    seen.add(image.src);
+    return true;
+  });
+}
+
 function TripHeader({ dictionary }: TripPageProps) {
   return (
     <header className="bg-[#F0E9DE] text-[#1C1612]">
@@ -257,7 +273,7 @@ function TripHeader({ dictionary }: TripPageProps) {
         <div className="mx-auto flex h-[37px] max-w-[1150px] items-center justify-between gap-3 px-5 text-[12px] font-bold leading-[1.6] sm:text-[13px]">
           <p className="flex min-w-0 items-center gap-2 uppercase tracking-[0.08em] text-[#1C1612]/40 sm:pl-4">
             <span className="size-[15px] shrink-0 bg-current [mask:url('/assets/figma/nav-bar-star.png')_center/contain_no-repeat] sm:size-[18px]" aria-hidden="true" />
-            <span className="truncate">Safari Operator for USA Travelers</span>
+            <span className="truncate">Highest Rated Tanzania Safari Operator</span>
           </p>
           <div className="ms-auto flex min-w-0 shrink-0 items-center gap-7 text-[#1C1612]/65">
             <a href={`tel:${dictionary.topBar.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-1 underline underline-offset-2">
@@ -361,8 +377,7 @@ function TripCardGrid({ className = "", limit, cards = tripCards }: { className?
           <div className="absolute right-[18px] top-[18px] rounded-[5px] border border-white/45 bg-[#E07B39] px-3 py-1 text-[11px] font-bold leading-[1.5] text-white backdrop-blur">from ${trip.priceValue?.toLocaleString("en-US")} USD</div>
           <div className="absolute inset-x-0 bottom-0 rounded-b-[8px] border-t border-white/15 bg-[#1C1612]/60 px-[19px] pb-[25px] pt-4 backdrop-blur-[2.5px]">
             <h2 className="text-[14px] font-bold leading-[1.6]">{trip.title} - <span className="font-semibold">{trip.duration}</span></h2>
-            <p className="text-[14px] font-semibold leading-[1.51] text-white/85">{trip.route} - {trip.season}</p>
-            <span className="mt-3 inline-flex h-[27px] items-center gap-1 rounded-full bg-[#E07B39] px-3 text-[14px] font-semibold leading-none text-white">See Itinerary<ArrowRight className="size-3.5" aria-hidden="true" /></span>
+            <span className="mt-4 inline-flex h-[27px] items-center gap-1 rounded-full bg-[#E07B39] px-3 text-[14px] font-semibold leading-none text-white">See Itinerary<ArrowRight className="size-3.5" aria-hidden="true" /></span>
           </div>
         </Link>
       ))}
@@ -664,7 +679,7 @@ function ItineraryImage({ images, sizes, label, className = "" }: { images: { sr
   );
 }
 
-function IncludedSection({ dictionary, includedItems, priceTiers }: { dictionary: HomeDictionary; includedItems: string[]; priceTiers: { id: string; people: string; price: string }[] }) {
+function IncludedSection({ dictionary, includedItems, excludedItems, priceTiers }: { dictionary: HomeDictionary; includedItems: string[]; excludedItems: string[]; priceTiers: { id: string; people: string; price: string }[] }) {
   return (
     <section id="inclusions" className={`${pageContainer} grid scroll-mt-[82px] gap-10 py-[72px] lg:grid-cols-[minmax(0,1fr)_340px]`}>
       <div>
@@ -680,6 +695,22 @@ function IncludedSection({ dictionary, includedItems, priceTiers }: { dictionary
             </li>
           ))}
         </ul>
+        {excludedItems.length > 0 ? (
+          <div className="mt-12 border-t border-[#1C1612]/13 pt-10">
+            <div className="flex items-center gap-4">
+              <h2 className="shrink-0 text-[30px] font-semibold leading-[1.2]">What is excluded?</h2>
+              <div className="h-[2px] flex-1 bg-[#F0E9DE]" />
+            </div>
+            <ul className="mt-10 grid gap-x-9 gap-y-5 sm:grid-cols-2">
+              {excludedItems.map((item, index) => (
+                <li key={`${item}-${index}`} className="flex items-center gap-3 text-[13px] font-semibold leading-[1.5] text-[#1C1612]/75">
+                  <span className="grid size-[25px] shrink-0 place-items-center rounded-full bg-[#1C1612]/12 text-[#1C1612]/65"><X className="size-4" strokeWidth={3} aria-hidden="true" /></span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </div>
       <div id="pricing" className="scroll-mt-[82px] pt-8 lg:col-span-2">
         <div className="mx-auto flex max-w-[1110px] items-center gap-7">

@@ -7,7 +7,12 @@ export const metadata: Metadata = {
   title: "Catama Safaris | Private Tanzania Safaris for USA Travelers",
   description: "Plan a private Tanzania safari with Catama Safaris: expert guides, USD pricing, vetted camps, migration timing, and planner support.",
   icons: {
-    icon: "/icon.png"
+    icon: [
+      { url: "/icon.png?v=2", type: "image/png", sizes: "59x59" },
+      { url: "/favicon.ico?v=2", type: "image/x-icon", sizes: "59x59" }
+    ],
+    shortcut: ["/icon.png?v=2"],
+    apple: [{ url: "/icon.png?v=2", type: "image/png", sizes: "59x59" }]
   }
 };
 

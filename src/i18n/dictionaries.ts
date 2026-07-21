@@ -65,7 +65,7 @@ const en: HomeDictionary = {
     logoAlt: "Chatama Safaris"
   },
   topBar: {
-    label: "Safari Operator for USA Travelers",
+    label: "Highest Rated Tanzania Safari Operator",
     phone: "+255 62 674 7949",
     email: "info@chatamasafaris.com"
   },
@@ -81,7 +81,7 @@ const en: HomeDictionary = {
     titleAfterBreakLead: "the Heart of",
     titleHighlight: "Africa",
     description:
-      "Private guided Tanzania safaris - planned for you, priced in USD, backed by 15 years of getting Americans to Africa.",
+      "Fully private, expertly guided, and planned around exactly how you want to travel.",
     primaryCta: "Let's Start Planning",
     secondaryCta: "Check Available Tours",
     image: {
