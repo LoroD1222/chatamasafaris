@@ -182,7 +182,7 @@ function WhySection({ dictionary }: { dictionary: HomeDictionary }) {
           </h2>
           <p className="mt-7 text-xl font-semibold leading-[1.14]">{dictionary.why.plannerLabel}</p>
           <div className="mt-7 grid gap-4 text-base font-bold leading-[1.6] text-white/65">
-            <ContactLink href={`tel:${dictionary.why.phone.replace(/\s/g, "")}`} icon={Phone}>
+            <ContactLink href={`https://wa.me/${dictionary.why.phone.replace(/\D/g, "")}`} icon={Phone}>
               {dictionary.why.phone}
             </ContactLink>
             <ContactLink href={`mailto:${dictionary.why.email}`} icon={Mail}>

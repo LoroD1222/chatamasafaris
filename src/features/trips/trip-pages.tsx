@@ -276,7 +276,7 @@ function TripHeader({ dictionary }: TripPageProps) {
             <span className="truncate">Highest Rated Tanzania Safari Operator</span>
           </p>
           <div className="ms-auto flex min-w-0 shrink-0 items-center gap-7 text-[#1C1612]/65">
-            <a href={`tel:${dictionary.topBar.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-1 underline underline-offset-2">
+            <a href={`https://wa.me/${dictionary.topBar.phone.replace(/\D/g, "")}`} className="inline-flex items-center gap-1 underline underline-offset-2">
               <Phone className="size-3.5" aria-hidden="true" />
               {dictionary.topBar.phone}
             </a>
@@ -547,7 +547,7 @@ function ReviewContactCard({ dictionary, trip, className = "" }: { dictionary: H
       <div className="pt-5">
         <p className="text-[15px] font-semibold leading-[1.6]">For extra information please contact us</p>
         <p className="mt-3 flex flex-wrap gap-x-5 gap-y-3 text-[13px] font-bold leading-[1.6] text-[#1C1612]/65">
-          <a href={`tel:${dictionary.topBar.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-2 hover:text-[#E07B39]"><Phone className="size-4 text-[#E07B39]" aria-hidden="true" />{dictionary.topBar.phone}</a>
+          <a href={`https://wa.me/${dictionary.topBar.phone.replace(/\D/g, "")}`} className="inline-flex items-center gap-2 hover:text-[#E07B39]"><Phone className="size-4 text-[#E07B39]" aria-hidden="true" />{dictionary.topBar.phone}</a>
           <a href={`mailto:${dictionary.topBar.email}`} className="inline-flex items-center gap-2 hover:text-[#E07B39]"><Mail className="size-4 text-[#E07B39]" aria-hidden="true" />{dictionary.topBar.email}</a>
         </p>
       </div>
@@ -682,22 +682,20 @@ function ItineraryImage({ images, sizes, label, className = "" }: { images: { sr
 function IncludedSection({ dictionary, includedItems, excludedItems, priceTiers }: { dictionary: HomeDictionary; includedItems: string[]; excludedItems: string[]; priceTiers: { id: string; people: string; price: string }[] }) {
   return (
     <section id="inclusions" className={`${pageContainer} scroll-mt-[82px] py-[72px]`}>
-      <div className={excludedItems.length > 0 ? "grid gap-10 md:grid-cols-2 md:items-start" : ""}>
-        <div className="flex items-center gap-4">
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-4">
-              <h2 className="shrink-0 text-[30px] font-semibold leading-[1.2]">What is included?</h2>
-              <div className="h-[2px] flex-1 bg-[#F0E9DE]" />
-            </div>
-            <ul className={`mt-10 grid gap-x-9 gap-y-5 ${excludedItems.length > 0 ? "" : "sm:grid-cols-2"}`}>
-              {includedItems.map((item, index) => (
-                <li key={`${item}-${index}`} className="flex items-center gap-3 text-[13px] font-semibold leading-[1.5] text-[#1C1612]/75">
-                  <span className="grid size-[25px] shrink-0 place-items-center rounded-full bg-[#E07B39] text-white"><Check className="size-4" strokeWidth={3} aria-hidden="true" /></span>
-                  {item}
-                </li>
-              ))}
-            </ul>
+      <div className={excludedItems.length > 0 ? "mx-auto grid max-w-[1040px] gap-10 md:grid-cols-2 md:items-start" : ""}>
+        <div className="min-w-0">
+          <div className="flex items-center gap-4">
+            <h2 className="shrink-0 text-[30px] font-semibold leading-[1.2]">What is included?</h2>
+            <div className="h-[2px] flex-1 bg-[#F0E9DE]" />
           </div>
+          <ul className={`mt-10 grid gap-x-9 gap-y-5 ${excludedItems.length > 0 ? "" : "sm:grid-cols-2"}`}>
+            {includedItems.map((item, index) => (
+              <li key={`${item}-${index}`} className="flex items-center gap-3 text-[13px] font-semibold leading-[1.5] text-[#1C1612]/75">
+                <span className="grid size-[25px] shrink-0 place-items-center rounded-full bg-[#E07B39] text-white"><Check className="size-4" strokeWidth={3} aria-hidden="true" /></span>
+                {item}
+              </li>
+            ))}
+          </ul>
         </div>
         {excludedItems.length > 0 ? (
           <div className="border-t border-[#1C1612]/13 pt-10 md:border-t-0 md:pt-0">
@@ -708,7 +706,7 @@ function IncludedSection({ dictionary, includedItems, excludedItems, priceTiers 
             <ul className="mt-10 grid gap-x-9 gap-y-5">
               {excludedItems.map((item, index) => (
                 <li key={`${item}-${index}`} className="flex items-center gap-3 text-[13px] font-semibold leading-[1.5] text-[#1C1612]/75">
-                  <span className="grid size-[25px] shrink-0 place-items-center rounded-full bg-[#1C1612]/12 text-[#1C1612]/65"><X className="size-4" strokeWidth={3} aria-hidden="true" /></span>
+                  <span className="grid size-[25px] shrink-0 place-items-center rounded-full bg-[#E07B39] text-white"><X className="size-4" strokeWidth={3} aria-hidden="true" /></span>
                   {item}
                 </li>
               ))}

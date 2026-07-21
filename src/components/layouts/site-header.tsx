@@ -21,7 +21,7 @@ export function SiteHeader({ locale, dictionary }: { locale: Locale; dictionary:
             <span className="truncate">{dictionary.topBar.label}</span>
           </p>
           <div className="ms-auto flex min-w-0 shrink-0 items-center gap-5 text-astra-cocoa/65">
-            <a href={`tel:${dictionary.topBar.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-1 underline underline-offset-2">
+            <a href={`https://wa.me/${dictionary.topBar.phone.replace(/\D/g, "")}`} className="inline-flex items-center gap-1 underline underline-offset-2">
               <Phone className="size-3.5" aria-hidden="true" />
               {dictionary.topBar.phone}
             </a>

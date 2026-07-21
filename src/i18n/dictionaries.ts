@@ -66,7 +66,7 @@ const en: HomeDictionary = {
   },
   topBar: {
     label: "Highest Rated Tanzania Safari Operator",
-    phone: "+255 62 674 7949",
+    phone: "+255 787 453 075",
     email: "info@chatamasafaris.com"
   },
   nav: primaryNav,
@@ -162,7 +162,7 @@ const en: HomeDictionary = {
     titleLead: "Built for travelers",
     titleHighlight: "who expect more",
     plannerLabel: "Talk to a safari planner",
-    phone: "+255 62 674 7949",
+    phone: "+255 787 453 075",
     email: "info@chatamasafaris.com",
     cta: "Talk to Safari Planner",
     items: [
