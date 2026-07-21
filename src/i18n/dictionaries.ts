@@ -6,7 +6,7 @@ const primaryNav: NavItem[] = [
   { label: "Safaris", href: "/trips?category=Safaris" },
   { label: "Honeymoon", href: "/trips?category=Honeymoon" },
   { label: "Zanzibar", href: "/trips?category=Zanzibar" },
-  { label: "About us", href: "/en#about-us" }
+  { label: "About us", href: "/#about-us" }
 ];
 
 const plannerFields: HomeDictionary["planner"]["fields"] = [

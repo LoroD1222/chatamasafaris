@@ -49,7 +49,7 @@ const navLinks = [
   { label: "Safaris", href: "/trips?category=Safaris" },
   { label: "Honeymoon", href: "/trips?category=Honeymoon" },
   { label: "Zanzibar", href: "/trips?category=Zanzibar" },
-  { label: "About us", href: "/en#about-us" }
+  { label: "About us", href: "/#about-us" }
 ];
 
 const pageContainer = "mx-auto max-w-[1200px] px-6";
@@ -289,7 +289,7 @@ function TripHeader({ dictionary }: TripPageProps) {
       </div>
       <div className="border-b border-[#1C1612]/10 bg-[#F0E9DE]">
         <div className="mx-auto flex h-[100px] max-w-[1150px] items-center justify-between gap-8 px-5">
-          <Link href="/en" className="relative h-[92px] w-[219px] shrink-0" aria-label="Catama Safaris">
+          <Link href="/" className="relative h-[92px] w-[219px] shrink-0" aria-label="Catama Safaris">
             <Image src="/assets/figma/logo-header.png" alt="Catama Safaris" fill priority sizes="219px" className="object-contain" />
           </Link>
           <nav className="hidden items-center gap-8 text-[15px] font-semibold leading-[1.6] md:flex" aria-label="Primary">
@@ -412,7 +412,6 @@ function HeroGallery({ images, className = "" }: { images: { src: string; alt: s
         <button type="button" onClick={() => setIsLightboxOpen(true)} className="absolute inset-0 cursor-zoom-in outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--astra-primary-amber)]" aria-label={`Open image gallery: ${currentImage.alt}`}>
           <Image src={currentImage.src} alt={currentImage.alt} fill priority sizes="707px" className="object-cover transition duration-300" />
         </button>
-        <div className="absolute left-[17px] top-[17px] rounded-full bg-[var(--astra-primary-amber)] px-[15px] py-[9px] text-[14px] font-bold leading-none text-white shadow-[0_10px_24px_rgba(0,0,0,0.18)]">Featured</div>
         <button type="button" onClick={showPreviousImage} className="absolute left-4 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-full bg-white/92 text-[#1C1612] shadow-[0_10px_24px_rgba(0,0,0,0.2)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]" aria-label="Show previous safari image"><ChevronLeft className="size-5" aria-hidden="true" /></button>
         <button type="button" onClick={showNextImage} className="absolute right-4 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-full bg-white/92 text-[#1C1612] shadow-[0_10px_24px_rgba(0,0,0,0.2)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]" aria-label="Show next safari image"><ChevronRight className="size-5" aria-hidden="true" /></button>
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/45 px-3 py-1 text-[12px] font-bold text-white backdrop-blur-sm">{currentIndex + 1} / {images.length}</div>

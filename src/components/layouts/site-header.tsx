@@ -35,7 +35,7 @@ export function SiteHeader({ locale, dictionary }: { locale: Locale; dictionary:
 
       <div className="bg-astra-cream">
         <div className="container flex h-[100px] max-w-[1160px] items-center justify-between gap-8">
-          <Link href={`/${locale}`} className="relative block h-[92px] w-[219px] shrink-0" aria-label={dictionary.brand.name}>
+          <Link href={locale === "en" ? "/" : `/${locale}`} className="relative block h-[92px] w-[219px] shrink-0" aria-label={dictionary.brand.name}>
             <span className="sr-only">{dictionary.brand.name}</span>
             <Image src="/assets/figma/logo-header.png" alt={dictionary.brand.logoAlt} fill priority sizes="219px" className="object-contain" />
           </Link>

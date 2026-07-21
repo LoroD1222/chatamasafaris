@@ -8,10 +8,11 @@ export function localizedHref(locale: Locale, href: string) {
   }
 
   if (href.startsWith(`/${locale}`)) {
-    return href;
+    const unprefixed = href.replace(`/${locale}`, "") || "/";
+    return unprefixed.startsWith("#") ? `/${unprefixed}` : unprefixed;
   }
 
-  if (href === "/trips" || href.startsWith("/trips?") || href.startsWith("/trip/")) {
+  if (locale === "en" || href === "/trips" || href.startsWith("/trips?") || href.startsWith("/trip/")) {
     return href;
   }
 
@@ -19,6 +20,10 @@ export function localizedHref(locale: Locale, href: string) {
 }
 
 export function localizedHomeAnchor(locale: Locale, anchor: string) {
+  if (locale === "en") {
+    return `/#${anchor.replace(/^#/, "")}`;
+  }
+
   return `/${locale}#${anchor.replace(/^#/, "")}`;
 }
 
