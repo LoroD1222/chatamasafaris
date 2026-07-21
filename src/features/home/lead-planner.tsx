@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { HomeDictionary, PlannerField } from "@/i18n/types";
 import { cn } from "@/utils/cn";
+import { submitWeb3Form } from "@/utils/web3forms";
 
 type Planner = HomeDictionary["planner"];
 
@@ -26,6 +27,8 @@ export function LeadPlanner({ planner, sectionId, className }: LeadPlannerProps)
   );
   const [values, setValues] = useState(initialValues);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [invalidFields, setInvalidFields] = useState<string[]>([]);
   const [hydrated, setHydrated] = useState(false);
 
@@ -36,9 +39,10 @@ export function LeadPlanner({ planner, sectionId, className }: LeadPlannerProps)
   function updateValue(name: string, value: string) {
     setValues((current) => ({ ...current, [name]: value }));
     setInvalidFields((current) => current.filter((fieldName) => fieldName !== name));
+    setSubmitError("");
   }
 
-  function submitForm(event: FormEvent<HTMLFormElement>) {
+  async function submitForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const missing = planner.fields.filter((field) => !values[field.name]?.trim()).map((field) => field.name);
 
@@ -48,7 +52,25 @@ export function LeadPlanner({ planner, sectionId, className }: LeadPlannerProps)
       return;
     }
 
-    setSubmitted(true);
+    setSubmitting(true);
+    setSubmitError("");
+
+    try {
+      await submitWeb3Form({
+        subject: "New safari planner request",
+        values: {
+          ...values,
+          form_name: planner.title
+        }
+      });
+      setSubmitted(true);
+      setValues(initialValues);
+    } catch {
+      setSubmitted(false);
+      setSubmitError("Something went wrong. Please try again or contact us on WhatsApp.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -86,13 +108,18 @@ export function LeadPlanner({ planner, sectionId, className }: LeadPlannerProps)
 
         <Button
           type="submit"
+          disabled={submitting}
           className="mt-1 h-[42px] w-full rounded-[9px] bg-astra-gold px-4 text-[15px] font-semibold text-astra-cocoa hover:bg-astra-gold/90"
         >
-          <span className="me-auto">{planner.submit}</span>
+          <span className="me-auto">{submitting ? "Sending..." : planner.submit}</span>
           <ArrowRight data-icon="inline-end" className="size-4" aria-hidden="true" />
         </Button>
 
-        {submitted ? (
+        {submitError ? (
+          <p className="rounded-md bg-red-500/10 px-3 py-2 text-center text-xs font-semibold text-red-700" role="alert">
+            {submitError}
+          </p>
+        ) : submitted ? (
           <p className="rounded-md bg-astra-gold/15 px-3 py-2 text-center text-xs font-semibold text-astra-cocoa" role="status">
             {planner.success}
           </p>

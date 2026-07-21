@@ -29,6 +29,7 @@ import { LeadPlanner } from "@/features/home/lead-planner";
 import { defaultLocale } from "@/i18n/config";
 import type { HomeDictionary, PlannerField } from "@/i18n/types";
 import { isActiveTripCategory, type TripCard, type TripDetail, tripCards, tripCategoryOrder } from "@/features/trips/trip-data";
+import { submitWeb3Form } from "@/utils/web3forms";
 
 type TripPageProps = {
   dictionary: HomeDictionary;
@@ -780,17 +781,39 @@ function InlinePlannerForm({ planner, className = "" }: { planner: HomeDictionar
   const [values, setValues] = useState<Record<string, string>>(() => Object.fromEntries(planner.fields.map((field) => [field.name, ""])));
   const [invalidFields, setInvalidFields] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   function updateValue(name: string, value: string) {
     setValues((current) => ({ ...current, [name]: value }));
     setInvalidFields((current) => current.filter((fieldName) => fieldName !== name));
+    setSubmitError("");
   }
 
-  function submitForm(event: FormEvent<HTMLFormElement>) {
+  async function submitForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const missing = planner.fields.filter((field) => !values[field.name]?.trim()).map((field) => field.name);
     if (missing.length > 0) { setInvalidFields(missing); setSubmitted(false); return; }
-    setSubmitted(true);
+
+    setSubmitting(true);
+    setSubmitError("");
+
+    try {
+      await submitWeb3Form({
+        subject: "New trip quote request",
+        values: {
+          ...values,
+          form_name: planner.title
+        }
+      });
+      setSubmitted(true);
+      setValues(Object.fromEntries(planner.fields.map((field) => [field.name, ""])));
+    } catch {
+      setSubmitted(false);
+      setSubmitError("Something went wrong. Please try again or contact us on WhatsApp.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -802,11 +825,12 @@ function InlinePlannerForm({ planner, className = "" }: { planner: HomeDictionar
         ))}
       </div>
       <InlinePlannerField field={planner.fields[3]} value={values[planner.fields[3].name] ?? ""} invalid={invalidFields.includes(planner.fields[3].name)} onChange={updateValue} />
-      <button type="submit" className="flex h-[42px] items-center rounded-[6px] bg-[#E07B39] px-4 text-left text-[15px] font-semibold leading-[1.6] text-[#1C1612] transition hover:bg-[#C96A2A] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80">
-        <span className="me-auto">Request a quote</span>
+      <button type="submit" disabled={submitting} className="flex h-[42px] items-center rounded-[6px] bg-[#E07B39] px-4 text-left text-[15px] font-semibold leading-[1.6] text-[#1C1612] transition hover:bg-[#C96A2A] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 disabled:cursor-not-allowed disabled:opacity-70">
+        <span className="me-auto">{submitting ? "Sending..." : "Request a quote"}</span>
         <ArrowRight className="size-5" aria-hidden="true" />
       </button>
-      {submitted ? <p className="text-center text-[12px] font-bold leading-[1.5] text-white">{planner.success}</p> : null}
+      {submitError ? <p className="text-center text-[12px] font-bold leading-[1.5] text-red-100" role="alert">{submitError}</p> : null}
+      {submitted ? <p className="text-center text-[12px] font-bold leading-[1.5] text-white" role="status">{planner.success}</p> : null}
     </form>
   );
 }
