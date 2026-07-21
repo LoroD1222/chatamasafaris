@@ -615,7 +615,11 @@ function PlannerQuoteCard({ dictionary }: TripPageProps) {
 }
 
 function ItinerarySection({ itineraryDays, gallerySlides }: { itineraryDays: { day: string; title: string; description: string; accommodation: string }[]; gallerySlides: { src: string; alt: string }[] }) {
-  const day = itineraryDays[0];
+  const [activeIndex, setActiveIndex] = useState(0);
+  const days = itineraryDays.length > 0 ? itineraryDays : [{ day: "DAY 1", title: "Arrival", description: "", accommodation: "" }];
+  const day = days[activeIndex];
+  const showPrev = () => setActiveIndex((i) => (i === 0 ? days.length - 1 : i - 1));
+  const showNext = () => setActiveIndex((i) => (i === days.length - 1 ? 0 : i + 1));
   return (
     <section id="itinerary" className={`${pageContainer} scroll-mt-[82px] py-[72px]`}>
       <div className="flex items-center gap-8">
@@ -642,6 +646,13 @@ function ItinerarySection({ itineraryDays, gallerySlides }: { itineraryDays: { d
             <h4 className="text-[30px] font-semibold leading-[1.16] text-[#1C1612]">Accommodations:</h4>
             <p className="mt-5 max-w-[650px] text-[16px] font-semibold leading-[1.65] text-[#1C1612]">{day.accommodation}</p>
           </div>
+          {days.length > 1 && (
+            <div className="mt-8 flex items-center gap-4">
+              <button type="button" onClick={showPrev} className="grid h-10 w-10 place-items-center rounded-full border border-[#1C1612]/15 bg-white shadow-sm transition hover:bg-[#F0E9DE]" aria-label="Previous day"><ChevronLeft className="size-5 text-[#1C1612]" /></button>
+              <span className="text-[13px] font-semibold text-[#1C1612]/60">{activeIndex + 1} / {days.length}</span>
+              <button type="button" onClick={showNext} className="grid h-10 w-10 place-items-center rounded-full border border-[#1C1612]/15 bg-white shadow-sm transition hover:bg-[#F0E9DE]" aria-label="Next day"><ChevronRight className="size-5 text-[#1C1612]" /></button>
+            </div>
+          )}
         </div>
       </article>
     </section>
