@@ -224,7 +224,7 @@ export function TripDetailPage({ dictionary, trip, similarTrips = [] }: TripDeta
 
           <section id="tour-details" className="mx-auto grid max-w-[1200px] scroll-mt-[82px] gap-8 px-6 pb-[84px] lg:grid-cols-[minmax(0,879px)_1fr]">
             <div className="relative overflow-hidden rounded-[10px]">
-              <Image src="/assets/trips/trip-map.png" alt="Tanzania safari map" width={879} height={705} className="h-auto w-full" />
+              <Image src={trip.mapImage || "/assets/trips/trip-map.png"} alt="Tanzania safari map" width={879} height={705} className="h-auto w-full" unoptimized />
             </div>
             <aside className="relative z-[100] self-center rounded-[10px] border border-[rgba(224,123,57,0.25)] bg-white p-8 shadow-[0_20px_45px_rgba(28,22,18,0.12)] lg:-ml-[200px] lg:w-[calc(100%+200px)]">
               <h2 className="border-b border-[#1C1612]/18 pb-5 text-[24px] font-semibold leading-[1.18]">Is this tour for me?</h2>
@@ -681,27 +681,31 @@ function ItineraryImage({ images, sizes, label, className = "" }: { images: { sr
 
 function IncludedSection({ dictionary, includedItems, excludedItems, priceTiers }: { dictionary: HomeDictionary; includedItems: string[]; excludedItems: string[]; priceTiers: { id: string; people: string; price: string }[] }) {
   return (
-    <section id="inclusions" className={`${pageContainer} grid scroll-mt-[82px] gap-10 py-[72px] lg:grid-cols-[minmax(0,1fr)_340px]`}>
-      <div>
+    <section id="inclusions" className={`${pageContainer} scroll-mt-[82px] py-[72px]`}>
+      <div className={excludedItems.length > 0 ? "grid gap-10 md:grid-cols-2 md:items-start" : ""}>
         <div className="flex items-center gap-4">
-          <h2 className="shrink-0 text-[30px] font-semibold leading-[1.2]">What is included?</h2>
-          <div className="h-[2px] flex-1 bg-[#F0E9DE]" />
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-4">
+              <h2 className="shrink-0 text-[30px] font-semibold leading-[1.2]">What is included?</h2>
+              <div className="h-[2px] flex-1 bg-[#F0E9DE]" />
+            </div>
+            <ul className={`mt-10 grid gap-x-9 gap-y-5 ${excludedItems.length > 0 ? "" : "sm:grid-cols-2"}`}>
+              {includedItems.map((item, index) => (
+                <li key={`${item}-${index}`} className="flex items-center gap-3 text-[13px] font-semibold leading-[1.5] text-[#1C1612]/75">
+                  <span className="grid size-[25px] shrink-0 place-items-center rounded-full bg-[#E07B39] text-white"><Check className="size-4" strokeWidth={3} aria-hidden="true" /></span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-        <ul className="mt-10 grid gap-x-9 gap-y-5 sm:grid-cols-2">
-          {includedItems.map((item, index) => (
-            <li key={`${item}-${index}`} className="flex items-center gap-3 text-[13px] font-semibold leading-[1.5] text-[#1C1612]/75">
-              <span className="grid size-[25px] shrink-0 place-items-center rounded-full bg-[#E07B39] text-white"><Check className="size-4" strokeWidth={3} aria-hidden="true" /></span>
-              {item}
-            </li>
-          ))}
-        </ul>
         {excludedItems.length > 0 ? (
-          <div className="mt-12 border-t border-[#1C1612]/13 pt-10">
+          <div className="border-t border-[#1C1612]/13 pt-10 md:border-t-0 md:pt-0">
             <div className="flex items-center gap-4">
               <h2 className="shrink-0 text-[30px] font-semibold leading-[1.2]">What is excluded?</h2>
               <div className="h-[2px] flex-1 bg-[#F0E9DE]" />
             </div>
-            <ul className="mt-10 grid gap-x-9 gap-y-5 sm:grid-cols-2">
+            <ul className="mt-10 grid gap-x-9 gap-y-5">
               {excludedItems.map((item, index) => (
                 <li key={`${item}-${index}`} className="flex items-center gap-3 text-[13px] font-semibold leading-[1.5] text-[#1C1612]/75">
                   <span className="grid size-[25px] shrink-0 place-items-center rounded-full bg-[#1C1612]/12 text-[#1C1612]/65"><X className="size-4" strokeWidth={3} aria-hidden="true" /></span>

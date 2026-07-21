@@ -46,6 +46,7 @@ export type TripDetail = {
   priceValue: number;
   price: string;
   heroImage: string;
+  mapImage?: string | null;
   gallery: { url: string; alt: string }[];
   shortDescription: string;
   overviewText: string;
@@ -173,6 +174,7 @@ export async function getTripBySlug(slug: string): Promise<TripDetail | null> {
       "category": category,
       "priceValue": priceFrom,
       "heroImage": heroImage.asset->url,
+      "mapImage": mapImage.asset->url,
       "gallery": gallery[]{ "url": asset->url, "alt": alt },
       shortDescription,
       "overviewText": pt::text(overviewText),
