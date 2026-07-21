@@ -682,12 +682,9 @@ function ItineraryImage({ images, sizes, label, className = "" }: { images: { sr
 function IncludedSection({ dictionary, includedItems, excludedItems, priceTiers }: { dictionary: HomeDictionary; includedItems: string[]; excludedItems: string[]; priceTiers: { id: string; people: string; price: string }[] }) {
   return (
     <section id="inclusions" className={`${pageContainer} scroll-mt-[82px] py-[72px]`}>
-      <div className={excludedItems.length > 0 ? "mx-auto grid max-w-[1040px] gap-10 md:grid-cols-2 md:items-start" : ""}>
+      <div className={excludedItems.length > 0 ? "mx-auto grid max-w-[930px] gap-10 md:grid-cols-[minmax(0,1fr)_1px_minmax(0,1fr)] md:items-stretch md:gap-12" : ""}>
         <div className="min-w-0">
-          <div className="flex items-center gap-4">
-            <h2 className="shrink-0 text-[30px] font-semibold leading-[1.2]">What is included?</h2>
-            <div className="h-[2px] flex-1 bg-[#F0E9DE]" />
-          </div>
+          <h2 className="text-[30px] font-semibold leading-[1.2]">What is included?</h2>
           <ul className={`mt-10 grid gap-x-9 gap-y-5 ${excludedItems.length > 0 ? "" : "sm:grid-cols-2"}`}>
             {includedItems.map((item, index) => (
               <li key={`${item}-${index}`} className="flex items-center gap-3 text-[13px] font-semibold leading-[1.5] text-[#1C1612]/75">
@@ -697,12 +694,10 @@ function IncludedSection({ dictionary, includedItems, excludedItems, priceTiers 
             ))}
           </ul>
         </div>
+        {excludedItems.length > 0 ? <div className="hidden w-px bg-[#1C1612]/15 md:block" aria-hidden="true" /> : null}
         {excludedItems.length > 0 ? (
           <div className="border-t border-[#1C1612]/13 pt-10 md:border-t-0 md:pt-0">
-            <div className="flex items-center gap-4">
-              <h2 className="shrink-0 text-[30px] font-semibold leading-[1.2]">What is excluded?</h2>
-              <div className="h-[2px] flex-1 bg-[#F0E9DE]" />
-            </div>
+            <h2 className="text-[30px] font-semibold leading-[1.2]">What is excluded?</h2>
             <ul className="mt-10 grid gap-x-9 gap-y-5">
               {excludedItems.map((item, index) => (
                 <li key={`${item}-${index}`} className="flex items-center gap-3 text-[13px] font-semibold leading-[1.5] text-[#1C1612]/75">
