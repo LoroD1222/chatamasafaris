@@ -114,8 +114,8 @@ const en: HomeDictionary = {
         cta: "Explore Wildlife Safari",
         href: "/trips?category=Wildlife+Safari",
         image: {
-          src: asset("tanzanian-widernes.png"),
-          alt: "Tanzania wilderness with zebras on a safari road"
+          src: asset("classic-safari.jpg"),
+          alt: "Classic Tanzania safari vehicle beside elephants and wildebeest at a waterhole"
         }
       },
       {
