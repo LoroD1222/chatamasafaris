@@ -3,8 +3,8 @@ import type { HomeDictionary, NavItem } from "@/i18n/types";
 const asset = (name: string) => `/assets/figma/${name}`;
 
 const primaryNav: NavItem[] = [
-  { label: "Safaris", href: "/trips?category=Safaris" },
-  { label: "Honeymoon", href: "/trips?category=Honeymoon" },
+  { label: "Wildlife Safari", href: "/trips?category=Wildlife+Safari" },
+  { label: "Luxury Safari", href: "/trips?category=Luxury+Safari" },
   { label: "Zanzibar", href: "/trips?category=Zanzibar" },
   { label: "About us", href: "/#about-us" }
 ];
@@ -106,30 +106,30 @@ const en: HomeDictionary = {
     items: [
       {
         icon: "🦁",
-        eyebrow: "Safaris",
-        title: "Safaris",
+        eyebrow: "Wildlife Safari",
+        title: "Classic Tanzania Safari",
         meta: [],
         description:
           "Private game drives across the Serengeti, Tarangire, and Ngorongoro Crater. See the Big Five with an expert guide by your side.",
-        cta: "Explore Safaris",
-        href: "/trips?category=Safaris",
+        cta: "Explore Wildlife Safari",
+        href: "/trips?category=Wildlife+Safari",
         image: {
           src: asset("tanzanian-widernes.png"),
           alt: "Tanzania wilderness with zebras on a safari road"
         }
       },
       {
-        icon: "💍",
-        eyebrow: "Honeymoon",
-        title: "Honeymoon",
+        icon: "🌟",
+        eyebrow: "Luxury Safari",
+        title: "Premium Tanzania Safari",
         meta: [],
         description:
           "World-class lodges, private game drives, and fine dining in the wild - for travelers who want the very best of everything.",
-        cta: "Explore Honeymoon",
-        href: "/trips?category=Honeymoon",
+        cta: "Explore Luxury Safari",
+        href: "/trips?category=Luxury+Safari",
         image: {
-          src: asset("category-honeymoon.jpg"),
-          alt: "Couple holding hands on a Tanzania safari honeymoon"
+          src: asset("category-kilimanjaro.jpg"),
+          alt: "Tented camp below Mount Kilimanjaro"
         }
       },
       {

@@ -47,8 +47,8 @@ type TripsListPageProps = {
 };
 
 const navLinks = [
-  { label: "Safaris", href: "/trips?category=Safaris" },
-  { label: "Honeymoon", href: "/trips?category=Honeymoon" },
+  { label: "Wildlife Safari", href: "/trips?category=Wildlife+Safari" },
+  { label: "Luxury Safari", href: "/trips?category=Luxury+Safari" },
   { label: "Zanzibar", href: "/trips?category=Zanzibar" },
   { label: "About us", href: "/#about-us" }
 ];
@@ -290,8 +290,8 @@ function TripHeader({ dictionary }: TripPageProps) {
       </div>
       <div className="border-b border-[#1C1612]/10 bg-[#F0E9DE]">
         <div className="mx-auto flex h-[100px] max-w-[1150px] items-center justify-between gap-8 px-5">
-          <Link href="/" className="relative h-[92px] w-[219px] shrink-0" aria-label="Catama Safaris">
-            <Image src="/assets/figma/logo-header.png" alt="Catama Safaris" fill priority sizes="219px" className="object-contain" />
+          <Link href="/" className="relative h-[92px] w-[219px] shrink-0" aria-label="Chatama Safaris">
+            <Image src="/assets/figma/logo-header.png" alt="Chatama Safaris" fill priority sizes="219px" className="object-contain" />
           </Link>
           <nav className="hidden items-center gap-8 text-[15px] font-semibold leading-[1.6] md:flex" aria-label="Primary">
             {navLinks.map((link) => (
@@ -470,7 +470,7 @@ function TripSummaryCard({ dictionary, trip, className = "" }: { dictionary: Hom
           </div>
           <div className="flex items-center gap-3 rounded-[8px] border border-[#1C1612]/10 px-4 py-3 text-[16px] font-bold">
             <UsersRound className="size-5 text-[var(--astra-primary-amber)]" aria-hidden="true" />
-            {trip.totalTravellers || '2,000+'} travellers booked with Catama Safaris
+            {trip.totalTravellers || '2,000+'} travellers booked with Chatama Safaris
           </div>
         </div>
         <dl className="grid gap-4 border-b border-[#1C1612]/13 py-5 text-[16px] leading-[1.6]">
@@ -531,7 +531,7 @@ function BuiltForContent({ trip, className = "" }: { trip: TripDetail; className
 }
 
 function ReviewContactCard({ dictionary, trip, className = "" }: { dictionary: HomeDictionary; trip: TripDetail; className?: string }) {
-  const reviewAuthor = trip.reviews?.[0]?.authorName || "Catama Safaris guest";
+  const reviewAuthor = trip.reviews?.[0]?.authorName || "Chatama Safaris guest";
 
   return (
     <aside className={`self-start rounded-[10px] border border-[#1C1612]/12 bg-white p-7 shadow-[0_16px_36px_rgba(28,22,18,0.06)] ${className}`}>
@@ -850,7 +850,7 @@ function InlinePlannerField({ field, value, invalid, onChange }: { field: Planne
 function ReviewsSection({ reviews }: { reviews?: { quote: string; authorName: string; authorDetails: string }[] }) {
   const defaultReviews = [
     { image: "/assets/figma/review-family.jpg", alt: "Safari guests posing beside vehicles", quote: "We saw four of the Big Five on day one. Our guide knew exactly where to be and when - it was like he could read the animals' minds.", name: "Sarah M.", details: "12-Day Luxury Safari & Zanzibar, June 2024" },
-    { image: "/assets/figma/review-family.jpg", alt: "Safari guests posing beside vehicles", quote: "Catama Safaris handled everything from the moment we landed to the moment we left. Zero stress. Just pure experience.", name: "James & Linda R.", details: "6-Day Great Migration Safari, August 2024" },
+    { image: "/assets/figma/review-family.jpg", alt: "Safari guests posing beside vehicles", quote: "Chatama Safaris handled everything from the moment we landed to the moment we left. Zero stress. Just pure experience.", name: "James & Linda R.", details: "6-Day Great Migration Safari, August 2024" },
     { image: "/assets/figma/review-jeep.jpg", alt: "Guests riding in a safari vehicle", quote: "The Great Migration crossing was the most breathtaking thing I've ever witnessed. Worth every penny and every hour of planning.", name: "David K.", details: "4-Day Luxury Tanzania Safari, July 2024" },
     { image: "/assets/figma/review-jeep.jpg", alt: "Guests riding in a safari vehicle", quote: "I've done group tours before and they're nothing like this. Private guides, our own vehicle, our own schedule. This is how safari should be done.", name: "Michelle T.", details: "7-Day Safari from Zanzibar, October 2024" },
   ];
