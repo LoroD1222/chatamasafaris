@@ -17,7 +17,7 @@ export function FaqList({ items }: { items: Faq[] }) {
         return (
           <article
             key={`${item.question}-${index}`}
-            className="rounded-[10px] border border-[#c9d2d9] bg-white transition-colors data-[open=true]:border-[#c9d2d9]"
+            className="rounded-[10px] border border-[#E8E0D8] bg-white transition-colors data-[open=true]:border-[#E8E0D8]"
             data-open={isOpen}
           >
             <button
@@ -28,7 +28,7 @@ export function FaqList({ items }: { items: Faq[] }) {
               aria-controls={panelId}
               onClick={() => setOpenIndex(isOpen ? -1 : index)}
             >
-              <h3 className="min-w-0 flex-1 text-base font-medium leading-normal text-[#2e3138]">{item.question}</h3>
+              <h3 className="min-w-0 flex-1 text-base font-medium leading-normal text-[#403028]">{item.question}</h3>
               <span
                 className="grid size-8 shrink-0 place-items-center rounded bg-astra-gold/25 text-astra-cocoa transition group-hover:bg-astra-gold/35"
                 aria-hidden="true"
@@ -37,7 +37,7 @@ export function FaqList({ items }: { items: Faq[] }) {
               </span>
             </button>
             {isOpen ? (
-              <p id={panelId} className="px-6 pb-6 text-base leading-normal tracking-[-0.18px] text-[#5e6573]">
+              <p id={panelId} className="px-6 pb-6 text-base leading-normal tracking-[-0.18px] text-[#6F6258]">
                 {item.answer}
               </p>
             ) : null}

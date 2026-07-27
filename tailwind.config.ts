@@ -40,22 +40,22 @@ const config: Config = {
           foreground: "hsl(var(--card-foreground))"
         },
         safari: {
-          ink: "#1C1612",
-          bark: "#1C1612",
-          moss: "#1C1612",
-          leaf: "#E07B39",
-          sand: "#F0E9DE",
-          cream: "#F0E9DE",
-          gold: "#E07B39",
-          sky: "#F0E9DE"
+          ink: "#403028",
+          bark: "#403028",
+          moss: "#403028",
+          leaf: "#E0B880",
+          sand: "#FFF8F0",
+          cream: "#FFF8F0",
+          gold: "#E0B880",
+          sky: "#FFF8F0"
         },
         astra: {
-          cream: "#F0E9DE",
+          cream: "#FFF8F0",
           amber: "var(--astra-primary-amber)",
-          gold: "#E07B39",
-          cocoa: "#1C1612",
-          brown: "#1C1612",
-          dark: "#1C1612"
+          gold: "#E0B880",
+          cocoa: "#403028",
+          brown: "#403028",
+          dark: "#403028"
         }
       },
       borderRadius: {
@@ -69,8 +69,8 @@ const config: Config = {
         serif: ["Georgia", "serif"]
       },
       boxShadow: {
-        soft: "0 24px 70px rgba(28, 22, 18, 0.14)",
-        lift: "0 18px 45px rgba(28, 22, 18, 0.22)"
+        soft: "0 24px 70px rgba(64, 48, 40, 0.14)",
+        lift: "0 18px 45px rgba(64, 48, 40, 0.22)"
       }
     }
   },

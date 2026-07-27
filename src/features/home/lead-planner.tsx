@@ -79,7 +79,7 @@ export function LeadPlanner({ planner, sectionId, className }: LeadPlannerProps)
       data-hydrated={hydrated ? "true" : undefined}
       aria-labelledby={`${id}-title`}
       className={cn(
-        "scroll-mt-24 rounded-[15px] border border-black/15 bg-white/80 p-5 text-astra-brown shadow-[0_22px_70px_rgba(28,22,18,0.22)] backdrop-blur-[5px]",
+        "scroll-mt-24 rounded-[15px] border border-black/15 bg-white/80 p-5 text-astra-brown shadow-[0_22px_70px_rgba(64,48,40,0.22)] backdrop-blur-[5px]",
         className
       )}
     >
@@ -157,7 +157,7 @@ function PlannerFieldControl({
             id={id}
             aria-label={field.label}
             aria-invalid={invalid}
-            className="h-[47px] rounded border border-[#1C1612]/15 bg-astra-cream px-[18px] text-left text-[13px] font-bold text-astra-brown/60 shadow-none focus:ring-astra-gold"
+            className="h-[47px] rounded border border-[#403028]/15 bg-astra-cream px-[18px] text-left text-[13px] font-bold text-astra-brown/60 shadow-none focus:ring-astra-gold"
           >
             <SelectValue placeholder={field.placeholder} />
           </SelectTrigger>
@@ -179,7 +179,7 @@ function PlannerFieldControl({
           autoComplete={field.type === "email" ? "email" : field.type === "tel" ? "tel" : "name"}
           aria-invalid={invalid}
           onChange={(event) => onChange(event.currentTarget.value)}
-          className="h-[47px] rounded border border-[#1C1612]/15 bg-astra-cream px-[18px] text-[13px] font-bold text-astra-brown placeholder:text-astra-brown/60 focus-visible:ring-astra-gold"
+          className="h-[47px] rounded border border-[#403028]/15 bg-astra-cream px-[18px] text-[13px] font-bold text-astra-brown placeholder:text-astra-brown/60 focus-visible:ring-astra-gold"
         />
       )}
     </div>

@@ -128,8 +128,8 @@ const en: HomeDictionary = {
         cta: "Explore Luxury Safari",
         href: "/trips?category=Luxury+Safari",
         image: {
-          src: asset("category-kilimanjaro.jpg"),
-          alt: "Tented camp below Mount Kilimanjaro"
+          src: asset("luxury-safari-image.jpg"),
+          alt: "Luxury safari lodge deck overlooking the Serengeti at sunset"
         }
       },
       {
