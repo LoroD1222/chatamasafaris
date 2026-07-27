@@ -8,11 +8,11 @@ export const metadata: Metadata = {
   description: "Private guided safaris across the Serengeti, Ngorongoro Crater, and Zanzibar. Tailor-made Tanzania trips with expert local guides. Start planning your safari today.",
   icons: {
     icon: [
-      { url: "/icon.png?v=2", type: "image/png", sizes: "59x59" },
-      { url: "/favicon.ico?v=2", type: "image/x-icon", sizes: "59x59" }
+      { url: "/icon.png?v=3", type: "image/png", sizes: "59x59" },
+      { url: "/favicon.ico?v=3", type: "image/x-icon", sizes: "59x59" }
     ],
-    shortcut: ["/icon.png?v=2"],
-    apple: [{ url: "/icon.png?v=2", type: "image/png", sizes: "59x59" }]
+    shortcut: ["/icon.png?v=3"],
+    apple: [{ url: "/icon.png?v=3", type: "image/png", sizes: "59x59" }]
   }
 };
 

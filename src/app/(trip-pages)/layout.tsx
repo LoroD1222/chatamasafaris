@@ -6,11 +6,11 @@ export const metadata: Metadata = {
   description: "Browse Tanzania safari itineraries and request a quote from Chatama Safaris.",
   icons: {
     icon: [
-      { url: "/icon.png?v=2", type: "image/png", sizes: "59x59" },
-      { url: "/favicon.ico?v=2", type: "image/x-icon", sizes: "59x59" }
+      { url: "/icon.png?v=3", type: "image/png", sizes: "59x59" },
+      { url: "/favicon.ico?v=3", type: "image/x-icon", sizes: "59x59" }
     ],
-    shortcut: ["/icon.png?v=2"],
-    apple: [{ url: "/icon.png?v=2", type: "image/png", sizes: "59x59" }]
+    shortcut: ["/icon.png?v=3"],
+    apple: [{ url: "/icon.png?v=3", type: "image/png", sizes: "59x59" }]
   }
 };
 
