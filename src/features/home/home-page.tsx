@@ -423,7 +423,7 @@ function ImageStrip() {
   return (
     <section aria-label="Tanzania landscape gallery" className="relative -mt-[100px] bg-astra-cream">
       <div className="relative h-[230px] w-full overflow-hidden md:h-[322px] lg:h-[404px]">
-        <Image src="/assets/figma/choose-tanzania-experience.png" alt="" fill sizes="140vw" className="scale-[1.4] object-cover object-right md:object-center" />
+        <Image src="/assets/figma/choose-tanzania-experience.png" alt="" fill sizes="(min-width: 768px) 100vw, 140vw" className="scale-[1.4] object-cover object-right md:scale-100 md:object-center" />
       </div>
     </section>
   );
