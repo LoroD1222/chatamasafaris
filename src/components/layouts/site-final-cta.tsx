@@ -22,7 +22,7 @@ export function SiteFinalCta({ dictionary }: { dictionary: HomeDictionary }) {
         <div className="relative overflow-hidden rounded-2xl border border-white/30">
           <Image src={dictionary.finalCta.background.src} alt={dictionary.finalCta.background.alt} fill sizes="100vw" className="object-cover" />
           <div className="absolute inset-0 bg-[linear-gradient(86deg,#403028_3%,rgba(64,48,40,0.21)_99%)]" />
-          <div className="relative grid min-h-[560px] gap-10 px-6 py-16 md:px-16 lg:grid-cols-[minmax(0,640px)] lg:items-center lg:px-[97px]">
+          <div className="relative grid min-h-[560px] gap-10 px-6 pb-16 pt-[50px] md:px-16 md:py-16 lg:grid-cols-[minmax(0,640px)] lg:items-center lg:px-[97px]">
             <div>
               <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">{dictionary.finalCta.eyebrow}</p>
               <h2 className="mt-6 max-w-[572px] text-[32px] font-normal leading-[1.3] md:text-[44px]">
