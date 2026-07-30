@@ -237,7 +237,7 @@ const en: HomeDictionary = {
     cta: "Talk to Safari Planner",
     aside: "Your journey begins here!",
     image: {
-      src: asset("start-planningimage.png"),
+      src: asset("about-us-image-2026.png"),
       alt: "Tanzania safari landscape chosen for the planning section"
     }
   },
