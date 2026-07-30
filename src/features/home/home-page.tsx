@@ -121,7 +121,7 @@ function HeroSection({ dictionary }: { dictionary: HomeDictionary }) {
               <br />
               {dictionary.hero.titleAfterBreakLead} <span className="font-bold text-astra-gold">{dictionary.hero.titleHighlight}</span>
             </h1>
-            <p className="mt-5 max-w-[525px] text-lg font-semibold leading-[1.6]">{dictionary.hero.description}</p>
+            <p className="mt-5 max-w-[525px] text-base leading-[1.6]">{dictionary.hero.description}</p>
             <div className="mt-5 grid grid-cols-2 gap-3 sm:flex sm:flex-row sm:gap-[22px]">
               <PlannerDialogButton
                 planner={dictionary.planner}
