@@ -490,7 +490,7 @@ function TeamSection({ dictionary }: { dictionary: HomeDictionary }) {
           </div>
           {founder ? <FounderCard member={founder} /> : null}
         </div>
-        <div className="mt-7 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-7 grid grid-cols-2 gap-6 lg:grid-cols-3">
           {guides.map((member) => (
             <TeamCard key={member.name} member={member} />
           ))}
