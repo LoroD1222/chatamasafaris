@@ -443,7 +443,7 @@ function PlanningSection({ dictionary }: { dictionary: HomeDictionary }) {
           </h2>
           <div className="mt-5 flex max-w-[518px] flex-col gap-4 text-[15px] leading-[1.6] text-white/70">
             {dictionary.planning.paragraphs.map((paragraph, index) => (
-              <p key={`${paragraph.slice(0, 18)}-${index}`} className={index === 3 ? "font-bold" : undefined}>
+              <p key={`${paragraph.slice(0, 18)}-${index}`} className={index === dictionary.planning.paragraphs.length - 1 ? "font-bold" : undefined}>
                 {paragraph}
               </p>
             ))}

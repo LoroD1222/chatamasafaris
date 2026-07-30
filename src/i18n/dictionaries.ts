@@ -230,9 +230,12 @@ const en: HomeDictionary = {
     titleLead: "Embrace the Wild",
     titleHighlight: "Heart of Africa",
     paragraphs: [
-      "Welcome to Chatama Safaris where your journey into the heart of Tanzania begins. Here, every safari is more than just a trip; it's a story written in the golden light of the savannah, the distant call of wildlife, and the peaceful rustle of untouched landscapes.",
-      "We're here to craft unforgettable experiences that bring you face-to-face with nature in its purest form. Whether it's your first time or your fifth, Tanzania will move you, surprise you, and stay with you long after you've gone.",
-      "Ready to create memories you'll never forget? Your adventure starts now."
+      "Chatama Safaris is a registered Tanzanian tour operator founded in 2024 with a passion for sharing the wild heart of Africa with travellers from around the world.",
+      "We believe every safari is more than a journey. It is a story shaped by golden savannahs, unforgettable wildlife encounters, and Tanzania's untouched landscapes.",
+      "Our mission is to create memorable, tailor-made safari experiences through professional guiding and carefully planned itineraries built around each traveller's interests and needs.",
+      "Our vision is to become one of East Africa's most trusted safari providers, known for authentic experiences, excellent service, and personal attention.",
+      "Whether it is your first safari or your fifth, Tanzania will stay with you long after you return home.",
+      "Your journey into the heart of Tanzania begins with Chatama Safaris."
     ],
     cta: "Talk to Safari Planner",
     aside: "Your journey begins here!",
