@@ -569,38 +569,59 @@ function TeamPhoto({ member, className, tag, sizes }: { member: TeamMember; clas
 }
 
 function ReviewsSection({ dictionary }: { dictionary: HomeDictionary }) {
+  const sortedReviews = [...dictionary.reviews.items].sort((a, b) => Number(Boolean(b.image)) - Number(Boolean(a.image)));
+  const imageReviews = sortedReviews.filter((review) => review.image);
+  const textReviews = sortedReviews.filter((review) => !review.image);
+
   return (
     <section className="bg-astra-cream py-16 md:py-20">
       <div className="container max-w-[1280px]">
         <SectionHeading eyebrow={dictionary.reviews.eyebrow} title={dictionary.reviews.title} description={dictionary.reviews.description} />
-        <div className="mt-10 columns-1 gap-6 lg:columns-2">
-          {[...dictionary.reviews.items].sort((a, b) => Number(Boolean(b.image)) - Number(Boolean(a.image))).map((review, index) => (
-            <article key={`${review.author}-${index}`} className="mb-6 grid break-inside-avoid rounded-[10px] border border-astra-gold/20 bg-white p-6">
-              {review.image ? (
-                <div className="relative mb-6 aspect-[16/8.5] overflow-hidden rounded-[10px] bg-[#f5f7f8]">
-                  <Image src={review.image.src} alt={review.image.alt} fill sizes="(min-width: 1024px) 560px, 100vw" className={cn("object-cover", review.image.position ?? "object-center")} />
-                </div>
-              ) : null}
-              <div className="flex flex-col gap-6">
-                <div>
-                  <div className="flex gap-2 text-[#E0B880]" aria-label="5 star rating">
-                    {Array.from({ length: 5 }).map((_, starIndex) => (
-                      <Star key={starIndex} className="size-4 fill-[#E0B880] text-[#E0B880]" aria-hidden="true" />
-                    ))}
-                  </div>
-                  <p className="mt-6 text-lg font-medium leading-[1.5] tracking-[-0.26px] text-[#403028]">{review.quote}</p>
-                </div>
-                <div>
-                  <p className="text-lg font-bold leading-[1.5] text-[#403028]">{review.author}</p>
-                  <p className="text-base leading-[1.5] tracking-[-0.18px] text-[#6F6258]">{review.details}</p>
-                </div>
-              </div>
-            </article>
+        <div className="mt-10 lg:hidden">
+          {imageReviews.map((review, index) => (
+            <ReviewCard key={`${review.author}-mobile-image-${index}`} review={review} />
+          ))}
+          <div className="grid grid-cols-2 gap-4">
+            {textReviews.map((review, index) => (
+              <ReviewCard key={`${review.author}-mobile-text-${index}`} review={review} />
+            ))}
+          </div>
+          <ReviewCtaCard dictionary={dictionary} />
+        </div>
+        <div className="mt-10 hidden gap-6 lg:block lg:columns-2">
+          {sortedReviews.map((review, index) => (
+            <ReviewCard key={`${review.author}-desktop-${index}`} review={review} />
           ))}
           <ReviewCtaCard dictionary={dictionary} />
         </div>
       </div>
     </section>
+  );
+}
+
+function ReviewCard({ review }: { review: HomeDictionary["reviews"]["items"][number] }) {
+  return (
+    <article className="mb-6 grid break-inside-avoid rounded-[10px] border border-astra-gold/20 bg-white p-4 md:p-6">
+      {review.image ? (
+        <div className="relative mb-6 aspect-[16/8.5] overflow-hidden rounded-[10px] bg-[#f5f7f8]">
+          <Image src={review.image.src} alt={review.image.alt} fill sizes="(min-width: 1024px) 560px, 100vw" className={cn("object-cover", review.image.position ?? "object-center")} />
+        </div>
+      ) : null}
+      <div className="flex flex-col gap-5 md:gap-6">
+        <div>
+          <div className="flex gap-1.5 text-[#E0B880] md:gap-2" aria-label="5 star rating">
+            {Array.from({ length: 5 }).map((_, starIndex) => (
+              <Star key={starIndex} className="size-3.5 fill-[#E0B880] text-[#E0B880] md:size-4" aria-hidden="true" />
+            ))}
+          </div>
+          <p className="mt-5 text-sm font-medium leading-[1.5] tracking-[-0.18px] text-[#403028] md:mt-6 md:text-lg md:tracking-[-0.26px]">{review.quote}</p>
+        </div>
+        <div>
+          <p className="text-sm font-bold leading-[1.5] text-[#403028] md:text-lg">{review.author}</p>
+          <p className="text-xs leading-[1.5] tracking-[-0.12px] text-[#6F6258] md:text-base md:tracking-[-0.18px]">{review.details}</p>
+        </div>
+      </div>
+    </article>
   );
 }
 
