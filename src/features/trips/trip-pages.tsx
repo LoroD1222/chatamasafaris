@@ -375,7 +375,7 @@ function TripCardGrid({ className = "", limit, cards = tripCards }: { className?
       {visibleCards.map((trip, index) => (
         <Link key={`${trip.slug}-${index}`} href={`/trip/${trip.slug}`} className="group relative h-[401px] overflow-hidden rounded-[8px] bg-[#403028] text-white outline-none transition focus-visible:ring-2 focus-visible:ring-[#E0B880] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFF8F0]">
           <Image src={trip.image} alt={trip.imageAlt} fill sizes="(min-width: 1024px) 356px, (min-width: 768px) 50vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
-          <div className="absolute right-[18px] top-[18px] rounded-[5px] border border-white/45 bg-[#E0B880] px-3 py-1 text-[11px] font-bold leading-[1.5] text-white backdrop-blur">from ${trip.priceValue?.toLocaleString("en-US")} USD</div>
+          <div className="absolute right-[18px] top-[18px] rounded-[5px] border border-white/45 bg-astra-gold px-3 py-1 text-[11px] font-bold leading-[1.5] text-astra-cocoa backdrop-blur">from ${trip.priceValue?.toLocaleString("en-US")} USD</div>
           <div className="absolute inset-x-0 bottom-0 rounded-b-[8px] border-t border-white/15 bg-[#403028]/60 px-[19px] pb-[25px] pt-4 backdrop-blur-[2.5px]">
             <h2 className="text-[14px] font-bold leading-[1.6]">{trip.title} - <span className="font-semibold">{trip.duration}</span></h2>
             <span className="mt-4 inline-flex h-[27px] items-center gap-1 rounded-full bg-[#E0B880] px-3 text-[14px] font-semibold leading-none text-white">See Itinerary<ArrowRight className="size-3.5" aria-hidden="true" /></span>
@@ -848,14 +848,20 @@ function InlinePlannerField({ field, value, invalid, onChange }: { field: Planne
 }
 
 function ReviewsSection({ reviews }: { reviews?: { quote: string; authorName: string; authorDetails: string }[] }) {
-  const defaultReviews = [
-    { image: "/assets/figma/review-family.jpg", alt: "Safari guests posing beside vehicles", quote: "We saw four of the Big Five on day one. Our guide knew exactly where to be and when - it was like he could read the animals' minds.", name: "Sarah M.", details: "12-Day Luxury Safari & Zanzibar, June 2024" },
-    { image: "/assets/figma/review-family.jpg", alt: "Safari guests posing beside vehicles", quote: "Chatama Safaris handled everything from the moment we landed to the moment we left. Zero stress. Just pure experience.", name: "James & Linda R.", details: "6-Day Great Migration Safari, August 2024" },
-    { image: "/assets/figma/review-jeep.jpg", alt: "Guests riding in a safari vehicle", quote: "The Great Migration crossing was the most breathtaking thing I've ever witnessed. Worth every penny and every hour of planning.", name: "David K.", details: "4-Day Luxury Tanzania Safari, July 2024" },
-    { image: "/assets/figma/review-jeep.jpg", alt: "Guests riding in a safari vehicle", quote: "I've done group tours before and they're nothing like this. Private guides, our own vehicle, our own schedule. This is how safari should be done.", name: "Michelle T.", details: "7-Day Safari from Zanzibar, October 2024" },
+  type ReviewCard = { image?: string; alt?: string; quote: string; name: string; details: string };
+
+  const defaultReviews: ReviewCard[] = [
+    { quote: "Wonderful Safari by Chatama Safari Professional Guides. They are more than just Serengeti Guides, they accommodated many subjects of life, be at dinner, or on safari. I will strongly recommend for exclusive and professional guided safari experience.", name: "Alissa Brill", details: "June 29, 2026" },
+    { image: "/assets/figma/reviews/review-group.jpg", alt: "Chatama Safaris guests with their guide", quote: "Thank you for providing us with an unforgettable experience. You tolerated all of our questions, silly comments and welcomed our games. You showed us the true meaning of Tanzanian hospitality.", name: "Nicoletta", details: "June 27, 2026" },
+    { quote: "Chatama Safari went beyond expectations. They provided us with the best itinerary for our honeymoon beyond expectation. They arranged us at lodges located in exclusive areas in Serengeti, perfect for our honeymoon.", name: "Andrea", details: "October 25, 2025" },
+    { image: "/assets/figma/reviews/review-dinner.jpg", alt: "Chatama Safaris guests at dinner", quote: "I have known the Chatama Safari Tour Guides for more than 10 years. Every time I come to Tanzania, the reason for the comeback has been meeting this team. It has never a disappointment.", name: "Carolyn Housman", details: "May 20, 2024" },
+    { quote: "I love the educated and professional guiding. We saw the big five and many more. The guides knowledge was amazing. Played games on the Serengeti plains, that to me is the unforgettable moments.", name: "Anne", details: "2026" },
+    { quote: "Chatama Safari provided us with the vibe beyond our expectation, from their relaxed itinerary, focused on client interest coupled with their professional guides service is an unforgettable lifetime safari experience.", name: "Katie", details: "Chatama Safaris guest" },
+    { quote: "Wonderful experience done by the professional, experienced and professional safari guides. The whole trip was well organized. I cannot wait to meet them next. Chatama Safari is the ultimate team of professional safari providers.", name: "Melissa Mentone", details: "June 28, 2022" },
+    { image: "/assets/figma/reviews/review-culture.jpg", alt: "Chatama Safaris guests in Maasai dress", quote: "We booked and travelled with Chatama Safaris, this was our best organized safari ever. Our Safari tour guide, Peter was knowledgeable, professional and friendly.", name: "Julia Senkowysky", details: "October 10, 2025" },
   ];
-  const displayReviews = reviews && reviews.length > 0
-    ? reviews.map((r, i) => ({ image: defaultReviews[i % defaultReviews.length].image, alt: defaultReviews[i % defaultReviews.length].alt, quote: r.quote, name: r.authorName, details: r.authorDetails }))
+  const displayReviews: ReviewCard[] = reviews && reviews.length > 0
+    ? reviews.map((r) => ({ quote: r.quote, name: r.authorName, details: r.authorDetails }))
     : defaultReviews;
 
   return (
@@ -866,10 +872,12 @@ function ReviewsSection({ reviews }: { reviews?: { quote: string; authorName: st
         <p className="mx-auto mt-7 max-w-[560px] text-center text-[21px] font-medium leading-[1.45] text-white/58">What our travelers say</p>
         <div className="mt-[58px] grid gap-x-6 gap-y-7 lg:grid-cols-2">
           {displayReviews.map((review, index) => (
-            <article key={index} className="grid gap-6 rounded-[10px] border border-white/20 bg-white/[0.075] p-6 shadow-[0_18px_44px_rgba(0,0,0,0.12)] sm:grid-cols-[220px_minmax(0,1fr)]">
-              <div className="relative h-[158px] overflow-hidden rounded-[8px] bg-[#403028] sm:h-[178px]">
-                <Image src={review.image} alt={review.alt} fill sizes="220px" className="object-cover" />
-              </div>
+            <article key={index} className={`grid gap-6 rounded-[10px] border border-white/20 bg-white/[0.075] p-6 shadow-[0_18px_44px_rgba(0,0,0,0.12)] ${review.image ? "sm:grid-cols-[220px_minmax(0,1fr)]" : ""}`}>
+              {review.image ? (
+                <div className="relative h-[158px] overflow-hidden rounded-[8px] bg-[#403028] sm:h-[178px]">
+                  <Image src={review.image} alt={review.alt ?? ""} fill sizes="220px" className="object-cover" />
+                </div>
+              ) : null}
               <div className="flex flex-col justify-center">
                 <RatingStars className="size-5" />
                 <p className="mt-7 text-[20px] font-medium leading-[1.42] text-white">&quot;{review.quote}&quot;</p>
@@ -914,7 +922,7 @@ function SimilarTripsSection({ trips }: { trips: TripCard[] }) {
           <Link key={`${trip.slug}-similar-${index}`} href={`/trip/${trip.slug}`} className="group overflow-hidden rounded-[8px] border border-[#403028]/10 bg-white shadow-[0_14px_34px_rgba(64,48,40,0.08)] transition hover:-translate-y-0.5 hover:shadow-[0_20px_44px_rgba(64,48,40,0.12)]">
             <div className="relative h-[200px]">
               <Image src={trip.image} alt={trip.imageAlt} fill sizes="(min-width: 1024px) 380px, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
-              <span className="absolute right-4 top-4 rounded-full bg-[#E0B880] px-3 py-1 text-[11px] font-bold text-white">{trip.price}</span>
+              <span className="absolute right-4 top-4 rounded-full bg-astra-gold px-3 py-1 text-[11px] font-bold text-astra-cocoa">{trip.price}</span>
             </div>
             <div className="p-5">
               <h3 className="text-[17px] font-bold leading-[1.35]">{trip.title}</h3>

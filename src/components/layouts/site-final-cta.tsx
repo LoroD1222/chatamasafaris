@@ -25,10 +25,10 @@ export function SiteFinalCta({ dictionary }: { dictionary: HomeDictionary }) {
           <div className="relative grid min-h-[560px] gap-10 px-6 py-16 md:px-16 lg:grid-cols-[minmax(0,640px)] lg:items-center lg:px-[97px]">
             <div>
               <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">{dictionary.finalCta.eyebrow}</p>
-              <h2 className="mt-6 max-w-[572px] text-[40px] font-normal leading-[1.3] md:text-[49px]">
+              <h2 className="mt-6 max-w-[572px] text-[34px] font-normal leading-[1.3] md:text-[44px]">
                 {dictionary.finalCta.titleLead}
                 <br />
-                <span className="text-[34px] font-bold text-astra-gold">{dictionary.finalCta.titleHighlight}</span>
+                <span className="font-bold text-astra-gold">{dictionary.finalCta.titleHighlight}</span>
               </h2>
               <p className="mt-6 max-w-[504px] text-[15px] leading-[1.6] text-white/70">{dictionary.finalCta.description}</p>
               <PlannerDialogButton

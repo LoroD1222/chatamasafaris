@@ -15,14 +15,14 @@ export function SiteHeader({ locale, dictionary }: { locale: Locale; dictionary:
   return (
     <header className="bg-astra-cream text-astra-brown">
       <div className="bg-astra-gold">
-        <div className="container flex h-[37px] max-w-[1160px] items-center justify-between gap-3 text-[12px] font-bold leading-[1.6] sm:text-[13px]">
-          <p className="flex min-w-0 items-center gap-2 uppercase tracking-[0.05em] text-astra-cocoa/40 sm:pl-4">
-            <span className="size-[15px] shrink-0 bg-current [mask:url('/assets/figma/nav-bar-star.png')_center/contain_no-repeat] sm:size-[18px]" aria-hidden="true" />
-            <span className="truncate">{dictionary.topBar.label}</span>
+        <div className="container flex h-[37px] max-w-[1160px] items-center justify-between gap-1.5 text-[8px] font-bold leading-[1.35] sm:gap-3 sm:text-[13px] sm:leading-[1.6]">
+          <p className="flex min-w-0 items-center gap-1 uppercase tracking-normal text-astra-cocoa/40 sm:gap-2 sm:pl-4 sm:tracking-[0.05em]">
+            <span className="size-2.5 shrink-0 bg-current [mask:url('/assets/figma/nav-bar-star.png')_center/contain_no-repeat] sm:size-[18px]" aria-hidden="true" />
+            <span className="whitespace-nowrap text-[7px] sm:text-[13px]">{dictionary.topBar.label}</span>
           </p>
-          <div className="ms-auto flex min-w-0 shrink-0 items-center gap-5 text-astra-cocoa/65">
+          <div className="ms-auto flex min-w-0 shrink-0 items-center gap-1 text-[10px] text-astra-cocoa/65 sm:gap-5 sm:text-[13px]">
             <a href={`https://wa.me/${dictionary.topBar.phone.replace(/\D/g, "")}`} className="inline-flex items-center gap-1 underline underline-offset-2">
-              <Phone className="size-3.5" aria-hidden="true" />
+              <Phone className="size-3 sm:size-3.5" aria-hidden="true" />
               {dictionary.topBar.phone}
             </a>
             <a href={`mailto:${dictionary.topBar.email}`} className="hidden min-w-0 items-center gap-1 underline underline-offset-2 md:inline-flex">
@@ -34,10 +34,10 @@ export function SiteHeader({ locale, dictionary }: { locale: Locale; dictionary:
       </div>
 
       <div className="bg-astra-cream">
-        <div className="container flex h-[100px] max-w-[1160px] items-center justify-between gap-8">
-          <Link href={locale === "en" ? "/" : `/${locale}`} className="relative block h-[92px] w-[219px] shrink-0" aria-label={dictionary.brand.name}>
+        <div className="container flex h-[70px] max-w-[1160px] items-center justify-between gap-8 sm:h-[100px]">
+          <Link href={locale === "en" ? "/" : `/${locale}`} className="relative block h-[51px] w-[136px] shrink-0 sm:h-[92px] sm:w-[219px]" aria-label={dictionary.brand.name}>
             <span className="sr-only">{dictionary.brand.name}</span>
-            <Image src="/assets/figma/logo-header.png" alt={dictionary.brand.logoAlt} fill priority sizes="219px" className="object-contain" />
+            <Image src="/assets/figma/logo-header.png" alt={dictionary.brand.logoAlt} fill priority sizes="(min-width: 640px) 219px, 136px" className="object-contain" />
           </Link>
 
           <nav className="hidden items-center gap-7 text-[15px] font-medium leading-[1.6] text-astra-brown md:flex" aria-label="Primary">

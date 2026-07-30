@@ -1,4 +1,4 @@
-import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
+import { Facebook, Instagram, Linkedin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -6,7 +6,11 @@ import type { Locale } from "@/i18n/config";
 import type { HomeDictionary } from "@/i18n/types";
 import { localizedHref } from "@/utils/routes";
 
-const socialIcons = [Instagram, Twitter, Linkedin, Facebook];
+const socialIcons = [
+  { Icon: Instagram, href: "https://www.instagram.com/chatama_safari/", label: "Chatama Safaris on Instagram" },
+  { Icon: Linkedin, href: "https://www.linkedin.com/in/peter-chatama-3a91ab82/", label: "Peter Chatama on LinkedIn" },
+  { Icon: Facebook, href: "#", label: "Social link 4" }
+];
 
 export function SiteFooter({ locale, dictionary }: { locale: Locale; dictionary: HomeDictionary }) {
   return (
@@ -16,11 +20,13 @@ export function SiteFooter({ locale, dictionary }: { locale: Locale; dictionary:
           <Image src="/assets/figma/footer-logo-upload.png" alt={dictionary.brand.logoAlt} fill sizes="246px" className="object-contain" />
         </div>
         <div className="flex items-center justify-center gap-2" aria-label="Social links">
-          {socialIcons.map((Icon, index) => (
+          {socialIcons.map(({ Icon, href, label }, index) => (
             <a
               key={index}
-              href="#"
-              aria-label={`Social link ${index + 1}`}
+              href={href}
+              aria-label={label}
+              target={href.startsWith("http") ? "_blank" : undefined}
+              rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
               className="grid size-10 place-items-center rounded-lg border border-astra-gold/25 bg-white text-astra-gold shadow-sm transition hover:bg-astra-gold/10"
             >
               <Icon className="size-5" aria-hidden="true" />

@@ -101,8 +101,8 @@ const en: HomeDictionary = {
   experienceCategories: {
     eyebrow: "Our experiences",
     title: "Tanzania — A Land of Wonders",
-    description: "Imagine waking up to the soft roars of lions in the distance, the serenity of the savannah at dawn, and the unmatched thrill of witnessing the Great Migration across the Serengeti plains.",
-    descriptionBelow: "Tanzania is a treasure trove of biodiversity, culture, and history, offering more than just a safari but an immersion into a world where nature reigns supreme. With Chatama Safaris, discover why Tanzania is the jewel of Africa, from the majestic Kilimanjaro to the pristine beaches of Zanzibar.",
+    description: "Our carefully crafted itineraries, handpicked guides, and deep local knowledge ensure that every experience is personal, immersive, and unforgettable.",
+    descriptionBelow: "Whether you dream of witnessing the Great Migration, tracking big cats on the Serengeti plains, or exploring hidden gems off the beaten path, we are here to guide you every step of the way.",
     items: [
       {
         icon: "🦁",
@@ -142,7 +142,7 @@ const en: HomeDictionary = {
         cta: "Explore Zanzibar",
         href: "/trips?category=Zanzibar",
         image: {
-          src: asset("category-zanzibar.jpg"),
+          src: asset("zanzibar-88.jpg"),
           alt: "Turquoise water and tropical coastline in Zanzibar"
         }
       }
@@ -150,10 +150,10 @@ const en: HomeDictionary = {
   },
   trust: {
     items: [
-      { label: "Vetted camps only", icon: "camp" },
-      { label: "Private expert guides", icon: "guide" },
-      { label: "Priced in USD", icon: "priced" },
-      { label: "24/7 live support", icon: "support" }
+      { label: "Generosity", icon: "generosity" },
+      { label: "Quest to serve", icon: "service" },
+      { label: "Love for the animals and nature", icon: "nature" },
+      { label: "Team work", icon: "teamwork" }
     ],
     note: "Not sure what is right for you? Talk to a safari planner - it's free."
   },
@@ -167,37 +167,37 @@ const en: HomeDictionary = {
     cta: "Talk to Safari Planner",
     items: [
       {
-        icon: "🧭",
+        icon: "compass",
         title: "Unmatched Expertise",
         description:
           "Our team's profound knowledge of Tanzania ensures a safari experience that's both authentic and deeply engaging."
       },
       {
-        icon: "💳",
+        icon: "route",
         title: "Personalized Journeys",
         description:
           "Every safari is tailored to fit your dreams, offering unique adventures that resonate with your spirit of exploration."
       },
       {
-        icon: "📡",
+        icon: "leaf",
         title: "Commitment to Conservation",
         description:
           "We advocate for the conservation of the Wild places for future generations."
       },
       {
-        icon: "🗓️",
+        icon: "gem",
         title: "Exceptional Value",
         description:
           "With competitive pricing and unmatched service, we ensure your safari adventure delivers unforgettable moments at the best value."
       },
       {
-        icon: "🏕️",
+        icon: "award",
         title: "Certified Team",
         description:
           "Expertly trained and certified, our team ensures a safe, enlightening safari experience, bringing the best of Tanzania to life."
       },
       {
-        icon: "🔄",
+        icon: "shield",
         title: "Trusted Company",
         description:
           "As a trusted safari provider, we're dedicated to authentic, sustainable adventures, earning accolades and trust globally."
@@ -247,40 +247,59 @@ const en: HomeDictionary = {
     description: "What our travelers say",
     items: [
       {
-        quote: '"We saw four of the Big Five on day one. Our guide knew exactly where to be and when - it was like he could read the animals\' minds."',
-        author: "Sarah M.",
-        details: "12-Day Luxury Safari & Zanzibar, June 2024",
+        quote: '"Peter and Mohamed, thank you for providing us with an unforgettable experience. You tolerated all of our questions and silly comments, and welcomed our games. You showed us the true meaning of Tanzanian hospitality. Your vast knowledge and love for what you do is evident and infectious. We hope you continue to name animals in our honor and will think of us whenever you see the elephants. Si kwaheri, ni tutaonana hivi karibuni. Asante sana, Nicoletta and Olina."',
+        author: "Nicoletta",
+        details: "10 days Wildlife safari, June 27, 2026",
         image: {
-          src: asset("review-family.jpg"),
-          alt: "Family on safari in Tanzania"
+          src: asset("reviews/review-group.jpg"),
+          alt: "Chatama Safaris guests with their guide",
+          position: "object-[center_42%]"
         }
       },
       {
-        quote: '"Chatama Safaris handled everything from the moment we landed to the moment we left. Zero stress. Just pure experience."',
-        author: "James & Linda R.",
-        details: "6-Day Great Migration Safari, August 2024",
+        quote: '"I have known the Chatama Safari tour guides for more than 10 years. Every time I come to Tanzania, the reason for the comeback has been meeting this team. It has never been a disappointment. Chatama Safari is the answer for an exclusive safari guiding experience."',
+        author: "Carolyn Housman",
+        details: "10 days luxury safari, May 20, 2024",
         image: {
-          src: asset("review-family.jpg"),
-          alt: "Family on safari in Tanzania"
+          src: asset("reviews/review-dinner.jpg"),
+          alt: "Chatama Safaris guests at dinner",
+          position: "object-[center_45%]"
         }
       },
       {
-        quote: '"The Great Migration crossing was the most breathtaking thing I\'ve ever witnessed. Worth every penny and every hour of planning."',
-        author: "David K.",
-        details: "4-Day Luxury Tanzania Safari, July 2024",
+        quote: '"We booked and travelled with Chatama Safaris, and this was our best organized safari ever. Our safari tour guide, Peter, was knowledgeable, professional and friendly."',
+        author: "Julia Senkowysky",
+        details: "8 days honeymoon safari, October 10, 2025",
         image: {
-          src: asset("review-jeep.jpg"),
-          alt: "Travelers in a Chatama Safaris vehicle"
+          src: asset("reviews/review-culture.jpg"),
+          alt: "Chatama Safaris guests in Maasai dress",
+          position: "object-[center_34%]"
         }
       },
       {
-        quote: '"I\'ve done group tours before and they\'re nothing like this. Private guides, our own vehicle, our own schedule. This is how safari should be done."',
-        author: "Michelle T.",
-        details: "7-Day Safari from Zanzibar, October 2024",
-        image: {
-          src: asset("review-jeep.jpg"),
-          alt: "Travelers in a Chatama Safaris vehicle"
-        }
+        quote: '"Wonderful safari by Chatama Safari professional guides. They are more than just Serengeti guides; they accommodated many subjects of life, whether at dinner or on safari. I strongly recommend them for an exclusive and professional guided safari experience."',
+        author: "Alissa Brill",
+        details: "June 29, 2026"
+      },
+      {
+        quote: '"Chatama Safari went beyond expectations. They provided us with the best itinerary for our honeymoon. They arranged lodges in exclusive areas of the Serengeti, perfect for our honeymoon. They have amazing professional guides and always took us deeper into the Serengeti. I recommend booking with Chatama Safari for a honeymoon vacation in Tanzania."',
+        author: "Andrea",
+        details: "Honeymoon vacation in Tanzania, October 25, 2025"
+      },
+      {
+        quote: '"I love the educated and professional guiding. We saw the Big Five and many more. The guides\' knowledge was amazing. Playing games on the Serengeti plains was, to me, one of the unforgettable moments."',
+        author: "Anne",
+        details: "2026"
+      },
+      {
+        quote: '"Chatama Safari provided us with a vibe beyond our expectations, from their relaxed itinerary focused on the client\'s interests to their professional guide service. It was an unforgettable lifetime safari experience."',
+        author: "Katie",
+        details: "Chatama Safaris guest"
+      },
+      {
+        quote: '"Wonderful experience delivered by professional and experienced safari guides. The whole trip was well organized. I cannot wait to meet them again. Chatama Safari is the ultimate team of professional safari providers."',
+        author: "Melissa Mentone",
+        details: "June 28, 2022"
       }
     ]
   },
@@ -331,7 +350,7 @@ const en: HomeDictionary = {
       { label: "Cookies Settings", href: "#" },
       { label: "Privacy Policy", href: "#" }
     ],
-    copyright: "©2025 Chatama Safaris - All Rights Reserved."
+    copyright: "©2026 Chatama Safaris - All Rights Reserved."
   }
 };
 

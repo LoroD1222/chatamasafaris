@@ -79,7 +79,7 @@ export function LeadPlanner({ planner, sectionId, className }: LeadPlannerProps)
       data-hydrated={hydrated ? "true" : undefined}
       aria-labelledby={`${id}-title`}
       className={cn(
-        "scroll-mt-24 rounded-[15px] border border-black/15 bg-white/80 p-5 text-astra-brown shadow-[0_22px_70px_rgba(64,48,40,0.22)] backdrop-blur-[5px]",
+        "scroll-mt-24 rounded-[15px] border border-black/15 bg-astra-cream p-5 text-astra-brown shadow-[0_22px_70px_rgba(64,48,40,0.22)]",
         className
       )}
     >

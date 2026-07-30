@@ -54,6 +54,12 @@ img {
   max-width: 100%;
 }
 
+@media (max-width: 767px) {
+  p {
+    font-size: 15px !important;
+  }
+}
+
 @keyframes astra-page-enter {
   from {
     opacity: 0;

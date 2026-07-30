@@ -21,6 +21,7 @@ export type PlannerField =
 export type AssetImage = {
   src: string;
   alt: string;
+  position?: string;
 };
 
 export type ExperienceCategory = {
@@ -36,11 +37,11 @@ export type ExperienceCategory = {
 
 export type TrustItem = {
   label: string;
-  icon: "camp" | "guide" | "priced" | "support";
+  icon: "generosity" | "service" | "nature" | "teamwork";
 };
 
 export type WhyItem = {
-  icon: string;
+  icon: "compass" | "route" | "leaf" | "gem" | "award" | "shield";
   title: string;
   description: string;
 };
@@ -59,7 +60,7 @@ export type Review = {
   quote: string;
   author: string;
   details: string;
-  image: AssetImage;
+  image?: AssetImage;
 };
 
 export type Faq = {
