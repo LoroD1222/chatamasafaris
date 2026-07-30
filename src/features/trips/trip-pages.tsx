@@ -24,6 +24,7 @@ import { createPortal } from "react-dom";
 
 import { SiteFinalCta } from "@/components/layouts/site-final-cta";
 import { SiteFooter } from "@/components/layouts/site-footer";
+import { SiteHeader } from "@/components/layouts/site-header";
 import { PlannerDialogButton } from "@/components/planner/planner-dialog";
 import { LeadPlanner } from "@/features/home/lead-planner";
 import { defaultLocale } from "@/i18n/config";
@@ -45,13 +46,6 @@ type TripsListPageProps = {
   dictionary: HomeDictionary;
   initialTrips?: TripCard[];
 };
-
-const navLinks = [
-  { label: "Wildlife Safari", href: "/trips?category=Wildlife+Safari" },
-  { label: "Luxury Safari", href: "/trips?category=Luxury+Safari" },
-  { label: "Zanzibar", href: "/trips?category=Zanzibar" },
-  { label: "About us", href: "/#about-us" }
-];
 
 const pageContainer = "mx-auto max-w-[1200px] px-6";
 const amberButton =
@@ -103,7 +97,7 @@ export function TripsListPage({ dictionary, initialTrips }: TripsListPageProps) 
 
   return (
     <div className="astra-page-enter min-h-screen overflow-x-clip bg-[#FFF8F0] text-[#403028]">
-      <TripHeader dictionary={dictionary} />
+      <SiteHeader locale={defaultLocale} dictionary={dictionary} />
       <main>
         <section className={`${pageContainer} pb-[116px] pt-[64px] md:pt-[62px]`}>
           <div className="text-center">
@@ -197,7 +191,7 @@ export function TripDetailPage({ dictionary, trip, similarTrips = [] }: TripDeta
 
   return (
     <div className="astra-page-enter min-h-screen overflow-x-clip bg-[#FFF8F0] text-[#403028]">
-      <TripHeader dictionary={dictionary} />
+      <SiteHeader locale={defaultLocale} dictionary={dictionary} />
       <main>
         <section className="mx-auto max-w-[1200px] px-6 pb-[76px] pt-[65px]">
           <TripBreadcrumb />
@@ -265,49 +259,6 @@ function dedupeImages(images: { src: string; alt: string }[]) {
     seen.add(image.src);
     return true;
   });
-}
-
-function TripHeader({ dictionary }: TripPageProps) {
-  return (
-    <header className="bg-[#FFF8F0] text-[#403028]">
-      <div className="bg-[#E0B880]">
-        <div className="mx-auto flex h-[37px] max-w-[1150px] items-center justify-between gap-3 px-5 text-[12px] font-bold leading-[1.6] sm:text-[13px]">
-          <p className="flex min-w-0 items-center gap-2 uppercase tracking-[0.08em] text-[#403028]/40 sm:pl-4">
-            <span className="size-[15px] shrink-0 bg-current [mask:url('/assets/figma/nav-bar-star.png')_center/contain_no-repeat] sm:size-[18px]" aria-hidden="true" />
-            <span className="truncate">Highest Rated Tanzania Safari Operator</span>
-          </p>
-          <div className="ms-auto flex min-w-0 shrink-0 items-center gap-7 text-[#403028]/65">
-            <a href={`https://wa.me/${dictionary.topBar.phone.replace(/\D/g, "")}`} className="inline-flex items-center gap-1 underline underline-offset-2">
-              <Phone className="size-3.5" aria-hidden="true" />
-              {dictionary.topBar.phone}
-            </a>
-            <a href={`mailto:${dictionary.topBar.email}`} className="hidden items-center gap-1 underline underline-offset-2 md:inline-flex">
-              <Mail className="size-3.5" aria-hidden="true" />
-              {dictionary.topBar.email}
-            </a>
-          </div>
-        </div>
-      </div>
-      <div className="border-b border-[#403028]/10 bg-[#FFF8F0]">
-        <div className="mx-auto flex h-[100px] max-w-[1150px] items-center justify-between gap-8 px-5">
-          <Link href="/" className="relative h-[92px] w-[219px] shrink-0" aria-label="Chatama Safaris">
-            <Image src="/assets/figma/logo-header.png" alt="Chatama Safaris" fill priority sizes="219px" className="object-contain" />
-          </Link>
-          <nav className="hidden items-center gap-8 text-[15px] font-semibold leading-[1.6] md:flex" aria-label="Primary">
-            {navLinks.map((link) => (
-              <Link key={link.label} href={link.href} className="transition hover:text-[#E0B880]">{link.label}</Link>
-            ))}
-          </nav>
-          <PlannerDialogButton planner={dictionary.planner} className={`hidden h-[54px] px-[21px] text-[16px] font-bold md:inline-flex ${amberButton}`}>
-            Get a Safari Planner
-          </PlannerDialogButton>
-          <PlannerDialogButton planner={dictionary.planner} className={`h-11 px-4 text-[13px] font-bold md:hidden ${amberButton}`}>
-            Planner
-          </PlannerDialogButton>
-        </div>
-      </div>
-    </header>
-  );
 }
 
 function TripBreadcrumb() {
