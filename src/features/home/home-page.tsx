@@ -103,48 +103,42 @@ export function HomePage({ locale, dictionary, recentTrips = [] }: { locale: Loc
 function HeroSection({ dictionary }: { dictionary: HomeDictionary }) {
   return (
     <section className="relative overflow-hidden bg-astra-cocoa text-white md:min-h-[543px]">
-      <div className="absolute inset-x-0 bottom-0 h-[calc(100%-286px)] bg-astra-cream md:hidden" />
       <div className="absolute inset-0 hidden md:block">
         <Image src={dictionary.hero.image.src} alt={dictionary.hero.image.alt} fill priority sizes="100vw" className="object-cover object-[58%_center] md:object-center" />
         <div className="absolute inset-0 bg-[linear-gradient(69deg,#403028_27%,rgba(64,48,40,0)_69%)]" />
       </div>
-      <div className="container relative grid max-w-[1112px] gap-0 md:min-h-[543px] md:items-center md:gap-8 md:py-14 lg:grid-cols-[627px_365px] lg:gap-[75px]">
-        <div className="relative -mx-4 bg-astra-cocoa px-4 pb-6 pt-[52px] md:mx-0 md:max-w-[640px] md:bg-transparent md:px-0 md:py-0">
+      <div className="container relative grid max-w-[1112px] gap-8 md:min-h-[543px] md:items-center md:py-14 lg:grid-cols-[627px_365px] lg:gap-[75px]">
+        <div className="relative -mx-4 overflow-hidden px-4 py-14 md:mx-0 md:max-w-[640px] md:overflow-visible md:px-0 md:py-0">
+          <Image src={dictionary.hero.image.src} alt={dictionary.hero.image.alt} fill priority sizes="100vw" className="object-cover object-[58%_center] md:hidden" />
+          <div className="absolute inset-0 bg-[linear-gradient(69deg,#403028_24%,rgba(64,48,40,0.3)_100%)] md:hidden" />
           <div className="relative">
-            <p className="text-[10px] font-bold uppercase leading-[1.45] tracking-[0.05em] text-astra-gold md:text-[13px] md:leading-[1.6]">
+            <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">
               {dictionary.hero.eyebrow}
             </p>
-            <h1 className="mt-3 text-[42px] font-normal leading-[1.03] md:mt-5 md:text-[51px] md:leading-[1.14]">
+            <h1 className="mt-5 text-[42px] font-normal leading-[1.14] md:text-[51px]">
               {dictionary.hero.titleBeforeBreak}
               {" "}
               <br />
               {dictionary.hero.titleAfterBreakLead} <span className="font-bold text-astra-gold">{dictionary.hero.titleHighlight}</span>
             </h1>
-            <p className="mt-4 max-w-[525px] text-[15px] font-semibold leading-[1.5] opacity-75 md:mt-5 md:text-base md:font-normal md:leading-[1.6] md:opacity-100">{dictionary.hero.description}</p>
-            <div className="mt-4 grid grid-cols-2 gap-3 sm:flex sm:flex-row sm:gap-[22px] md:mt-5">
+            <p className="mt-5 max-w-[525px] text-base leading-[1.6]">{dictionary.hero.description}</p>
+            <div className="mt-5 flex flex-col gap-[22px] sm:flex-row">
               <PlannerDialogButton
                 planner={dictionary.planner}
-                className="h-[50px] rounded-[9px] bg-astra-gold px-3 text-sm font-bold text-astra-cocoa hover:bg-astra-gold/90 md:h-[54px] md:px-[21px] md:text-base"
+                className="h-[54px] rounded-[9px] bg-astra-gold px-[21px] text-base font-bold text-astra-cocoa hover:bg-astra-gold/90"
               >
                 {dictionary.hero.primaryCta}
               </PlannerDialogButton>
               <Button
                 asChild
-                className="h-[50px] rounded-[9px] bg-astra-gold/45 px-3 text-sm font-bold text-white hover:bg-astra-gold/55 md:h-[54px] md:px-[18px] md:text-base"
+                className="h-[54px] rounded-[9px] bg-astra-gold/45 px-[18px] text-base font-bold text-white hover:bg-astra-gold/55"
               >
                 <a href="#itineraries">{dictionary.hero.secondaryCta}</a>
               </Button>
             </div>
           </div>
         </div>
-        <div className="relative -mx-4 md:hidden">
-          <div className="relative h-[214px] overflow-hidden">
-            <Image src={dictionary.hero.image.src} alt={dictionary.hero.image.alt} fill priority sizes="100vw" className="object-cover object-[58%_center]" />
-            <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-astra-cocoa to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-astra-cocoa" />
-          </div>
-        </div>
-        <LeadPlanner planner={dictionary.planner} sectionId="planner" className="relative z-10 mb-10 mt-[-38px] w-full md:mb-0 md:mt-0" />
+        <LeadPlanner planner={dictionary.planner} sectionId="planner" className="mb-12 mt-2 w-full md:mb-0 md:mt-0" />
       </div>
     </section>
   );
