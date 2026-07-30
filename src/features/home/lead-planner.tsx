@@ -85,7 +85,7 @@ export function LeadPlanner({ planner, sectionId, className }: LeadPlannerProps)
     >
       <div className="border-b border-astra-brown/20 pb-5">
         <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">{planner.eyebrow}</p>
-        <h2 id={`${id}-title`} className="mt-2 text-[25px] font-semibold leading-[1.14]">
+        <h2 id={`${id}-title`} className="mt-2 text-[32px] font-semibold leading-[1.14]">
           {planner.title}
         </h2>
         <p className="mt-2 max-w-[296px] text-xs leading-[1.4]">{planner.description}</p>

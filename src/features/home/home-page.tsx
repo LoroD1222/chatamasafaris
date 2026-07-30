@@ -244,7 +244,7 @@ function WhySection({ dictionary }: { dictionary: HomeDictionary }) {
       <div className="container grid max-w-[1225px] gap-12 lg:grid-cols-[373px_1fr] lg:gap-[84px]">
         <div>
           <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">{dictionary.why.eyebrow}</p>
-          <h2 className="mt-7 text-[34px] font-normal leading-[1.16] md:text-[44px]">
+          <h2 className="mt-7 text-[32px] font-normal leading-[1.16] md:text-[44px]">
             {dictionary.why.titleLead} <span className="font-bold text-astra-gold">{dictionary.why.titleHighlight}</span>
           </h2>
           <p className="mt-7 text-xl font-semibold leading-[1.14]">{dictionary.why.plannerLabel}</p>
@@ -436,7 +436,7 @@ function PlanningSection({ dictionary }: { dictionary: HomeDictionary }) {
         <PlanningImage image={dictionary.planning.image} />
         <div className="lg:flex lg:flex-col lg:justify-center">
           <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">{dictionary.planning.eyebrow}</p>
-          <h2 className="mt-5 text-[34px] font-normal leading-[1.3] md:text-[44px]">
+          <h2 className="mt-5 text-[32px] font-normal leading-[1.3] md:text-[44px]">
             {dictionary.planning.titleLead}
             <br />
             <span className="font-bold text-astra-gold">{dictionary.planning.titleHighlight}</span>
@@ -481,7 +481,7 @@ function TeamSection({ dictionary }: { dictionary: HomeDictionary }) {
         <div className="grid items-stretch gap-6 lg:grid-cols-[minmax(0,0.3fr)_minmax(0,0.7fr)]">
           <div className="flex h-full flex-col items-start justify-center gap-[14px] text-left">
             <p className="w-full max-w-[360px] text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">Who You&apos;ll Travel With</p>
-            <h2 className="w-full max-w-[360px] text-[34px] font-medium leading-[1.18] text-white md:text-[44px] lg:text-[40px]">
+            <h2 className="w-full max-w-[360px] text-[32px] font-medium leading-[1.18] text-white md:text-[44px] lg:text-[40px]">
               Meet the guides behind every safari
             </h2>
             <p className="w-full max-w-[360px] text-base font-semibold leading-[1.6] text-white/80">
@@ -665,7 +665,7 @@ function SectionHeading({
   return (
     <div className="mx-auto flex max-w-[1084px] flex-col items-center gap-[14px] text-center">
       <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">{eyebrow}</p>
-      <h2 className={cn("text-[34px] font-medium leading-[1.4] text-astra-cocoa md:text-[44px]", titleClassName)}>{title}</h2>
+      <h2 className={cn("text-[32px] font-medium leading-[1.4] text-astra-cocoa md:text-[44px]", titleClassName)}>{title}</h2>
       <p className="text-base leading-[1.6] text-astra-brown">{description}</p>
     </div>
   );
