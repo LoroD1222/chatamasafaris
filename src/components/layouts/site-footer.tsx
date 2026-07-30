@@ -41,9 +41,9 @@ export function SiteFooter({ locale, dictionary }: { locale: Locale; dictionary:
           ))}
         </nav>
         <div className="h-px w-full bg-astra-cocoa/15" />
-        <div className="flex w-full flex-col gap-4 text-xs leading-4 text-astra-brown/75 md:flex-row md:items-center md:justify-between">
+        <div className="flex w-full flex-col items-center gap-4 text-center text-xs leading-4 text-astra-brown/75 md:flex-row md:justify-between md:text-left">
           <p>{dictionary.footer.copyright}</p>
-          <nav className="flex flex-wrap gap-4 md:justify-end" aria-label="Legal">
+          <nav className="flex flex-wrap justify-center gap-4 md:justify-end" aria-label="Legal">
             {dictionary.footer.legalLinks.map((item) => (
               <a key={item.label} href={item.href} className="transition hover:text-astra-gold">
                 {item.label}

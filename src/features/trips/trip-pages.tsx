@@ -30,6 +30,7 @@ import { LeadPlanner } from "@/features/home/lead-planner";
 import { defaultLocale } from "@/i18n/config";
 import type { HomeDictionary, PlannerField } from "@/i18n/types";
 import { isActiveTripCategory, type TripCard, type TripDetail, tripCards, tripCategoryOrder } from "@/features/trips/trip-data";
+import { cn } from "@/utils/cn";
 import { submitWeb3Form } from "@/utils/web3forms";
 
 type TripPageProps = {
@@ -241,7 +242,7 @@ export function TripDetailPage({ dictionary, trip, similarTrips = [] }: TripDeta
         </div>
         <BestTimeSection dictionary={dictionary} seasons={seasons} />
         <WidePlannerBand dictionary={dictionary} />
-        <ReviewsSection reviews={trip.reviews} />
+        <ReviewsSection dictionary={dictionary} />
         <StopPlanningSection dictionary={dictionary} />
         <SimilarTripsSection trips={similarTrips.length > 0 ? similarTrips : tripCards.slice(0, 3)} />
         <FaqSection dictionary={dictionary} faqs={faqs} />
@@ -363,7 +364,7 @@ function HeroGallery({ images, className = "" }: { images: { src: string; alt: s
 
   return (
     <div className={className}>
-      <div className="relative h-[420px] overflow-hidden rounded-[2px] bg-[#403028] lg:h-[574px]">
+      <div className="relative aspect-square overflow-hidden rounded-[2px] bg-[#403028] lg:aspect-auto lg:h-[574px]">
         <button type="button" onClick={() => setIsLightboxOpen(true)} className="absolute inset-0 cursor-zoom-in outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--astra-primary-amber)]" aria-label={`Open image gallery: ${currentImage.alt}`}>
           <Image src={currentImage.src} alt={currentImage.alt} fill priority sizes="707px" className="object-cover transition duration-300" />
         </button>
@@ -547,7 +548,7 @@ function TripTabs() {
   return (
     <div className="sticky left-0 top-0 z-[100000] bg-[#FFF8F0]">
       <div className={pageContainer}>
-        <nav className="flex h-[58px] items-center rounded-[10px] border border-[#403028]/10 bg-[#FFF8F0] px-2 text-[11px] font-bold leading-[1.2] text-[#403028]/70 shadow-[0_8px_20px_rgba(64,48,40,0.04)] sm:px-4 sm:text-[13px] md:px-8 md:text-[15px]" aria-label="Trip sections">
+        <nav className="flex h-[58px] items-center rounded-[10px] border border-[#403028]/10 bg-[#FFF8F0] px-2 text-[14px] font-bold leading-[1.2] text-[#403028]/70 shadow-[0_8px_20px_rgba(64,48,40,0.04)] sm:px-4 sm:text-[16px] md:px-8 md:text-[18px]" aria-label="Trip sections">
           <div className="grid h-full w-full grid-cols-5 items-center">
             {tripTabs.map((tab) => (
               <a key={tab.label} href={tab.href} onClick={() => setActiveTab(tab.href)} className={`relative flex h-full items-center justify-center px-1 text-center transition hover:text-[#403028] ${activeTab === tab.href ? "text-[#403028]" : ""}`}>
@@ -636,12 +637,12 @@ function ItineraryImage({ images, sizes, label, className = "" }: { images: { sr
 function IncludedSection({ dictionary, includedItems, excludedItems, priceTiers }: { dictionary: HomeDictionary; includedItems: string[]; excludedItems: string[]; priceTiers: { id: string; people: string; price: string }[] }) {
   return (
     <section id="inclusions" className={`${pageContainer} scroll-mt-[82px] py-[72px]`}>
-      <div className={excludedItems.length > 0 ? "mx-auto grid max-w-[930px] gap-10 md:grid-cols-[minmax(0,1fr)_1px_minmax(0,1fr)] md:items-stretch md:gap-12" : ""}>
+      <div className={excludedItems.length > 0 ? "mx-auto grid max-w-[930px] gap-10 text-left md:grid-cols-[minmax(0,1fr)_1px_minmax(0,1fr)] md:items-stretch md:gap-12" : "text-left"}>
         <div className="min-w-0">
           <h2 className="text-[30px] font-semibold leading-[1.2]">What is included?</h2>
           <ul className={`mt-10 grid gap-x-9 gap-y-5 ${excludedItems.length > 0 ? "" : "sm:grid-cols-2"}`}>
             {includedItems.map((item, index) => (
-              <li key={`${item}-${index}`} className="flex items-center gap-3 text-[13px] font-semibold leading-[1.5] text-[#403028]/75">
+              <li key={`${item}-${index}`} className="flex items-center justify-start gap-3 text-left text-[13px] font-semibold leading-[1.5] text-[#403028]/75">
                 <span className="grid size-[25px] shrink-0 place-items-center rounded-full bg-[#E0B880] text-white"><Check className="size-4" strokeWidth={3} aria-hidden="true" /></span>
                 {item}
               </li>
@@ -654,7 +655,7 @@ function IncludedSection({ dictionary, includedItems, excludedItems, priceTiers 
             <h2 className="text-[30px] font-semibold leading-[1.2]">What is excluded?</h2>
             <ul className="mt-10 grid gap-x-9 gap-y-5">
               {excludedItems.map((item, index) => (
-                <li key={`${item}-${index}`} className="flex items-center gap-3 text-[13px] font-semibold leading-[1.5] text-[#403028]/75">
+                <li key={`${item}-${index}`} className="flex items-center justify-start gap-3 text-left text-[13px] font-semibold leading-[1.5] text-[#403028]/75">
                   <span className="grid size-[25px] shrink-0 place-items-center rounded-full bg-[#E0B880] text-white"><X className="size-4" strokeWidth={3} aria-hidden="true" /></span>
                   {item}
                 </li>
@@ -664,10 +665,10 @@ function IncludedSection({ dictionary, includedItems, excludedItems, priceTiers 
         ) : null}
       </div>
       <div id="pricing" className="scroll-mt-[82px] pt-[82px] lg:col-span-2">
-        <div className="mx-auto flex max-w-[1110px] items-center gap-7">
-          <div className="h-[2px] flex-1 bg-[#FFF8F0]" />
-          <h3 className="shrink-0 text-center text-[27px] font-medium leading-[1.3] text-[#403028]">All-inclusive rates in USD</h3>
-          <div className="h-[2px] flex-1 bg-[#FFF8F0]" />
+        <div className="mx-[-24px] flex w-[calc(100%+48px)] items-center gap-3 md:mx-auto md:w-full md:max-w-[1110px] md:gap-7">
+          <div className="hidden h-[2px] flex-1 bg-[#FFF8F0] md:block" />
+          <h3 className="min-w-0 flex-1 text-center text-[27px] font-medium leading-[1.3] text-[#403028]">All-inclusive rates in USD</h3>
+          <div className="hidden h-[2px] flex-1 bg-[#FFF8F0] md:block" />
         </div>
         <div className="mx-auto mt-3 flex w-full max-w-[1110px] flex-wrap justify-center gap-2">
           {priceTiers.map((tier) => (
@@ -678,7 +679,7 @@ function IncludedSection({ dictionary, includedItems, excludedItems, priceTiers 
             </div>
           ))}
         </div>
-        <PlannerDialogButton planner={dictionary.planner} variant="ghost" size="sm" className="mx-auto mt-9 flex h-auto w-fit bg-transparent p-0 text-[15px] font-bold leading-[1.5] text-[#403028] underline decoration-[#403028]/70 underline-offset-2 shadow-none hover:bg-transparent hover:text-[#403028]/75">
+        <PlannerDialogButton planner={dictionary.planner} variant="ghost" size="sm" className="mx-auto mt-9 flex h-auto max-w-full whitespace-normal bg-transparent p-0 text-center text-[15px] font-bold leading-[1.5] text-[#403028] underline decoration-[#403028]/70 underline-offset-2 shadow-none hover:bg-transparent hover:text-[#403028]/75">
           Not sure on group size? Ask a planner - we&apos;ll figure it out together.
         </PlannerDialogButton>
       </div>
@@ -690,10 +691,10 @@ function BestTimeSection({ dictionary, seasons }: { dictionary: HomeDictionary; 
   return (
     <section className="bg-[#FFF8F0] pb-[72px] pt-[76px]">
       <div className={pageContainer}>
-        <div className="mx-auto flex max-w-[1110px] items-center gap-8">
-          <div className="h-[2px] flex-1 bg-[#FFF8F0]" />
-          <h2 className="shrink-0 text-center text-[27px] font-medium leading-[1.3] text-[#403028]">Best time for this safari</h2>
-          <div className="h-[2px] flex-1 bg-[#FFF8F0]" />
+        <div className="mx-[-24px] flex w-[calc(100%+48px)] items-center gap-3 md:mx-auto md:w-full md:max-w-[1110px] md:gap-8">
+          <div className="hidden h-[2px] flex-1 bg-[#FFF8F0] md:block" />
+          <h2 className="min-w-0 flex-1 text-center text-[27px] font-medium leading-[1.3] text-[#403028]">Best time for this safari</h2>
+          <div className="hidden h-[2px] flex-1 bg-[#FFF8F0] md:block" />
         </div>
         <div className="mx-auto mt-5 flex w-full max-w-[1110px] flex-wrap justify-center gap-3">
           {seasons.map((season) => (
@@ -706,7 +707,7 @@ function BestTimeSection({ dictionary, seasons }: { dictionary: HomeDictionary; 
             </article>
           ))}
         </div>
-        <PlannerDialogButton planner={dictionary.planner} variant="ghost" size="sm" className="mx-auto mt-9 flex h-auto w-fit bg-transparent p-0 text-[15px] font-bold leading-[1.5] text-[#403028] underline decoration-[#403028]/70 underline-offset-2 shadow-none hover:bg-transparent hover:text-[#403028]/75">
+        <PlannerDialogButton planner={dictionary.planner} variant="ghost" size="sm" className="mx-auto mt-9 flex h-auto max-w-full whitespace-normal bg-transparent p-0 text-center text-[15px] font-bold leading-[1.5] text-[#403028] underline decoration-[#403028]/70 underline-offset-2 shadow-none hover:bg-transparent hover:text-[#403028]/75">
           Not sure on group size? Ask a planner - we&apos;ll figure it out together.
         </PlannerDialogButton>
       </div>
@@ -801,22 +802,19 @@ function InlinePlannerField({ field, value, invalid, onChange }: { field: Planne
   );
 }
 
-function ReviewsSection({ reviews }: { reviews?: { quote: string; authorName: string; authorDetails: string }[] }) {
-  type ReviewCard = { image?: string; alt?: string; quote: string; name: string; details: string };
+function ReviewsSection({ dictionary }: { dictionary: HomeDictionary }) {
+  type ReviewCard = { image?: string; imagePosition?: string; alt?: string; quote: string; name: string; details: string };
 
-  const defaultReviews: ReviewCard[] = [
-    { quote: "Wonderful Safari by Chatama Safari Professional Guides. They are more than just Serengeti Guides, they accommodated many subjects of life, be at dinner, or on safari. I will strongly recommend for exclusive and professional guided safari experience.", name: "Alissa Brill", details: "June 29, 2026" },
-    { image: "/assets/figma/reviews/review-group.jpg", alt: "Chatama Safaris guests with their guide", quote: "Thank you for providing us with an unforgettable experience. You tolerated all of our questions, silly comments and welcomed our games. You showed us the true meaning of Tanzanian hospitality.", name: "Nicoletta", details: "June 27, 2026" },
-    { quote: "Chatama Safari went beyond expectations. They provided us with the best itinerary for our honeymoon beyond expectation. They arranged us at lodges located in exclusive areas in Serengeti, perfect for our honeymoon.", name: "Andrea", details: "October 25, 2025" },
-    { image: "/assets/figma/reviews/review-dinner.jpg", alt: "Chatama Safaris guests at dinner", quote: "I have known the Chatama Safari Tour Guides for more than 10 years. Every time I come to Tanzania, the reason for the comeback has been meeting this team. It has never a disappointment.", name: "Carolyn Housman", details: "May 20, 2024" },
-    { quote: "I love the educated and professional guiding. We saw the big five and many more. The guides knowledge was amazing. Played games on the Serengeti plains, that to me is the unforgettable moments.", name: "Anne", details: "2026" },
-    { quote: "Chatama Safari provided us with the vibe beyond our expectation, from their relaxed itinerary, focused on client interest coupled with their professional guides service is an unforgettable lifetime safari experience.", name: "Katie", details: "Chatama Safaris guest" },
-    { quote: "Wonderful experience done by the professional, experienced and professional safari guides. The whole trip was well organized. I cannot wait to meet them next. Chatama Safari is the ultimate team of professional safari providers.", name: "Melissa Mentone", details: "June 28, 2022" },
-    { image: "/assets/figma/reviews/review-culture.jpg", alt: "Chatama Safaris guests in Maasai dress", quote: "We booked and travelled with Chatama Safaris, this was our best organized safari ever. Our Safari tour guide, Peter was knowledgeable, professional and friendly.", name: "Julia Senkowysky", details: "October 10, 2025" },
-  ];
-  const displayReviews: ReviewCard[] = reviews && reviews.length > 0
-    ? reviews.map((r) => ({ quote: r.quote, name: r.authorName, details: r.authorDetails }))
-    : defaultReviews;
+  const displayReviews: ReviewCard[] = dictionary.reviews.items
+    .filter((review) => review.image)
+    .map((review) => ({
+      image: review.image?.src,
+      imagePosition: review.image?.position,
+      alt: review.image?.alt,
+      quote: review.quote.replace(/^"|"$/g, ""),
+      name: review.author,
+      details: review.details,
+    }));
 
   return (
     <section id="reviews" className="bg-[#403028] px-6 py-[86px] text-white">
@@ -829,7 +827,7 @@ function ReviewsSection({ reviews }: { reviews?: { quote: string; authorName: st
             <article key={index} className={`grid gap-6 rounded-[10px] border border-white/20 bg-white/[0.075] p-6 shadow-[0_18px_44px_rgba(0,0,0,0.12)] ${review.image ? "sm:grid-cols-[220px_minmax(0,1fr)]" : ""}`}>
               {review.image ? (
                 <div className="relative h-[158px] overflow-hidden rounded-[8px] bg-[#403028] sm:h-[178px]">
-                  <Image src={review.image} alt={review.alt ?? ""} fill sizes="220px" className="object-cover" />
+                  <Image src={review.image} alt={review.alt ?? ""} fill sizes="220px" className={cn("object-cover", review.imagePosition)} />
                 </div>
               ) : null}
               <div className="flex flex-col justify-center">
@@ -856,10 +854,8 @@ function StopPlanningSection({ dictionary }: TripPageProps) {
           <p className="mt-5 max-w-[520px] text-[15px] font-semibold leading-[1.65] text-white/72">Tanzania is one of those trips people talk about for the rest of their lives.</p>
           <PlannerDialogButton planner={dictionary.planner} className={`mt-7 h-[48px] px-6 text-[14px] font-bold ${amberButton}`}>Talk to Safari Planner</PlannerDialogButton>
         </div>
-        <div className="relative min-h-[420px]">
-          <Image src="/assets/figma/planning-upper.jpg" alt="" width={280} height={190} className="absolute right-0 top-0 rounded-[8px] object-cover shadow-[0_18px_35px_rgba(0,0,0,0.28)]" />
-          <Image src="/assets/figma/planning-center.jpg" alt="" width={340} height={225} className="absolute left-0 top-[104px] rounded-[8px] object-cover shadow-[0_18px_35px_rgba(0,0,0,0.28)]" />
-          <Image src="/assets/figma/planning-bottom.jpg" alt="" width={280} height={180} className="absolute bottom-0 right-[22px] rounded-[8px] object-cover shadow-[0_18px_35px_rgba(0,0,0,0.28)]" />
+        <div className="relative mx-auto aspect-[1520/1937] w-full max-w-[520px]">
+          <Image src={dictionary.planning.image.src} alt={dictionary.planning.image.alt} fill sizes="(min-width: 1024px) 520px, 100vw" className="object-contain" />
         </div>
       </div>
     </section>
