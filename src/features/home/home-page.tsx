@@ -108,9 +108,7 @@ function HeroSection({ dictionary }: { dictionary: HomeDictionary }) {
         <div className="absolute inset-0 bg-[linear-gradient(69deg,#403028_27%,rgba(64,48,40,0)_69%)]" />
       </div>
       <div className="container relative grid max-w-[1112px] gap-8 md:min-h-[543px] md:items-center md:py-14 lg:grid-cols-[627px_365px] lg:gap-[75px]">
-        <div className="relative -mx-4 overflow-hidden px-4 py-14 md:mx-0 md:max-w-[640px] md:overflow-visible md:px-0 md:py-0">
-          <Image src={dictionary.hero.image.src} alt={dictionary.hero.image.alt} fill priority sizes="100vw" className="object-cover object-[58%_center] md:hidden" />
-          <div className="absolute inset-0 bg-[linear-gradient(69deg,#403028_24%,rgba(64,48,40,0.3)_100%)] md:hidden" />
+        <div className="relative -mx-4 px-4 py-14 md:mx-0 md:max-w-[640px] md:px-0 md:py-0">
           <div className="relative">
             <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">
               {dictionary.hero.eyebrow}
@@ -137,6 +135,9 @@ function HeroSection({ dictionary }: { dictionary: HomeDictionary }) {
               </Button>
             </div>
           </div>
+        </div>
+        <div className="relative -mx-4 h-[220px] overflow-hidden md:hidden">
+          <Image src={dictionary.hero.image.src} alt={dictionary.hero.image.alt} fill priority sizes="100vw" className="object-cover object-[58%_center]" />
         </div>
         <LeadPlanner planner={dictionary.planner} sectionId="planner" className="mb-12 mt-2 w-full md:mb-0 md:mt-0" />
       </div>
@@ -504,12 +505,12 @@ function TeamSection({ dictionary }: { dictionary: HomeDictionary }) {
 
 function FounderCard({ member }: { member: TeamMember }) {
   return (
-    <article className="grid items-stretch gap-6 rounded-[10px] border border-astra-cocoa/10 bg-white/20 p-5 shadow-[0_18px_45px_rgba(64,48,40,0.08)] md:grid-cols-[minmax(220px,280px)_1fr] xl:grid-cols-[320px_1fr] lg:gap-8 motion-safe:transition motion-safe:hover:-translate-y-1 motion-safe:hover:shadow-[0_18px_50px_rgba(64,48,40,0.12)]">
+    <article className="grid items-stretch gap-6 rounded-[10px] border border-astra-cocoa/10 bg-white p-5 shadow-[0_18px_45px_rgba(64,48,40,0.08)] md:grid-cols-[minmax(220px,280px)_1fr] xl:grid-cols-[320px_1fr] lg:gap-8 motion-safe:transition motion-safe:hover:-translate-y-1 motion-safe:hover:shadow-[0_18px_50px_rgba(64,48,40,0.12)]">
       <TeamPhoto member={member} className="h-[320px] w-full rounded-[10px] md:h-full md:min-h-[300px]" tag="Founder" sizes="(min-width: 1024px) 320px, (min-width: 640px) 280px, 100vw" />
       <div className="px-0 py-1 lg:pr-7">
-        <p className="text-[12.5px] font-bold uppercase leading-[1.6] tracking-[0.08em] text-[#C99A5D]">{member.role}</p>
-        <h3 className="mt-2 text-[28px] font-bold leading-[1.18] text-white">{member.name}</h3>
-        <p className="mt-4 max-w-[640px] text-[15px] font-medium leading-[1.7] text-white/80">{member.bio}</p>
+        <p className="text-[12.5px] font-bold uppercase leading-[1.6] tracking-[0.08em] text-astra-cocoa">{member.role}</p>
+        <h3 className="mt-2 text-[28px] font-bold leading-[1.18] text-astra-cocoa">{member.name}</h3>
+        <p className="mt-4 max-w-[640px] text-[15px] font-medium leading-[1.7] text-astra-brown/75">{member.bio}</p>
       </div>
     </article>
   );
