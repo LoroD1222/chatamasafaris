@@ -479,7 +479,7 @@ function TeamSection({ dictionary }: { dictionary: HomeDictionary }) {
     <section id="our-team" className="bg-[linear-gradient(to_bottom,#403028_0%,#403028_48%,#FFF8F0_48%,#FFF8F0_100%)] px-0 pb-10 pt-[50px] text-astra-cocoa md:pb-12 md:pt-[50px]">
       <div className="container max-w-[1160px]">
         <div className="grid items-stretch gap-6 lg:grid-cols-[minmax(0,0.3fr)_minmax(0,0.7fr)]">
-          <div className="flex h-full flex-col items-center justify-center gap-[14px] text-left">
+          <div className="flex h-full flex-col items-start justify-center gap-[14px] text-left">
             <p className="w-full max-w-[360px] text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">Who You&apos;ll Travel With</p>
             <h2 className="w-full max-w-[360px] text-[34px] font-medium leading-[1.18] text-white md:text-[44px] lg:text-[40px]">
               Meet the guides behind every safari
