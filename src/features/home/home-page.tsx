@@ -122,7 +122,7 @@ function HeroSection({ dictionary }: { dictionary: HomeDictionary }) {
               {dictionary.hero.titleAfterBreakLead} <span className="font-bold text-astra-gold">{dictionary.hero.titleHighlight}</span>
             </h1>
             <p className="mt-5 max-w-[525px] text-base leading-[1.6]">{dictionary.hero.description}</p>
-            <div className="mt-5 flex flex-col gap-[22px] sm:flex-row">
+            <div className="mt-5 grid grid-cols-2 gap-3 sm:flex sm:flex-row sm:gap-[22px]">
               <PlannerDialogButton
                 planner={dictionary.planner}
                 className="h-[54px] rounded-[9px] bg-astra-gold px-[21px] text-base font-bold text-astra-cocoa hover:bg-astra-gold/90"
@@ -449,7 +449,7 @@ function PlanningSection({ dictionary }: { dictionary: HomeDictionary }) {
               </p>
             ))}
           </div>
-          <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center">
+          <div className="mt-5 grid grid-cols-2 gap-4 sm:flex sm:flex-row sm:items-center">
             <PlannerDialogButton
               planner={dictionary.planner}
               className="h-[54px] rounded-[9px] bg-astra-gold px-[21px] text-base font-bold text-astra-cocoa hover:bg-astra-gold/90"
