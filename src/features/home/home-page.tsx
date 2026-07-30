@@ -581,7 +581,7 @@ function ReviewsSection({ dictionary }: { dictionary: HomeDictionary }) {
           {imageReviews.map((review, index) => (
             <ReviewCard key={`${review.author}-mobile-image-${index}`} review={review} />
           ))}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid gap-4">
             {textReviews.map((review, index) => (
               <ReviewCard key={`${review.author}-mobile-text-${index}`} review={review} />
             ))}
