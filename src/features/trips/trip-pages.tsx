@@ -194,7 +194,7 @@ export function TripDetailPage({ dictionary, trip, similarTrips = [] }: TripDeta
     <div className="astra-page-enter min-h-screen overflow-x-clip bg-[#FFF8F0] text-[#403028]">
       <SiteHeader locale={defaultLocale} dictionary={dictionary} />
       <main>
-        <section className="mx-auto max-w-[1200px] px-6 pb-[76px] pt-[65px]">
+        <section className="mx-auto max-w-[1200px] px-6 pb-[44px] pt-[44px] md:pb-[76px] md:pt-[65px]">
           <TripBreadcrumb />
           <h1 className="text-[31px] font-semibold leading-[1.14] tracking-[-0.01em] text-[#403028] md:text-[37px]">
             {trip.title}
@@ -213,12 +213,12 @@ export function TripDetailPage({ dictionary, trip, similarTrips = [] }: TripDeta
 
         <div className="relative">
           <TripTabs />
-          <section id="overview" className="mx-auto grid max-w-[1200px] scroll-mt-[82px] gap-10 px-6 py-[84px] lg:grid-cols-[680px_448px]">
+          <section id="overview" className="mx-auto grid max-w-[1200px] scroll-mt-[82px] gap-10 px-6 py-[48px] md:py-[84px] lg:grid-cols-[680px_448px]">
             <OverviewText trip={trip} />
             <PlannerQuoteCard dictionary={dictionary} />
           </section>
 
-          <section id="tour-details" className="mx-auto grid max-w-[1200px] scroll-mt-[82px] gap-8 px-6 pb-[84px] lg:grid-cols-[minmax(0,879px)_1fr]">
+          <section id="tour-details" className="mx-auto grid max-w-[1200px] scroll-mt-[82px] gap-8 px-6 pb-[48px] md:pb-[84px] lg:grid-cols-[minmax(0,879px)_1fr]">
             <div className="relative overflow-hidden rounded-[10px]">
               <Image src={trip.mapImage || "/assets/trips/trip-map.png"} alt="Tanzania safari map" width={879} height={705} className="h-auto w-full" unoptimized />
             </div>
@@ -592,12 +592,12 @@ function ItinerarySection({ itineraryDays, gallerySlides }: { itineraryDays: Iti
   const days = itineraryDays.length > 0 ? itineraryDays : [{ day: "DAY 1", title: "Arrival", description: "", accommodation: "", images: [] }];
 
   return (
-    <section id="itinerary" className={`${pageContainer} scroll-mt-[82px] py-[72px]`}>
+    <section id="itinerary" className={`${pageContainer} scroll-mt-[82px] py-[48px] md:py-[72px]`}>
       <div className="flex items-center gap-8">
         <h2 className="shrink-0 text-[34px] font-semibold leading-[1.15] text-[#403028] md:text-[38px]">Trip Itinerary</h2>
         <div className="h-[2px] flex-1 bg-[#FFF8F0]" />
       </div>
-      <div className="mt-[56px] grid gap-6">
+      <div className="mt-[32px] grid gap-6 md:mt-[56px]">
         {days.map((day, index) => {
           const dayImage = day.images[0] || gallerySlides[index % gallerySlides.length] || itineraryAccommodationSlides[0];
 
@@ -636,7 +636,7 @@ function ItineraryImage({ images, sizes, label, className = "" }: { images: { sr
 
 function IncludedSection({ dictionary, includedItems, excludedItems, priceTiers }: { dictionary: HomeDictionary; includedItems: string[]; excludedItems: string[]; priceTiers: { id: string; people: string; price: string }[] }) {
   return (
-    <section id="inclusions" className={`${pageContainer} scroll-mt-[82px] py-[72px]`}>
+    <section id="inclusions" className={`${pageContainer} scroll-mt-[82px] py-[48px] md:py-[72px]`}>
       <div className={excludedItems.length > 0 ? "mx-auto grid max-w-[930px] gap-10 text-left md:grid-cols-[minmax(0,1fr)_1px_minmax(0,1fr)] md:items-stretch md:gap-12" : "text-left"}>
         <div className="min-w-0">
           <h2 className="text-[30px] font-semibold leading-[1.2]">What is included?</h2>
@@ -664,7 +664,7 @@ function IncludedSection({ dictionary, includedItems, excludedItems, priceTiers 
           </div>
         ) : null}
       </div>
-      <div id="pricing" className="scroll-mt-[82px] pt-[82px] lg:col-span-2">
+      <div id="pricing" className="scroll-mt-[82px] pt-[48px] md:pt-[82px] lg:col-span-2">
         <div className="mx-[-24px] flex w-[calc(100%+48px)] items-center gap-3 md:mx-auto md:w-full md:max-w-[1110px] md:gap-7">
           <div className="hidden h-[2px] flex-1 bg-[#FFF8F0] md:block" />
           <h3 className="min-w-0 flex-1 text-center text-[27px] font-medium leading-[1.3] text-[#403028]">All-inclusive rates in USD</h3>
@@ -689,7 +689,7 @@ function IncludedSection({ dictionary, includedItems, excludedItems, priceTiers 
 
 function BestTimeSection({ dictionary, seasons }: { dictionary: HomeDictionary; seasons: { title: string; dot: string; description: string }[] }) {
   return (
-    <section className="bg-[#FFF8F0] pb-[72px] pt-[76px]">
+    <section className="bg-[#FFF8F0] pb-[48px] pt-[48px] md:pb-[72px] md:pt-[76px]">
       <div className={pageContainer}>
         <div className="mx-[-24px] flex w-[calc(100%+48px)] items-center gap-3 md:mx-auto md:w-full md:max-w-[1110px] md:gap-8">
           <div className="hidden h-[2px] flex-1 bg-[#FFF8F0] md:block" />
@@ -717,10 +717,10 @@ function BestTimeSection({ dictionary, seasons }: { dictionary: HomeDictionary; 
 
 function WidePlannerBand({ dictionary }: TripPageProps) {
   return (
-    <section className="relative min-h-[441px] overflow-hidden border border-white/30 bg-[#403028] text-white shadow-[0_4px_11px_rgba(0,0,0,0.05)]">
+    <section className="relative min-h-[360px] overflow-hidden border border-white/30 bg-[#403028] text-white shadow-[0_4px_11px_rgba(0,0,0,0.05)] md:min-h-[441px]">
       <Image src="/assets/figma/final-cta-bg.jpg" alt="" fill sizes="100vw" className="object-cover object-[62%_center]" aria-hidden="true" />
       <div className="absolute inset-0 bg-[linear-gradient(86deg,#403028_1%,rgba(64,48,40,0.4)_89%)]" />
-      <div className="relative mx-auto flex min-h-[441px] max-w-[1206px] flex-col gap-8 px-6 py-[78px] md:flex-row md:items-start md:gap-[18px] md:py-0">
+      <div className="relative mx-auto flex min-h-[360px] max-w-[1206px] flex-col gap-8 px-6 py-[50px] md:min-h-[441px] md:flex-row md:items-start md:gap-[18px] md:py-0">
         <div className="md:mt-[148px] md:w-[419px]">
           <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-[#E0B880]">Free, no commitment</p>
           <h2 className="mt-[11px] text-[34px] font-semibold leading-[1.14]">Talk to a safari planner</h2>
@@ -817,12 +817,12 @@ function ReviewsSection({ dictionary }: { dictionary: HomeDictionary }) {
     }));
 
   return (
-    <section id="reviews" className="bg-[#403028] px-6 py-[86px] text-white">
+    <section id="reviews" className="bg-[#403028] px-6 py-[48px] text-white md:py-[86px]">
       <div className="mx-auto max-w-[1320px]">
         <p className="text-center text-[13px] font-bold uppercase leading-none tracking-[0.28em] text-[#E0B880]">Experiences we offer</p>
         <h2 className="mt-7 text-center text-[48px] font-medium leading-[1.08] text-white">Customer reviews</h2>
         <p className="mx-auto mt-7 max-w-[560px] text-center text-[21px] font-medium leading-[1.45] text-white/58">What our travelers say</p>
-        <div className="mt-[58px] grid gap-7">
+        <div className="mt-[58px] grid gap-7 lg:grid-cols-2">
           {displayReviews.map((review, index) => (
             <article key={index} className="grid gap-6 rounded-[10px] border border-white/20 bg-white/[0.075] p-6 shadow-[0_18px_44px_rgba(0,0,0,0.12)]">
               {review.image ? (
@@ -846,7 +846,7 @@ function ReviewsSection({ dictionary }: { dictionary: HomeDictionary }) {
 
 function StopPlanningSection({ dictionary }: TripPageProps) {
   return (
-    <section className="bg-[#403028] py-[76px] text-white">
+    <section className="bg-[#403028] py-[48px] text-white md:py-[76px]">
       <div className={`${pageContainer} grid gap-10 md:grid-cols-[1fr_520px] md:items-center`}>
         <div>
           <p className="text-[13px] font-bold uppercase tracking-[0.05em] text-[#E0B880]">Experiences we offer</p>
@@ -864,7 +864,7 @@ function StopPlanningSection({ dictionary }: TripPageProps) {
 
 function SimilarTripsSection({ trips }: { trips: TripCard[] }) {
   return (
-    <section className={`${pageContainer} py-[76px]`}>
+    <section className={`${pageContainer} py-[48px] md:py-[76px]`}>
       <p className="text-center text-[13px] font-bold uppercase tracking-[0.05em] text-[#E0B880]">Experiences we offer</p>
       <h2 className="mt-4 text-center text-[34px] font-semibold leading-[1.15]">Other Similar Trips</h2>
       <div className="mt-10 grid gap-5 lg:grid-cols-3">
@@ -889,7 +889,7 @@ function SimilarTripsSection({ trips }: { trips: TripCard[] }) {
 function FaqSection({ dictionary, faqs }: { dictionary: HomeDictionary; faqs: { question: string; answer: string }[] }) {
   const [open, setOpen] = useState(0);
   return (
-    <section className="mx-auto max-w-[900px] px-6 py-[76px]">
+    <section className="mx-auto max-w-[900px] px-6 py-[48px] md:py-[76px]">
       <p className="text-center text-[13px] font-bold uppercase tracking-[0.05em] text-[#E0B880]">{dictionary.faq.eyebrow}</p>
       <h2 className="mt-4 text-center text-[42px] font-semibold leading-[1.2]">{dictionary.faq.title}</h2>
       <p className="mt-3 text-center text-[15px] font-semibold leading-[1.6] text-[#403028]/55">{dictionary.faq.description}</p>
