@@ -822,7 +822,7 @@ function ReviewsSection({ dictionary }: { dictionary: HomeDictionary }) {
         <p className="text-center text-[13px] font-bold uppercase leading-none tracking-[0.28em] text-[#E0B880]">Experiences we offer</p>
         <h2 className="mt-7 text-center text-[48px] font-medium leading-[1.08] text-white">Customer reviews</h2>
         <p className="mx-auto mt-7 max-w-[560px] text-center text-[21px] font-medium leading-[1.45] text-white/58">What our travelers say</p>
-        <div className="mt-[58px] grid gap-7 lg:grid-cols-2">
+        <div className="mt-[58px] grid items-start gap-7 lg:grid-cols-2">
           {displayReviews.map((review, index) => (
             <article key={index} className="grid gap-6 rounded-[10px] border border-white/20 bg-white/[0.075] p-6 shadow-[0_18px_44px_rgba(0,0,0,0.12)]">
               {review.image ? (
