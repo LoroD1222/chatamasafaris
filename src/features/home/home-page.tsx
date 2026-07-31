@@ -57,7 +57,7 @@ const teamMembers: TeamMember[] = [
   {
     name: "Benedictor Loy",
     role: "Guide",
-    bio: "Part of the core guiding team at Astra Tanzania, bringing steady, attentive fieldcraft to every drive.",
+    bio: "Part of the core guiding team at Chatama Safaris, bringing steady, attentive fieldcraft to every drive.",
     photo: {
       src: "/assets/figma/team/benedictor.jpg",
       alt: "Benedictor Loy, Guide"
@@ -75,7 +75,7 @@ const teamMembers: TeamMember[] = [
   {
     name: "Mohamedi Msuya",
     role: "Trainee Guide",
-    bio: "Training under the Astra Tanzania team, building the field experience that defines every guide here.",
+    bio: "Training under the Chatama Safaris team, building the field experience that defines every guide here.",
     photo: {
       src: "/assets/figma/team/mohamedi.jpg",
       alt: "Mohamedi Msuya, Trainee Guide"
@@ -487,7 +487,7 @@ function TeamSection({ dictionary }: { dictionary: HomeDictionary }) {
               Meet the guides behind every safari
             </h2>
             <p className="w-full max-w-[360px] text-base font-semibold leading-[1.6] text-white/80">
-              Every Astra Tanzania trip is led by a guide who has spent years reading this land. Here&apos;s who&apos;s waiting for you in the field.
+              Every Chatama Safaris trip is led by a guide who has spent years reading this land. Here&apos;s who&apos;s waiting for you in the field.
             </p>
           </div>
           {founder ? <FounderCard member={founder} /> : null}
@@ -508,7 +508,7 @@ function FounderCard({ member }: { member: TeamMember }) {
     <article className="grid items-stretch gap-6 rounded-[10px] border border-astra-cocoa/10 bg-white p-5 shadow-[0_18px_45px_rgba(64,48,40,0.08)] md:grid-cols-[minmax(220px,280px)_1fr] xl:grid-cols-[320px_1fr] lg:gap-8 motion-safe:transition motion-safe:hover:-translate-y-1 motion-safe:hover:shadow-[0_18px_50px_rgba(64,48,40,0.12)]">
       <TeamPhoto member={member} className="h-[320px] w-full rounded-[10px] md:h-full md:min-h-[300px]" tag="Founder" sizes="(min-width: 1024px) 320px, (min-width: 640px) 280px, 100vw" />
       <div className="px-0 py-1 lg:pr-7">
-        <p className="text-[12.5px] font-bold uppercase leading-[1.6] tracking-[0.08em] text-astra-cocoa">{member.role}</p>
+        <p className="text-[12.5px] font-bold uppercase leading-[1.6] tracking-[0.08em] text-astra-gold">{member.role}</p>
         <h3 className="mt-2 text-[28px] font-bold leading-[1.18] text-astra-cocoa">{member.name}</h3>
         <p className="mt-4 max-w-[640px] text-[15px] font-medium leading-[1.7] text-astra-brown/75">{member.bio}</p>
       </div>

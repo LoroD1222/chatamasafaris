@@ -234,8 +234,7 @@ const en: HomeDictionary = {
       "We believe every safari is more than a journey. It is a story shaped by golden savannahs, unforgettable wildlife encounters, and Tanzania's untouched landscapes.",
       "Our mission is to create memorable, tailor-made safari experiences through professional guiding and carefully planned itineraries built around each traveller's interests and needs.",
       "Our vision is to become one of East Africa's most trusted safari providers, known for authentic experiences, excellent service, and personal attention.",
-      "Whether it is your first safari or your fifth, Tanzania will stay with you long after you return home.",
-      "Your journey into the heart of Tanzania begins with Chatama Safaris."
+      "Whether it is your first safari or your fifth, Tanzania will stay with you long after you return home."
     ],
     cta: "Talk to Safari Planner",
     aside: "Your journey begins here!",
@@ -317,7 +316,7 @@ const en: HomeDictionary = {
           "We recommend booking 4-6 months ahead, especially for July-October (peak migration season). That said, we've organized trips in under 4 weeks - reach out and we'll tell you what's available."
       },
       {
-        question: "Is Tanzania safe for American travelers?",
+        question: "Is Tanzania safe for international travelers?",
         answer:
           "Yes. Tanzania is one of the most politically stable countries in East Africa. Our parks are well-managed and our guides are trained for your safety in the bush. We've been bringing US travelers here for 15 years without incident."
       },

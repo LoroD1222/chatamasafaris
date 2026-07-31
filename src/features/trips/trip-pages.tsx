@@ -576,7 +576,7 @@ function OverviewText({ trip }: { trip: TripDetail }) {
 
 function PlannerQuoteCard({ dictionary }: TripPageProps) {
   return (
-    <LeadPlanner planner={dictionary.planner} className="w-full self-start rounded-[10px] border-[#403028]/12 bg-white p-7 text-[#403028] shadow-[0_18px_45px_rgba(64,48,40,0.08)] backdrop-blur-none" />
+    <LeadPlanner planner={dictionary.planner} className="w-full self-start rounded-[10px] border-[#403028]/12 !bg-white p-7 text-[#403028] shadow-[0_18px_45px_rgba(64,48,40,0.08)] backdrop-blur-none" />
   );
 }
 
@@ -700,7 +700,7 @@ function BestTimeSection({ dictionary, seasons }: { dictionary: HomeDictionary; 
           {seasons.map((season) => (
             <article key={season.title} className="min-h-[100px] w-full max-w-[360px] rounded-[8px] border border-[#403028]/10 bg-white px-6 pb-7 pt-6 shadow-[0_16px_35px_rgba(64,48,40,0.05)] md:w-[calc(33.333%-8px)]">
               <h3 className="flex items-center gap-3 text-[16px] font-medium leading-none text-[#E0B880]">
-                <span className="size-3 rounded-full opacity-70" style={{ backgroundColor: season.dot }} aria-hidden="true" />
+                <span className="size-3 rounded-full bg-astra-gold opacity-70" aria-hidden="true" />
                 {season.title}
               </h3>
               <p className="mt-5 text-[13px] font-semibold leading-[1.6] text-[#403028]/76">{season.description}</p>
@@ -806,7 +806,7 @@ function ReviewsSection({ dictionary }: { dictionary: HomeDictionary }) {
   type ReviewCard = { image?: string; imagePosition?: string; alt?: string; quote: string; name: string; details: string };
 
   const displayReviews: ReviewCard[] = dictionary.reviews.items
-    .filter((review) => review.image)
+    .filter((review) => review.image || review.author === "Alissa Brill")
     .map((review) => ({
       image: review.image?.src,
       imagePosition: review.image?.position,
@@ -822,12 +822,12 @@ function ReviewsSection({ dictionary }: { dictionary: HomeDictionary }) {
         <p className="text-center text-[13px] font-bold uppercase leading-none tracking-[0.28em] text-[#E0B880]">Experiences we offer</p>
         <h2 className="mt-7 text-center text-[48px] font-medium leading-[1.08] text-white">Customer reviews</h2>
         <p className="mx-auto mt-7 max-w-[560px] text-center text-[21px] font-medium leading-[1.45] text-white/58">What our travelers say</p>
-        <div className="mt-[58px] grid gap-x-6 gap-y-7 lg:grid-cols-2">
+        <div className="mt-[58px] grid gap-7">
           {displayReviews.map((review, index) => (
-            <article key={index} className={`grid gap-6 rounded-[10px] border border-white/20 bg-white/[0.075] p-6 shadow-[0_18px_44px_rgba(0,0,0,0.12)] ${review.image ? "sm:grid-cols-[220px_minmax(0,1fr)]" : ""}`}>
+            <article key={index} className="grid gap-6 rounded-[10px] border border-white/20 bg-white/[0.075] p-6 shadow-[0_18px_44px_rgba(0,0,0,0.12)]">
               {review.image ? (
-                <div className="relative h-[158px] overflow-hidden rounded-[8px] bg-[#403028] sm:h-[178px]">
-                  <Image src={review.image} alt={review.alt ?? ""} fill sizes="220px" className={cn("object-cover", review.imagePosition)} />
+                <div className="relative h-[220px] w-full overflow-hidden rounded-[8px] bg-[#403028]">
+                  <Image src={review.image} alt={review.alt ?? ""} fill sizes="(min-width: 1024px) 1100px, 100vw" className={cn("object-cover", review.imagePosition)} />
                 </div>
               ) : null}
               <div className="flex flex-col justify-center">
