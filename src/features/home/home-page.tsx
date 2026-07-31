@@ -103,12 +103,13 @@ export function HomePage({ locale, dictionary, recentTrips = [] }: { locale: Loc
 function HeroSection({ dictionary }: { dictionary: HomeDictionary }) {
   return (
     <section className="relative overflow-hidden bg-astra-cocoa text-white md:min-h-[543px]">
+      <div className="absolute inset-x-0 bottom-0 h-[calc(100%-286px)] bg-astra-cream md:hidden" />
       <div className="absolute inset-0 hidden md:block">
         <Image src={dictionary.hero.image.src} alt={dictionary.hero.image.alt} fill priority sizes="100vw" className="object-cover object-[58%_center] md:object-center" />
         <div className="absolute inset-0 bg-[linear-gradient(69deg,#403028_27%,rgba(64,48,40,0)_69%)]" />
       </div>
-      <div className="container relative grid max-w-[1112px] gap-8 md:min-h-[543px] md:items-center md:py-14 lg:grid-cols-[627px_365px] lg:gap-[75px]">
-        <div className="relative -mx-4 px-4 py-14 md:mx-0 md:max-w-[640px] md:px-0 md:py-0">
+      <div className="container relative grid max-w-[1112px] gap-0 md:min-h-[543px] md:items-center md:gap-8 md:py-14 lg:grid-cols-[627px_365px] lg:gap-[75px]">
+        <div className="relative -mx-4 bg-astra-cocoa px-4 pb-6 pt-[52px] md:mx-0 md:max-w-[640px] md:bg-transparent md:px-0 md:py-0">
           <div className="relative">
             <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">
               {dictionary.hero.eyebrow}
@@ -123,23 +124,27 @@ function HeroSection({ dictionary }: { dictionary: HomeDictionary }) {
             <div className="mt-5 grid grid-cols-2 gap-3 sm:flex sm:flex-row sm:gap-[22px]">
               <PlannerDialogButton
                 planner={dictionary.planner}
-                className="h-[54px] rounded-[9px] bg-astra-gold px-[21px] text-base font-bold text-astra-cocoa hover:bg-astra-gold/90"
+                className="h-[54px] rounded-[9px] bg-astra-gold px-2 text-[13px] font-bold leading-[1.2] text-astra-cocoa hover:bg-astra-gold/90 sm:px-[21px] sm:text-base sm:leading-normal"
               >
                 {dictionary.hero.primaryCta}
               </PlannerDialogButton>
               <Button
                 asChild
-                className="h-[54px] rounded-[9px] bg-astra-gold/45 px-[18px] text-base font-bold text-white hover:bg-astra-gold/55"
+                className="h-[54px] rounded-[9px] bg-astra-gold/45 px-2 text-[13px] font-bold leading-[1.2] text-white hover:bg-astra-gold/55 sm:px-[18px] sm:text-base sm:leading-normal"
               >
                 <a href="#itineraries">{dictionary.hero.secondaryCta}</a>
               </Button>
             </div>
           </div>
         </div>
-        <div className="relative -mx-4 h-[220px] overflow-hidden md:hidden">
-          <Image src={dictionary.hero.image.src} alt={dictionary.hero.image.alt} fill priority sizes="100vw" className="object-cover object-[58%_center]" />
+        <div className="relative -mx-4 md:hidden">
+          <div className="relative h-[214px] overflow-hidden">
+            <Image src={dictionary.hero.image.src} alt={dictionary.hero.image.alt} fill priority sizes="100vw" className="object-cover object-[58%_center]" />
+            <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-astra-cocoa to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-astra-cocoa" />
+          </div>
         </div>
-        <LeadPlanner planner={dictionary.planner} sectionId="planner" className="mb-12 mt-2 w-full md:mb-0 md:mt-0" />
+        <LeadPlanner planner={dictionary.planner} sectionId="planner" className="relative z-10 mb-10 mt-[-38px] w-full md:mb-0 md:mt-0" />
       </div>
     </section>
   );
@@ -492,7 +497,7 @@ function TeamSection({ dictionary }: { dictionary: HomeDictionary }) {
           </div>
           {founder ? <FounderCard member={founder} /> : null}
         </div>
-        <div className="mt-7 grid grid-cols-2 gap-6 lg:grid-cols-3">
+        <div className="mt-7 grid grid-cols-1 gap-6 lg:grid-cols-3">
           {guides.map((member) => (
             <TeamCard key={member.name} member={member} />
           ))}
@@ -505,7 +510,7 @@ function TeamSection({ dictionary }: { dictionary: HomeDictionary }) {
 
 function FounderCard({ member }: { member: TeamMember }) {
   return (
-    <article className="grid items-stretch gap-6 rounded-[10px] border border-astra-cocoa/10 bg-white p-5 shadow-[0_18px_45px_rgba(64,48,40,0.08)] md:grid-cols-[minmax(220px,280px)_1fr] xl:grid-cols-[320px_1fr] lg:gap-8 motion-safe:transition motion-safe:hover:-translate-y-1 motion-safe:hover:shadow-[0_18px_50px_rgba(64,48,40,0.12)]">
+    <article className="grid items-stretch gap-6 rounded-[10px] border border-astra-cocoa/10 bg-white p-3 shadow-[0_18px_45px_rgba(64,48,40,0.08)] md:grid-cols-[minmax(220px,280px)_1fr] xl:grid-cols-[320px_1fr] lg:gap-8 motion-safe:transition motion-safe:hover:-translate-y-1 motion-safe:hover:shadow-[0_18px_50px_rgba(64,48,40,0.12)]">
       <TeamPhoto member={member} className="h-[320px] w-full rounded-[10px] md:h-full md:min-h-[300px]" tag="Founder" sizes="(min-width: 1024px) 320px, (min-width: 640px) 280px, 100vw" />
       <div className="px-0 py-1 lg:pr-7">
         <p className="text-[12.5px] font-bold uppercase leading-[1.6] tracking-[0.08em] text-astra-gold">{member.role}</p>

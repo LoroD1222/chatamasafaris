@@ -318,7 +318,7 @@ const en: HomeDictionary = {
       {
         question: "Is Tanzania safe for international travelers?",
         answer:
-          "Yes. Tanzania is one of the most politically stable countries in East Africa. Our parks are well-managed and our guides are trained for your safety in the bush. We've been bringing US travelers here for 15 years without incident."
+          "Yes. Tanzania is one of the most politically stable countries in East Africa. Our parks are well-managed and our guides are trained for your safety in the bush. We've been bringing international travelers here for 15 years without incident."
       },
       {
         question: "What's included in your pricing?",

@@ -15,12 +15,12 @@ export function SiteHeader({ locale, dictionary }: { locale: Locale; dictionary:
   return (
     <header className="bg-astra-cream text-astra-brown">
       <div className="bg-astra-gold">
-        <div className="container flex h-[37px] max-w-[1160px] items-center justify-between gap-1.5 text-[8px] font-bold leading-[1.35] sm:gap-3 sm:text-[13px] sm:leading-[1.6]">
+        <div className="container flex h-[37px] max-w-[1160px] items-center justify-between gap-1.5 text-[11px] font-bold leading-[1.35] sm:gap-3 sm:text-[13px] sm:leading-[1.6]">
           <p className="flex min-w-0 items-center gap-1 uppercase tracking-normal text-astra-cocoa/40 sm:gap-2 sm:pl-4 sm:tracking-[0.05em]">
             <span className="size-2.5 shrink-0 bg-current [mask:url('/assets/figma/nav-bar-star.png')_center/contain_no-repeat] sm:size-[18px]" aria-hidden="true" />
-            <span className="whitespace-nowrap text-[7px] sm:text-[13px]">{dictionary.topBar.label}</span>
+            <span className="w-[155px] whitespace-normal text-[10px] leading-[1.1] sm:w-auto sm:whitespace-nowrap sm:text-[13px] sm:leading-normal">{dictionary.topBar.label}</span>
           </p>
-          <div className="ms-auto flex min-w-0 shrink-0 items-center gap-1 text-[10px] text-astra-cocoa/65 sm:gap-5 sm:text-[13px]">
+          <div className="ms-auto flex min-w-0 shrink-0 items-center gap-1 text-[13px] text-astra-cocoa/65 sm:gap-5 sm:text-[13px]">
             <a href={`https://wa.me/${dictionary.topBar.phone.replace(/\D/g, "")}`} className="inline-flex items-center gap-1 underline underline-offset-2">
               <Phone className="size-3 sm:size-3.5" aria-hidden="true" />
               {dictionary.topBar.phone}
