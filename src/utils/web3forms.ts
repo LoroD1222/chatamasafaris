@@ -1,3 +1,5 @@
+import { reportGoogleAdsLeadConversion } from "@/utils/google-ads";
+
 export const web3FormsAccessKey = "13a9dcc6-7696-41ba-9014-517aa9e556c2";
 export const web3FormsEndpoint = "https://api.web3forms.com/submit";
 
@@ -33,6 +35,8 @@ export async function submitWeb3Form({ subject, values }: Web3FormPayload) {
   if (!result.success) {
     throw new Error(result.message || "Unable to submit form");
   }
+
+  reportGoogleAdsLeadConversion();
 
   return result;
 }

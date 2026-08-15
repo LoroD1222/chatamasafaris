@@ -13,7 +13,7 @@ describe("dictionaries", () => {
     expect(en.trust.items).toHaveLength(4);
     expect(en.why.items).toHaveLength(6);
     expect(en.itineraries.items).toHaveLength(4);
-    expect(en.reviews.items).toHaveLength(4);
+    expect(en.reviews.items).toHaveLength(8);
     expect(en.faq.items).toHaveLength(4);
   });
 
