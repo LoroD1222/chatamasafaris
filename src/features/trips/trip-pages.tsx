@@ -333,7 +333,7 @@ function TripCardGrid({ className = "", limit, cards = tripCards }: { className?
           </div>
           <div className="bg-[#403028] px-5 pb-[25px] pt-5 text-white">
             <h2 className="text-sm font-bold leading-[1.6]">{trip.title} - <span className="font-semibold">{trip.duration}</span></h2>
-            <p className="mt-2 text-[13px] font-semibold leading-[1.45] text-white/68">{trip.route} - {trip.season}</p>
+            <p className="mt-2 text-[13px] font-semibold leading-[1.45] text-white/50">{trip.route} - {trip.season}</p>
             <span className="mt-4 inline-flex h-[27px] items-center gap-1 rounded-full bg-astra-gold px-3 text-sm font-semibold leading-[1.6] text-astra-cocoa transition group-hover:bg-astra-gold/90">See Itinerary<ArrowRight className="size-3.5" aria-hidden="true" /></span>
           </div>
         </Link>
