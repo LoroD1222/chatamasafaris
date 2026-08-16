@@ -1,6 +1,7 @@
 import type { Locale } from "@/i18n/config";
 
 export const sharedTripSlug = "great-migration-classic";
+export const thankYouHref = "/thank-you";
 
 export function localizedHref(locale: Locale, href: string) {
   if (href.startsWith("#") || href.startsWith("http") || href.startsWith("mailto:") || href.startsWith("tel:")) {

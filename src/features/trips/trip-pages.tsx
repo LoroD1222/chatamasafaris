@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { type FormEvent, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -31,6 +31,7 @@ import { defaultLocale } from "@/i18n/config";
 import type { HomeDictionary, PlannerField } from "@/i18n/types";
 import { isActiveTripCategory, type TripCard, type TripDetail, tripCards, tripCategoryOrder } from "@/features/trips/trip-data";
 import { cn } from "@/utils/cn";
+import { thankYouHref } from "@/utils/routes";
 import { submitWeb3Form } from "@/utils/web3forms";
 
 type TripPageProps = {
@@ -733,6 +734,7 @@ function WidePlannerBand({ dictionary }: TripPageProps) {
 }
 
 function InlinePlannerForm({ planner, className = "" }: { planner: HomeDictionary["planner"]; className?: string }) {
+  const router = useRouter();
   const [values, setValues] = useState<Record<string, string>>(() => Object.fromEntries(planner.fields.map((field) => [field.name, ""])));
   const [invalidFields, setInvalidFields] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
@@ -763,6 +765,7 @@ function InlinePlannerForm({ planner, className = "" }: { planner: HomeDictionar
       });
       setSubmitted(true);
       setValues(Object.fromEntries(planner.fields.map((field) => [field.name, ""])));
+      router.push(thankYouHref);
     } catch {
       setSubmitted(false);
       setSubmitError("Something went wrong. Please try again or contact us on WhatsApp.");

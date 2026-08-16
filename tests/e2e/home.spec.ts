@@ -32,6 +32,13 @@ test("Arabic is deferred for the English-only v1", async ({ page }) => {
 });
 
 test("planner form can be completed", async ({ page }) => {
+  await page.route("https://api.web3forms.com/submit", async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ success: true })
+    });
+  });
   await gotoApp(page, "/en", { waitForPlanner: true });
 
   const planner = page.locator("#planner");
@@ -42,7 +49,9 @@ test("planner form can be completed", async ({ page }) => {
   await page.getByRole("option", { name: "2 people" }).click();
   await planner.getByRole("button", { name: /Talk to Safari Planner/ }).click();
 
-  await expect(page.getByText("Thanks. A safari planner will reply within 4 hours.")).toBeVisible();
+  await expect(page).toHaveURL(/\/thank-you$/);
+  await expect(page.getByRole("heading", { name: "Thank you—your safari starts here." })).toBeVisible();
+  await expect(page.getByText("What happens next")).toBeVisible();
 });
 
 test("mobile menu opens and links to planner", async ({ page, isMobile }) => {

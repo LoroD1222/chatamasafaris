@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useId, useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { HomeDictionary, PlannerField } from "@/i18n/types";
 import { cn } from "@/utils/cn";
+import { thankYouHref } from "@/utils/routes";
 import { submitWeb3Form } from "@/utils/web3forms";
 
 type Planner = HomeDictionary["planner"];
@@ -21,6 +23,7 @@ type LeadPlannerProps = {
 
 export function LeadPlanner({ planner, sectionId, className }: LeadPlannerProps) {
   const id = useId();
+  const router = useRouter();
   const initialValues = useMemo(
     () => Object.fromEntries(planner.fields.map((field) => [field.name, ""])) as Record<string, string>,
     [planner.fields]
@@ -65,6 +68,7 @@ export function LeadPlanner({ planner, sectionId, className }: LeadPlannerProps)
       });
       setSubmitted(true);
       setValues(initialValues);
+      router.push(thankYouHref);
     } catch {
       setSubmitted(false);
       setSubmitError("Something went wrong. Please try again or contact us on WhatsApp.");
