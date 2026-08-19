@@ -2,12 +2,14 @@
 
 import {
   ArrowRight,
+  BedDouble,
   Binoculars,
   Check,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
   Mail,
+  MapPin,
   Phone,
   Star,
   TrendingUp,
@@ -53,10 +55,19 @@ const pageContainer = "mx-auto max-w-[1200px] px-6";
 const amberButton =
   "rounded-[10px] bg-[#E0B880] text-[#403028] shadow-none transition hover:bg-[#C99A5D]";
 
+const itineraryActivitySlides = [
+  { src: "/assets/figma/review-jeep.jpg", alt: "Guests heading out on a Tanzania safari game drive" },
+  { src: "/assets/figma/itinerary-2.jpg", alt: "Wildlife activity on the Tanzania safari plains" },
+  { src: "/assets/figma/planning-center.jpg", alt: "Safari guests with their private guide and vehicle" },
+  { src: "/assets/figma/itinerary-3.jpg", alt: "Safari activity in the Tanzania wilderness" },
+  { src: "/assets/figma/review-family.jpg", alt: "Family enjoying a guided Tanzania safari" },
+  { src: "/assets/figma/itinerary-4.jpg", alt: "Wildlife viewing during a Tanzania safari" },
+  { src: "/assets/figma/itinerary-5.jpg", alt: "Zanzibar activity beside the Indian Ocean" },
+  { src: "/assets/figma/experience-strip.png", alt: "Tanzania safari landscape and wildlife experience" },
+];
+
 const itineraryAccommodationSlides = [
   { src: "/assets/trips/itinerary-ahadi-lodge-design.png", alt: "Ahadi Lodge swimming pool and stone lodge exterior" },
-  { src: "/assets/figma/review-jeep.jpg", alt: "Guests enjoying a private Tanzania safari vehicle" },
-  { src: "/assets/figma/itinerary-2.jpg", alt: "Tanzania wilderness road and plains" }
 ];
 export function TripsListPage({ dictionary, initialTrips }: TripsListPageProps) {
   const sourceCards = initialTrips && initialTrips.length > 0
@@ -155,20 +166,30 @@ export function TripDetailPage({ dictionary, trip, similarTrips = [] }: TripDeta
 
   const itineraryDays = trip.itinerary && trip.itinerary.length > 0
     ? trip.itinerary.map((d) => ({
+        key: d.key,
         day: `DAY ${d.dayNumber}`,
         title: d.title,
         description: d.description,
+        activities: d.activities,
+        meals: d.meals,
+        activityImage: d.activityImage
+          ? { src: d.activityImage.url, alt: d.activityImage.alt || d.title }
+          : null,
         accommodation: d.accommodation,
-        images: d.images
-          ?.map((image) => ({ src: image.url, alt: image.alt || d.title }))
-          .filter((image) => Boolean(image.src)) || [],
+        accommodationImage: d.accommodationImage
+          ? { src: d.accommodationImage.url, alt: d.accommodationImage.alt || d.accommodation }
+          : null,
       }))
     : [{
+        key: "fallback-day-1",
         day: "DAY 1",
         title: "Tarangire National Park, Return To Arusha",
         description: "After breakfast, continue toward Tarangire National Park, one of Tanzania's most scenic and elephant-rich parks.",
+        activities: ["Game drive in Tarangire National Park", "Return transfer to Arusha"],
+        meals: ["Breakfast", "Lunch"],
+        activityImage: null,
         accommodation: "Ahadi Lodge",
-        images: [],
+        accommodationImage: null,
       }];
 
   const includedItems = trip.included && trip.included.length > 0
@@ -582,15 +603,20 @@ function PlannerQuoteCard({ dictionary }: TripPageProps) {
 }
 
 type ItineraryDayCard = {
+  key: string;
   day: string;
   title: string;
   description: string;
+  activities: string[];
+  meals: string[];
+  activityImage: { src: string; alt: string } | null;
   accommodation: string;
-  images: { src: string; alt: string }[];
+  accommodationImage: { src: string; alt: string } | null;
 };
 
 function ItinerarySection({ itineraryDays, gallerySlides }: { itineraryDays: ItineraryDayCard[]; gallerySlides: { src: string; alt: string }[] }) {
-  const days = itineraryDays.length > 0 ? itineraryDays : [{ day: "DAY 1", title: "Arrival", description: "", accommodation: "", images: [] }];
+  const days = itineraryDays.length > 0 ? itineraryDays : [{ key: "empty-day-1", day: "DAY 1", title: "Arrival", description: "", activities: ["Arrival transfer"], meals: ["Dinner"], activityImage: null, accommodation: "", accommodationImage: null }];
+  const activitySlides = dedupeImages([...gallerySlides, ...itineraryActivitySlides]);
 
   return (
     <section id="itinerary" className={`${pageContainer} scroll-mt-[82px] py-[48px] md:py-[72px]`}>
@@ -598,20 +624,51 @@ function ItinerarySection({ itineraryDays, gallerySlides }: { itineraryDays: Iti
         <h2 className="shrink-0 text-[34px] font-semibold leading-[1.15] text-[#403028] md:text-[38px]">Trip Itinerary</h2>
         <div className="h-[2px] flex-1 bg-[#FFF8F0]" />
       </div>
-      <div className="mt-[32px] grid gap-6 md:mt-[56px]">
+      <div className="mt-[32px] grid gap-10 md:mt-[56px] md:gap-12">
         {days.map((day, index) => {
-          const dayImage = day.images[0] || gallerySlides[index % gallerySlides.length] || itineraryAccommodationSlides[0];
+          const activityImage = day.activityImage || activitySlides[index % activitySlides.length] || itineraryActivitySlides[0];
+          const accommodationImage = day.accommodationImage || itineraryAccommodationSlides[index % itineraryAccommodationSlides.length];
 
           return (
-            <article key={`${day.day}-${day.title}`} className="grid overflow-hidden rounded-[8px] border border-[#403028]/10 bg-white shadow-[0_18px_45px_rgba(64,48,40,0.08)] lg:grid-cols-[420px_minmax(0,1fr)]">
-              <ItineraryImage images={[dayImage]} sizes="420px" />
-              <div className="px-6 py-8 lg:order-2 lg:px-10 lg:py-9">
-                <p className="text-[13px] font-bold uppercase leading-none tracking-[0.12em] text-[#E0B880]">{day.day}</p>
-                <h3 className="mt-4 max-w-[680px] text-[27px] font-semibold leading-[1.18] text-[#403028] md:text-[31px]">{day.title}</h3>
-                <p className="mt-6 max-w-[760px] text-[16px] font-semibold leading-[1.68] text-[#403028]">{day.description}</p>
-                <div className="mt-7 border-t border-[#403028]/13 pt-6">
-                  <h4 className="text-[22px] font-semibold leading-[1.18] text-[#403028]">Accommodations:</h4>
-                  <p className="mt-3 max-w-[650px] text-[16px] font-semibold leading-[1.65] text-[#403028]">{day.accommodation}</p>
+            <article key={day.key} className="grid overflow-hidden rounded-[22px] border border-[#E0B880]/30 bg-white p-5 shadow-[0_18px_45px_rgba(64,48,40,0.08)] md:p-6 lg:grid-cols-[minmax(0,0.94fr)_minmax(0,1.06fr)]">
+              <div className="grid min-h-[460px] gap-6 lg:min-h-[680px] lg:grid-rows-2 lg:pr-10">
+                <ItineraryImage image={activityImage} sizes="(min-width: 1024px) 520px, 100vw" label="Activity" className="min-h-[220px] rounded-[18px] lg:min-h-[320px]" />
+                <ItineraryImage image={accommodationImage} sizes="(min-width: 1024px) 520px, 100vw" label="Accommodation" className="min-h-[220px] rounded-[18px] lg:min-h-[320px]" />
+              </div>
+              <div className="mt-8 lg:mt-0">
+                <div className="relative border-l-2 border-dashed border-[#E0B880]/70 pb-12 pl-10 pr-1 pt-2 md:pl-14 lg:min-h-[480px] lg:pb-14 lg:pl-16 lg:pr-8 lg:pt-8">
+                  <TimelineMarker>
+                    <MapPin className="size-5 md:size-6" strokeWidth={2.8} aria-hidden="true" />
+                  </TimelineMarker>
+                  <p className="text-[13px] font-bold uppercase leading-none tracking-[0.12em] text-[#E0B880]">{day.day}</p>
+                  <h3 className="mt-4 max-w-[680px] text-[30px] font-medium leading-[1.12] tracking-[-0.01em] text-[#403028] md:text-[38px]">{day.title}</h3>
+                  <p className="mt-6 max-w-[760px] whitespace-pre-line text-[16px] font-medium leading-[1.72] text-[#403028]/86">{day.description}</p>
+                  <div className="mt-8 grid gap-6 border-t border-[#403028]/13 pt-6 sm:grid-cols-2">
+                    <div>
+                      <h4 className="text-[17px] font-semibold leading-[1.25] text-[#403028]">Daily activities:</h4>
+                      <ul className="mt-3 grid gap-2.5">
+                        {day.activities.map((activity) => (
+                          <li key={activity} className="flex items-start gap-2.5 text-[15px] font-semibold leading-[1.55] text-[#403028]/78">
+                            <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-[#E0B880] text-white">
+                              <Check className="size-3" strokeWidth={3} aria-hidden="true" />
+                            </span>
+                            <span>{activity}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="text-[17px] font-semibold leading-[1.25] text-[#403028]">Meals:</h4>
+                      <p className="mt-3 text-[15px] font-semibold leading-[1.55] text-[#403028]/78">{day.meals.join(", ")}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="relative border-l-2 border-dashed border-[#E0B880]/70 pb-8 pl-10 pr-1 md:pl-14 lg:min-h-[200px] lg:pl-16 lg:pr-8">
+                  <TimelineMarker>
+                    <BedDouble className="size-5 md:size-6" strokeWidth={2.2} aria-hidden="true" />
+                  </TimelineMarker>
+                  <h4 className="text-[27px] font-medium leading-[1.15] tracking-[-0.01em] text-[#403028] md:text-[32px]">Accommodation:</h4>
+                  <p className="mt-5 max-w-[650px] text-[17px] font-semibold leading-[1.65] text-[#403028]/80">{day.accommodation}</p>
                 </div>
               </div>
             </article>
@@ -622,15 +679,22 @@ function ItinerarySection({ itineraryDays, gallerySlides }: { itineraryDays: Iti
   );
 }
 
-function ItineraryImage({ images, sizes, label, className = "" }: { images: { src: string; alt: string }[]; sizes: string; label?: string; className?: string }) {
-  const image = images[0];
-
+function TimelineMarker({ children }: { children: React.ReactNode }) {
   return (
-    <div className={`relative min-h-[240px] overflow-hidden bg-[#403028] lg:min-h-full ${className}`}>
+    <span className="absolute -left-[23px] top-0 grid size-[46px] place-items-center rounded-full border-[6px] border-[#FFF8F0] bg-[#E0B880] text-white shadow-[0_8px_20px_rgba(224,184,128,0.35)] md:-left-[29px] md:size-[58px] md:border-[8px]">
+      {children}
+    </span>
+  );
+}
+
+function ItineraryImage({ image, sizes, label, className = "" }: { image?: { src: string; alt: string }; sizes: string; label?: string; className?: string }) {
+  return (
+    <div className={`relative min-h-[180px] overflow-hidden bg-[#403028] ${className}`}>
       {image ? (
         <Image src={image.src} alt={image.alt} fill sizes={sizes} loading="eager" unoptimized className="object-cover" />
       ) : null}
-      {label ? <span className="absolute left-5 top-5 rounded-[8px] bg-white/92 px-5 py-3 text-[15px] font-bold leading-none text-[#403028] shadow-[0_12px_24px_rgba(64,48,40,0.12)]">{label}</span> : null}
+      <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#403028]/65 to-transparent" aria-hidden="true" />
+      {label ? <span className="absolute bottom-4 left-4 rounded-full bg-[#403028] px-3 py-2 text-[12px] font-bold uppercase leading-none tracking-[0.08em] text-white shadow-[0_12px_24px_rgba(64,48,40,0.24)]">{label}</span> : null}
     </div>
   );
 }

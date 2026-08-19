@@ -55,7 +55,17 @@ export type TripDetail = {
   targetAudience: string[];
   featuredReviewQuote: string;
   tourForMeDescription: string;
-  itinerary: { dayNumber: number; title: string; description: string; accommodation: string; images: { url: string; alt: string }[] }[];
+  itinerary: {
+    key: string;
+    dayNumber: number;
+    title: string;
+    description: string;
+    activities: string[];
+    meals: string[];
+    activityImage: { url: string; alt: string } | null;
+    accommodation: string;
+    accommodationImage: { url: string; alt: string } | null;
+  }[];
   included: string[];
   notIncluded: string[];
   faqs: { question: string; answer: string }[];
@@ -77,6 +87,73 @@ type SanityTripCard = Omit<TripCard, "price" | "image" | "imageAlt" | "tripType"
   image?: string | null;
   imageAlt?: string | null;
 };
+
+type AccommodationImage = {
+  name?: string | null;
+  url?: string | null;
+  alt?: string | null;
+};
+
+const accommodationNameStopWords = new Set([
+  "accommodation",
+  "and",
+  "camp",
+  "hotel",
+  "if",
+  "lodge",
+  "or",
+  "safari",
+  "the",
+  "tented",
+]);
+
+function accommodationNameTokens(name: string) {
+  return name
+    .toLowerCase()
+    .replace(/[’']/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim()
+    .split(/\s+/)
+    .filter((token) => token && !accommodationNameStopWords.has(token));
+}
+
+function findAccommodationImage(name: string, images: AccommodationImage[]) {
+  const targetTokens = accommodationNameTokens(name);
+  if (targetTokens.length === 0) return null;
+
+  const matches = images
+    .filter((image): image is AccommodationImage & { name: string; url: string } => Boolean(image.name && image.url))
+    .map((image) => {
+      const candidateTokens = accommodationNameTokens(image.name);
+      const sharedTokens = targetTokens.filter((token) => candidateTokens.includes(token));
+      const isSingleTokenExactMatch = targetTokens.length === 1 && candidateTokens.includes(targetTokens[0]);
+
+      return {
+        image,
+        sharedTokenCount: sharedTokens.length,
+        isEligible: sharedTokens.length >= 2 || isSingleTokenExactMatch,
+        lengthDifference: Math.abs(targetTokens.length - candidateTokens.length),
+      };
+    })
+    .filter((match) => match.isEligible)
+    .sort((left, right) =>
+      right.sharedTokenCount - left.sharedTokenCount || left.lengthDifference - right.lengthDifference
+    );
+
+  return matches[0]?.image ?? null;
+}
+
+function fallbackMealsForDay(title: string, index: number, totalDays: number) {
+  const normalizedTitle = title.toLowerCase();
+
+  if (normalizedTitle.includes("arrival")) return ["Dinner"];
+  if (normalizedTitle.includes("departure")) return ["Breakfast"];
+  if (totalDays === 1) return ["Lunch"];
+  if (index === 0) return ["Lunch", "Dinner"];
+  if (index === totalDays - 1) return ["Breakfast", "Lunch"];
+
+  return ["Breakfast", "Lunch", "Dinner"];
+}
 
 function normalizeTripCategory(title: string, category?: string | null): string {
   const reassignedCategory = categoryReassignmentsByTitle[title.trim()];
@@ -165,54 +242,108 @@ export async function getSimilarTrips(slug: string, category: string, limit = 3)
 }
 
 export async function getTripBySlug(slug: string): Promise<TripDetail | null> {
-  const trip = await client.fetch<(Omit<TripDetail, "price"> & { heroImage?: string | null; tripType?: string | null; category?: string | null }) | null>(`
-    *[_type == "trip" && slug.current == $slug][0] {
-      "slug": slug.current,
-      title,
-      "duration": duration,
-      "route": destinations,
-      "season": bestSeason,
-      "tripType": category,
-      "category": category,
-      "priceValue": priceFrom,
-      "heroImage": heroImage.asset->url,
-      "mapImage": mapImage.asset->url,
-      "gallery": gallery[]{ "url": asset->url, "alt": alt },
-      shortDescription,
-      "overviewText": pt::text(overviewText),
-      targetAudience,
-      featuredReviewQuote,
-      tourForMeDescription,
-      itinerary[]{
-        dayNumber,
+  const [trip, accommodationImageGroups] = await Promise.all([
+    client.fetch<(Omit<TripDetail, "price"> & { heroImage?: string | null; tripType?: string | null; category?: string | null }) | null>(`
+      *[_type == "trip" && slug.current == $slug][0] {
+        "slug": slug.current,
         title,
-        "description": pt::text(description),
-        "accommodation": accommodation.name,
-        "images": [
-          { "url": accommodation.image.asset->url, "alt": accommodation.name }
-        ]
-      },
-      included,
-      notIncluded,
-      faqs[]{ question, "answer": pt::text(answer) },
-      reviews[]{ quote, authorName, authorDetails },
-      pricingTiers,
-      bestTimeSeasons,
-      reviewScore,
-      reviewCount,
-      popularityRank,
-      totalTravellers,
-      physicalRating,
-      minAge,
-      isFeatured,
-    }
-  `, { slug })
+        "duration": duration,
+        "route": destinations,
+        "season": bestSeason,
+        "tripType": category,
+        "category": category,
+        "priceValue": priceFrom,
+        "heroImage": heroImage.asset->url,
+        "mapImage": mapImage.asset->url,
+        "gallery": gallery[]{ "url": asset->url, "alt": alt },
+        shortDescription,
+        "overviewText": pt::text(overviewText),
+        targetAudience,
+        featuredReviewQuote,
+        tourForMeDescription,
+        itinerary[]{
+          "key": _key,
+          dayNumber,
+          title,
+          "description": pt::text(description),
+          activities[],
+          meals[],
+          "activityImage": select(
+            defined(activityImage.asset) => {
+              "url": activityImage.asset->url,
+              "alt": coalesce(activityImage.alt, title)
+            }
+          ),
+          "accommodation": accommodation.name,
+          "accommodationImage": select(
+            defined(accommodation.image.asset) => {
+              "url": accommodation.image.asset->url,
+              "alt": coalesce(accommodation.image.alt, accommodation.name)
+            }
+          )
+        },
+        included,
+        notIncluded,
+        faqs[]{ question, "answer": pt::text(answer) },
+        reviews[]{ quote, authorName, authorDetails },
+        pricingTiers,
+        bestTimeSeasons,
+        reviewScore,
+        reviewCount,
+        popularityRank,
+        totalTravellers,
+        physicalRating,
+        minAge,
+        isFeatured,
+      }
+    `, { slug }),
+    client.fetch<{ images?: AccommodationImage[] }[]>(`
+      *[_type == "trip"] {
+        "images": itinerary[defined(accommodation.image.asset)] {
+          "name": accommodation.name,
+          "url": accommodation.image.asset->url,
+          "alt": coalesce(accommodation.image.alt, accommodation.name)
+        }
+      }
+    `),
+  ])
   if (!trip) return null
   const category = normalizeTripCategory(trip.title, trip.category || trip.tripType);
+  const accommodationImages = accommodationImageGroups.flatMap((group) => group.images || []);
+  const sourceItinerary = trip.itinerary || [];
+  const itinerary = sourceItinerary.map((day, index) => {
+    const ownAccommodationImage = day.accommodationImage?.url ? day.accommodationImage : null;
+    const matchedAccommodationImage = ownAccommodationImage
+      ? null
+      : findAccommodationImage(day.accommodation, accommodationImages);
+    const activities = Array.isArray(day.activities) && day.activities.some(Boolean)
+      ? day.activities.filter(Boolean)
+      : [day.title];
+    const meals = Array.isArray(day.meals) && day.meals.some(Boolean)
+      ? day.meals.filter(Boolean)
+      : fallbackMealsForDay(day.title, index, sourceItinerary.length);
+
+    return {
+      ...day,
+      activities,
+      meals,
+      activityImage: day.activityImage?.url ? day.activityImage : null,
+      accommodationImage: ownAccommodationImage
+        ? ownAccommodationImage
+        : matchedAccommodationImage
+          ? {
+              url: matchedAccommodationImage.url,
+              alt: matchedAccommodationImage.alt || day.accommodation,
+            }
+          : null,
+    };
+  });
+
   return {
     ...trip,
     tripType: category,
     category,
+    itinerary,
     heroImage: trip.heroImage || '/assets/trips/trip-hero-zebras.png',
     price: `from $${trip.priceValue?.toLocaleString('en-US')} USD per person`,
   }
