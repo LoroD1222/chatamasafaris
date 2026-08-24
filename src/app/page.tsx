@@ -5,6 +5,9 @@ import { getRecentTrips } from "@/features/trips/trip-data";
 import { defaultLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 
+// Keep Sanity-powered featured trips current without requiring a full site redeploy.
+export const revalidate = 60;
+
 export default async function Page() {
   const dictionary = getDictionary(defaultLocale);
   const recentTrips = await getRecentTrips(6);
