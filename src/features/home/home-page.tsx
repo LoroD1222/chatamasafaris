@@ -372,7 +372,7 @@ function ItinerariesSection({ locale, dictionary, recentTrips }: { locale: Local
                   <a key={`${trip.slug}-${index}`} href={`/trip/${trip.slug}`} className="group flex h-[401px] flex-col overflow-hidden rounded-lg bg-astra-cocoa shadow-[0_18px_55px_rgba(64,48,40,0.15)] outline-none transition focus-visible:ring-2 focus-visible:ring-astra-gold focus-visible:ring-offset-2" aria-label={`See itinerary for ${trip.title}`}>
                     <div className="relative min-h-0 flex-1 overflow-hidden">
                       <img src={trip.image} alt={trip.imageAlt} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
-                      <div className="absolute right-4 top-4 rounded-[5px] border border-white/45 bg-astra-gold px-3 py-1 text-[11px] font-bold leading-[1.51] text-astra-cocoa backdrop-blur-md">from ${trip.priceValue?.toLocaleString('en-US')} USD</div>
+                      <div className="absolute right-4 top-4 rounded-[5px] border border-white/45 bg-astra-gold px-3 py-1 text-[11px] font-bold leading-[1.51] text-astra-cocoa backdrop-blur-md">{trip.price}</div>
                     </div>
                     <div className="bg-[#403028] px-5 pb-[25px] pt-5 text-white">
                       <h3 className="text-sm font-bold leading-[1.6]">{trip.title} - <span className="font-semibold">{trip.duration}</span></h3>

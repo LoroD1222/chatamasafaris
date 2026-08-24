@@ -32,7 +32,7 @@ export type TripCard = {
   route: string;
   season: string;
   tripType: string;
-  priceValue: number;
+  priceValue: number | null;
   price: string;
   image: string;
   imageAlt: string;
@@ -45,7 +45,7 @@ export type TripDetail = {
   route: string;
   season: string;
   tripType: string;
-  priceValue: number;
+  priceValue: number | null;
   price: string;
   heroImage: string;
   mapImage?: string | null;
@@ -171,13 +171,18 @@ export function isActiveTripCategory(category: string) {
 
 function normalizeTripCard(trip: SanityTripCard): TripCard {
   const tripType = normalizeTripCategory(trip.title, trip.tripType);
+  const publishedPrice = typeof trip.priceValue === "number" && trip.priceValue > 0
+    ? trip.priceValue
+    : null;
 
   return {
     ...trip,
     tripType,
     image: trip.image || '/assets/figma/itinerary-1.jpg',
     imageAlt: trip.imageAlt || trip.title,
-    price: `from $${trip.priceValue?.toLocaleString('en-US')} USD per person`,
+    price: publishedPrice
+      ? `from $${publishedPrice.toLocaleString('en-US')} USD per person`
+      : "Price on request",
   };
 }
 
@@ -345,7 +350,9 @@ export async function getTripBySlug(slug: string): Promise<TripDetail | null> {
     category,
     itinerary,
     heroImage: trip.heroImage || '/assets/trips/trip-hero-zebras.png',
-    price: `from $${trip.priceValue?.toLocaleString('en-US')} USD per person`,
+    price: typeof trip.priceValue === "number" && trip.priceValue > 0
+      ? `from $${trip.priceValue.toLocaleString('en-US')} USD per person`
+      : "Price on request",
   }
 }
 

@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
+    "sanity:import:luxury-serengeti": "node scripts/import-luxury-serengeti-trips.mjs",
+    "sanity:import:zanzibar": "node scripts/import-zanzibar-trips.mjs",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",

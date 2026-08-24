@@ -66,9 +66,6 @@ const itineraryActivitySlides = [
   { src: "/assets/figma/experience-strip.png", alt: "Tanzania safari landscape and wildlife experience" },
 ];
 
-const itineraryAccommodationSlides = [
-  { src: "/assets/trips/itinerary-ahadi-lodge-design.png", alt: "Ahadi Lodge swimming pool and stone lodge exterior" },
-];
 export function TripsListPage({ dictionary, initialTrips }: TripsListPageProps) {
   const sourceCards = initialTrips && initialTrips.length > 0
     ? initialTrips.filter((trip) => isActiveTripCategory(trip.tripType))
@@ -78,8 +75,11 @@ export function TripsListPage({ dictionary, initialTrips }: TripsListPageProps) 
     ...tripCards.filter((fallbackTrip) => isActiveTripCategory(fallbackTrip.tripType) && !sourceCards.some((trip) => trip.tripType === fallbackTrip.tripType))
   ];
   const tripTypes = [...tripCategoryOrder];
-  const minPrice = Math.min(...cards.map((trip) => trip.priceValue));
-  const maxTripPrice = Math.max(...cards.map((trip) => trip.priceValue));
+  const publishedPrices = cards
+    .map((trip) => trip.priceValue)
+    .filter((price): price is number => typeof price === "number" && price > 0);
+  const minPrice = publishedPrices.length > 0 ? Math.min(...publishedPrices) : 0;
+  const maxTripPrice = publishedPrices.length > 0 ? Math.max(...publishedPrices) : 0;
   const searchParams = useSearchParams();
   const categoryFromUrl = searchParams.get("category")?.trim() ?? "";
   const normalizedCategoryFromUrl = categoryFromUrl.replace(/\+/g, " ");
@@ -90,7 +90,7 @@ export function TripsListPage({ dictionary, initialTrips }: TripsListPageProps) 
   const [maxPrice, setMaxPrice] = useState(maxTripPrice);
   const filteredCards = cards.filter((trip) => {
     const matchesType = selectedTypes.length === 0 || selectedTypes.includes(trip.tripType);
-    const matchesPrice = trip.priceValue <= maxPrice;
+    const matchesPrice = typeof trip.priceValue !== "number" || trip.priceValue <= 0 || trip.priceValue <= maxPrice;
     return matchesType && matchesPrice;
   });
 
@@ -196,7 +196,7 @@ export function TripDetailPage({ dictionary, trip, similarTrips = [] }: TripDeta
     ? trip.included
     : ["Professional English-speaking guide", "Private luxury 4x4 safari vehicle", "All park entry fees", "2 nights camp accommodation"];
 
-  const excludedItems = trip.notIncluded && trip.notIncluded.length > 0
+  const excludedItems = Array.isArray(trip.notIncluded)
     ? trip.notIncluded
     : ["International flights", "Travel insurance", "Visa fees", "Tips and personal expenses"];
 
@@ -209,15 +209,17 @@ export function TripDetailPage({ dictionary, trip, similarTrips = [] }: TripDeta
     : [{ title: "Jul - Oct", dot: "#FFF8F0", description: "Peak migration. River crossings most frequent. Best overall wildlife." }];
 
   const priceTiers = trip.pricingTiers && trip.pricingTiers.length > 0
-    ? trip.pricingTiers.map((t, i) => ({ id: `rate-${i}`, people: t.label, price: `$${t.pricePerPerson?.toLocaleString('en-US')}` }))
-    : Array.from({ length: 6 }, (_, i) => ({ id: `rate-${i}`, people: "1 pax", price: "$2,890" }));
+    ? trip.pricingTiers.map((t, i) => ({ id: `rate-${i}`, people: t.label, price: `$${t.pricePerPerson?.toLocaleString('en-US')}`, unit: "per person" }))
+    : typeof trip.priceValue === "number" && trip.priceValue > 0
+      ? [{ id: "rate-from", people: "From price", price: `$${trip.priceValue.toLocaleString('en-US')}`, unit: "per person" }]
+      : [{ id: "rate-request", people: "Private safari", price: "Price on request", unit: "" }];
 
   return (
     <div className="astra-page-enter min-h-screen overflow-x-clip bg-[#FFF8F0] text-[#403028]">
       <SiteHeader locale={defaultLocale} dictionary={dictionary} />
       <main>
         <section className="mx-auto max-w-[1200px] px-6 pb-[44px] pt-[44px] md:pb-[76px] md:pt-[65px]">
-          <TripBreadcrumb />
+          <TripBreadcrumb trip={trip} />
           <h1 className="text-[31px] font-semibold leading-[1.14] tracking-[-0.01em] text-[#403028] md:text-[37px]">
             {trip.title}
           </h1>
@@ -247,7 +249,7 @@ export function TripDetailPage({ dictionary, trip, similarTrips = [] }: TripDeta
             <aside className="relative z-[100] self-center rounded-[10px] border border-[rgba(224,123,57,0.25)] bg-white p-8 shadow-[0_20px_45px_rgba(64,48,40,0.12)] lg:-ml-[200px] lg:w-[calc(100%+200px)]">
               <h2 className="border-b border-[#403028]/18 pb-5 text-[24px] font-semibold leading-[1.18]">Is this tour for me?</h2>
               <div className="border-b border-[#403028]/13 py-5">
-                <p className="text-[14px] font-bold leading-[1.6]">Age Requirements: {trip.minAge ? `${trip.minAge}+` : '3+'}</p>
+                {trip.minAge ? <p className="text-[14px] font-bold leading-[1.6]">Age Requirements: {trip.minAge}+</p> : null}
                 <p className="mt-2 text-[14px] font-bold leading-[1.6]">Trip Type: {trip.tripType || 'Private Group'}</p>
               </div>
               <p className="border-b border-[#403028]/13 py-5 text-[13px] font-semibold leading-[1.65] text-[#403028]/70">
@@ -284,14 +286,16 @@ function dedupeImages(images: { src: string; alt: string }[]) {
   });
 }
 
-function TripBreadcrumb() {
+function TripBreadcrumb({ trip }: { trip: TripDetail }) {
+  const category = trip.category || trip.tripType || "Safari";
+
   return (
     <nav className="mb-[47px] text-[13px] font-semibold leading-none text-[#403028]/55" aria-label="Breadcrumb">
       <Link href="/trips" className="transition hover:text-[#403028]">Tanzania</Link>
       <span className="mx-2 text-[#403028]/35">&gt;</span>
-      <Link href="/trips" className="transition hover:text-[#403028]">Safari</Link>
+      <Link href={`/trips?category=${encodeURIComponent(category)}`} className="transition hover:text-[#403028]">{category}</Link>
       <span className="mx-2 text-[#403028]/35">&gt;</span>
-      <span className="text-[#403028]/80">Great Migration</span>
+      <span className="text-[#403028]/80">{trip.title}</span>
     </nav>
   );
 }
@@ -350,7 +354,7 @@ function TripCardGrid({ className = "", limit, cards = tripCards }: { className?
         <Link key={`${trip.slug}-${index}`} href={`/trip/${trip.slug}`} className="group flex h-[401px] flex-col overflow-hidden rounded-lg bg-astra-cocoa text-white shadow-[0_18px_55px_rgba(64,48,40,0.15)] outline-none transition focus-visible:ring-2 focus-visible:ring-astra-gold focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFF8F0]">
           <div className="relative min-h-0 flex-1 overflow-hidden">
             <Image src={trip.image} alt={trip.imageAlt} fill sizes="(min-width: 1024px) 356px, (min-width: 768px) 50vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
-            <div className="absolute right-4 top-4 rounded-[5px] border border-white/45 bg-astra-gold px-3 py-1 text-[11px] font-bold leading-[1.51] text-astra-cocoa backdrop-blur-md">from ${trip.priceValue?.toLocaleString("en-US")} USD</div>
+            <div className="absolute right-4 top-4 rounded-[5px] border border-white/45 bg-astra-gold px-3 py-1 text-[11px] font-bold leading-[1.51] text-astra-cocoa backdrop-blur-md">{trip.price}</div>
           </div>
           <div className="bg-[#403028] px-5 pb-[25px] pt-5 text-white">
             <h2 className="text-sm font-bold leading-[1.6]">{trip.title} - <span className="font-semibold">{trip.duration}</span></h2>
@@ -437,19 +441,27 @@ function RatingStars({ className = "size-5" }: { className?: string }) {
 }
 
 function TripSummaryCard({ dictionary, trip, className = "" }: { dictionary: HomeDictionary; trip: TripDetail; className?: string }) {
+  const hasPopularityMetrics = Boolean(trip.popularityRank || trip.totalTravellers);
+
   return (
     <aside className={`flex rounded-[10px] border border-[#403028]/12 bg-white shadow-[0_22px_44px_rgba(64,48,40,0.08)] ${className}`}>
       <div className="flex min-h-full w-full flex-col px-6 py-6">
-        <div className="grid gap-3 border-b border-[#403028]/13 py-5">
-          <div className="flex items-center justify-between rounded-[8px] bg-[var(--astra-cream-panel)] px-4 py-3">
-            <span className="flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.05em] text-[#403028]/62"><TrendingUp className="size-4 text-[var(--astra-primary-amber)]" aria-hidden="true" />In Popularity</span>
-            <span className="flex items-center gap-2 text-[32px] font-bold leading-none text-[var(--astra-primary-amber)]"><Trophy className="size-6" aria-hidden="true" />#{trip.popularityRank || 4}</span>
+        {hasPopularityMetrics ? (
+          <div className="grid gap-3 border-b border-[#403028]/13 py-5">
+            {trip.popularityRank ? (
+              <div className="flex items-center justify-between rounded-[8px] bg-[var(--astra-cream-panel)] px-4 py-3">
+                <span className="flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.05em] text-[#403028]/62"><TrendingUp className="size-4 text-[var(--astra-primary-amber)]" aria-hidden="true" />In Popularity</span>
+                <span className="flex items-center gap-2 text-[32px] font-bold leading-none text-[var(--astra-primary-amber)]"><Trophy className="size-6" aria-hidden="true" />#{trip.popularityRank}</span>
+              </div>
+            ) : null}
+            {trip.totalTravellers ? (
+              <div className="flex items-center gap-3 rounded-[8px] border border-[#403028]/10 px-4 py-3 text-[16px] font-bold">
+                <UsersRound className="size-5 text-[var(--astra-primary-amber)]" aria-hidden="true" />
+                {trip.totalTravellers} travellers booked with Chatama Safaris
+              </div>
+            ) : null}
           </div>
-          <div className="flex items-center gap-3 rounded-[8px] border border-[#403028]/10 px-4 py-3 text-[16px] font-bold">
-            <UsersRound className="size-5 text-[var(--astra-primary-amber)]" aria-hidden="true" />
-            {trip.totalTravellers || '2,000+'} travellers booked with Chatama Safaris
-          </div>
-        </div>
+        ) : null}
         <dl className="grid gap-4 border-b border-[#403028]/13 py-5 text-[16px] leading-[1.6]">
           <div className="grid grid-cols-[140px_1fr]">
             <dt className="font-semibold text-[#403028]/65">Physical rating</dt>
@@ -508,20 +520,23 @@ function BuiltForContent({ trip, className = "" }: { trip: TripDetail; className
 }
 
 function ReviewContactCard({ dictionary, trip, className = "" }: { dictionary: HomeDictionary; trip: TripDetail; className?: string }) {
+  const reviewQuote = trip.featuredReviewQuote || trip.reviews?.[0]?.quote;
   const reviewAuthor = trip.reviews?.[0]?.authorName || "Chatama Safaris guest";
 
   return (
     <aside className={`self-start rounded-[10px] border border-[#403028]/12 bg-white p-7 shadow-[0_16px_36px_rgba(64,48,40,0.06)] ${className}`}>
-      <blockquote className="border-b border-[#403028]/13 pb-5">
-        <RatingStars className="size-4" />
-        <p className="mt-4 text-[17px] font-semibold italic leading-[1.65] text-[#403028]/75">
-          &ldquo;{trip.featuredReviewQuote || "The river crossing was unlike anything I've ever seen in my life."}&rdquo;
-        </p>
-        <footer className="mt-4 text-[14px] font-bold leading-none text-[#403028]">
-          {reviewAuthor}
-        </footer>
-      </blockquote>
-      <div className="pt-5">
+      {reviewQuote ? (
+        <blockquote className="border-b border-[#403028]/13 pb-5">
+          <RatingStars className="size-4" />
+          <p className="mt-4 text-[17px] font-semibold italic leading-[1.65] text-[#403028]/75">
+            &ldquo;{reviewQuote}&rdquo;
+          </p>
+          <footer className="mt-4 text-[14px] font-bold leading-none text-[#403028]">
+            {reviewAuthor}
+          </footer>
+        </blockquote>
+      ) : null}
+      <div className={reviewQuote ? "pt-5" : ""}>
         <p className="text-[15px] font-semibold leading-[1.6]">For extra information please contact us</p>
         <p className="mt-3 flex flex-wrap gap-x-5 gap-y-3 text-[13px] font-bold leading-[1.6] text-[#403028]/65">
           <a href={`https://wa.me/${dictionary.topBar.phone.replace(/\D/g, "")}`} className="inline-flex items-center gap-2 hover:text-[#E0B880]"><Phone className="size-4 text-[#E0B880]" aria-hidden="true" />{dictionary.topBar.phone}</a>
@@ -627,13 +642,13 @@ function ItinerarySection({ itineraryDays, gallerySlides }: { itineraryDays: Iti
       <div className="mt-[32px] grid gap-10 md:mt-[56px] md:gap-12">
         {days.map((day, index) => {
           const activityImage = day.activityImage || activitySlides[index % activitySlides.length] || itineraryActivitySlides[0];
-          const accommodationImage = day.accommodationImage || itineraryAccommodationSlides[index % itineraryAccommodationSlides.length];
+          const accommodationImage = day.accommodationImage;
 
           return (
             <article key={day.key} className="grid overflow-hidden rounded-[22px] border border-[#E0B880]/30 bg-white p-5 shadow-[0_18px_45px_rgba(64,48,40,0.08)] md:p-6 lg:grid-cols-[minmax(0,0.94fr)_minmax(0,1.06fr)]">
-              <div className="grid min-h-[460px] gap-6 lg:min-h-[680px] lg:grid-rows-2 lg:pr-10">
-                <ItineraryImage image={activityImage} sizes="(min-width: 1024px) 520px, 100vw" label="Activity" className="min-h-[220px] rounded-[18px] lg:min-h-[320px]" />
-                <ItineraryImage image={accommodationImage} sizes="(min-width: 1024px) 520px, 100vw" label="Accommodation" className="min-h-[220px] rounded-[18px] lg:min-h-[320px]" />
+              <div className={cn("grid min-h-[460px] gap-6 lg:min-h-[680px] lg:pr-10", accommodationImage && "lg:grid-rows-2")}>
+                <ItineraryImage image={activityImage} sizes="(min-width: 1024px) 520px, 100vw" label="Activity" className={cn("min-h-[220px] rounded-[18px]", accommodationImage ? "lg:min-h-[320px]" : "lg:min-h-[680px]")} />
+                {accommodationImage ? <ItineraryImage image={accommodationImage} sizes="(min-width: 1024px) 520px, 100vw" label="Accommodation" className="min-h-[220px] rounded-[18px] lg:min-h-[320px]" /> : null}
               </div>
               <div className="mt-8 lg:mt-0">
                 <div className="relative border-l-2 border-dashed border-[#E0B880]/70 pb-12 pl-10 pr-1 pt-2 md:pl-14 lg:min-h-[480px] lg:pb-14 lg:pl-16 lg:pr-8 lg:pt-8">
@@ -699,7 +714,7 @@ function ItineraryImage({ image, sizes, label, className = "" }: { image?: { src
   );
 }
 
-function IncludedSection({ dictionary, includedItems, excludedItems, priceTiers }: { dictionary: HomeDictionary; includedItems: string[]; excludedItems: string[]; priceTiers: { id: string; people: string; price: string }[] }) {
+function IncludedSection({ dictionary, includedItems, excludedItems, priceTiers }: { dictionary: HomeDictionary; includedItems: string[]; excludedItems: string[]; priceTiers: { id: string; people: string; price: string; unit: string }[] }) {
   return (
     <section id="inclusions" className={`${pageContainer} scroll-mt-[82px] py-[48px] md:py-[72px]`}>
       <div className={excludedItems.length > 0 ? "mx-auto grid max-w-[930px] gap-10 text-left md:grid-cols-[minmax(0,1fr)_1px_minmax(0,1fr)] md:items-stretch md:gap-12" : "text-left"}>
@@ -740,7 +755,7 @@ function IncludedSection({ dictionary, includedItems, excludedItems, priceTiers 
             <div key={tier.id} className="min-h-[92px] w-full max-w-[286px] rounded-[8px] border border-[#403028]/10 bg-white px-4 py-5 text-center shadow-[0_16px_35px_rgba(64,48,40,0.06)] sm:w-[calc(50%-4px)] md:w-[calc(33.333%-6px)] lg:w-[178px]">
               <p className="text-[11px] font-semibold leading-none text-[#403028]/78">{tier.people}</p>
               <p className="mt-3 text-[20px] font-bold leading-none text-[#E0B880]">{tier.price}</p>
-              <p className="mt-2 text-[11px] font-semibold leading-none text-[#403028]/68">per person</p>
+              {tier.unit ? <p className="mt-2 text-[11px] font-semibold leading-none text-[#403028]/68">{tier.unit}</p> : null}
             </div>
           ))}
         </div>
