@@ -6,6 +6,31 @@ export type TripCategory = (typeof tripCategoryOrder)[number];
 
 const activeTripCategories = new Set<string>(tripCategoryOrder);
 
+const sanityImageHost = "cdn.sanity.io";
+const fullResolutionImageWidth = 1920;
+const cardImageWidth = 1200;
+
+/**
+ * Keep the original Sanity asset intact while asking its CDN for an efficient
+ * browser-supported format at a resolution that exceeds every rendered size
+ * on this site.
+ */
+function optimizedSanityImageUrl(url?: string | null, maxWidth = fullResolutionImageWidth) {
+  if (!url) return null;
+
+  try {
+    const imageUrl = new URL(url);
+    if (imageUrl.hostname !== sanityImageHost) return url;
+
+    imageUrl.searchParams.set("auto", "format");
+    imageUrl.searchParams.set("fit", "max");
+    imageUrl.searchParams.set("w", String(maxWidth));
+    return imageUrl.toString();
+  } catch {
+    return url;
+  }
+}
+
 const categoryReassignmentsByTitle: Record<string, TripCategory> = {
   "12-Day Luxury Safari & Zanzibar Beach Escape": "Luxury Safari",
   "4 Days Luxury Tanzania Safari": "Luxury Safari",
@@ -178,7 +203,7 @@ function normalizeTripCard(trip: SanityTripCard): TripCard {
   return {
     ...trip,
     tripType,
-    image: trip.image || '/assets/figma/itinerary-1.jpg',
+    image: optimizedSanityImageUrl(trip.image, cardImageWidth) || '/assets/figma/itinerary-1.jpg',
     imageAlt: trip.imageAlt || trip.title,
     price: publishedPrice
       ? `from $${publishedPrice.toLocaleString('en-US')} USD per person`
@@ -332,12 +357,14 @@ export async function getTripBySlug(slug: string): Promise<TripDetail | null> {
       ...day,
       activities,
       meals,
-      activityImage: day.activityImage?.url ? day.activityImage : null,
+      activityImage: day.activityImage?.url
+        ? { ...day.activityImage, url: optimizedSanityImageUrl(day.activityImage.url) || day.activityImage.url }
+        : null,
       accommodationImage: ownAccommodationImage
-        ? ownAccommodationImage
+        ? { ...ownAccommodationImage, url: optimizedSanityImageUrl(ownAccommodationImage.url) || ownAccommodationImage.url }
         : matchedAccommodationImage
           ? {
-              url: matchedAccommodationImage.url,
+              url: optimizedSanityImageUrl(matchedAccommodationImage.url) || matchedAccommodationImage.url,
               alt: matchedAccommodationImage.alt || day.accommodation,
             }
           : null,
@@ -349,7 +376,12 @@ export async function getTripBySlug(slug: string): Promise<TripDetail | null> {
     tripType: category,
     category,
     itinerary,
-    heroImage: trip.heroImage || '/assets/trips/trip-hero-zebras.png',
+    heroImage: optimizedSanityImageUrl(trip.heroImage) || '/assets/trips/trip-hero-zebras.png',
+    mapImage: optimizedSanityImageUrl(trip.mapImage, 1600),
+    gallery: (trip.gallery || []).map((image) => ({
+      ...image,
+      url: optimizedSanityImageUrl(image.url) || image.url,
+    })),
     price: typeof trip.priceValue === "number" && trip.priceValue > 0
       ? `from $${trip.priceValue.toLocaleString('en-US')} USD per person`
       : "Price on request",

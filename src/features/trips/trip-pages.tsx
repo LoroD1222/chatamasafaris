@@ -244,7 +244,7 @@ export function TripDetailPage({ dictionary, trip, similarTrips = [] }: TripDeta
 
           <section id="tour-details" className="mx-auto grid max-w-[1200px] scroll-mt-[82px] gap-8 px-6 pb-[48px] md:pb-[84px] lg:grid-cols-[minmax(0,879px)_1fr]">
             <div className="relative overflow-hidden rounded-[10px]">
-              <Image src={trip.mapImage || "/assets/trips/trip-map.png"} alt="Tanzania safari map" width={879} height={705} className="h-auto w-full" unoptimized />
+              <Image src={trip.mapImage || "/assets/trips/trip-map.png"} alt="Tanzania safari map" width={879} height={705} className="h-auto w-full" />
             </div>
             <aside className="relative z-[100] self-center rounded-[10px] border border-[rgba(224,123,57,0.25)] bg-white p-8 shadow-[0_20px_45px_rgba(64,48,40,0.12)] lg:-ml-[200px] lg:w-[calc(100%+200px)]">
               <h2 className="border-b border-[#403028]/18 pb-5 text-[24px] font-semibold leading-[1.18]">Is this tour for me?</h2>
@@ -412,7 +412,7 @@ function HeroGallery({ images, className = "" }: { images: { src: string; alt: s
           <button type="button" onClick={(e) => { e.stopPropagation(); showNextImage(); }} className="absolute right-5 top-1/2 z-30 grid size-12 -translate-y-1/2 place-items-center rounded-full bg-white/12 text-white transition hover:bg-white/22 focus:outline-none focus-visible:ring-2 focus-visible:ring-white" aria-label="Show next image in lightbox"><ChevronRight className="size-6" aria-hidden="true" /></button>
           <div className="relative z-20 mx-auto flex h-full w-full max-w-[1180px] flex-col gap-5" onClick={(e) => e.stopPropagation()}>
             <div className="relative min-h-0 flex-1 overflow-hidden rounded-[6px] bg-black shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
-              <Image src={currentImage.src} alt={currentImage.alt} fill sizes="100vw" className="object-contain" priority unoptimized />
+              <Image src={currentImage.src} alt={currentImage.alt} fill sizes="100vw" className="object-contain" priority />
             </div>
             <div className="text-center text-[13px] font-semibold text-white/72">{currentIndex + 1} / {images.length}</div>
             <div className="mx-auto grid w-full max-w-[620px] grid-cols-4 gap-3">
@@ -706,7 +706,7 @@ function ItineraryImage({ image, sizes, label, className = "" }: { image?: { src
   return (
     <div className={`relative min-h-[180px] overflow-hidden bg-[#403028] ${className}`}>
       {image ? (
-        <Image src={image.src} alt={image.alt} fill sizes={sizes} loading="eager" unoptimized className="object-cover" />
+        <Image src={image.src} alt={image.alt} fill sizes={sizes} loading="eager" className="object-cover" />
       ) : null}
       <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#403028]/65 to-transparent" aria-hidden="true" />
       {label ? <span className="absolute bottom-4 left-4 rounded-full bg-[#403028] px-3 py-2 text-[12px] font-bold uppercase leading-none tracking-[0.08em] text-white shadow-[0_12px_24px_rgba(64,48,40,0.24)]">{label}</span> : null}
