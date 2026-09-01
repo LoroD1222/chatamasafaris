@@ -132,7 +132,7 @@ function HeroSection({ dictionary }: { dictionary: HomeDictionary }) {
                 asChild
                 className="h-[54px] rounded-[9px] bg-astra-gold/45 px-2 text-[13px] font-bold leading-[1.2] text-white hover:bg-astra-gold/55 sm:px-[18px] sm:text-base sm:leading-normal"
               >
-                <a href="#itineraries">{dictionary.hero.secondaryCta}</a>
+                <a href="#trips">{dictionary.hero.secondaryCta}</a>
               </Button>
             </div>
           </div>
@@ -353,7 +353,7 @@ function WhyIcon({ icon }: { icon: WhyItem["icon"] }) {
 
 function ItinerariesSection({ locale, dictionary, recentTrips }: { locale: Locale; dictionary: HomeDictionary; recentTrips?: TripCard[] }) {
   return (
-    <section id="itineraries" className="relative bg-astra-cream py-16 md:py-[72px]">
+    <section id="trips" className="relative bg-astra-cream py-16 md:py-[72px]">
       <div className="container max-w-[1195px]">
         <SectionHeading
           eyebrow={dictionary.itineraries.eyebrow}

@@ -29,6 +29,11 @@ import { SiteFooter } from "@/components/layouts/site-footer";
 import { SiteHeader } from "@/components/layouts/site-header";
 import { PlannerDialogButton } from "@/components/planner/planner-dialog";
 import { LeadPlanner } from "@/features/home/lead-planner";
+import {
+  getMinimumTripFilterPrice,
+  matchesMaximumTripPrice,
+  MAX_TRIP_FILTER_PRICE,
+} from "@/features/trips/trip-filter";
 import { defaultLocale } from "@/i18n/config";
 import type { HomeDictionary, PlannerField } from "@/i18n/types";
 import { isActiveTripCategory, type TripCard, type TripDetail, tripCards, tripCategoryOrder } from "@/features/trips/trip-data";
@@ -75,11 +80,8 @@ export function TripsListPage({ dictionary, initialTrips }: TripsListPageProps) 
     ...tripCards.filter((fallbackTrip) => isActiveTripCategory(fallbackTrip.tripType) && !sourceCards.some((trip) => trip.tripType === fallbackTrip.tripType))
   ];
   const tripTypes = [...tripCategoryOrder];
-  const publishedPrices = cards
-    .map((trip) => trip.priceValue)
-    .filter((price): price is number => typeof price === "number" && price > 0);
-  const minPrice = publishedPrices.length > 0 ? Math.min(...publishedPrices) : 0;
-  const maxTripPrice = publishedPrices.length > 0 ? Math.max(...publishedPrices) : 0;
+  const minPrice = getMinimumTripFilterPrice(cards);
+  const maxTripPrice = MAX_TRIP_FILTER_PRICE;
   const searchParams = useSearchParams();
   const categoryFromUrl = searchParams.get("category")?.trim() ?? "";
   const normalizedCategoryFromUrl = categoryFromUrl.replace(/\+/g, " ");
@@ -90,7 +92,7 @@ export function TripsListPage({ dictionary, initialTrips }: TripsListPageProps) 
   const [maxPrice, setMaxPrice] = useState(maxTripPrice);
   const filteredCards = cards.filter((trip) => {
     const matchesType = selectedTypes.length === 0 || selectedTypes.includes(trip.tripType);
-    const matchesPrice = typeof trip.priceValue !== "number" || trip.priceValue <= 0 || trip.priceValue <= maxPrice;
+    const matchesPrice = matchesMaximumTripPrice(trip, maxPrice);
     return matchesType && matchesPrice;
   });
 
@@ -301,6 +303,9 @@ function TripBreadcrumb({ trip }: { trip: TripDetail }) {
 }
 
 function TripFilterBar({ tripTypes, selectedTypes, minPrice, maxTripPrice, maxPrice, resultCount, onToggleType, onPriceChange, onResetFilters }: { tripTypes: string[]; selectedTypes: string[]; minPrice: number; maxTripPrice: number; maxPrice: number; resultCount: number; onToggleType: (type: string) => void; onPriceChange: (price: number) => void; onResetFilters: () => void; }) {
+  const priceRange = Math.max(maxTripPrice - minPrice, 1);
+  const selectedPricePosition = ((maxPrice - minPrice) / priceRange) * 100;
+
   return (
     <div className="mx-auto mt-[72px] grid max-w-[766px] overflow-hidden rounded-[2px] border border-[#403028]/12 bg-white md:grid-cols-[1fr_1.15fr]">
       <div className="border-b border-[#403028]/12 px-5 py-4 md:border-b-0 md:border-r">
@@ -334,7 +339,7 @@ function TripFilterBar({ tripTypes, selectedTypes, minPrice, maxTripPrice, maxPr
             <div className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 bg-[#E0B880]/55" />
             <div className="absolute left-0 top-1/2 size-[14px] -translate-y-1/2 rounded-full bg-[#E0B880]" />
             <input type="range" min={minPrice} max={maxTripPrice} step={100} value={maxPrice} onChange={(event) => onPriceChange(Number(event.currentTarget.value))} className="absolute inset-x-0 top-1/2 h-[18px] -translate-y-1/2 cursor-pointer opacity-0" aria-label="Maximum trip price" />
-            <div className="absolute top-1/2 size-[14px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#E0B880]" style={{ left: `${((maxPrice - minPrice) / (maxTripPrice - minPrice)) * 100}%` }} />
+            <div className="absolute top-1/2 size-[14px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#E0B880]" style={{ left: `${selectedPricePosition}%` }} />
           </div>
           <div className="mt-2 flex justify-between text-[12px] font-semibold text-[#E0B880]">
             <span>${minPrice.toLocaleString("en-US")}</span>

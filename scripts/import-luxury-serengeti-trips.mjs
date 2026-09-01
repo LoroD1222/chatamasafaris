@@ -751,12 +751,12 @@ async function verifyImport(client) {
     `*[_type == "trip" && slug.current in $slugs]{_id, title, "slug": slug.current}`,
     {slugs},
   )
-  const tenDayDraft = rawDocuments.find((document) => document._id === `drafts.${existingTenDayId}`)
-  if (!tenDayDraft || tenDayDraft.slug !== canonicalSlugs.tenDay) {
-    throw new Error('The existing 10-day draft was not synchronized with the published document')
+  const remainingDrafts = rawDocuments.filter((document) => document._id.startsWith('drafts.'))
+  if (remainingDrafts.length > 0) {
+    throw new Error(`Expected both trips to be published without drafts, but found ${remainingDrafts.length} draft document(s)`)
   }
 
-  return {publishedTrips: trips, synchronizedTenDayDraft: tenDayDraft}
+  return {publishedTrips: trips, remainingDrafts}
 }
 
 async function main() {
@@ -787,6 +787,9 @@ async function main() {
         ...(existing.sevenDay.length > 0 ? [canonicalSlugs.sevenDay] : []),
         canonicalSlugs.tenDay,
       ],
+      draftsToPublish: existing.all
+        .filter((document) => document._id.startsWith('drafts.'))
+        .map((document) => document._id),
     }, null, 2))
     return
   }
@@ -800,17 +803,24 @@ async function main() {
   let transaction = client.transaction()
 
   const sevenDayTrip = tripBySlug.get(canonicalSlugs.sevenDay)
-  if (existing.sevenDay.length === 0) {
+  const sevenDayPublished = existing.sevenDay.find((document) => !document._id.startsWith('drafts.'))
+  if (!sevenDayPublished) {
     transaction = transaction.create(sevenDayTrip)
   } else {
-    for (const document of existing.sevenDay) {
-      transaction = transaction.patch(document._id, (patch) => patch.set(sevenDayTrip))
-    }
+    transaction = transaction.patch(sevenDayPublished._id, (patch) => patch.set(sevenDayTrip))
+  }
+  for (const draft of existing.sevenDay.filter((document) => document._id.startsWith('drafts.'))) {
+    transaction = transaction.delete(draft._id)
   }
 
   const tenDayTrip = tripBySlug.get(canonicalSlugs.tenDay)
-  for (const document of existing.tenDay) {
-    transaction = transaction.patch(document._id, (patch) => patch.set(tenDayTrip))
+  const tenDayPublishedDocument = existing.tenDay.find((document) => !document._id.startsWith('drafts.'))
+  if (!tenDayPublishedDocument) {
+    throw new Error('The existing 10-day published document could not be found')
+  }
+  transaction = transaction.patch(tenDayPublishedDocument._id, (patch) => patch.set(tenDayTrip))
+  for (const draft of existing.tenDay.filter((document) => document._id.startsWith('drafts.'))) {
+    transaction = transaction.delete(draft._id)
   }
 
   await transaction.commit({autoGenerateArrayKeys: true})
