@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import type { ReactNode } from "react";
+import { Analytics } from "@vercel/analytics/next";
 
 import "@/styles/globals.css";
 
@@ -22,6 +23,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" suppressHydrationWarning>
       <body className="bg-background text-foreground antialiased">
         {children}
+        <Analytics />
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=AW-18226330867"
           strategy="afterInteractive"
