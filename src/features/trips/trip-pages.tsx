@@ -646,17 +646,19 @@ export type ItineraryDayCard = {
   accommodationImage: { src: string; alt: string } | null;
 };
 
-export function ItinerarySection({ itineraryDays, gallerySlides, heading = "Trip Itinerary" }: { itineraryDays: ItineraryDayCard[]; gallerySlides: { src: string; alt: string }[]; heading?: string }) {
+export function ItinerarySection({ itineraryDays, gallerySlides, heading = "Trip Itinerary", showHeading = true }: { itineraryDays: ItineraryDayCard[]; gallerySlides: { src: string; alt: string }[]; heading?: string; showHeading?: boolean }) {
   const days = itineraryDays.length > 0 ? itineraryDays : [{ key: "empty-day-1", day: "DAY 1", title: "Arrival", description: "", activities: ["Arrival transfer"], meals: ["Dinner"], activityImage: null, accommodation: "", accommodationImage: null }];
   const activitySlides = dedupeImages([...gallerySlides, ...itineraryActivitySlides]);
 
   return (
     <section id="itinerary" className={`${pageContainer} scroll-mt-[82px] py-[48px] md:py-[72px]`}>
-      <div className="flex items-center gap-8">
-        <h2 className="shrink-0 text-[34px] font-semibold leading-[1.15] text-[#403028] md:text-[38px]">{heading}</h2>
-        <div className="h-[2px] flex-1 bg-[#FFF8F0]" />
-      </div>
-      <div className="mt-[32px] grid gap-10 md:mt-[56px] md:gap-12">
+      {showHeading ? (
+        <div className="flex items-center gap-8">
+          <h2 className="shrink-0 text-[34px] font-semibold leading-[1.15] text-[#403028] md:text-[38px]">{heading}</h2>
+          <div className="h-[2px] flex-1 bg-[#FFF8F0]" />
+        </div>
+      ) : null}
+      <div className={showHeading ? "mt-[32px] grid gap-10 md:mt-[56px] md:gap-12" : "grid gap-10 md:gap-12"}>
         {days.map((day, index) => {
           const activityImage = day.activityImage || activitySlides[index % activitySlides.length] || itineraryActivitySlides[0];
           const accommodationImage = day.accommodationImage;

@@ -138,7 +138,7 @@ export function ZanzibarSafariPage({ dictionary }: { dictionary: HomeDictionary 
           <p className="mx-auto mt-4 max-w-[760px] text-base leading-[1.6] text-astra-brown">Three days exploring Tanzania&apos;s incredible wildlife, followed by three days enjoying Zanzibar&apos;s tropical coastline — including one extra day free.</p>
         </div>
       </section>
-      <ItinerarySection itineraryDays={itinerary} gallerySlides={[]} heading="Your Day-by-Day Adventure" />
+      <ItinerarySection itineraryDays={itinerary} gallerySlides={[]} showHeading={false} />
       <section className="bg-[#F9F7F0] px-6 py-16 md:py-20">
         <div className="mx-auto max-w-[650px] text-center">
           <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">MAKE IT YOUR OWN</p>
@@ -230,7 +230,7 @@ function Hero({ dictionary }: { dictionary: HomeDictionary }) {
           <p className="mt-5 inline-flex rounded-full border border-astra-gold/65 bg-astra-gold/15 px-4 py-2 text-[15px] font-bold text-white backdrop-blur-sm">3-Day Private Safari + 2 Days Zanzibar + 1 Extra Day Free</p>
           <p className="mt-5 max-w-[545px] text-base leading-[1.65] text-white/90">Explore Tanzania&apos;s incredible wildlife, then unwind on Zanzibar&apos;s beautiful beaches. Your adventure, your pace, with one extra Zanzibar day free.</p>
         </div>
-        <div className="relative">
+        <div className="relative pt-[30px] md:pt-0">
           <LeadPlanner planner={dictionary.planner} sectionId={plannerId} className="relative z-10 w-full scroll-mt-24 shadow-none" />
         </div>
       </div>
