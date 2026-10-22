@@ -190,7 +190,7 @@ export function ZanzibarSafariPage({ dictionary }: { dictionary: HomeDictionary 
           eyebrow: "WHAT OUR TRAVELERS SAY",
           title: "Real Travelers. Unforgettable Experiences.",
           description: "See why travelers choose Chatama Safaris for their adventures in Tanzania.",
-          items: [dictionary.reviews.items[1], dictionary.reviews.items[2], dictionary.reviews.items[7]]
+          items: dictionary.reviews.items
         }}
       />
       <section className="bg-astra-cream py-16 md:py-20">
@@ -223,13 +223,13 @@ export function ZanzibarSafariPage({ dictionary }: { dictionary: HomeDictionary 
 function Hero({ dictionary }: { dictionary: HomeDictionary }) {
   return (
     <section className="relative overflow-hidden bg-[#F9F7F0] text-white md:min-h-[600px] md:bg-astra-cocoa">
-      <div className="absolute inset-x-0 top-0 h-[500px] md:inset-0">
+      <div className="absolute inset-x-0 top-0 h-[177.778vw] md:inset-0 md:h-auto">
         <Image src="/images/zanzibar-safari/hero-tanzania-zanzibar.jpg" alt="Wildebeest crossing beside Zanzibar's tropical shoreline" fill priority sizes="100vw" className="hidden object-cover object-center md:block" />
         <Image src="/images/zanzibar-safari/hero-tanzania-zanzibar-mobile.jpg" alt="Wildebeest crossing and Zanzibar's tropical shoreline" fill priority sizes="100vw" className="object-cover object-center md:hidden" />
         <div className="absolute inset-0 bg-[linear-gradient(76deg,rgba(64,48,40,0.91)_4%,rgba(64,48,40,0.74)_37%,rgba(64,48,40,0.18)_76%,rgba(64,48,40,0.08)_100%)]" />
       </div>
       <div className="container relative grid max-w-[1112px] gap-8 py-12 md:min-h-[600px] md:items-center md:py-14 lg:grid-cols-[minmax(0,1fr)_365px] lg:gap-[75px]">
-        <div className="min-h-[420px] max-w-[650px] md:min-h-0">
+        <div className="min-h-[calc(177.778vw-80px)] max-w-[650px] md:min-h-0">
           <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">6 DAYS • TANZANIA + ZANZIBAR</p>
           <h1 className="mt-5 text-[40px] font-normal leading-[1.12] md:text-[54px]">The Wild, Then the <span className="font-bold text-astra-gold">Beach.</span></h1>
           <p className="mt-5 inline-flex rounded-full border border-astra-gold/65 bg-astra-gold/15 px-4 py-2 text-[15px] font-bold text-white backdrop-blur-sm">3-Day Private Safari + 2 Days Zanzibar + 1 Extra Day Free</p>
