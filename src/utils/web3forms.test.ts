@@ -1,9 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { googleAdsLeadDestination } from "@/utils/google-ads";
-import { submitWeb3Form } from "@/utils/web3forms";
+import { inquiryEndpoint, inquiryFormKey, submitInquiry } from "@/utils/inquiries";
 
-describe("submitWeb3Form", () => {
+describe("submitInquiry", () => {
   const fetchMock = vi.fn();
 
   beforeEach(() => {
@@ -25,10 +25,25 @@ describe("submitWeb3Form", () => {
       json: async () => ({ success: true })
     });
 
-    await submitWeb3Form({
-      subject: "New safari planner request",
+    await submitInquiry({
       formName: "safari_planner_request",
-      values: { email: "traveler@example.com" }
+      values: { name: "Alex Traveler", email: "traveler@example.com", whatsapp: "+255 123", people: "2 people" }
+    });
+
+    expect(fetchMock).toHaveBeenCalledWith(inquiryEndpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        key: inquiryFormKey,
+        name: "Alex Traveler",
+        email: "traveler@example.com",
+        phone: "+255 123",
+        interested_in: undefined,
+        travel_dates: undefined,
+        travellers: "2 people",
+        country: undefined,
+        message: undefined
+      })
     });
 
     expect(window.gtag).toHaveBeenCalledWith("event", "conversion", {
@@ -48,10 +63,9 @@ describe("submitWeb3Form", () => {
     });
 
     await expect(
-      submitWeb3Form({
-        subject: "New safari planner request",
+      submitInquiry({
         formName: "safari_planner_request",
-        values: { email: "traveler@example.com" }
+        values: { name: "Alex Traveler", email: "traveler@example.com" }
       })
     ).rejects.toThrow("Rejected");
 

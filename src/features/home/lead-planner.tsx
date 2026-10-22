@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import type { HomeDictionary, PlannerField } from "@/i18n/types";
 import { cn } from "@/utils/cn";
 import { thankYouHref } from "@/utils/routes";
-import { submitWeb3Form } from "@/utils/web3forms";
+import { requiredInquiryFields, submitInquiry } from "@/utils/inquiries";
 
 type Planner = HomeDictionary["planner"];
 
@@ -47,7 +47,7 @@ export function LeadPlanner({ planner, sectionId, className }: LeadPlannerProps)
 
   async function submitForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const missing = planner.fields.filter((field) => !values[field.name]?.trim()).map((field) => field.name);
+    const missing = requiredInquiryFields(planner.fields, values);
 
     if (missing.length > 0) {
       setInvalidFields(missing);
@@ -59,13 +59,9 @@ export function LeadPlanner({ planner, sectionId, className }: LeadPlannerProps)
     setSubmitError("");
 
     try {
-      await submitWeb3Form({
-        subject: "New safari planner request",
+      await submitInquiry({
         formName: "safari_planner_request",
-        values: {
-          ...values,
-          form_name: planner.title
-        }
+        values
       });
       setSubmitted(true);
       setValues(initialValues);

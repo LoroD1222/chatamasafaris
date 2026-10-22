@@ -34,7 +34,7 @@ import type { HomeDictionary, PlannerField } from "@/i18n/types";
 import { isActiveTripCategory, type TripCard, type TripDetail, tripCards, tripCategoryOrder } from "@/features/trips/trip-data";
 import { cn } from "@/utils/cn";
 import { thankYouHref } from "@/utils/routes";
-import { submitWeb3Form } from "@/utils/web3forms";
+import { requiredInquiryFields, submitInquiry } from "@/utils/inquiries";
 
 type TripPageProps = {
   dictionary: HomeDictionary;
@@ -847,20 +847,16 @@ function InlinePlannerForm({ planner, className = "" }: { planner: HomeDictionar
 
   async function submitForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const missing = planner.fields.filter((field) => !values[field.name]?.trim()).map((field) => field.name);
+    const missing = requiredInquiryFields(planner.fields, values);
     if (missing.length > 0) { setInvalidFields(missing); setSubmitted(false); return; }
 
     setSubmitting(true);
     setSubmitError("");
 
     try {
-      await submitWeb3Form({
-        subject: "New trip quote request",
+      await submitInquiry({
         formName: "trip_quote_request",
-        values: {
-          ...values,
-          form_name: planner.title
-        }
+        values
       });
       setSubmitted(true);
       setValues(Object.fromEntries(planner.fields.map((field) => [field.name, ""])));

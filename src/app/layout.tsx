@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/next";
 
+import { UtmCapture } from "@/components/analytics/utm-capture";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
@@ -22,6 +23,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="bg-background text-foreground antialiased">
+        <Suspense fallback={null}>
+          <UtmCapture />
+        </Suspense>
         <noscript>
           {/* Meta's required noscript tracking fallback cannot use Next's image optimizer. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import { SiteFinalCta } from "@/components/layouts/site-final-cta";
-import { Button } from "@/components/ui/button";
+import { PlannerDialogButton } from "@/components/planner/planner-dialog";
 import { LeadPlanner } from "@/features/home/lead-planner";
 import { FaqList } from "@/features/home/faq-list";
 import { ReviewsSection, TeamSection, WhySection } from "@/features/home/home-page";
@@ -144,9 +144,9 @@ export function ZanzibarSafariPage({ dictionary }: { dictionary: HomeDictionary 
           <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">MAKE IT YOUR OWN</p>
           <h2 className="mt-3 text-[32px] font-medium leading-[1.18] text-astra-cocoa md:text-[44px]">Want to Stay a Little Longer? No Problem!</h2>
           <p className="mt-4 text-base leading-[1.6] text-astra-brown">More days on safari? Extra time on Zanzibar&apos;s beaches? Every trip can be tailored to your preferences, travel dates, and budget. Tell us what you have in mind, and we&apos;ll create the perfect itinerary for you.</p>
-          <Button asChild className="mt-8 h-[54px] rounded-[9px] bg-astra-gold px-6 text-base font-bold text-astra-cocoa hover:bg-astra-gold/90">
-            <a href={`#${plannerId}`}>Customize My Trip <span aria-hidden="true">→</span></a>
-          </Button>
+          <PlannerDialogButton planner={campaignDictionary.planner} className="mt-8 h-[54px] rounded-[9px] bg-astra-gold px-6 text-base font-bold text-astra-cocoa hover:bg-astra-gold/90">
+            Customize My Trip <span aria-hidden="true">→</span>
+          </PlannerDialogButton>
         </div>
       </section>
       <section className="bg-[#FFF8F0] py-16 md:py-20">

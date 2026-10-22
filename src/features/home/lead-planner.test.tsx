@@ -5,17 +5,18 @@ import { LeadPlanner } from "@/features/home/lead-planner";
 import type { HomeDictionary } from "@/i18n/types";
 import { thankYouHref } from "@/utils/routes";
 
-const { pushMock, submitWeb3FormMock } = vi.hoisted(() => ({
+const { pushMock, submitInquiryMock } = vi.hoisted(() => ({
   pushMock: vi.fn(),
-  submitWeb3FormMock: vi.fn()
+  submitInquiryMock: vi.fn()
 }));
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: pushMock })
 }));
 
-vi.mock("@/utils/web3forms", () => ({
-  submitWeb3Form: submitWeb3FormMock
+vi.mock("@/utils/inquiries", () => ({
+  submitInquiry: submitInquiryMock,
+  requiredInquiryFields: () => []
 }));
 
 const planner: HomeDictionary["planner"] = {
@@ -37,7 +38,7 @@ const planner: HomeDictionary["planner"] = {
 
 describe("LeadPlanner", () => {
   it("redirects to the thank-you page after a successful submission", async () => {
-    submitWeb3FormMock.mockResolvedValueOnce({ success: true });
+    submitInquiryMock.mockResolvedValueOnce(undefined);
     render(<LeadPlanner planner={planner} />);
 
     fireEvent.change(screen.getByPlaceholderText("Your name"), {
@@ -46,12 +47,10 @@ describe("LeadPlanner", () => {
     fireEvent.click(screen.getByRole("button", { name: "Talk to Safari Planner" }));
 
     await waitFor(() => {
-      expect(submitWeb3FormMock).toHaveBeenCalledWith({
-        subject: "New safari planner request",
+      expect(submitInquiryMock).toHaveBeenCalledWith({
         formName: "safari_planner_request",
         values: {
-          name: "Alex Traveler",
-          form_name: planner.title
+          name: "Alex Traveler"
         }
       });
       expect(pushMock).toHaveBeenCalledWith(thankYouHref);
