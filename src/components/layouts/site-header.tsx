@@ -11,7 +11,11 @@ import type { Locale } from "@/i18n/config";
 import type { HomeDictionary } from "@/i18n/types";
 import { localizedHref, localizedHomeAnchor } from "@/utils/routes";
 
-export function SiteHeader({ locale, dictionary }: { locale: Locale; dictionary: HomeDictionary }) {
+export function SiteHeader({ locale, dictionary, plannerHref, compactNavigation = false }: { locale: Locale; dictionary: HomeDictionary; plannerHref?: string; compactNavigation?: boolean }) {
+  const desktopNavigationClassName = compactNavigation ? "hidden items-center gap-7 text-[15px] font-medium leading-[1.6] text-astra-brown xl:flex" : "hidden items-center gap-7 text-[15px] font-medium leading-[1.6] text-astra-brown md:flex";
+  const desktopPlannerClassName = compactNavigation ? "hidden h-[54px] rounded-[9px] bg-astra-gold px-[21px] text-base font-bold text-astra-cocoa hover:bg-astra-gold/90 xl:inline-flex" : "hidden h-[54px] rounded-[9px] bg-astra-gold px-[21px] text-base font-bold text-astra-cocoa hover:bg-astra-gold/90 md:inline-flex";
+  const mobileMenuClassName = compactNavigation ? "xl:hidden" : "md:hidden";
+
   return (
     <header className="bg-astra-cream text-astra-brown">
       <div className="bg-astra-gold">
@@ -40,7 +44,7 @@ export function SiteHeader({ locale, dictionary }: { locale: Locale; dictionary:
             <Image src="/assets/figma/logo-header.png" alt={dictionary.brand.logoAlt} fill priority sizes="(min-width: 640px) 219px, 136px" className="object-contain" />
           </Link>
 
-          <nav className="hidden items-center gap-7 text-[15px] font-medium leading-[1.6] text-astra-brown md:flex" aria-label="Primary">
+          <nav className={desktopNavigationClassName} aria-label="Primary">
             {dictionary.nav.map((item) => (
               <Link key={`${item.label}-${item.href}`} href={localizedHref(locale, item.href)} className="transition hover:text-astra-gold">
                 {item.label}
@@ -48,16 +52,22 @@ export function SiteHeader({ locale, dictionary }: { locale: Locale; dictionary:
             ))}
           </nav>
 
-          <PlannerDialogButton
-            planner={dictionary.planner}
-            className="hidden h-[54px] rounded-[9px] bg-astra-gold px-[21px] text-base font-bold text-astra-cocoa hover:bg-astra-gold/90 md:inline-flex"
-          >
-            {dictionary.header.plannerCta}
-          </PlannerDialogButton>
+          {plannerHref ? (
+            <Button asChild className={desktopPlannerClassName}>
+              <a href={plannerHref}>{dictionary.header.plannerCta}</a>
+            </Button>
+          ) : (
+            <PlannerDialogButton
+              planner={dictionary.planner}
+              className={desktopPlannerClassName}
+            >
+              {dictionary.header.plannerCta}
+            </PlannerDialogButton>
+          )}
 
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="outline" size="icon" className="md:hidden" aria-label={dictionary.header.menuLabel}>
+              <Button variant="outline" size="icon" className={mobileMenuClassName} aria-label={dictionary.header.menuLabel}>
                 <Menu className="size-5" aria-hidden="true" />
               </Button>
             </SheetTrigger>
@@ -76,7 +86,7 @@ export function SiteHeader({ locale, dictionary }: { locale: Locale; dictionary:
               <div className="mt-8">
                 <SheetClose asChild>
                   <Button asChild className="w-full bg-astra-gold text-astra-cocoa hover:bg-astra-gold/90">
-                    <Link href={localizedHomeAnchor(locale, "planner")}>{dictionary.header.plannerCta}</Link>
+                    <Link href={plannerHref ?? localizedHomeAnchor(locale, "planner")}>{dictionary.header.plannerCta}</Link>
                   </Button>
                 </SheetClose>
               </div>

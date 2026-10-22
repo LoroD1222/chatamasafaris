@@ -21,7 +21,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { type FormEvent, useEffect, useState } from "react";
+import { type FormEvent, type TouchEvent, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { SiteFinalCta } from "@/components/layouts/site-final-cta";
@@ -367,13 +367,30 @@ function TripCardGrid({ className = "", limit, cards = tripCards }: { className?
   );
 }
 
-function HeroGallery({ images, className = "" }: { images: { src: string; alt: string }[]; className?: string }) {
+export function HeroGallery({ images, className = "", priority = true }: { images: { src: string; alt: string }[]; className?: string; priority?: boolean }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const touchStartX = useRef<number | null>(null);
+  const hasSwiped = useRef(false);
   const currentImage = images[currentIndex] || images[0];
 
   const showPreviousImage = () => setCurrentIndex((index) => (index === 0 ? images.length - 1 : index - 1));
   const showNextImage = () => setCurrentIndex((index) => (index === images.length - 1 ? 0 : index + 1));
+
+  function handleTouchStart(event: TouchEvent<HTMLDivElement>) {
+    touchStartX.current = event.touches[0]?.clientX ?? null;
+    hasSwiped.current = false;
+  }
+
+  function handleTouchEnd(event: TouchEvent<HTMLDivElement>) {
+    const startX = touchStartX.current;
+    const endX = event.changedTouches[0]?.clientX;
+    touchStartX.current = null;
+    if (startX === null || typeof endX !== "number" || Math.abs(startX - endX) < 40) return;
+    hasSwiped.current = true;
+    if (startX > endX) showNextImage();
+    else showPreviousImage();
+  }
 
   useEffect(() => {
     if (!isLightboxOpen) return;
@@ -390,9 +407,9 @@ function HeroGallery({ images, className = "" }: { images: { src: string; alt: s
 
   return (
     <div className={className}>
-      <div className="relative aspect-square overflow-hidden rounded-[2px] bg-[#403028] lg:aspect-auto lg:h-[574px]">
-        <button type="button" onClick={() => setIsLightboxOpen(true)} className="absolute inset-0 cursor-zoom-in outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--astra-primary-amber)]" aria-label={`Open image gallery: ${currentImage.alt}`}>
-          <Image src={currentImage.src} alt={currentImage.alt} fill priority sizes="707px" className="object-cover transition duration-300" />
+      <div className="relative aspect-square touch-pan-y overflow-hidden rounded-[2px] bg-[#403028] lg:aspect-auto lg:h-[574px]" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+        <button type="button" onClick={() => { if (hasSwiped.current) { hasSwiped.current = false; return; } setIsLightboxOpen(true); }} className="absolute inset-0 cursor-zoom-in outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--astra-primary-amber)]" aria-label={`Open image gallery: ${currentImage.alt}`}>
+          <Image src={currentImage.src} alt={currentImage.alt} fill priority={priority} sizes="(min-width: 1024px) 900px, 100vw" className="object-cover transition duration-300" />
         </button>
         <button type="button" onClick={showPreviousImage} className="absolute left-4 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-full bg-white/92 text-[#403028] shadow-[0_10px_24px_rgba(0,0,0,0.2)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]" aria-label="Show previous safari image"><ChevronLeft className="size-5" aria-hidden="true" /></button>
         <button type="button" onClick={showNextImage} className="absolute right-4 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-full bg-white/92 text-[#403028] shadow-[0_10px_24px_rgba(0,0,0,0.2)] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--astra-primary-amber)]" aria-label="Show next safari image"><ChevronRight className="size-5" aria-hidden="true" /></button>
@@ -617,7 +634,7 @@ function PlannerQuoteCard({ dictionary }: TripPageProps) {
   );
 }
 
-type ItineraryDayCard = {
+export type ItineraryDayCard = {
   key: string;
   day: string;
   title: string;
@@ -629,14 +646,14 @@ type ItineraryDayCard = {
   accommodationImage: { src: string; alt: string } | null;
 };
 
-function ItinerarySection({ itineraryDays, gallerySlides }: { itineraryDays: ItineraryDayCard[]; gallerySlides: { src: string; alt: string }[] }) {
+export function ItinerarySection({ itineraryDays, gallerySlides, heading = "Trip Itinerary" }: { itineraryDays: ItineraryDayCard[]; gallerySlides: { src: string; alt: string }[]; heading?: string }) {
   const days = itineraryDays.length > 0 ? itineraryDays : [{ key: "empty-day-1", day: "DAY 1", title: "Arrival", description: "", activities: ["Arrival transfer"], meals: ["Dinner"], activityImage: null, accommodation: "", accommodationImage: null }];
   const activitySlides = dedupeImages([...gallerySlides, ...itineraryActivitySlides]);
 
   return (
     <section id="itinerary" className={`${pageContainer} scroll-mt-[82px] py-[48px] md:py-[72px]`}>
       <div className="flex items-center gap-8">
-        <h2 className="shrink-0 text-[34px] font-semibold leading-[1.15] text-[#403028] md:text-[38px]">Trip Itinerary</h2>
+        <h2 className="shrink-0 text-[34px] font-semibold leading-[1.15] text-[#403028] md:text-[38px]">{heading}</h2>
         <div className="h-[2px] flex-1 bg-[#FFF8F0]" />
       </div>
       <div className="mt-[32px] grid gap-10 md:mt-[56px] md:gap-12">

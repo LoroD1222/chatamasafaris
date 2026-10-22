@@ -244,14 +244,15 @@ const trustIconAssets: Record<TrustItem["icon"], string> = {
 function TrustIcon({ icon }: { icon: TrustItem["icon"] }) {
   return <Image src={trustIconAssets[icon]} alt="" width={40} height={40} className="mb-[-3px] size-10 shrink-0" aria-hidden="true" />;
 }
-function WhySection({ dictionary }: { dictionary: HomeDictionary }) {
+export function WhySection({ dictionary, content, plannerHref }: { dictionary: HomeDictionary; content?: Pick<HomeDictionary["why"], "eyebrow" | "titleLead" | "titleHighlight" | "items">; plannerHref?: string }) {
+  const why = content ? { ...dictionary.why, ...content } : dictionary.why;
   return (
     <section id="why" className="bg-astra-cocoa py-16 text-white md:py-20">
       <div className="container grid max-w-[1225px] gap-12 lg:grid-cols-[373px_1fr] lg:gap-[84px]">
         <div>
-          <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">{dictionary.why.eyebrow}</p>
+          <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">{why.eyebrow}</p>
           <h2 className="mt-7 text-[32px] font-normal leading-[1.16] md:text-[44px]">
-            {dictionary.why.titleLead} <span className="font-bold text-astra-gold">{dictionary.why.titleHighlight}</span>
+            {why.titleLead} <span className="font-bold text-astra-gold">{why.titleHighlight}</span>
           </h2>
           <p className="mt-7 text-xl font-semibold leading-[1.14]">{dictionary.why.plannerLabel}</p>
           <div className="mt-7 grid gap-4 text-base font-bold leading-[1.6] text-white/65">
@@ -262,15 +263,21 @@ function WhySection({ dictionary }: { dictionary: HomeDictionary }) {
               {dictionary.why.email}
             </ContactLink>
           </div>
-          <PlannerDialogButton
-            planner={dictionary.planner}
-            className="mt-7 h-[54px] rounded-[9px] bg-astra-gold px-[21px] text-base font-bold text-astra-cocoa hover:bg-astra-gold/90"
-          >
-            {dictionary.why.cta}
-          </PlannerDialogButton>
+          {plannerHref ? (
+            <Button asChild className="mt-7 h-[54px] rounded-[9px] bg-astra-gold px-[21px] text-base font-bold text-astra-cocoa hover:bg-astra-gold/90">
+              <a href={plannerHref}>{dictionary.hero.primaryCta}</a>
+            </Button>
+          ) : (
+            <PlannerDialogButton
+              planner={dictionary.planner}
+              className="mt-7 h-[54px] rounded-[9px] bg-astra-gold px-[21px] text-base font-bold text-astra-cocoa hover:bg-astra-gold/90"
+            >
+              {dictionary.why.cta}
+            </PlannerDialogButton>
+          )}
         </div>
         <div className="grid gap-x-[33px] gap-y-[38px] md:grid-cols-2 lg:gap-y-[51px]">
-          {dictionary.why.items.map((item) => (
+          {why.items.map((item) => (
             <article key={`${item.title}-${item.icon}`} className="flex gap-4">
               <div className="w-0.5 shrink-0 rounded-full bg-astra-gold/15" />
               <div>
@@ -478,7 +485,7 @@ function PlanningImage({ image }: { image: HomeDictionary["planning"]["image"] }
   );
 }
 
-function TeamSection({ dictionary }: { dictionary: HomeDictionary }) {
+export function TeamSection({ dictionary, heading, description, compact = false }: { dictionary: HomeDictionary; heading?: string; description?: string; compact?: boolean }) {
   const founder = teamMembers.find((member) => member.featured);
   const guides = teamMembers.filter((member) => !member.featured);
 
@@ -489,19 +496,19 @@ function TeamSection({ dictionary }: { dictionary: HomeDictionary }) {
           <div className="flex h-full flex-col items-start justify-center gap-[14px] text-left">
             <p className="w-full max-w-[360px] text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">Who You&apos;ll Travel With</p>
             <h2 className="w-full max-w-[360px] text-[32px] font-medium leading-[1.18] text-white md:text-[44px] lg:text-[40px]">
-              Meet the guides behind every safari
+              {heading ?? "Meet the guides behind every safari"}
             </h2>
             <p className="w-full max-w-[360px] text-base font-semibold leading-[1.6] text-white/80">
-              Every Chatama Safaris trip is led by a guide who has spent years reading this land. Here&apos;s who&apos;s waiting for you in the field.
+              {description ?? "Every Chatama Safaris trip is led by a guide who has spent years reading this land. Here&apos;s who&apos;s waiting for you in the field."}
             </p>
           </div>
           {founder ? <FounderCard member={founder} /> : null}
         </div>
         <div className="mt-7 grid grid-cols-1 gap-6 lg:grid-cols-3">
-          {guides.map((member) => (
+          {guides.slice(0, compact ? 3 : undefined).map((member) => (
             <TeamCard key={member.name} member={member} />
           ))}
-          <TeamCtaCard dictionary={dictionary} />
+          {compact ? null : <TeamCtaCard dictionary={dictionary} />}
         </div>
       </div>
     </section>
@@ -574,15 +581,29 @@ function TeamPhoto({ member, className, tag, sizes }: { member: TeamMember; clas
   );
 }
 
-function ReviewsSection({ dictionary }: { dictionary: HomeDictionary }) {
-  const sortedReviews = [...dictionary.reviews.items].sort((a, b) => Number(Boolean(b.image)) - Number(Boolean(a.image)));
+export function ReviewsSection({ dictionary, content, compact = false, sourceLink }: { dictionary: HomeDictionary; content?: Pick<HomeDictionary["reviews"], "eyebrow" | "title" | "description" | "items">; compact?: boolean; sourceLink?: { href: string; label: string } }) {
+  const reviews = content ? { ...dictionary.reviews, ...content } : dictionary.reviews;
+  const sortedReviews = [...reviews.items].sort((a, b) => Number(Boolean(b.image)) - Number(Boolean(a.image)));
   const imageReviews = sortedReviews.filter((review) => review.image);
   const textReviews = sortedReviews.filter((review) => !review.image);
 
   return (
     <section className="bg-astra-cream py-16 md:py-20">
       <div className="container max-w-[1280px]">
-        <SectionHeading eyebrow={dictionary.reviews.eyebrow} title={dictionary.reviews.title} description={dictionary.reviews.description} />
+        <SectionHeading eyebrow={reviews.eyebrow} title={reviews.title} description={reviews.description} />
+        {sourceLink ? (
+          <div className="mt-5 flex justify-center">
+            <a
+              href={sourceLink.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm font-bold text-astra-cocoa underline decoration-astra-gold decoration-2 underline-offset-4 transition-colors hover:text-astra-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-astra-gold focus-visible:ring-offset-4"
+            >
+              {sourceLink.label}
+              <ArrowRight className="size-4" aria-hidden="true" />
+            </a>
+          </div>
+        ) : null}
         <div className="mt-10 lg:hidden">
           {imageReviews.map((review, index) => (
             <ReviewCard key={`${review.author}-mobile-image-${index}`} review={review} />
@@ -592,13 +613,13 @@ function ReviewsSection({ dictionary }: { dictionary: HomeDictionary }) {
               <ReviewCard key={`${review.author}-mobile-text-${index}`} review={review} />
             ))}
           </div>
-          <ReviewCtaCard dictionary={dictionary} />
+          {compact ? null : <ReviewCtaCard dictionary={dictionary} />}
         </div>
         <div className="mt-10 hidden gap-6 lg:block lg:columns-2">
           {sortedReviews.map((review, index) => (
             <ReviewCard key={`${review.author}-desktop-${index}`} review={review} />
           ))}
-          <ReviewCtaCard dictionary={dictionary} />
+          {compact ? null : <ReviewCtaCard dictionary={dictionary} />}
         </div>
       </div>
     </section>
