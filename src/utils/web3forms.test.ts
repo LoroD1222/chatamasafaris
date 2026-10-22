@@ -9,12 +9,14 @@ describe("submitWeb3Form", () => {
   beforeEach(() => {
     vi.stubGlobal("fetch", fetchMock);
     window.gtag = vi.fn();
+    window.fbq = vi.fn();
   });
 
   afterEach(() => {
     fetchMock.mockReset();
     vi.unstubAllGlobals();
     delete window.gtag;
+    delete window.fbq;
   });
 
   it("reports a conversion after a successful lead submission", async () => {
@@ -25,11 +27,17 @@ describe("submitWeb3Form", () => {
 
     await submitWeb3Form({
       subject: "New safari planner request",
+      formName: "safari_planner_request",
       values: { email: "traveler@example.com" }
     });
 
     expect(window.gtag).toHaveBeenCalledWith("event", "conversion", {
       send_to: googleAdsLeadDestination
+    });
+    expect(window.fbq).toHaveBeenCalledTimes(1);
+    expect(window.fbq).toHaveBeenCalledWith("track", "Lead", {
+      form_name: "safari_planner_request",
+      page_path: window.location.pathname
     });
   });
 
@@ -42,10 +50,12 @@ describe("submitWeb3Form", () => {
     await expect(
       submitWeb3Form({
         subject: "New safari planner request",
+        formName: "safari_planner_request",
         values: { email: "traveler@example.com" }
       })
     ).rejects.toThrow("Rejected");
 
     expect(window.gtag).not.toHaveBeenCalled();
+    expect(window.fbq).not.toHaveBeenCalled();
   });
 });

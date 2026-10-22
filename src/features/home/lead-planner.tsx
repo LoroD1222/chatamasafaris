@@ -61,6 +61,7 @@ export function LeadPlanner({ planner, sectionId, className }: LeadPlannerProps)
     try {
       await submitWeb3Form({
         subject: "New safari planner request",
+        formName: "safari_planner_request",
         values: {
           ...values,
           form_name: planner.title

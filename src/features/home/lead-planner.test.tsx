@@ -48,6 +48,7 @@ describe("LeadPlanner", () => {
     await waitFor(() => {
       expect(submitWeb3FormMock).toHaveBeenCalledWith({
         subject: "New safari planner request",
+        formName: "safari_planner_request",
         values: {
           name: "Alex Traveler",
           form_name: planner.title

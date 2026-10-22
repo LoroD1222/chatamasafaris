@@ -1,14 +1,16 @@
 import { reportGoogleAdsLeadConversion } from "@/utils/google-ads";
+import { reportMetaPixelLead } from "@/utils/meta-pixel";
 
 export const web3FormsAccessKey = "13a9dcc6-7696-41ba-9014-517aa9e556c2";
 export const web3FormsEndpoint = "https://api.web3forms.com/submit";
 
 type Web3FormPayload = {
   subject: string;
+  formName: string;
   values: Record<string, string>;
 };
 
-export async function submitWeb3Form({ subject, values }: Web3FormPayload) {
+export async function submitWeb3Form({ subject, formName, values }: Web3FormPayload) {
   const formData = new FormData();
   formData.append("access_key", web3FormsAccessKey);
   formData.append("subject", subject);
@@ -37,6 +39,7 @@ export async function submitWeb3Form({ subject, values }: Web3FormPayload) {
   }
 
   reportGoogleAdsLeadConversion();
+  reportMetaPixelLead({ formName });
 
   return result;
 }

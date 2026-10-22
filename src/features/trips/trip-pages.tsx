@@ -837,6 +837,7 @@ function InlinePlannerForm({ planner, className = "" }: { planner: HomeDictionar
     try {
       await submitWeb3Form({
         subject: "New trip quote request",
+        formName: "trip_quote_request",
         values: {
           ...values,
           form_name: planner.title
