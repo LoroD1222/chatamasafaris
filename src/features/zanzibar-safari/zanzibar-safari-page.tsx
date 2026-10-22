@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import { SiteFinalCta } from "@/components/layouts/site-final-cta";
+import { Button } from "@/components/ui/button";
 import { LeadPlanner } from "@/features/home/lead-planner";
 import { FaqList } from "@/features/home/faq-list";
 import { ReviewsSection, TeamSection, WhySection } from "@/features/home/home-page";
@@ -138,6 +139,16 @@ export function ZanzibarSafariPage({ dictionary }: { dictionary: HomeDictionary 
         </div>
       </section>
       <ItinerarySection itineraryDays={itinerary} gallerySlides={[]} heading="Your Day-by-Day Adventure" />
+      <section className="bg-[#F9F7F0] px-6 py-16 md:py-20">
+        <div className="mx-auto max-w-[650px] text-center">
+          <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">MAKE IT YOUR OWN</p>
+          <h2 className="mt-3 text-[32px] font-medium leading-[1.18] text-astra-cocoa md:text-[44px]">Want to Stay a Little Longer? No Problem!</h2>
+          <p className="mt-4 text-base leading-[1.6] text-astra-brown">More days on safari? Extra time on Zanzibar&apos;s beaches? Every trip can be tailored to your preferences, travel dates, and budget. Tell us what you have in mind, and we&apos;ll create the perfect itinerary for you.</p>
+          <Button asChild className="mt-8 h-[54px] rounded-[9px] bg-astra-gold px-6 text-base font-bold text-astra-cocoa hover:bg-astra-gold/90">
+            <a href={`#${plannerId}`}>Customize My Trip <span aria-hidden="true">→</span></a>
+          </Button>
+        </div>
+      </section>
       <section className="bg-[#FFF8F0] py-16 md:py-20">
         <div className="container max-w-[980px]">
           <div className="mx-auto max-w-[760px] text-center">
@@ -211,14 +222,14 @@ export function ZanzibarSafariPage({ dictionary }: { dictionary: HomeDictionary 
 
 function Hero({ dictionary }: { dictionary: HomeDictionary }) {
   return (
-    <section className="relative overflow-hidden bg-astra-cocoa text-white md:min-h-[600px]">
-      <div className="absolute inset-0">
-        <Image src="/images/zanzibar-safari/hero_jeep_desktop.jpg" alt="Safari and Zanzibar coast" fill priority sizes="100vw" className="hidden object-cover object-center md:block" />
-        <Image src="/images/zanzibar-safari/hero_mobile.jpg" alt="Safari and Zanzibar coast" fill priority sizes="100vw" className="object-cover object-top md:hidden" />
+    <section className="relative overflow-hidden bg-[#F9F7F0] text-white md:min-h-[600px] md:bg-astra-cocoa">
+      <div className="absolute inset-x-0 top-0 h-[500px] md:inset-0">
+        <Image src="/images/zanzibar-safari/hero-tanzania-zanzibar.jpg" alt="Wildebeest crossing beside Zanzibar's tropical shoreline" fill priority sizes="100vw" className="hidden object-cover object-center md:block" />
+        <Image src="/images/zanzibar-safari/hero-tanzania-zanzibar-mobile.jpg" alt="Wildebeest crossing and Zanzibar's tropical shoreline" fill priority sizes="100vw" className="object-cover object-center md:hidden" />
         <div className="absolute inset-0 bg-[linear-gradient(76deg,rgba(64,48,40,0.91)_4%,rgba(64,48,40,0.74)_37%,rgba(64,48,40,0.18)_76%,rgba(64,48,40,0.08)_100%)]" />
       </div>
       <div className="container relative grid max-w-[1112px] gap-8 py-12 md:min-h-[600px] md:items-center md:py-14 lg:grid-cols-[minmax(0,1fr)_365px] lg:gap-[75px]">
-        <div className="max-w-[650px]">
+        <div className="min-h-[420px] max-w-[650px] md:min-h-0">
           <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">6 DAYS • TANZANIA + ZANZIBAR</p>
           <h1 className="mt-5 text-[40px] font-normal leading-[1.12] md:text-[54px]">The Wild, Then the <span className="font-bold text-astra-gold">Beach.</span></h1>
           <p className="mt-5 inline-flex rounded-full border border-astra-gold/65 bg-astra-gold/15 px-4 py-2 text-[15px] font-bold text-white backdrop-blur-sm">3-Day Private Safari + 2 Days Zanzibar + 1 Extra Day Free</p>
