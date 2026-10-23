@@ -131,7 +131,7 @@ export function ZanzibarSafariPage({ dictionary }: { dictionary: HomeDictionary 
   return (
     <main className="astra-page-enter overflow-hidden bg-astra-cream text-astra-brown">
       <Hero dictionary={campaignDictionary} />
-      <section className="bg-[#FFF8F0] py-16 md:py-20">
+      <section className="bg-[#FFF8F0] pt-16 md:pt-20">
         <div className="container max-w-[980px] text-center">
           <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">YOUR JOURNEY, AT A GLANCE</p>
           <h2 className="mt-3 text-[32px] font-medium leading-[1.18] text-astra-cocoa md:text-[44px]">Your 6-Day Safari &amp; Zanzibar Adventure</h2>
@@ -226,7 +226,7 @@ function Hero({ dictionary }: { dictionary: HomeDictionary }) {
       <div className="container relative grid max-w-[1112px] gap-8 py-12 md:min-h-[600px] md:items-center md:py-14 lg:grid-cols-[minmax(0,1fr)_365px] lg:gap-[75px]">
         <div className="min-h-[420px] max-w-[650px] md:min-h-0">
           <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">6 DAYS • TANZANIA + ZANZIBAR</p>
-          <h1 className="mt-5 text-[40px] font-normal leading-[1.12] md:text-[54px]">The Wild, Then the <span className="font-bold text-astra-gold">Beach.</span></h1>
+          <h1 className="mt-5 text-[40px] font-normal leading-[1.12] md:text-[54px]">Explore the Wild and Relax On the Beach</h1>
           <p className="mt-5 inline-flex rounded-full border border-astra-gold/65 bg-astra-gold/15 px-4 py-2 text-[15px] font-bold text-white backdrop-blur-sm">3-Day Private Safari + 2 Days Zanzibar + 1 Extra Day Free</p>
           <p className="mt-5 max-w-[545px] text-base leading-[1.65] text-white/90">Explore Tanzania&apos;s incredible wildlife, then unwind on Zanzibar&apos;s beautiful beaches. Your adventure, your pace, with one extra Zanzibar day free.</p>
         </div>
