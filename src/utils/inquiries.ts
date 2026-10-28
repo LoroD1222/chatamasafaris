@@ -1,9 +1,8 @@
 import { reportGoogleAdsLeadConversion } from "@/utils/google-ads";
-import { reportMetaPixelLead } from "@/utils/meta-pixel";
+import { createMetaEventId, getMetaAttribution, reportMetaPixelLead } from "@/utils/meta-pixel";
 import type { PlannerField } from "@/i18n/types";
 
-export const inquiryEndpoint = "https://safari-digital-portal.vercel.app/api/inquiries";
-export const inquiryFormKey = "sdf_MdPdg4b62MwTI5h5vAhkhXMq";
+export const inquiryEndpoint = "/api/inquiries";
 
 const utmFields = ["utm_source", "utm_medium", "utm_campaign"] as const;
 
@@ -66,11 +65,15 @@ export function captureUtmParameters(search = typeof window === "undefined" ? ""
 }
 
 export async function submitInquiry({ formName, values }: InquiryPayload) {
+  const eventId = createMetaEventId();
   const response = await fetch(inquiryEndpoint, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      key: inquiryFormKey,
+      event_id: eventId,
+      form_name: formName,
+      page_path: window.location.pathname,
+      meta_attribution: getMetaAttribution(),
       name: values.name?.trim(),
       email: values.email?.trim() || undefined,
       phone: values.phone?.trim() || values.whatsapp?.trim() || undefined,
@@ -99,5 +102,5 @@ export async function submitInquiry({ formName, values }: InquiryPayload) {
   }
 
   reportGoogleAdsLeadConversion();
-  reportMetaPixelLead({ formName });
+  reportMetaPixelLead({ formName, eventId });
 }

@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { googleAdsLeadDestination } from "@/utils/google-ads";
-import { inquiryEndpoint, inquiryFormKey, submitInquiry } from "@/utils/inquiries";
+import { inquiryEndpoint, submitInquiry } from "@/utils/inquiries";
 
 describe("submitInquiry", () => {
   const fetchMock = vi.fn();
@@ -33,27 +33,34 @@ describe("submitInquiry", () => {
     expect(fetchMock).toHaveBeenCalledWith(inquiryEndpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        key: inquiryFormKey,
-        name: "Alex Traveler",
-        email: "traveler@example.com",
-        phone: "+255 123",
-        interested_in: undefined,
-        travel_dates: undefined,
-        travellers: "2 people",
-        country: undefined,
-        message: undefined
-      })
+      body: expect.any(String)
+    });
+
+    const requestBody = JSON.parse(fetchMock.mock.calls[0][1].body);
+    expect(requestBody).toMatchObject({
+      event_id: expect.any(String),
+      form_name: "safari_planner_request",
+      page_path: window.location.pathname,
+      meta_attribution: {},
+      name: "Alex Traveler",
+      email: "traveler@example.com",
+      phone: "+255 123",
+      travellers: "2 people"
     });
 
     expect(window.gtag).toHaveBeenCalledWith("event", "conversion", {
       send_to: googleAdsLeadDestination
     });
     expect(window.fbq).toHaveBeenCalledTimes(1);
-    expect(window.fbq).toHaveBeenCalledWith("track", "Lead", {
-      form_name: "safari_planner_request",
-      page_path: window.location.pathname
-    });
+    expect(window.fbq).toHaveBeenCalledWith(
+      "track",
+      "Lead",
+      {
+        form_name: "safari_planner_request",
+        page_path: window.location.pathname
+      },
+      { eventID: expect.any(String) }
+    );
   });
 
   it("does not report a conversion when the lead provider rejects the submission", async () => {

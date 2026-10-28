@@ -4,6 +4,7 @@ import { Suspense, type ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/next";
 
 import { UtmCapture } from "@/components/analytics/utm-capture";
+import { MetaPageView } from "@/components/analytics/meta-page-view";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
@@ -20,11 +21,14 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
+  const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "1617053106571679";
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="bg-background text-foreground antialiased">
         <Suspense fallback={null}>
           <UtmCapture />
+          <MetaPageView />
         </Suspense>
         <noscript>
           {/* Meta's required noscript tracking fallback cannot use Next's image optimizer. */}
@@ -33,7 +37,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             height="1"
             width="1"
             style={{ display: "none" }}
-            src="https://www.facebook.com/tr?id=1617053106571679&ev=PageView&noscript=1"
+            src={`https://www.facebook.com/tr?id=${metaPixelId}&ev=PageView&noscript=1`}
             alt=""
           />
         </noscript>
@@ -49,8 +53,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             t.src=v;s=b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '1617053106571679');
-            fbq('track', 'PageView');
+            fbq('init', '${metaPixelId}');
+            window.dispatchEvent(new Event('meta-pixel-ready'));
           `}
         </Script>
         <Script
