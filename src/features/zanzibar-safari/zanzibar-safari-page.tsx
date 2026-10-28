@@ -31,7 +31,7 @@ const itinerary: ItineraryDayCard[] = [
     meals: ["Confirmed in your personalized quote"],
     activityImage: { src: "/assets/figma/itinerary-1.jpg", alt: "Tanzania safari landscape" },
     accommodation: "Selected to suit your travel style; details are confirmed in your personalized quote.",
-    accommodationImage: null
+    accommodationImage: { src: "/images/zanzibar-safari/accommodation-angata-camp-exterior.webp", alt: "Tented safari camp surrounded by Tanzania's green bush" }
   },
   {
     key: "day-2-wildlife",
@@ -42,7 +42,7 @@ const itinerary: ItineraryDayCard[] = [
     meals: ["Confirmed in your personalized quote"],
     activityImage: { src: "/assets/figma/itinerary-2.jpg", alt: "Wildlife on the Tanzania plains" },
     accommodation: "Selected to suit your travel style; details are confirmed in your personalized quote.",
-    accommodationImage: null
+    accommodationImage: { src: "/images/zanzibar-safari/accommodation-angata-camp-tent-interior.webp", alt: "Comfortable interior of a safari tent" }
   },
   {
     key: "day-3-wild",
@@ -53,7 +53,7 @@ const itinerary: ItineraryDayCard[] = [
     meals: ["Confirmed in your personalized quote"],
     activityImage: { src: "/assets/figma/itinerary-3.jpg", alt: "Tanzania wilderness at golden hour" },
     accommodation: "Selected to suit your travel style; details are confirmed in your personalized quote.",
-    accommodationImage: null
+    accommodationImage: { src: "/images/zanzibar-safari/accommodation-ngorongoro-tent-suite.webp", alt: "Tented safari suite looking out over the landscape" }
   },
   {
     key: "day-4-zanzibar",
@@ -64,7 +64,7 @@ const itinerary: ItineraryDayCard[] = [
     meals: ["Confirmed in your personalized quote"],
     activityImage: { src: "/assets/figma/itinerary-5.jpg", alt: "Zanzibar beach beside the Indian Ocean" },
     accommodation: "Selected to suit your travel style; details are confirmed in your personalized quote.",
-    accommodationImage: null
+    accommodationImage: { src: "/images/zanzibar-safari/accommodation-zanzibar-pool-bridge.webp", alt: "Zanzibar beach resort pool framed by palms" }
   },
   {
     key: "day-5-zanzibar-beaches",
@@ -75,7 +75,7 @@ const itinerary: ItineraryDayCard[] = [
     meals: ["Confirmed in your personalized quote"],
     activityImage: { src: "/assets/figma/zanzibar-88.jpg", alt: "Turquoise Zanzibar coastline" },
     accommodation: "Selected to suit your travel style; details are confirmed in your personalized quote.",
-    accommodationImage: null
+    accommodationImage: { src: "/images/zanzibar-safari/accommodation-zanzibar-pool.webp", alt: "Zanzibar resort swimming pool and thatched buildings" }
   },
   {
     key: "day-6-free-day",
@@ -86,7 +86,7 @@ const itinerary: ItineraryDayCard[] = [
     meals: ["Confirmed in your personalized quote"],
     activityImage: { src: "/assets/figma/category-zanzibar.jpg", alt: "Zanzibar beach and clear blue water" },
     accommodation: "Selected to suit your travel style; details are confirmed in your personalized quote.",
-    accommodationImage: null
+    accommodationImage: { src: "/images/zanzibar-safari/accommodation-zanzibar-beachfront.webp", alt: "Zanzibar beachfront relaxation area beneath palm trees" }
   }
 ];
 
