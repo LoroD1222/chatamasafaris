@@ -3,6 +3,14 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { googleAdsLeadDestination } from "@/utils/google-ads";
 import { inquiryEndpoint, submitInquiry } from "@/utils/inquiries";
 
+const { sendToPortalMock } = vi.hoisted(() => ({
+  sendToPortalMock: vi.fn()
+}));
+
+vi.mock("@/lib/safari-digital", () => ({
+  sendToPortal: sendToPortalMock
+}));
+
 describe("submitInquiry", () => {
   const fetchMock = vi.fn();
 
@@ -10,10 +18,12 @@ describe("submitInquiry", () => {
     vi.stubGlobal("fetch", fetchMock);
     window.gtag = vi.fn();
     window.fbq = vi.fn();
+    sendToPortalMock.mockResolvedValue({ ok: true });
   });
 
   afterEach(() => {
     fetchMock.mockReset();
+    sendToPortalMock.mockReset();
     vi.unstubAllGlobals();
     delete window.gtag;
     delete window.fbq;
@@ -46,6 +56,12 @@ describe("submitInquiry", () => {
       email: "traveler@example.com",
       phone: "+255 123",
       travellers: "2 people"
+    });
+    expect(sendToPortalMock).toHaveBeenCalledWith({
+      name: "Alex Traveler",
+      email: "traveler@example.com",
+      whatsapp: "+255 123",
+      people: "2 people"
     });
 
     expect(window.gtag).toHaveBeenCalledWith("event", "conversion", {

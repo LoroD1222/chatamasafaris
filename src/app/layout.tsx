@@ -3,6 +3,7 @@ import Script from "next/script";
 import { Suspense, type ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/next";
 
+import { SafariDigitalAttribution } from "@/components/analytics/safari-digital-attribution";
 import { UtmCapture } from "@/components/analytics/utm-capture";
 import { MetaPageView } from "@/components/analytics/meta-page-view";
 import "@/styles/globals.css";
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className="bg-background text-foreground antialiased">
         <Suspense fallback={null}>
           <UtmCapture />
+          <SafariDigitalAttribution />
           <MetaPageView />
         </Suspense>
         <noscript>

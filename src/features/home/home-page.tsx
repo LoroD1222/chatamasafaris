@@ -485,7 +485,19 @@ function PlanningImage({ image }: { image: HomeDictionary["planning"]["image"] }
   );
 }
 
-export function TeamSection({ dictionary, heading, description, compact = false }: { dictionary: HomeDictionary; heading?: string; description?: string; compact?: boolean }) {
+export function TeamSection({
+  dictionary,
+  heading,
+  description,
+  compact = false,
+  mobileGuideLimit
+}: {
+  dictionary: HomeDictionary;
+  heading?: string;
+  description?: string;
+  compact?: boolean;
+  mobileGuideLimit?: number;
+}) {
   const founder = teamMembers.find((member) => member.featured);
   const guides = teamMembers.filter((member) => !member.featured);
 
@@ -505,10 +517,10 @@ export function TeamSection({ dictionary, heading, description, compact = false 
           {founder ? <FounderCard member={founder} /> : null}
         </div>
         <div className="mt-7 grid grid-cols-1 gap-6 lg:grid-cols-3">
-          {guides.slice(0, compact ? 3 : undefined).map((member) => (
-            <TeamCard key={member.name} member={member} />
+          {guides.slice(0, compact ? 3 : undefined).map((member, index) => (
+            <TeamCard key={member.name} member={member} className={mobileGuideLimit !== undefined && index >= mobileGuideLimit ? "hidden lg:block" : undefined} />
           ))}
-          {compact ? null : <TeamCtaCard dictionary={dictionary} />}
+          {compact ? null : <TeamCtaCard dictionary={dictionary} className={mobileGuideLimit !== undefined ? "hidden lg:flex" : undefined} />}
         </div>
       </div>
     </section>
@@ -528,9 +540,9 @@ function FounderCard({ member }: { member: TeamMember }) {
   );
 }
 
-function TeamCard({ member }: { member: TeamMember }) {
+function TeamCard({ member, className }: { member: TeamMember; className?: string }) {
   return (
-    <article className="group overflow-hidden rounded-[10px] border border-astra-cocoa/10 bg-white shadow-[0_18px_45px_rgba(64,48,40,0.08)] motion-safe:transition motion-safe:hover:-translate-y-1 motion-safe:hover:shadow-[0_18px_50px_rgba(64,48,40,0.12)]">
+    <article className={cn("group overflow-hidden rounded-[10px] border border-astra-cocoa/10 bg-white shadow-[0_18px_45px_rgba(64,48,40,0.08)] motion-safe:transition motion-safe:hover:-translate-y-1 motion-safe:hover:shadow-[0_18px_50px_rgba(64,48,40,0.12)]", className)}>
       <TeamPhoto member={member} className="aspect-[4/3] rounded-t-[10px]" tag={member.role} sizes="(min-width: 1024px) 356px, (min-width: 640px) 50vw, 100vw" />
       <div className="px-5 pb-6 pt-5">
         <h4 className="text-[17px] font-bold leading-[1.3] text-astra-cocoa">{member.name}</h4>
@@ -540,9 +552,9 @@ function TeamCard({ member }: { member: TeamMember }) {
   );
 }
 
-function TeamCtaCard({ dictionary }: { dictionary: HomeDictionary }) {
+function TeamCtaCard({ dictionary, className }: { dictionary: HomeDictionary; className?: string }) {
   return (
-    <article className="flex min-h-[380px] flex-col justify-between rounded-[10px] border border-astra-cocoa/10 bg-astra-cocoa p-6 text-white shadow-[0_18px_45px_rgba(64,48,40,0.08)]">
+    <article className={cn("flex min-h-[380px] flex-col justify-between rounded-[10px] border border-astra-cocoa/10 bg-astra-cocoa p-6 text-white shadow-[0_18px_45px_rgba(64,48,40,0.08)]", className)}>
       <div>
         <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">Plan With The Team</p>
         <h4 className="mt-4 text-[28px] font-bold leading-[1.12]">Ready to meet your guide?</h4>

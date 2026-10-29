@@ -11,11 +11,16 @@ import type { HomeDictionary } from "@/i18n/types";
 const plannerId = "quote";
 
 const galleryImages = [
-  { src: "/images/zanzibar-safari/gallery_01_safari_jeep_elephants.jpg", alt: "Safari vehicle beside elephants and wildebeest at a watering hole" },
-  { src: "/images/zanzibar-safari/gallery_02_elephant_herd.jpg", alt: "Elephant family walking across Tanzania's savannah" },
-  { src: "/images/zanzibar-safari/gallery_03_safari_guests.jpg", alt: "Safari guests and local guide beside a vehicle in Tanzania" },
-  { src: "/images/zanzibar-safari/gallery_04_safari_from_jeep.jpg", alt: "Traveler taking in the Tanzania landscape from a safari vehicle" },
-  { src: "/images/zanzibar-safari/gallery_05_safari_wildlife.jpg", alt: "Two zebras on the Tanzanian savannah" },
+  { src: "/images/zanzibar-safari/safari-cheetah-family.webp", alt: "Cheetah family resting together on the Tanzanian plains" },
+  { src: "/images/zanzibar-safari/safari-lion-pride.webp", alt: "Lion pride gathered in the grasslands" },
+  { src: "/images/zanzibar-safari/safari-elephant.webp", alt: "Elephant crossing a track in the open savannah" },
+  { src: "/images/zanzibar-safari/safari-guests-jeep.webp", alt: "Chatama Safaris guests beside their safari vehicle" },
+  { src: "/images/zanzibar-safari/safari-jeep-acacia.webp", alt: "Chatama Safaris vehicle beneath an acacia tree" },
+  { src: "/images/zanzibar-safari/safari-bush-lunch.webp", alt: "Safari guests enjoying lunch on the open plains" },
+  { src: "/images/zanzibar-safari/safari-wildebeest-wetland.webp", alt: "Wildebeest and wetland birds gathered at a watering area" },
+  { src: "/images/zanzibar-safari/safari-zebra-herd.webp", alt: "Zebra herd grazing across a green savannah" },
+  { src: "/images/zanzibar-safari/safari-roaring-lion.webp", alt: "Male lion roaring in the grass" },
+  { src: "/images/zanzibar-safari/safari-lion-walking.webp", alt: "Male lion walking across the green plains" },
   { src: "/images/zanzibar-safari/gallery_06_zanzibar_coast.jpg", alt: "Aerial view of Zanzibar's turquoise coastline" },
   { src: "/images/zanzibar-safari/gallery_07_zanzibar_pier.jpg", alt: "Zanzibar beachfront jetty at sunset" },
   { src: "/images/zanzibar-safari/gallery_08_zanzibar_palms.jpg", alt: "Palm-lined Zanzibar coastline and jetty" }
@@ -29,8 +34,8 @@ const itinerary: ItineraryDayCard[] = [
     description: "Your Tanzania adventure starts with a private safari experience shaped around the kind of wildlife and landscapes you hope to discover. Take in your first impressions of the bush and settle into the rhythm of the wild.",
     activities: ["Begin your private safari", "Set your preferred pace with your guide"],
     meals: ["Confirmed in your personalized quote"],
-    activityImage: { src: "/assets/figma/itinerary-1.jpg", alt: "Tanzania safari landscape" },
-    accommodation: "Selected to suit your travel style; details are confirmed in your personalized quote.",
+    activityImage: { src: "/images/zanzibar-safari/safari-cheetah-family.webp", alt: "Cheetah family resting together on the Tanzanian plains" },
+    accommodation: "Ang’ata Camps",
     accommodationImage: { src: "/images/zanzibar-safari/accommodation-angata-camp-exterior.webp", alt: "Tented safari camp surrounded by Tanzania's green bush" }
   },
   {
@@ -40,8 +45,8 @@ const itinerary: ItineraryDayCard[] = [
     description: "Spend another day immersed in Tanzania's extraordinary natural world. Your guide will help you slow down, look closer, and make the most of every unhurried moment outdoors.",
     activities: ["Explore Tanzania's wildlife areas", "Enjoy a flexible private game-drive experience"],
     meals: ["Confirmed in your personalized quote"],
-    activityImage: { src: "/assets/figma/itinerary-2.jpg", alt: "Wildlife on the Tanzania plains" },
-    accommodation: "Selected to suit your travel style; details are confirmed in your personalized quote.",
+    activityImage: { src: "/images/zanzibar-safari/safari-guests-jeep.webp", alt: "Chatama Safaris guests gathered beside their safari vehicle" },
+    accommodation: "Ang’ata Camps",
     accommodationImage: { src: "/images/zanzibar-safari/accommodation-angata-camp-tent-interior.webp", alt: "Comfortable interior of a safari tent" }
   },
   {
@@ -51,8 +56,8 @@ const itinerary: ItineraryDayCard[] = [
     description: "Make the most of one more day surrounded by Tanzania's remarkable wilderness. Whether you are drawn to wide-open views, quiet moments, or time watching wildlife, the day remains tailored to you.",
     activities: ["Continue your private safari", "Follow the moments that interest you most"],
     meals: ["Confirmed in your personalized quote"],
-    activityImage: { src: "/assets/figma/itinerary-3.jpg", alt: "Tanzania wilderness at golden hour" },
-    accommodation: "Selected to suit your travel style; details are confirmed in your personalized quote.",
+    activityImage: { src: "/images/zanzibar-safari/safari-elephant.webp", alt: "Elephant crossing a safari track on Tanzania's open plains" },
+    accommodation: "Ang’ata Camps",
     accommodationImage: { src: "/images/zanzibar-safari/accommodation-ngorongoro-tent-suite.webp", alt: "Tented safari suite looking out over the landscape" }
   },
   {
@@ -63,7 +68,7 @@ const itinerary: ItineraryDayCard[] = [
     activities: ["Begin your Zanzibar beach escape", "Enjoy time to relax and explore at your own pace"],
     meals: ["Confirmed in your personalized quote"],
     activityImage: { src: "/assets/figma/itinerary-5.jpg", alt: "Zanzibar beach beside the Indian Ocean" },
-    accommodation: "Selected to suit your travel style; details are confirmed in your personalized quote.",
+    accommodation: "Ocean Paradise Resort and Spa",
     accommodationImage: { src: "/images/zanzibar-safari/accommodation-zanzibar-pool-bridge.webp", alt: "Zanzibar beach resort pool framed by palms" }
   },
   {
@@ -74,7 +79,7 @@ const itinerary: ItineraryDayCard[] = [
     activities: ["Enjoy Zanzibar's coastline", "Keep the day as relaxed or active as you wish"],
     meals: ["Confirmed in your personalized quote"],
     activityImage: { src: "/assets/figma/zanzibar-88.jpg", alt: "Turquoise Zanzibar coastline" },
-    accommodation: "Selected to suit your travel style; details are confirmed in your personalized quote.",
+    accommodation: "Ocean Paradise Resort and Spa",
     accommodationImage: { src: "/images/zanzibar-safari/accommodation-zanzibar-pool.webp", alt: "Zanzibar resort swimming pool and thatched buildings" }
   },
   {
@@ -84,8 +89,8 @@ const itinerary: ItineraryDayCard[] = [
     description: "Your final island day is on us. Use this extra time to linger by the water, revisit a favorite spot, or enjoy the simple luxury of having nowhere else to be.",
     activities: ["Enjoy your complimentary extra Zanzibar day", "Choose the pace that suits you"],
     meals: ["Confirmed in your personalized quote"],
-    activityImage: { src: "/assets/figma/category-zanzibar.jpg", alt: "Zanzibar beach and clear blue water" },
-    accommodation: "Selected to suit your travel style; details are confirmed in your personalized quote.",
+    activityImage: { src: "/images/zanzibar-safari/activity-zanzibar-dhow.webp", alt: "Traditional dhow floating in Zanzibar's turquoise water" },
+    accommodation: "Ocean Paradise Resort and Spa",
     accommodationImage: { src: "/images/zanzibar-safari/accommodation-zanzibar-beachfront.webp", alt: "Zanzibar beachfront relaxation area beneath palm trees" }
   }
 ];
@@ -156,7 +161,7 @@ export function ZanzibarSafariPage({ dictionary }: { dictionary: HomeDictionary 
             <h2 className="mt-3 text-[32px] font-medium leading-[1.18] text-astra-cocoa md:text-[44px]">A Glimpse of Tanzania &amp; Zanzibar</h2>
             <p className="mt-4 text-base leading-[1.6] text-astra-brown">From incredible wildlife encounters to turquoise waters and peaceful beaches, discover what makes this journey unforgettable.</p>
           </div>
-          <HeroGallery images={galleryImages} priority={false} className="mx-auto mt-10 max-w-[900px]" />
+          <HeroGallery images={galleryImages} priority={false} className="mx-auto mt-10 w-full max-w-[420px] lg:max-w-[900px]" />
         </div>
       </section>
       <WhySection
@@ -173,7 +178,7 @@ export function ZanzibarSafariPage({ dictionary }: { dictionary: HomeDictionary 
           ]
         }}
       />
-      <TeamSection dictionary={dictionary} />
+      <TeamSection dictionary={dictionary} mobileGuideLimit={3} />
       <ReviewsSection
         dictionary={campaignDictionary}
         compact
@@ -199,7 +204,6 @@ export function ZanzibarSafariPage({ dictionary }: { dictionary: HomeDictionary 
       </section>
       <SiteFinalCta
         dictionary={campaignDictionary}
-        plannerHref={`#${plannerId}`}
         content={{
           eyebrow: "YOUR ADVENTURE STARTS HERE",
           titleLead: "The Wild. The Beach.",
@@ -217,20 +221,19 @@ export function ZanzibarSafariPage({ dictionary }: { dictionary: HomeDictionary 
 
 function Hero({ dictionary }: { dictionary: HomeDictionary }) {
   return (
-    <section className="relative overflow-hidden bg-[#F9F7F0] text-white md:min-h-[600px] md:bg-astra-cocoa">
-      <div className="absolute inset-x-0 top-0 h-[500px] md:inset-0 md:h-auto">
+    <section className="relative overflow-hidden bg-[#F9F7F0] text-astra-brown md:min-h-[600px] md:bg-astra-cocoa md:text-white">
+      <div className="absolute inset-x-0 top-0 h-[500px] bg-[#F9F7F0] md:inset-0 md:h-auto md:bg-astra-cocoa">
         <Image src="/images/zanzibar-safari/hero-tanzania-zanzibar.jpg" alt="Wildebeest crossing beside Zanzibar's tropical shoreline" fill priority sizes="100vw" className="hidden object-cover object-center md:block" />
-        <Image src="/images/zanzibar-safari/hero-tanzania-safari-mobile.jpg" alt="Wildebeest crossing a river in Tanzania" fill priority sizes="100vw" className="object-cover object-center md:hidden" />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(64,48,40,0.78)_0%,rgba(64,48,40,0.62)_68%,rgba(64,48,40,0.48)_100%)] md:bg-[linear-gradient(76deg,rgba(64,48,40,0.91)_4%,rgba(64,48,40,0.74)_37%,rgba(64,48,40,0.18)_76%,rgba(64,48,40,0.08)_100%)]" />
+        <div className="absolute inset-0 hidden bg-[linear-gradient(76deg,rgba(64,48,40,0.91)_4%,rgba(64,48,40,0.74)_37%,rgba(64,48,40,0.18)_76%,rgba(64,48,40,0.08)_100%)] md:block" />
       </div>
-      <div className="container relative grid max-w-[1112px] gap-8 py-12 md:min-h-[600px] md:items-center md:py-14 lg:grid-cols-[minmax(0,1fr)_365px] lg:gap-[75px]">
-        <div className="min-h-[420px] max-w-[650px] md:min-h-0">
+      <div className="container relative grid max-w-[1112px] gap-8 py-[30px] md:min-h-[600px] md:items-center md:py-14 lg:grid-cols-[minmax(0,1fr)_365px] lg:gap-[75px]">
+        <div className="hidden max-w-[650px] md:block md:min-h-0">
           <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">6 DAYS • TANZANIA + ZANZIBAR</p>
-          <h1 className="mt-5 text-[40px] font-normal leading-[1.12] md:text-[54px]">Explore the Wild and Relax On the Beach</h1>
-          <p className="mt-5 inline-flex rounded-full border border-astra-gold/65 bg-astra-gold/15 px-4 py-2 text-[15px] font-bold text-white backdrop-blur-sm">3-Day Private Safari + 2 Days Zanzibar + 1 Extra Day Free</p>
-          <p className="mt-5 max-w-[545px] text-base leading-[1.65] text-white/90">Explore Tanzania&apos;s incredible wildlife, then unwind on Zanzibar&apos;s beautiful beaches. Your adventure, your pace, with one extra Zanzibar day free.</p>
+          <h1 className="mt-5 text-[40px] font-normal leading-[1.12] md:text-[54px]">Explore the Tanzanian Wilderness and Relax on Zanzibar</h1>
+          <p className="mt-5 inline-flex rounded-full border border-astra-gold/65 bg-astra-gold/15 px-4 py-2 text-[15px] font-bold text-astra-brown backdrop-blur-sm md:text-white">3-Day Private Safari + 2 Days Zanzibar + 1 Extra Day Free</p>
+          <p className="mt-5 max-w-[545px] text-base leading-[1.65] text-astra-brown/85 md:text-white/90">Explore Tanzania&apos;s incredible wildlife, then unwind on Zanzibar&apos;s beautiful beaches. Your adventure, your pace, with one extra Zanzibar day free.</p>
         </div>
-        <div className="relative pt-[30px] md:pt-0">
+        <div className="relative">
           <LeadPlanner planner={dictionary.planner} sectionId={plannerId} className="relative z-10 w-full scroll-mt-24 shadow-none" />
         </div>
       </div>

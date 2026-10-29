@@ -65,7 +65,7 @@ const en: HomeDictionary = {
     logoAlt: "Chatama Safaris"
   },
   topBar: {
-    label: "Highest Rated Tanzania Safari Operator",
+    label: "Local Tanzania Safari Operator",
     phone: "+255 787 453 075",
     email: "info@chatamasafaris.com"
   },

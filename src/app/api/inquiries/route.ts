@@ -2,9 +2,6 @@ import { NextResponse } from "next/server";
 
 import { createMetaLeadEvent, sendMetaEvent } from "@/lib/meta-conversions";
 
-const inquiryEndpoint = "https://safari-digital-portal.vercel.app/api/inquiries";
-const inquiryFormKey = "sdf_MdPdg4b62MwTI5h5vAhkhXMq";
-
 type InquiryRequest = {
   event_id?: string;
   form_name?: string;
@@ -46,39 +43,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: false, message: "Invalid enquiry" }, { status: 400 });
   }
 
-  const response = await fetch(inquiryEndpoint, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      key: inquiryFormKey,
-      name: inquiry.name,
-      email: inquiry.email,
-      phone: inquiry.phone,
-      interested_in: inquiry.interested_in,
-      travel_dates: inquiry.travel_dates,
-      travellers: inquiry.travellers,
-      country: inquiry.country,
-      message: inquiry.message,
-      utm_source: inquiry.utm_source,
-      utm_medium: inquiry.utm_medium,
-      utm_campaign: inquiry.utm_campaign
-    })
-  });
-
-  let result: { success?: boolean; message?: string } | undefined;
-  try {
-    result = (await response.json()) as { success?: boolean; message?: string };
-  } catch {
-    // The enquiry service can return an empty successful response.
-  }
-
-  if (!response.ok || result?.success === false) {
-    return NextResponse.json(
-      { success: false, message: result?.message || "Unable to submit inquiry" },
-      { status: response.status || 502 }
-    );
-  }
-
   try {
     await sendMetaEvent(
       createMetaLeadEvent({
@@ -99,5 +63,5 @@ export async function POST(request: Request) {
     console.error("Unable to send Meta Lead conversion", error);
   }
 
-  return NextResponse.json(result ?? { success: true });
+  return NextResponse.json({ success: true });
 }

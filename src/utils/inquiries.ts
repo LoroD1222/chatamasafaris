@@ -1,4 +1,5 @@
 import { reportGoogleAdsLeadConversion } from "@/utils/google-ads";
+import { sendToPortal } from "@/lib/safari-digital";
 import { createMetaEventId, getMetaAttribution, reportMetaPixelLead } from "@/utils/meta-pixel";
 import type { PlannerField } from "@/i18n/types";
 
@@ -66,6 +67,14 @@ export function captureUtmParameters(search = typeof window === "undefined" ? ""
 
 export async function submitInquiry({ formName, values }: InquiryPayload) {
   const eventId = createMetaEventId();
+  void sendToPortal(values).then((result) => {
+    if (!result.ok) {
+      console.warn("Unable to send inquiry to Safari Digital", result.error);
+    }
+  }).catch((error) => {
+    console.warn("Unable to send inquiry to Safari Digital", error);
+  });
+
   const response = await fetch(inquiryEndpoint, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
