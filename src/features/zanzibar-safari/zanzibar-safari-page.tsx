@@ -6,9 +6,11 @@ import { LeadPlanner } from "@/features/home/lead-planner";
 import { FaqList } from "@/features/home/faq-list";
 import { ReviewsSection, TeamSection, WhySection } from "@/features/home/home-page";
 import { HeroGallery, ItinerarySection, type ItineraryDayCard } from "@/features/trips/trip-pages";
+import { MobileFloatingPlannerCta } from "@/features/zanzibar-safari/mobile-floating-planner-cta";
 import type { HomeDictionary } from "@/i18n/types";
 
 const plannerId = "quote";
+const heroId = "zanzibar-safari-hero";
 
 const galleryImages = [
   { src: "/images/zanzibar-safari/safari-cheetah-family.webp", alt: "Cheetah family resting together on the Tanzanian plains" },
@@ -136,6 +138,7 @@ export function ZanzibarSafariPage({ dictionary }: { dictionary: HomeDictionary 
   return (
     <main className="astra-page-enter overflow-hidden bg-astra-cream text-astra-brown">
       <Hero dictionary={campaignDictionary} />
+      <MobileFloatingPlannerCta planner={campaignDictionary.planner} heroId={heroId} />
       <section className="bg-[#FFF8F0] pt-16 md:pt-20">
         <div className="container max-w-[980px] text-center">
           <p className="text-[13px] font-bold uppercase leading-[1.6] tracking-[0.05em] text-astra-gold">YOUR JOURNEY, AT A GLANCE</p>
@@ -221,7 +224,7 @@ export function ZanzibarSafariPage({ dictionary }: { dictionary: HomeDictionary 
 
 function Hero({ dictionary }: { dictionary: HomeDictionary }) {
   return (
-    <section className="relative overflow-hidden bg-[#F9F7F0] text-astra-brown md:min-h-[600px] md:bg-astra-cocoa md:text-white">
+    <section id={heroId} className="relative overflow-hidden bg-[#F9F7F0] text-astra-brown md:min-h-[600px] md:bg-astra-cocoa md:text-white">
       <div className="absolute inset-x-0 top-0 h-[500px] bg-[#F9F7F0] md:inset-0 md:h-auto md:bg-astra-cocoa">
         <Image src="/images/zanzibar-safari/hero-tanzania-zanzibar.jpg" alt="Wildebeest crossing beside Zanzibar's tropical shoreline" fill priority sizes="100vw" className="hidden object-cover object-center md:block" />
         <div className="absolute inset-0 hidden bg-[linear-gradient(76deg,rgba(64,48,40,0.91)_4%,rgba(64,48,40,0.74)_37%,rgba(64,48,40,0.18)_76%,rgba(64,48,40,0.08)_100%)] md:block" />
