@@ -67,7 +67,7 @@ const en: HomeDictionary = {
   topBar: {
     label: "Local Tanzania Safari Operator",
     phone: "+255 787 453 075",
-    email: "info@chatamasafaris.com"
+    email: "info@chatamasafari.com"
   },
   nav: primaryNav,
   header: {
@@ -163,7 +163,7 @@ const en: HomeDictionary = {
     titleHighlight: "who expect more",
     plannerLabel: "Talk to a safari planner",
     phone: "+255 787 453 075",
-    email: "info@chatamasafaris.com",
+    email: "info@chatamasafari.com",
     cta: "Talk to Safari Planner",
     items: [
       {
