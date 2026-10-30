@@ -2,6 +2,7 @@
 
 import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 import { PlannerDialogButton } from "@/components/planner/planner-dialog";
 import type { HomeDictionary } from "@/i18n/types";
@@ -33,7 +34,7 @@ export function MobileFloatingPlannerCta({
 
   if (!visible) return null;
 
-  return (
+  return createPortal(
     <div className="fixed inset-x-0 bottom-0 z-40 bg-gradient-to-t from-astra-cream via-astra-cream/95 to-transparent px-4 pb-[calc(12px+env(safe-area-inset-bottom))] pt-8 md:hidden">
       <PlannerDialogButton
         planner={planner}
@@ -42,6 +43,7 @@ export function MobileFloatingPlannerCta({
         <span className="me-auto">{planner.submit}</span>
         <ArrowRight className="size-4" aria-hidden="true" />
       </PlannerDialogButton>
-    </div>
+    </div>,
+    document.body
   );
 }

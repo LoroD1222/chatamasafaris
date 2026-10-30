@@ -7,10 +7,18 @@ import { FaqList } from "@/features/home/faq-list";
 import { ReviewsSection, TeamSection, WhySection } from "@/features/home/home-page";
 import { HeroGallery, ItinerarySection, type ItineraryDayCard } from "@/features/trips/trip-pages";
 import { MobileFloatingPlannerCta } from "@/features/zanzibar-safari/mobile-floating-planner-cta";
-import type { HomeDictionary } from "@/i18n/types";
+import type { HomeDictionary, PlannerField } from "@/i18n/types";
 
 const plannerId = "quote";
 const heroId = "zanzibar-safari-hero";
+const mobilePlannerFields: PlannerField[] = [
+  {
+    name: "message",
+    label: "Your message",
+    placeholder: "Tell us what you would like to experience",
+    type: "textarea"
+  }
+];
 
 const galleryImages = [
   { src: "/images/zanzibar-safari/safari-cheetah-family.webp", alt: "Cheetah family resting together on the Tanzanian plains" },
@@ -237,7 +245,7 @@ function Hero({ dictionary }: { dictionary: HomeDictionary }) {
           <p className="mt-5 max-w-[545px] text-base leading-[1.65] text-astra-brown/85 md:text-white/90">Explore Tanzania&apos;s incredible wildlife, then unwind on Zanzibar&apos;s beautiful beaches. Your adventure, your pace, with one extra Zanzibar day free.</p>
         </div>
         <div className="relative">
-          <LeadPlanner planner={dictionary.planner} sectionId={plannerId} className="relative z-10 w-full scroll-mt-24 shadow-none" />
+          <LeadPlanner planner={dictionary.planner} sectionId={plannerId} mobileAdditionalFields={mobilePlannerFields} className="relative z-10 w-full scroll-mt-24 shadow-none" />
         </div>
       </div>
     </section>

@@ -19,14 +19,15 @@ type LeadPlannerProps = {
   planner: Planner;
   sectionId?: string;
   className?: string;
+  mobileAdditionalFields?: PlannerField[];
 };
 
-export function LeadPlanner({ planner, sectionId, className }: LeadPlannerProps) {
+export function LeadPlanner({ planner, sectionId, className, mobileAdditionalFields = [] }: LeadPlannerProps) {
   const id = useId();
   const router = useRouter();
   const initialValues = useMemo(
-    () => Object.fromEntries(planner.fields.map((field) => [field.name, ""])) as Record<string, string>,
-    [planner.fields]
+    () => Object.fromEntries([...planner.fields, ...mobileAdditionalFields].map((field) => [field.name, ""])) as Record<string, string>,
+    [mobileAdditionalFields, planner.fields]
   );
   const [values, setValues] = useState(initialValues);
   const [submitted, setSubmitted] = useState(false);
@@ -105,6 +106,17 @@ export function LeadPlanner({ planner, sectionId, className }: LeadPlannerProps)
               className={index === 0 || index === planner.fields.length - 1 ? "sm:col-span-2" : undefined}
             />
           ))}
+          {mobileAdditionalFields.map((field) => (
+            <PlannerFieldControl
+              key={field.name}
+              field={field}
+              id={`${id}-${field.name}`}
+              value={values[field.name] ?? ""}
+              invalid={invalidFields.includes(field.name)}
+              onChange={(value) => updateValue(field.name, value)}
+              className="sm:col-span-2 md:hidden"
+            />
+          ))}
         </div>
 
         <Button
@@ -170,6 +182,17 @@ function PlannerFieldControl({
             ))}
           </SelectContent>
         </Select>
+      ) : field.type === "textarea" ? (
+        <textarea
+          id={id}
+          name={field.name}
+          value={value}
+          placeholder={field.placeholder}
+          rows={4}
+          aria-invalid={invalid}
+          onChange={(event) => onChange(event.currentTarget.value)}
+          className="min-h-[108px] w-full resize-y rounded border border-[#403028]/15 bg-astra-cream px-[18px] py-3 text-[13px] font-bold text-astra-brown outline-none placeholder:text-astra-brown/60 focus-visible:ring-2 focus-visible:ring-astra-gold focus-visible:ring-offset-2"
+        />
       ) : (
         <Input
           id={id}

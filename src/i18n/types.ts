@@ -16,6 +16,12 @@ export type PlannerField =
       placeholder: string;
       type: "select";
       options: string[];
+    }
+  | {
+      name: string;
+      label: string;
+      placeholder: string;
+      type: "textarea";
     };
 
 export type AssetImage = {
