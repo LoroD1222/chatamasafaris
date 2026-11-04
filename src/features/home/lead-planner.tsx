@@ -14,6 +14,7 @@ import { thankYouHref } from "@/utils/routes";
 import { requiredInquiryFields, submitInquiry } from "@/utils/inquiries";
 
 type Planner = HomeDictionary["planner"];
+const fullWidthFieldNames = new Set(["name", "people", "travellers", "message"]);
 
 type LeadPlannerProps = {
   planner: Planner;
@@ -95,7 +96,7 @@ export function LeadPlanner({ planner, sectionId, className, mobileAdditionalFie
 
       <form className="mt-5 grid gap-4" aria-label={planner.title} onSubmit={submitForm} noValidate>
         <div className="grid gap-4 sm:grid-cols-2">
-          {planner.fields.map((field, index) => (
+          {planner.fields.map((field) => (
             <PlannerFieldControl
               key={field.name}
               field={field}
@@ -103,7 +104,7 @@ export function LeadPlanner({ planner, sectionId, className, mobileAdditionalFie
               value={values[field.name] ?? ""}
               invalid={invalidFields.includes(field.name)}
               onChange={(value) => updateValue(field.name, value)}
-              className={index === 0 || index === planner.fields.length - 1 ? "sm:col-span-2" : undefined}
+              className={fullWidthFieldNames.has(field.name) ? "sm:col-span-2" : undefined}
             />
           ))}
           {mobileAdditionalFields.map((field) => (

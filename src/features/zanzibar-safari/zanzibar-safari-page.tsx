@@ -19,6 +19,27 @@ const mobilePlannerFields: PlannerField[] = [
     type: "textarea"
   }
 ];
+const customizationPlannerFields: PlannerField[] = [
+  {
+    name: "travel_dates",
+    label: "Preferred travel month",
+    placeholder: "Travel month (e.g. July 2027)",
+    type: "text"
+  },
+  {
+    name: "budget",
+    label: "Budget per person",
+    placeholder: "Budget per person",
+    type: "select",
+    options: [
+      "$2,500-$4,000 per person",
+      "$4,000-$6,000 per person",
+      "$6,000-$8,000 per person",
+      "$8,000+ per person",
+      "Not sure yet"
+    ]
+  }
+];
 
 const galleryImages = [
   { src: "/images/zanzibar-safari/safari-cheetah-family.webp", alt: "Cheetah family resting together on the Tanzanian plains" },
@@ -139,7 +160,13 @@ export function ZanzibarSafariPage({ dictionary }: { dictionary: HomeDictionary 
       eyebrow: "PLAN YOUR ESCAPE",
       title: "Get Your Personalized Safari Quote",
       description: "Tell us a little about your trip, and our local team will help you plan your adventure.",
-      submit: "Plan My Safari & Zanzibar Trip"
+      submit: "Plan My Safari & Zanzibar Trip",
+      fields: [
+        ...dictionary.planner.fields,
+        ...customizationPlannerFields.filter(
+          (customField) => !dictionary.planner.fields.some((field) => field.name === customField.name)
+        )
+      ]
     }
   };
 
