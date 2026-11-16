@@ -85,8 +85,8 @@ const en: HomeDictionary = {
     primaryCta: "Let's Start Planning",
     secondaryCta: "Check Available Tours",
     image: {
-      src: asset("hero-wildebeest-migration-flipped.png"),
-      alt: "A guide photographing a wildebeest migration from a safari vehicle in Tanzania"
+      src: asset("hero-roaring-lion.jpg"),
+      alt: "A roaring male lion in the Serengeti grasslands"
     }
   },
   planner: {
