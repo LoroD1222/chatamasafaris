@@ -106,7 +106,7 @@ function HeroSection({ dictionary }: { dictionary: HomeDictionary }) {
     <section className="relative overflow-hidden bg-astra-cocoa text-white md:min-h-[543px]">
       <div className="absolute inset-x-0 bottom-0 h-[calc(100%-286px)] bg-astra-cream md:hidden" />
       <div className="absolute inset-0 hidden md:block">
-        <Image src={dictionary.hero.image.src} alt={dictionary.hero.image.alt} fill priority quality={PHOTO_QUALITY} sizes="100vw" className="object-cover object-[58%_center] md:object-center" />
+        <Image src={dictionary.hero.image.src} alt={dictionary.hero.image.alt} fill priority quality={PHOTO_QUALITY} sizes="100vw" className="object-cover object-[center_65%]" />
         <div className="absolute inset-0 bg-[linear-gradient(69deg,#403028_27%,rgba(64,48,40,0)_69%)]" />
       </div>
       <div className="container relative grid max-w-[1112px] gap-0 md:min-h-[543px] md:items-center md:gap-8 md:py-14 lg:grid-cols-[627px_365px] lg:gap-[75px]">
@@ -140,7 +140,7 @@ function HeroSection({ dictionary }: { dictionary: HomeDictionary }) {
         </div>
         <div className="relative -mx-4 md:hidden">
           <div className="relative h-[214px] overflow-hidden">
-            <Image src={dictionary.hero.image.src} alt={dictionary.hero.image.alt} fill priority quality={PHOTO_QUALITY} sizes="100vw" className="object-cover object-[58%_center]" />
+            <Image src={dictionary.hero.image.src} alt={dictionary.hero.image.alt} fill priority quality={PHOTO_QUALITY} sizes="100vw" className="object-cover object-[center_65%]" />
             <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-astra-cocoa to-transparent" />
             <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-astra-cocoa" />
           </div>
