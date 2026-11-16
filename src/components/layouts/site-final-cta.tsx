@@ -24,7 +24,7 @@ export function SiteFinalCta({ dictionary, content, plannerHref }: { dictionary:
       </div>
       <div className="container max-w-[1230px]">
         <div className="relative overflow-hidden rounded-2xl border border-white/30">
-          <Image src={finalCta.background.src} alt={finalCta.background.alt} fill sizes="100vw" className="object-cover" />
+          <Image src={finalCta.background.src} alt={finalCta.background.alt} fill quality={90} sizes="100vw" className="object-cover" />
           <div className="absolute inset-0 bg-[linear-gradient(86deg,#403028_3%,rgba(64,48,40,0.21)_99%)]" />
           <div className="relative grid min-h-[560px] gap-10 px-6 pb-0 pt-[50px] md:px-16 md:py-16 lg:grid-cols-[minmax(0,640px)] lg:items-center lg:px-[97px]">
             <div>

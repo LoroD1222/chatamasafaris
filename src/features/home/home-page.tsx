@@ -14,6 +14,7 @@ import type { AssetImage, HomeDictionary, Itinerary, TrustItem, WhyItem } from "
 import { cn } from "@/utils/cn";
 import { localizedHref, localizedSharedTripHref } from "@/utils/routes";
 
+const PHOTO_QUALITY = 90;
 
 type TeamMember = {
   name: string;
@@ -105,7 +106,7 @@ function HeroSection({ dictionary }: { dictionary: HomeDictionary }) {
     <section className="relative overflow-hidden bg-astra-cocoa text-white md:min-h-[543px]">
       <div className="absolute inset-x-0 bottom-0 h-[calc(100%-286px)] bg-astra-cream md:hidden" />
       <div className="absolute inset-0 hidden md:block">
-        <Image src={dictionary.hero.image.src} alt={dictionary.hero.image.alt} fill priority sizes="100vw" className="object-cover object-[58%_center] md:object-center" />
+        <Image src={dictionary.hero.image.src} alt={dictionary.hero.image.alt} fill priority quality={PHOTO_QUALITY} sizes="100vw" className="object-cover object-[58%_center] md:object-center" />
         <div className="absolute inset-0 bg-[linear-gradient(69deg,#403028_27%,rgba(64,48,40,0)_69%)]" />
       </div>
       <div className="container relative grid max-w-[1112px] gap-0 md:min-h-[543px] md:items-center md:gap-8 md:py-14 lg:grid-cols-[627px_365px] lg:gap-[75px]">
@@ -139,7 +140,7 @@ function HeroSection({ dictionary }: { dictionary: HomeDictionary }) {
         </div>
         <div className="relative -mx-4 md:hidden">
           <div className="relative h-[214px] overflow-hidden">
-            <Image src={dictionary.hero.image.src} alt={dictionary.hero.image.alt} fill priority sizes="100vw" className="object-cover object-[58%_center]" />
+            <Image src={dictionary.hero.image.src} alt={dictionary.hero.image.alt} fill priority quality={PHOTO_QUALITY} sizes="100vw" className="object-cover object-[58%_center]" />
             <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-astra-cocoa to-transparent" />
             <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-astra-cocoa" />
           </div>
@@ -174,6 +175,7 @@ function ExperienceCategories({ locale, dictionary }: { locale: Locale; dictiona
                   src={item.image.src}
                   alt={item.image.alt}
                   fill
+                  quality={PHOTO_QUALITY}
                   sizes="(min-width: 1280px) 400px, (min-width: 768px) 33vw, 100vw"
                   className={cn("object-cover transition duration-500 group-hover:scale-105", index === 1 && "object-[center_44%]")}
                 />
@@ -378,7 +380,7 @@ function ItinerariesSection({ locale, dictionary, recentTrips }: { locale: Local
               ? recentTrips.map((trip, index) => (
                   <a key={`${trip.slug}-${index}`} href={`/trip/${trip.slug}`} className="group flex h-[401px] flex-col overflow-hidden rounded-lg bg-astra-cocoa shadow-[0_18px_55px_rgba(64,48,40,0.15)] outline-none transition focus-visible:ring-2 focus-visible:ring-astra-gold focus-visible:ring-offset-2" aria-label={`See itinerary for ${trip.title}`}>
                     <div className="relative min-h-0 flex-1 overflow-hidden">
-                      <img src={trip.image} alt={trip.imageAlt} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                      <Image src={trip.image} alt={trip.imageAlt} fill quality={PHOTO_QUALITY} sizes="(min-width: 1024px) 356px, (min-width: 768px) 50vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
                       <div className="absolute right-4 top-4 rounded-[5px] border border-white/45 bg-astra-gold px-3 py-1 text-[11px] font-bold leading-[1.51] text-astra-cocoa backdrop-blur-md">{trip.price}</div>
                     </div>
                     <div className="bg-[#403028] px-5 pb-[25px] pt-5 text-white">
@@ -415,7 +417,7 @@ function ItineraryCard({ locale, item }: { locale: Locale; item: Itinerary }) {
       aria-label={`See itinerary for ${item.title}`}
     >
       <div className="relative min-h-0 flex-1 overflow-hidden">
-        <Image src={item.image.src} alt={item.image.alt} fill sizes="(min-width: 1024px) 356px, (min-width: 768px) 50vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
+        <Image src={item.image.src} alt={item.image.alt} fill quality={PHOTO_QUALITY} sizes="(min-width: 1024px) 356px, (min-width: 768px) 50vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
         <div className="absolute right-4 top-4 rounded-[5px] border border-white/45 bg-astra-gold px-3 py-1 text-[11px] font-bold leading-[1.51] text-astra-cocoa backdrop-blur-md">
           {item.price}
         </div>
@@ -436,8 +438,8 @@ function ImageStrip() {
   return (
     <section aria-label="Tanzania landscape gallery" className="relative -mt-[100px] bg-astra-cream">
       <div className="relative h-[230px] w-full overflow-hidden md:h-[322px] lg:h-[404px]">
-        <Image src="/assets/figma/image-strip-mobile-mountain.png" alt="" fill sizes="100vw" className="object-cover object-center md:hidden" />
-        <Image src="/assets/figma/choose-tanzania-experience.png" alt="" fill sizes="100vw" className="hidden object-cover object-center md:block" />
+        <Image src="/assets/figma/image-strip-mobile-mountain.png" alt="" fill quality={PHOTO_QUALITY} sizes="100vw" className="object-cover object-center md:hidden" />
+        <Image src="/assets/figma/choose-tanzania-experience.png" alt="" fill quality={PHOTO_QUALITY} sizes="100vw" className="hidden object-cover object-center md:block" />
       </div>
     </section>
   );
@@ -480,7 +482,7 @@ function PlanningSection({ dictionary }: { dictionary: HomeDictionary }) {
 function PlanningImage({ image }: { image: HomeDictionary["planning"]["image"] }) {
   return (
     <div className="relative mx-auto aspect-[1520/1937] w-full max-w-[520px] lg:justify-self-center">
-      <Image src={image.src} alt={image.alt} fill sizes="(min-width: 1024px) 520px, 100vw" className="object-contain" />
+      <Image src={image.src} alt={image.alt} fill quality={PHOTO_QUALITY} sizes="(min-width: 1024px) 520px, 100vw" className="object-contain" />
     </div>
   );
 }
@@ -585,7 +587,7 @@ function TeamCtaCard({ dictionary, className }: { dictionary: HomeDictionary; cl
 function TeamPhoto({ member, className, tag, sizes }: { member: TeamMember; className: string; tag: string; sizes: string }) {
   return (
     <div className={cn("relative overflow-hidden bg-astra-cocoa/10", className)}>
-      <Image src={member.photo.src} alt={member.photo.alt} fill sizes={sizes} className={cn("object-cover", member.featured && "object-[center_10%]")} />
+      <Image src={member.photo.src} alt={member.photo.alt} fill quality={PHOTO_QUALITY} sizes={sizes} className={cn("object-cover", member.featured && "object-[center_10%]")} />
       <span className="absolute left-3 top-3 rounded-full bg-astra-cocoa/75 px-3 py-1.5 text-xs font-bold leading-none text-white backdrop-blur-sm">
         {tag}
       </span>
@@ -643,7 +645,7 @@ function ReviewCard({ review }: { review: HomeDictionary["reviews"]["items"][num
     <article className="mb-6 grid break-inside-avoid rounded-[10px] border border-astra-gold/20 bg-white p-4 md:p-6">
       {review.image ? (
         <div className="relative mb-6 aspect-[16/8.5] overflow-hidden rounded-[10px] bg-[#f5f7f8]">
-          <Image src={review.image.src} alt={review.image.alt} fill sizes="(min-width: 1024px) 560px, 100vw" className={cn("object-cover", review.image.position ?? "object-center")} />
+          <Image src={review.image.src} alt={review.image.alt} fill quality={PHOTO_QUALITY} sizes="(min-width: 1024px) 560px, 100vw" className={cn("object-cover", review.image.position ?? "object-center")} />
         </div>
       ) : null}
       <div className="flex flex-col gap-5 md:gap-6">
