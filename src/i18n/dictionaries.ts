@@ -85,8 +85,8 @@ const en: HomeDictionary = {
     primaryCta: "Let's Start Planning",
     secondaryCta: "Check Available Tours",
     image: {
-      src: asset("hero-safari-breakfast.jpg"),
-      alt: "Chatama Safaris guests enjoying breakfast in the Serengeti"
+      src: asset("hero-green-wildebeest.jpg"),
+      alt: "Wildebeest grazing beneath giraffes in the Serengeti"
     }
   },
   planner: {
