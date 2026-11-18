@@ -648,7 +648,7 @@ function TripRouteExperience({ stops }: { stops: RouteStop[] }) {
         <InteractiveRouteMap stops={usableStops} activeStopId={activeStop.id} onStopSelect={setActiveStopId} />
       </div>
 
-      <div className="mt-5 grid gap-4 rounded-[10px] border border-[#403028]/12 bg-white p-4 shadow-[0_14px_34px_rgba(64,48,40,0.08)] md:grid-cols-[minmax(0,1.35fr)_minmax(220px,0.65fr)] md:p-5">
+      <div className="mt-5 rounded-[10px] border border-[#403028]/12 bg-white p-4 shadow-[0_14px_34px_rgba(64,48,40,0.08)] md:p-5">
         <section aria-labelledby="your-route-heading">
           <h2 id="your-route-heading" className="text-[20px] font-semibold leading-[1.2] text-[#403028]">Your Route</h2>
           <ol className="mt-3 grid gap-2" aria-label="Itinerary destinations">
@@ -678,26 +678,14 @@ function TripRouteExperience({ stops }: { stops: RouteStop[] }) {
                       <span className="min-w-0">
                         <span className="block text-[12px] font-bold uppercase tracking-[0.08em] text-[#D96F36]">{stop.dayLabel}</span>
                         <span className="mt-0.5 block text-[15px] font-bold leading-[1.3] text-[#403028]">{stop.name}</span>
-                        {stop.description ? <span className="mt-1 block line-clamp-2 text-[13px] font-semibold leading-[1.45] text-[#403028]/66">{stop.description}</span> : null}
                       </span>
                     </button>
-                    {stop.href ? (
-                      <a href={stop.href} className="mb-3 ml-[52px] inline-flex text-[12px] font-bold text-[#D96F36] underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E0B880]">
-                        Explore this destination
-                      </a>
-                    ) : null}
                   </div>
                 </li>
               );
             })}
           </ol>
         </section>
-
-        <aside className="border-t border-[#403028]/13 pt-4 md:border-l md:border-t-0 md:pl-5 md:pt-0" aria-live="polite">
-          <p className="text-[12px] font-bold uppercase tracking-[0.1em] text-[#D96F36]">{activeStop.dayLabel}</p>
-          <h3 className="mt-2 text-[21px] font-semibold leading-[1.2] text-[#403028]">{activeStop.name}</h3>
-          {activeStop.description ? <p className="mt-3 text-[14px] font-semibold leading-[1.6] text-[#403028]/72">{activeStop.description}</p> : null}
-        </aside>
       </div>
     </div>
   );
