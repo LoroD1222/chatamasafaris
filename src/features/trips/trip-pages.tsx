@@ -644,48 +644,8 @@ function TripRouteExperience({ stops }: { stops: RouteStop[] }) {
 
   return (
     <div>
-      <div className="relative aspect-[879/705] overflow-hidden rounded-[10px]">
+      <div className="relative z-0 aspect-[879/705] overflow-hidden rounded-[10px]">
         <InteractiveRouteMap stops={usableStops} activeStopId={activeStop.id} onStopSelect={setActiveStopId} />
-      </div>
-
-      <div className="mt-5 rounded-[10px] border border-[#403028]/12 bg-white p-4 shadow-[0_14px_34px_rgba(64,48,40,0.08)] md:p-5">
-        <section aria-labelledby="your-route-heading">
-          <h2 id="your-route-heading" className="text-[20px] font-semibold leading-[1.2] text-[#403028]">Your Route</h2>
-          <ol className="mt-3 grid gap-2" aria-label="Itinerary destinations">
-            {usableStops.map((stop, index) => {
-              const selected = stop.id === activeStop.id;
-
-              return (
-                <li key={stop.id}>
-                  <div className={cn(
-                    "rounded-[8px] border transition",
-                    selected
-                      ? "border-[#D96F36]/55 bg-[#FFF8F0] shadow-[0_6px_18px_rgba(64,48,40,0.08)]"
-                      : "border-transparent hover:border-[#E0B880]/45"
-                  )}>
-                    <button
-                      type="button"
-                      onClick={() => setActiveStopId(stop.id)}
-                      aria-pressed={selected}
-                      className="flex w-full items-start gap-3 p-3 text-left outline-none focus-visible:ring-2 focus-visible:ring-[#E0B880] focus-visible:ring-inset"
-                    >
-                      <span className={cn(
-                        "grid size-7 shrink-0 place-items-center rounded-full text-[12px] font-bold",
-                        selected ? "bg-[#D96F36] text-white" : "bg-[#403028] text-[#FFF8F0]"
-                      )} aria-hidden="true">
-                        {stop.markerLabel || index + 1}
-                      </span>
-                      <span className="min-w-0">
-                        <span className="block text-[12px] font-bold uppercase tracking-[0.08em] text-[#D96F36]">{stop.dayLabel}</span>
-                        <span className="mt-0.5 block text-[15px] font-bold leading-[1.3] text-[#403028]">{stop.name}</span>
-                      </span>
-                    </button>
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
-        </section>
       </div>
     </div>
   );
