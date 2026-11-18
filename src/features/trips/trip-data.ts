@@ -63,6 +63,17 @@ export type TripCard = {
   imageAlt: string;
 }
 
+export type RouteStop = {
+  id: string;
+  name: string;
+  dayLabel: string;
+  description?: string;
+  latitude: number;
+  longitude: number;
+  href?: string;
+  markerLabel?: string;
+};
+
 export type TripDetail = {
   slug: string;
   title: string;
@@ -75,6 +86,8 @@ export type TripDetail = {
   heroImage: string;
   mapImage?: string | null;
   gallery: { url: string; alt: string }[];
+  /** Optional editor-managed map stops. When absent, stops are made from the itinerary. */
+  routeStops?: RouteStop[];
   shortDescription: string;
   overviewText: string;
   targetAudience: string[];
@@ -178,6 +191,62 @@ function fallbackMealsForDay(title: string, index: number, totalDays: number) {
   if (index === totalDays - 1) return ["Breakfast", "Lunch"];
 
   return ["Breakfast", "Lunch", "Dinner"];
+}
+
+const routeLocations = [
+  { terms: ["prison island"], latitude: -6.151, longitude: 39.191, name: "Prison Island" },
+  { terms: ["stone town"], latitude: -6.1659, longitude: 39.2026, name: "Stone Town" },
+  { terms: ["menai"], latitude: -6.366, longitude: 39.232, name: "Menai Bay" },
+  { terms: ["spice farm"], latitude: -6.183, longitude: 39.266, name: "Zanzibar Spice Farm" },
+  { terms: ["zanzibar airport", "ferry terminal"], latitude: -6.222, longitude: 39.225, name: "Zanzibar Airport" },
+  { terms: ["zanzibar"], latitude: -6.1659, longitude: 39.2026, name: "Zanzibar" },
+  { terms: ["tarangire"], latitude: -3.835, longitude: 36.0, name: "Tarangire National Park" },
+  { terms: ["ngorongoro"], latitude: -3.2, longitude: 35.5, name: "Ngorongoro Conservation Area" },
+  { terms: ["serengeti"], latitude: -2.333, longitude: 34.833, name: "Serengeti National Park" },
+  { terms: ["manyara"], latitude: -3.583, longitude: 35.85, name: "Lake Manyara National Park" },
+  { terms: ["kilimanjaro"], latitude: -3.067, longitude: 37.35, name: "Kilimanjaro" },
+  { terms: ["mikumi"], latitude: -7.405, longitude: 37.08, name: "Mikumi National Park" },
+  { terms: ["nyerere", "selous"], latitude: -7.75, longitude: 38.15, name: "Nyerere National Park" },
+  { terms: ["dar es salaam", "dar es salaam"], latitude: -6.7924, longitude: 39.2083, name: "Dar es Salaam" },
+  { terms: ["arusha"], latitude: -3.3869, longitude: 36.683, name: "Arusha" },
+] as const;
+
+function routeStopLocation(title: string) {
+  const normalizedTitle = title.toLowerCase();
+  return routeLocations.find((location) => location.terms.some((term) => normalizedTitle.includes(term)));
+}
+
+function createFallbackRouteStops(itinerary: TripDetail["itinerary"]): RouteStop[] {
+  return itinerary.map((day, index) => {
+    const location = routeStopLocation([day.title, ...day.activities].join(" "))
+      ?? routeLocations.find((candidate) => candidate.name === "Arusha")!;
+
+    return {
+      id: day.key || `day-${day.dayNumber}-${index + 1}`,
+      name: location.name,
+      dayLabel: `Day ${day.dayNumber}`,
+      description: day.description,
+      latitude: location.latitude,
+      longitude: location.longitude,
+      markerLabel: String(index + 1),
+    };
+  });
+}
+
+function normalizeRouteStops(stops: RouteStop[] | null | undefined): RouteStop[] {
+  if (!Array.isArray(stops)) return [];
+
+  return stops
+    .filter((stop) =>
+      Boolean(stop?.id && stop.name && stop.dayLabel)
+      && Number.isFinite(stop.latitude)
+      && Number.isFinite(stop.longitude)
+    )
+    .map((stop, index) => ({
+      ...stop,
+      id: stop.id || `route-stop-${index + 1}`,
+      markerLabel: stop.markerLabel || String(index + 1),
+    }));
 }
 
 function normalizeTripCategory(title: string, category?: string | null): string {
@@ -286,6 +355,16 @@ export async function getTripBySlug(slug: string): Promise<TripDetail | null> {
         "heroImage": heroImage.asset->url,
         "mapImage": mapImage.asset->url,
         "gallery": gallery[]{ "url": asset->url, "alt": alt },
+        "routeStops": routeStops[]{
+          "id": coalesce(id, _key),
+          name,
+          dayLabel,
+          description,
+          latitude,
+          longitude,
+          href,
+          markerLabel
+        },
         shortDescription,
         "overviewText": pt::text(overviewText),
         targetAudience,
@@ -370,12 +449,14 @@ export async function getTripBySlug(slug: string): Promise<TripDetail | null> {
           : null,
     };
   });
+  const routeStops = normalizeRouteStops(trip.routeStops);
 
   return {
     ...trip,
     tripType: category,
     category,
     itinerary,
+    routeStops: routeStops.length > 0 ? routeStops : createFallbackRouteStops(itinerary),
     heroImage: optimizedSanityImageUrl(trip.heroImage) || '/assets/trips/trip-hero-zebras.png',
     mapImage: optimizedSanityImageUrl(trip.mapImage, 1600),
     gallery: (trip.gallery || []).map((image) => ({

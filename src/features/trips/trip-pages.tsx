@@ -18,6 +18,7 @@ import {
   Waves,
   X,
 } from "lucide-react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -31,7 +32,7 @@ import { PlannerDialogButton } from "@/components/planner/planner-dialog";
 import { LeadPlanner } from "@/features/home/lead-planner";
 import { defaultLocale } from "@/i18n/config";
 import type { HomeDictionary, PlannerField } from "@/i18n/types";
-import { isActiveTripCategory, type TripCard, type TripDetail, tripCards, tripCategoryOrder } from "@/features/trips/trip-data";
+import { isActiveTripCategory, type RouteStop, type TripCard, type TripDetail, tripCards, tripCategoryOrder } from "@/features/trips/trip-data";
 import { cn } from "@/utils/cn";
 import { thankYouHref } from "@/utils/routes";
 import { requiredInquiryFields, submitInquiry } from "@/utils/inquiries";
@@ -65,6 +66,14 @@ const itineraryActivitySlides = [
   { src: "/assets/figma/itinerary-5.jpg", alt: "Zanzibar activity beside the Indian Ocean" },
   { src: "/assets/figma/experience-strip.png", alt: "Tanzania safari landscape and wildlife experience" },
 ];
+
+const InteractiveRouteMap = dynamic(
+  () => import("@/components/trips/trip-route-map").then((module) => module.TripRouteMap),
+  {
+    ssr: false,
+    loading: () => <div className="h-full w-full animate-pulse bg-[#FFF8F0]" aria-label="Loading interactive itinerary map" />,
+  }
+);
 
 export function TripsListPage({ dictionary, initialTrips }: TripsListPageProps) {
   const sourceCards = initialTrips && initialTrips.length > 0
@@ -243,9 +252,7 @@ export function TripDetailPage({ dictionary, trip, similarTrips = [] }: TripDeta
           </section>
 
           <section id="tour-details" className="mx-auto grid max-w-[1200px] scroll-mt-[82px] gap-8 px-6 pb-[48px] md:pb-[84px] lg:grid-cols-[minmax(0,879px)_1fr]">
-            <div className="relative overflow-hidden rounded-[10px]">
-              <Image src={trip.mapImage || "/assets/trips/trip-map.png"} alt="Tanzania safari map" width={879} height={705} className="h-auto w-full" />
-            </div>
+            <TripRouteExperience stops={trip.routeStops || []} />
             <aside className="relative z-[100] self-center rounded-[10px] border border-[rgba(224,123,57,0.25)] bg-white p-8 shadow-[0_20px_45px_rgba(64,48,40,0.12)] lg:-ml-[200px] lg:w-[calc(100%+200px)]">
               <h2 className="border-b border-[#403028]/18 pb-5 text-[24px] font-semibold leading-[1.18]">Is this tour for me?</h2>
               <div className="border-b border-[#403028]/13 py-5">
@@ -624,6 +631,74 @@ function OverviewText({ trip }: { trip: TripDetail }) {
       <p className="whitespace-pre-line text-[15px] font-semibold leading-[1.68] text-[#403028]/74">
         {trip.overviewText || `Tanzania is one of those trips people talk about for the rest of their lives - but only if you do it right.`}
       </p>
+    </div>
+  );
+}
+
+function TripRouteExperience({ stops }: { stops: RouteStop[] }) {
+  const usableStops = stops.filter((stop) => Number.isFinite(stop.latitude) && Number.isFinite(stop.longitude));
+  const [activeStopId, setActiveStopId] = useState(() => usableStops[0]?.id || "");
+  const activeStop = usableStops.find((stop) => stop.id === activeStopId) || usableStops[0];
+
+  if (!activeStop) return null;
+
+  return (
+    <div>
+      <div className="relative aspect-[879/705] overflow-hidden rounded-[10px]">
+        <InteractiveRouteMap stops={usableStops} activeStopId={activeStop.id} onStopSelect={setActiveStopId} />
+      </div>
+
+      <div className="mt-5 grid gap-4 rounded-[10px] border border-[#403028]/12 bg-white p-4 shadow-[0_14px_34px_rgba(64,48,40,0.08)] md:grid-cols-[minmax(0,1.35fr)_minmax(220px,0.65fr)] md:p-5">
+        <section aria-labelledby="your-route-heading">
+          <h2 id="your-route-heading" className="text-[20px] font-semibold leading-[1.2] text-[#403028]">Your Route</h2>
+          <ol className="mt-3 grid gap-2" aria-label="Itinerary destinations">
+            {usableStops.map((stop, index) => {
+              const selected = stop.id === activeStop.id;
+
+              return (
+                <li key={stop.id}>
+                  <div className={cn(
+                    "rounded-[8px] border transition",
+                    selected
+                      ? "border-[#D96F36]/55 bg-[#FFF8F0] shadow-[0_6px_18px_rgba(64,48,40,0.08)]"
+                      : "border-transparent hover:border-[#E0B880]/45"
+                  )}>
+                    <button
+                      type="button"
+                      onClick={() => setActiveStopId(stop.id)}
+                      aria-pressed={selected}
+                      className="flex w-full items-start gap-3 p-3 text-left outline-none focus-visible:ring-2 focus-visible:ring-[#E0B880] focus-visible:ring-inset"
+                    >
+                      <span className={cn(
+                        "grid size-7 shrink-0 place-items-center rounded-full text-[12px] font-bold",
+                        selected ? "bg-[#D96F36] text-white" : "bg-[#403028] text-[#FFF8F0]"
+                      )} aria-hidden="true">
+                        {stop.markerLabel || index + 1}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block text-[12px] font-bold uppercase tracking-[0.08em] text-[#D96F36]">{stop.dayLabel}</span>
+                        <span className="mt-0.5 block text-[15px] font-bold leading-[1.3] text-[#403028]">{stop.name}</span>
+                        {stop.description ? <span className="mt-1 block line-clamp-2 text-[13px] font-semibold leading-[1.45] text-[#403028]/66">{stop.description}</span> : null}
+                      </span>
+                    </button>
+                    {stop.href ? (
+                      <a href={stop.href} className="mb-3 ml-[52px] inline-flex text-[12px] font-bold text-[#D96F36] underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E0B880]">
+                        Explore this destination
+                      </a>
+                    ) : null}
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+        </section>
+
+        <aside className="border-t border-[#403028]/13 pt-4 md:border-l md:border-t-0 md:pl-5 md:pt-0" aria-live="polite">
+          <p className="text-[12px] font-bold uppercase tracking-[0.1em] text-[#D96F36]">{activeStop.dayLabel}</p>
+          <h3 className="mt-2 text-[21px] font-semibold leading-[1.2] text-[#403028]">{activeStop.name}</h3>
+          {activeStop.description ? <p className="mt-3 text-[14px] font-semibold leading-[1.6] text-[#403028]/72">{activeStop.description}</p> : null}
+        </aside>
+      </div>
     </div>
   );
 }
